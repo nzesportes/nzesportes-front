@@ -17,13 +17,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.getTitleRoter();
+    this.getTitleRouter();
     this.routerSubscription = this.router.events.subscribe(() => {
-      this.getTitleRoter();
+      this.getTitleRouter();
     });
   }
 
-  getTitleRoter(): void {
+  getTitleRouter(): void {
     const url = this.router.url;
     if (url.includes('produtos')) {
       this.titleBoard = 'produtos';
