@@ -1,5 +1,8 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "9821468a-7c0a-4530-8370-f5cbec195520"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
@@ -31,9 +34,20 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/assets/dashboard/vendor/nucleo/css/nucleo.css",
+              "src/assets/dashboard/vendor/@fortawesome/fontawesome-free/css/all.min.css"
             ],
-            "scripts": []
+            "scripts": [
+              "src/assets/dashboard/vendor/jquery/dist/jquery.min.js",
+              "src/assets/dashboard/vendor/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "src/assets/dashboard/vendor/js-cookie/js.cookie.js",
+              "src/assets/dashboard/vendor/jquery.scrollbar/jquery.scrollbar.min.js",
+              "src/assets/dashboard/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js",
+              "src/assets/dashboard/vendor/chart.js/dist/Chart.min.js",
+              "src/assets/dashboard/vendor/chart.js/dist/Chart.extension.js",
+              "src/assets/dashboard/js/argon.js"
+            ]
           },
           "configurations": {
             "production": {

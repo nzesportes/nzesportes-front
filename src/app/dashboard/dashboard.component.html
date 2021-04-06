@@ -1,0 +1,25 @@
+<nav class="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-light bg-white" id="sidenav-main">
+  <app-sidebar></app-sidebar>
+</nav>
+
+<!-- Main content -->
+<div class="main-content" id="panel">
+  <app-top-nav></app-top-nav>
+  <app-header></app-header>
+  <div class="container-fluid mt--6">
+    <div class="row justify-content-center">
+      <div class=" col ">
+        <div class="card">
+          <div class="card-header bg-transparent">
+            <h3 class="mb-0">Produtos</h3>
+          </div>
+          <div class="card-body">
+            <router-outlet></router-outlet>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
+
