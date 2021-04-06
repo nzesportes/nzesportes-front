@@ -4,13 +4,13 @@ const path = require('path');
 
 const app = express();
 
-app.use(express.static(__dirname + '/dist/nzesportes'));
+app.use(express.static(__dirname + '/dist/nzesportes-front'));
 app.use(express.static(path.join(__dirname + 'node_modules')));
 
 app.use(bodyParser.json()); // support json encoded bodies
 
 app.get('*', (req, res, next) => {
-  res.sendFile(path.join(__dirname, 'dist/nzesportes/index.html'));
+  res.sendFile(path.join(__dirname, 'dist/nzesportes-front/index.html'));
 });
 
 // catch 404 and forward to error handler
