@@ -6,9 +6,9 @@ import {SidebarComponent} from './template/sidebar/sidebar.component';
 import {TopNavComponent} from './template/top-nav/top-nav.component';
 import {HeaderComponent} from './template/header/header.component';
 import {FooterComponent} from './template/footer/footer.component';
-import {ProdutosComponent} from './produtos/produtos.component';
 import {RouterModule} from '@angular/router';
 import {DashboardComponent} from './dashboard.component';
+import { ProductsComponent } from './products/products.component';
 
 
 @NgModule({
@@ -18,7 +18,7 @@ import {DashboardComponent} from './dashboard.component';
     TopNavComponent,
     HeaderComponent,
     FooterComponent,
-    ProdutosComponent
+    ProductsComponent
   ],
   exports: [
     DashboardComponent
