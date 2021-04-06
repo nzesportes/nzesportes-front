@@ -5,13 +5,13 @@
 <!-- Main content -->
 <div class="main-content" id="panel">
   <app-top-nav></app-top-nav>
-  <app-header></app-header>
+  <app-header [title]="titleBoard"></app-header>
   <div class="container-fluid mt--6">
     <div class="row justify-content-center">
       <div class=" col ">
         <div class="card">
           <div class="card-header bg-transparent">
-            <h3 class="mb-0">Produtos</h3>
+            <h3 class="mb-0">{{titleBoard | titlecase}}</h3>
           </div>
           <div class="card-body">
             <router-outlet></router-outlet>

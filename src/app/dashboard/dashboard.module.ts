@@ -8,8 +8,6 @@ import {HeaderComponent} from './template/header/header.component';
 import {FooterComponent} from './template/footer/footer.component';
 import {RouterModule} from '@angular/router';
 import {DashboardComponent} from './dashboard.component';
-import { ProductsComponent } from './products/products.component';
-
 
 @NgModule({
   declarations: [
@@ -18,7 +16,6 @@ import { ProductsComponent } from './products/products.component';
     TopNavComponent,
     HeaderComponent,
     FooterComponent,
-    ProductsComponent
   ],
   exports: [
     DashboardComponent
