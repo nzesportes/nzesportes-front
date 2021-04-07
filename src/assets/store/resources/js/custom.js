@@ -571,7 +571,7 @@
         else {
             $("#home-banner").show().revolution({
                 sliderType: "standard",
-                jsFileLocation: "plugins/revolution/js/",
+                jsFileLocation: "assets/store/plugins/revolution/js/",
                 dottedOverlay: "none",
                 delay: 5000,
                 navigation: {
