@@ -3570,7 +3570,8 @@ textarea.form-control {
 .ps-home-contact {
   position: relative; }
   .ps-home-contact #contact-map {
-    height: 680px; }
+    /*height: 680px;*/
+    height: 760px; }
   .ps-home-contact .ps-home-contact__form {
     position: absolute;
     top: 0;
