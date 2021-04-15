@@ -38,6 +38,11 @@ body {
   visibility: visible;
   transition: 0.1s;
 }
+//@media (max-width: 767px) {
+//  .container-fluid {
+//    width: calc(100% - 30px);
+//  }
+//}
 @media (min-width: 768px) {
   #sidebar-wrapper {
     margin-left: 0;
