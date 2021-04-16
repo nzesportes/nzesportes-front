@@ -10,6 +10,9 @@ import {HomeContentComponent} from './template/home-content/home-content.compone
 import {ContactUsComponent} from './template/contact-us/contact-us.component';
 import {SocialMediaComponent} from './template/social-media/social-media.component';
 import { FooterComponent } from './template/footer/footer.component';
+import { ComingUpComponent } from './template/coming-up/coming-up.component';
+import { NzStoreComponent } from './template/nz-store/nz-store.component';
+import { OfferComponent } from './template/offer/offer.component';
 
 
 @NgModule({
@@ -21,7 +24,10 @@ import { FooterComponent } from './template/footer/footer.component';
     HomeContentComponent,
     ContactUsComponent,
     SocialMediaComponent,
-    FooterComponent
+    FooterComponent,
+    ComingUpComponent,
+    NzStoreComponent,
+    OfferComponent
   ],
   imports: [
     CommonModule,
