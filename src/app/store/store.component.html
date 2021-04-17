@@ -1,21 +1,13 @@
-<div class="d-flex wrapper">
+<!-- <div class="d-flex flex-row-reverse wrapper" [class.toggled]="isSidebarOpened"> -->
 
-  <!-- Sidebar -->
-  <div class="bg-light border-right sidebar-wrapper">
-    <div class="sidebar-heading">Start Bootstrap </div>
-    <div class="list-group list-group-flush">
-      <a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
-      <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
-      <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
-      <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
-      <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
-      <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
-    </div>
+ <!-- Sidebar -->
+  <div class="bg-light border-right sidebar-wrapper" [class.active]="isSidebarOpened">
+    <app-menu-items></app-menu-items>
   </div>
   <!-- /#sidebar-wrapper -->
 
   <!-- Page Content -->
-  <div class="page-content-wrapper">
+  <div class="page-content-wrapper active" [class.active]="isSidebarOpened">
 
     <header>
       <app-header></app-header>
@@ -32,5 +24,5 @@
     </footer>
   </div>
 
-</div>
+<!-- </div> -->
 

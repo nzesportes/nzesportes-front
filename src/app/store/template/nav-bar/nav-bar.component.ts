@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {NavBarService} from '../../../service/nav-bar.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -7,15 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavBarComponent implements OnInit {
 
-  opened = false;
-
-  constructor() { }
+  constructor(
+    private navbarService: NavBarService
+  ) { }
 
   ngOnInit(): void {
   }
 
   changeStateSidebar(): void {
-    this.opened = !this.opened;
+    this.navbarService.changeSidebarState();
   }
 
 }
