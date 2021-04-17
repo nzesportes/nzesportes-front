@@ -13,6 +13,7 @@ import { FooterComponent } from './template/footer/footer.component';
 import { ComingUpComponent } from './template/coming-up/coming-up.component';
 import { NzStoreComponent } from './template/nz-store/nz-store.component';
 import { OfferComponent } from './template/offer/offer.component';
+import { MenuItemsComponent } from './template/menu-items/menu-items.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { OfferComponent } from './template/offer/offer.component';
     FooterComponent,
     ComingUpComponent,
     NzStoreComponent,
-    OfferComponent
+    OfferComponent,
+    MenuItemsComponent
   ],
   imports: [
     CommonModule,
