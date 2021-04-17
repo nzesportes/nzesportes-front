@@ -1,13 +1,13 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white justify-content-between">
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
   <div class="container-fluid">
-    <div class="nav-column-left text-left">
+    <div class="nav-column-left text-left float-left">
       <a class="navbar-brand" href="#">
         <img src="assets/images/logo_nz.png" width="auto" height="60" alt="">
       </a>
     </div>
 
-    <div class="nav-column-center text-center">
-      <ul class="navbar-nav">
+    <div class="nav-column-center float-left">
+      <ul class="navbar-nav justify-content-center">
         <li class="nav-item">
           <a class="menu-item" routerLinkActive="active" routerLink="/">Home</a>
         </li>
@@ -40,11 +40,22 @@
         </li>
       </ul>
     </div>
-    <div class="nav-column-right text-right">
+
+    <div class="nav-column-right text-right float-left">
       <form class="search-header">
         <input class="form-control" type="search" placeholder="PESQUISAR..." aria-label="Search">
         <button><i class="fas fa-search"></i></button>
       </form>
+      <div class="nav-cart">
+        <a class="nav-cart-button" href="#">
+          <span><i>20</i></span>
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+      </div>
+      <div class="nav-toggle">
+        <i class="fas fa-bars"></i>
+      </div>
     </div>
   </div>
 </nav>
+

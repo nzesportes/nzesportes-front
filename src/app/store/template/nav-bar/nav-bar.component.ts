@@ -14,7 +14,7 @@ export class NavBarComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  openNav(): void {
+  changeStateSidebar(): void {
     this.opened = !this.opened;
   }
 
