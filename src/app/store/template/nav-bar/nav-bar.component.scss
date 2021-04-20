@@ -131,6 +131,39 @@
   color: #fff;
 }
 
+.nav-cart:hover .cart-preview {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transform: translateX(0);
+  -moz-transform: translateX(0);
+  -ms-transform: translateX(0);
+  -o-transform: translateX(0);
+  transform: translateX(0);
+}
+
+.cart-preview {
+  position: absolute;
+  padding-top: 10px;
+  top: 100%;
+  right: -55px;
+  width: 300px;
+  background-color: #313645;
+  z-index: 1000;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+  -webkit-box-shadow: 0 10px 30px 0 rgb(0 0 0 / 20%);
+  -moz-box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
+  -ms-box-shadow: 0 10px 30px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px 0 rgb(0 0 0 / 20%);
+  visibility: hidden;
+  opacity: 0;
+
+  line-height: 1.43em;
+  color: #fff;
+}
+
+
 // Extra small devices (portrait phones, less than 576px)
 // No media query for `xs` since this is the default in Bootstrap
 
@@ -139,6 +172,10 @@
   .search-header {
     display: inline-block;
     max-width: 200px;
+  }
+
+  .cart-preview {
+    right: 0;
   }
 }
 

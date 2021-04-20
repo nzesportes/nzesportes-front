@@ -14,6 +14,7 @@ import { ComingUpComponent } from './template/coming-up/coming-up.component';
 import { NzStoreComponent } from './template/nz-store/nz-store.component';
 import { OfferComponent } from './template/offer/offer.component';
 import { MenuItemsComponent } from './template/menu-items/menu-items.component';
+import { CartPreviewComponent } from './template/cart-preview/cart-preview.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { MenuItemsComponent } from './template/menu-items/menu-items.component';
     ComingUpComponent,
     NzStoreComponent,
     OfferComponent,
-    MenuItemsComponent
+    MenuItemsComponent,
+    CartPreviewComponent
   ],
   imports: [
     CommonModule,
