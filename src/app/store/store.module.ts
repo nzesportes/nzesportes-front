@@ -15,6 +15,7 @@ import { NzStoreComponent } from './template/nz-store/nz-store.component';
 import { OfferComponent } from './template/offer/offer.component';
 import { MenuItemsComponent } from './template/menu-items/menu-items.component';
 import { CartPreviewComponent } from './template/cart-preview/cart-preview.component';
+import {CarouselModule} from 'ngx-owl-carousel-o';
 
 
 @NgModule({
@@ -35,7 +36,8 @@ import { CartPreviewComponent } from './template/cart-preview/cart-preview.compo
   ],
   imports: [
     CommonModule,
-    StoreRoutingModule
+    StoreRoutingModule,
+    CarouselModule
   ]
 })
 export class StoreModule {
