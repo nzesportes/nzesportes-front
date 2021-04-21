@@ -1,7 +1,28 @@
-<header>
-  <app-header></app-header>
-  <app-nav-bar></app-nav-bar>
-</header>
-<main>
-<router-outlet></router-outlet>
-</main>
+<!-- <div class="d-flex flex-row-reverse wrapper" [class.toggled]="isSidebarOpened"> -->
+
+ <!-- Sidebar -->
+  <div class="bg-light border-right sidebar-wrapper" [class.active]="isSidebarOpened">
+    <app-menu-items></app-menu-items>
+  </div>
+  <!-- /#sidebar-wrapper -->
+
+  <!-- Page Content -->
+  <div class="page-content-wrapper active" [class.active]="isSidebarOpened">
+
+    <header>
+      <app-header></app-header>
+      <app-nav-bar></app-nav-bar>
+    </header>
+
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+
+    <footer>
+      <app-social-media></app-social-media>
+      <app-footer></app-footer>
+    </footer>
+  </div>
+
+<!-- </div> -->
+

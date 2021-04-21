@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
+import {NavBarService} from '../service/nav-bar.service';
 
 @Component({
   selector: 'app-store',
@@ -7,9 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StoreComponent implements OnInit {
 
-  constructor() { }
+  isSidebarOpened = false;
+
+  constructor(
+    private navbarService: NavBarService
+  ) { }
 
   ngOnInit(): void {
+    this.navbarService.sidebarState.subscribe(response => {
+      this.isSidebarOpened = response;
+    });
   }
 
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    if (event.target.innerWidth >= 1200) {
+      this.navbarService.sidebarState.next(false);
+    }
+  }
 }

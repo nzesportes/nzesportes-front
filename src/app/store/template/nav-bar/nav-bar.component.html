@@ -1,50 +1,33 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white justify-content-between">
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
   <div class="container-fluid">
-    <div class="nav-column-left text-left">
+    <div class="nav-column-left text-left float-left">
       <a class="navbar-brand" href="#">
         <img src="assets/images/logo_nz.png" width="auto" height="60" alt="">
       </a>
     </div>
 
-    <div class="nav-column-center text-center">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="menu-item" routerLinkActive="active" routerLink="/">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="menu-item" href="#">Masculino</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="dropdown-toggle menu-item" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-             aria-haspopup="true" aria-expanded="false">
-            Feminino
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">Marca 1</a>
-            <a class="dropdown-item" href="#">Marca 2</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Marca 3</a>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a class="menu-item" href="#">Tênis</a>
-        </li>
-        <li class="nav-item">
-          <a class="menu-item" href="#">Acessórios</a>
-        </li>
-        <li class="nav-item">
-          <a class="menu-item" href="#">NZ</a>
-        </li>
-        <li class="nav-item">
-          <a class="menu-item" href="#">Contato</a>
-        </li>
-      </ul>
+    <div class="nav-column-center float-left">
+      <app-menu-items></app-menu-items>
     </div>
-    <div class="nav-column-right text-right">
+
+    <div class="nav-column-right text-right float-left">
       <form class="search-header">
         <input class="form-control" type="search" placeholder="PESQUISAR..." aria-label="Search">
         <button><i class="fas fa-search"></i></button>
       </form>
+      <div class="nav-cart">
+        <a class="nav-cart-button" href="#">
+          <span><i>20</i></span>
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+        <div class="cart-preview">
+          <app-cart-preview></app-cart-preview>
+        </div>
+      </div>
+      <div (click)="changeStateSidebar()" class="nav-toggle">
+        <i class="fas fa-bars"></i>
+      </div>
     </div>
   </div>
 </nav>
+
