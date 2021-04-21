@@ -63,8 +63,15 @@
 
                   <td>{{i * 2}}</td>
                   <td>
-                      <i class="fas fa-edit actions-button text-primary"></i>
-                      <i class="fas fa-trash actions-button text-danger"></i>
+                    <i class="fas fa-edit actions-button text-primary"></i>
+                    <i class="fas fa-trash actions-button text-danger" [swal]="swal1"></i>
+                    <swal
+                      [swalOptions]="{ confirmButtonText: 'Sim', cancelButtonText: 'Cancelar' }"
+                      [showCancelButton]="true"
+                      (confirm)="removeProduct(i)"
+                      #swal1 title="Tem certeza que deseja remover esse produto da categoria?"
+                      icon="question">
+                    </swal>
                   </td>
                 </tr>
                 </tbody>
@@ -86,3 +93,4 @@
     </div>
   </div>
 </form>
+

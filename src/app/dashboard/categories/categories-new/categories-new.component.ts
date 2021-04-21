@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-categories-new',
@@ -7,9 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CategoriesNewComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit(): void {
+  }
+
+  removeProduct(id: any): void {
+    console.log('remove', id);
   }
 
 }
