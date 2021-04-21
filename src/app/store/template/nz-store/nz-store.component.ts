@@ -58,7 +58,7 @@ export class NzStoreComponent implements OnInit {
     autoplay: true,
     autoplayHoverPause: true,
     autoplaySpeed: 700,
-    mouseDrag: true,
+    mouseDrag: false,
     touchDrag: false,
     pullDrag: false,
     dots: false,
