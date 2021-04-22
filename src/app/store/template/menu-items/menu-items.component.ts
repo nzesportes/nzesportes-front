@@ -6,7 +6,7 @@ import {Component, ElementRef, OnInit} from '@angular/core';
   styleUrls: ['./menu-items.component.scss']
 })
 export class MenuItemsComponent implements OnInit {
-  
+
   constructor() {
   }
 
