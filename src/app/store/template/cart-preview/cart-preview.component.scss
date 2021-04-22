@@ -9,6 +9,7 @@
 
 .row-items {
   border-bottom: 1px solid #525a71;
+  position: relative;
 }
 
 .title-cart-preview {
@@ -18,6 +19,7 @@
   line-height: 1.5em;
   text-align: left;
   color: #fff;
+  font-weight: 500;
 }
 
 .title-cart-preview:hover {
@@ -56,4 +58,32 @@
 
 .view-cart a:hover {
   text-decoration: none;
+}
+
+.item-cart-preview-close {
+  display: block;
+  position: absolute;
+  top: 18px;
+  right: 15px;
+  width: 16px;
+  height: 16px;
+  color: white;
+  background-color: #999;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  border-radius: 50%;
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.item-cart-preview-close:hover {
+  background-color: #F37135;
+}
+
+.item-cart-preview-close i {
+  position: absolute;
+  font-size: 11px;
+  top: 3px;
+  right: 5px;
 }

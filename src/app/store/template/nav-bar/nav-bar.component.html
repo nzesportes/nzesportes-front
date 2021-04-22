@@ -25,7 +25,7 @@
         </div>
       </div>
       <div (click)="changeStateSidebar()" class="nav-toggle">
-        <i class="fas fa-bars"></i>
+        <i class="fas fa-bars" [ngClass]="!isSidebarOpened ? 'fas fa-bars' : 'fas fa-times'"></i>
       </div>
     </div>
   </div>
