@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'novo-produto',
     component: NewProductComponent
+  },
+  {
+    path: 'produto/:id',
+    component: NewProductComponent
   }
 ];
 
@@ -18,4 +22,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ProductsRoutingModule { }
+export class ProductsRoutingModule {
+}

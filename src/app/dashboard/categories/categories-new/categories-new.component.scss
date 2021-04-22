@@ -9,3 +9,19 @@
   transition: all .2s linear;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
+.item-product:hover{
+  cursor: pointer;
+  transition: all .2s linear;
+  background-color: #e8f0fc;
+
+}
+item-product .selected{
+  background-color: #bddcf6;
+}
+#exampleModal .modal-dialog {
+  -webkit-transform: translate(0,-50%);
+  -o-transform: translate(0,-50%);
+  transform: translate(0,-50%);
+  top: 50%;
+  margin: 0 auto;
+}
