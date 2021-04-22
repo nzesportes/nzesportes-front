@@ -1,6 +1,6 @@
-name: ANgular CI
+name: Continuos integration
 
-on: [push]
+on: [pull_request]
 
 jobs:
   build:
@@ -17,9 +17,5 @@ jobs:
         run: npm install
       - name: Lint
         run: npm run lint
-      - uses: akhileshns/heroku-deploy@master
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: ${{secrets.FRONT_NAME_HEROKU}}
-          heroku_email: ${{secrets.EMAIL_NZESPORTES}}
-          delay: 5
+      - name: Build
+        run: npm run build
