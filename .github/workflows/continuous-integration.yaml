@@ -19,9 +19,3 @@ jobs:
         run: npm run lint
       - name: Build
         run: npm run build
-      - uses: akhileshns/heroku-deploy@master
-        with:
-          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
-          heroku_app_name: ${{secrets.FRONT_NAME_HEROKU}}
-          heroku_email: ${{secrets.EMAIL_NZESPORTES}}
-          delay: 5
