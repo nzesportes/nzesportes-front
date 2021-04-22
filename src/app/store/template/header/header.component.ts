@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
+  isPasswordOpened = false;
+
   constructor() { }
 
   ngOnInit(): void {
+    this.isPasswordOpened = false;
   }
 
+  changePassword(): void {
+    this.isPasswordOpened = !this.isPasswordOpened;
+  }
 }

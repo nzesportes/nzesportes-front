@@ -2,7 +2,24 @@
   <div class="container-fluid">
     <div class="text-right">
       <div class="header-actions">
-        <a href="#">Entrar</a>
+        <a class="btn-sign-up">Entrar <i class="fas fa-angle-down ml-1"></i>
+          <div class="login">
+            <form>
+              <div class="form-group input-login">
+                <input type="email" class="form-control" placeholder="E-mail">
+                <i class="fas fa-user icon-input"></i>
+              </div>
+              <div class="form-group input-login">
+                <input [type]="!isPasswordOpened ? 'password' : 'text'" class="form-control password" placeholder="Senha">
+                <i class="fas fa-lock icon-input"></i>
+                <button type="button" class="btn btn-input" (click)="changePassword()">
+                  <i [class]="!isPasswordOpened ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                </button>
+              </div>
+              <button type="button" class="btn btn-primary btn-submit">ENTRAR</button>
+            </form>
+          </div>
+        </a>
         <a href="#">Novo Usuário</a>
       </div>
     </div>
