@@ -26,4 +26,10 @@ export class StoreComponent implements OnInit {
       this.navbarService.sidebarState.next(false);
     }
   }
+
+  checkSidebarIsOpen(): void {
+    if (this.isSidebarOpened) {
+      this.navbarService.sidebarState.next(false);
+    }
+  }
 }

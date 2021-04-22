@@ -8,11 +8,16 @@ import {NavBarService} from '../../../service/nav-bar.service';
 })
 export class NavBarComponent implements OnInit {
 
+  isSidebarOpened = false;
+
   constructor(
     private navbarService: NavBarService
   ) { }
 
   ngOnInit(): void {
+    this.navbarService.sidebarState.subscribe(response => {
+      this.isSidebarOpened = response;
+    });
   }
 
   changeStateSidebar(): void {
