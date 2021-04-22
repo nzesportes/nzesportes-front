@@ -6,6 +6,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ClientsModule} from './clients/clients.module';
 import {ProductsModule} from './products/products.module';
 import {DashboardMainComponent} from './dashboard-main/dashboard-main.component';
+import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 
 
 @NgModule({
@@ -24,6 +25,8 @@ import {DashboardMainComponent} from './dashboard-main/dashboard-main.component'
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    SweetAlert2Module.forChild(),
+
   ],
   providers: [
   ]

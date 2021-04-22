@@ -1,4 +1,4 @@
-<div class="d-flex" id="wrapper">
+<div class="d-flex" id="wrapper" style="background-color: whitesmoke">
   <!-- Sidebar -->
   <div class="bg-dark border-dark border-right text-white" id="sidebar-wrapper">
     <div class="sidebar-heading">Nzesportes </div>
@@ -8,6 +8,12 @@
           <a  routerLink="produtos" class="nav-link text-white" routerLinkActive="active">
             <svg class="bi me-2" width="16" height="16"></svg>
             Produtos
+          </a>
+        </li>
+        <li class="nav-item">
+          <a  routerLink="categorias" class="nav-link text-white" routerLinkActive="active">
+            <svg class="bi me-2" width="16" height="16"></svg>
+            Categorias
           </a>
         </li>
         <li>
@@ -43,7 +49,10 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0" id="menu_navbar_top">
           <li class="nav-item " routerLink="produtos" routerLinkActive="active">
-            <a class="nav-link">Produtos <span class="sr-only">(current)</span></a>
+            <a class="nav-link">Produtos</a>
+          </li>
+          <li class="nav-item " routerLink="categorias" routerLinkActive="active">
+            <a class="nav-link">Categorias</a>
           </li>
           <li class="nav-item " routerLink="clientes" routerLinkActive="active">
             <a class="nav-link">Clientes</a>
