@@ -9,6 +9,7 @@ import {DashboardMainComponent} from './dashboard-main/dashboard-main.component'
 import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 import {PromotionsModule} from './promotions/promotions.module';
 import {CategoriesModule} from './categories/categories.module';
+import {UsersModule} from './users/users.module';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import {CategoriesModule} from './categories/categories.module';
     ProductsModule,
     PromotionsModule,
     CategoriesModule,
+    UsersModule,
     CommonModule,
     DashboardRoutingModule,
     CommonModule,
