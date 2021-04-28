@@ -1,0 +1,51 @@
+.container-account-menu {
+  font-size: 14px;
+}
+
+.container-user-name {
+  border-bottom: 1px solid #eaeaea;
+  padding: 20px;
+}
+
+.user-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: #2b2828;
+  vertical-align: middle;
+  margin: 0;
+  line-break: anywhere;
+}
+
+.items-menu-account {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.items-menu-account li {
+  padding: 0 20px;
+  cursor: pointer;
+}
+
+.items-menu-account li:hover {
+  background-color: #e5e5e5;
+}
+
+.items-menu-account a {
+  color: #2b2828;
+  text-decoration: none;
+}
+
+.container-logout {
+  border-top: 1px solid #eaeaea;
+  padding: 0 20px;
+}
+
+.container-logout a {
+  text-decoration: none;
+  color: #2b2828;
+}
+
+.container-logout a:hover {
+  color: #F37135;
+}
