@@ -1,5 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {NavBarService} from '../service/nav-bar.service';
+import {NavBarService} from './services/nav-bar.service';
 
 @Component({
   selector: 'app-store',
