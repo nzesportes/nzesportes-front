@@ -2,8 +2,17 @@
   <div class="container-fluid">
     <div class="text-right">
       <div class="header-actions">
-        <a href="#">Entrar</a>
-        <a href="#">Novo Usuário</a>
+        <a class="btn-sign-up" *ngIf="!isLogged">Entrar <i class="fas fa-angle-down ml-1"></i>
+          <div class="login">
+            <app-login></app-login>
+          </div>
+        </a>
+        <a routerLink="/criar-conta" *ngIf="!isLogged">Novo Usuário</a>
+        <a class="btn-welcome" *ngIf="isLogged">Olá, Rafael <i class="fas fa-angle-down ml-1"></i>
+          <div class="account-menu">
+            <app-account-menu></app-account-menu>
+          </div>
+        </a>
       </div>
     </div>
   </div>

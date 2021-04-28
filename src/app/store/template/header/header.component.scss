@@ -2,7 +2,7 @@
   border-bottom: 1px solid #e5e5e5;
 }
 
-.header-actions a {
+.header-actions > a {
   display: inline-block;
   padding: 0 15px;
   font-size: 13px;
@@ -17,15 +17,49 @@
   -moz-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
+  cursor: pointer;
 }
 
-.header-actions a:hover {
+.header-actions > a:hover {
   color: #F37135;
   background-color: #e5e5e5;
 }
 
-.header-actions a:last-child {
+.header-actions > a:last-child {
   border-right: 1px solid #e5e5e5;
+}
+
+.login, .account-menu {
+  position: absolute;
+  cursor: default;
+  width: 320px;
+  background-color: #fff;
+  color: #979797;
+  top: 40px;
+  right: 10px;
+  z-index: 100;
+  display: none;
+  padding: 25px 20px;
+  border: 1px solid #ededed;
+  box-shadow: 0 0.0625rem 0.5rem 0 rgb(0 0 0 / 25%);
+}
+
+.btn-sign-up:hover .login {
+  display: block;
+}
+
+.btn-welcome {
+  position: relative;
+}
+
+.account-menu {
+  padding: 0;
+  text-align: left;
+  display: block;
+}
+
+.btn-welcome:hover .account-menu {
+  display: block;
 }
 
 @media (min-width: 576px) {
