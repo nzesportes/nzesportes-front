@@ -7,6 +7,8 @@ import {ClientsModule} from './clients/clients.module';
 import {ProductsModule} from './products/products.module';
 import {DashboardMainComponent} from './dashboard-main/dashboard-main.component';
 import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
+import {PromotionsModule} from './promotions/promotions.module';
+import {CategoriesModule} from './categories/categories.module';
 
 
 @NgModule({
@@ -17,6 +19,8 @@ import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
     // modules dash
     ClientsModule,
     ProductsModule,
+    PromotionsModule,
+    CategoriesModule,
     CommonModule,
     DashboardRoutingModule,
     CommonModule,

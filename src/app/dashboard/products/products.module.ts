@@ -6,7 +6,6 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NewProductComponent} from './new-product/new-product.component';
 
 
-
 @NgModule({
   declarations: [
     ProductsListComponent,
