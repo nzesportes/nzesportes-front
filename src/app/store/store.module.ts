@@ -16,6 +16,12 @@ import { OfferComponent } from './template/offer/offer.component';
 import { MenuItemsComponent } from './template/menu-items/menu-items.component';
 import { CartPreviewComponent } from './template/cart-preview/cart-preview.component';
 import {CarouselModule} from 'ngx-owl-carousel-o';
+import { LoginComponent } from './template/login/login.component';
+import { AccountMenuComponent } from './template/account-menu/account-menu.component';
+import { CreateAccountComponent } from './template/create-account/create-account.component';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {BrowserModule} from '@angular/platform-browser';
+import { CartComponent } from './template/cart/cart.component';
 
 
 @NgModule({
@@ -32,12 +38,18 @@ import {CarouselModule} from 'ngx-owl-carousel-o';
     NzStoreComponent,
     OfferComponent,
     MenuItemsComponent,
-    CartPreviewComponent
+    CartPreviewComponent,
+    LoginComponent,
+    AccountMenuComponent,
+    CreateAccountComponent,
+    CartComponent
   ],
   imports: [
     CommonModule,
     StoreRoutingModule,
-    CarouselModule
+    CarouselModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class StoreModule {

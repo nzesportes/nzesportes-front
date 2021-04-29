@@ -41,6 +41,41 @@
   transform: translateX(-240px);
 }
 
+.search-header {
+  color: #F37135;
+  vertical-align: top;
+  margin-right: 15px;
+  position: relative;
+  width: 100%;
+  max-width: 260px;
+  padding: 15px 10px;
+}
+
+.search-header input {
+  padding: 0 20px;
+  border: none;
+  height: 40px;
+  background-color: #e8e8e8;
+  -webkit-border-radius: 40px;
+  -moz-border-radius: 40px;
+  -ms-border-radius: 40px;
+  border-radius: 40px;
+  font-size: 13px;
+  color: #767779;
+}
+
+.search-header button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 15px;
+  color: #000;
+  font-size: 15px;
+  border: none;
+  background-color: transparent;
+  transition: all 0.4s ease;
+}
+
 /*.wrapper.toggled .sidebar-wrapper {
   margin-left: 0;
 }*/
@@ -52,7 +87,9 @@
 
 // Small devices (landscape phones, 576px and up)
 @media (min-width: 576px) {
-
+  .search-header {
+    display: none;
+  }
 }
 
 // Medium devices (tablets, 768px and up)

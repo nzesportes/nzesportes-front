@@ -1,0 +1,96 @@
+<div class="container-fluid container-create-account">
+  <div class="form-create-account">
+    <h1 class="page-title mb-5">Criar Conta</h1>
+    <form class="row" [formGroup]="createAccount" (ngSubmit)="save()">
+        <div class="form-group col-12 col-md-6">
+          <label for="name">Nome *</label>
+          <input type="text" class="form-control" [ngClass]="cssError(createAccount.get('name'))"
+                 id="name" formControlName="name" aria-describedby="field-name">
+          <div id="field-name" class="invalid-feedback">
+            Por favor, insira seu nome.
+          </div>
+        </div>
+        <div class="form-group col-12 col-md-6">
+          <label for="lastname">Sobrenome *</label>
+          <input type="text" class="form-control" [ngClass]="cssError(createAccount.get('lastname'))"
+                 id="lastname" formControlName="lastname" aria-describedby="field-lastname">
+          <div id="field-lastname" class="invalid-feedback">
+            Por favor, insira seu sobrenome.
+          </div>
+        </div>
+        <div class="form-group input-create-account col-12 col-md-12 col-lg-6">
+          <label for="email">E-mail *</label>
+          <input type="email" class="form-control" [ngClass]="cssError(createAccount.get('email'))"
+                 id="email" formControlName="email" aria-describedby="field-email">
+          <div id="field-email" class="invalid-feedback">
+            Por favor, insira seu e-mail.
+          </div>
+          <i class="fas fa-envelope icon-input"></i>
+        </div>
+      <div class="form-group input-create-account password col-12 col-md-6 col-lg-3">
+        <label for="password">Senha *</label>
+        <input type="password" #password class="form-control" [ngClass]="cssError(createAccount.get('password'))"
+               id="password" formControlName="password" aria-describedby="field-password">
+        <div id="field-password" class="invalid-feedback">
+          Por favor, insira uma senha.
+        </div>
+        <i class="fas fa-lock icon-input"></i>
+        <button type="button" class="btn btn-input" (click)="changePassword(password)">
+          <i [class]="password.type == 'password' ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+        </button>
+      </div>
+      <div class="form-group input-create-account password col-12 col-md-6 col-lg-3">
+        <label for="password-repeat">Repetir Senha *</label>
+        <input type="password" #passwordRepeat class="form-control" [ngClass]="cssError(createAccount.get('passwordRepeat'))"
+               id="password-repeat" formControlName="passwordRepeat" aria-describedby="field-passwordRepeat">
+        <div id="field-passwordRepeat" class="invalid-feedback">
+          Por favor, insira uma senha.
+        </div>
+        <i class="fas fa-lock icon-input"></i>
+        <button type="button" class="btn btn-input" (click)="changePassword(passwordRepeat)">
+          <i [class]="passwordRepeat.type == 'password' ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+        </button>
+      </div>
+      <div class="form-group col-12 col-md-6">
+        <label for="cpf">CPF *</label>
+        <input type="text" class="form-control" [ngClass]="cssError(createAccount.get('cpf'))"
+               id="cpf" formControlName="cpf" aria-describedby="field-cpf">
+        <div id="field-cpf" class="invalid-feedback">
+          Por favor, insira seu CPF.
+        </div>
+      </div>
+      <div class="form-group input-create-account col-12 col-md-6">
+        <label for="instagram">Instagram</label>
+        <input type="text" class="form-control" id="instagram" formControlName="instagram">
+        <i class="fas fa-at icon-input"></i>
+      </div>
+      <div class="form-group col-12 col-md-6">
+        <label for="birth-date">Data de Nascimento</label>
+        <input type="date" class="form-control" id="birth-date" formControlName="birthDate">
+      </div>
+      <div class="form-group input-create-account col-12 col-md-6">
+        <label for="phone">Telefone *</label>
+        <input type="text" class="form-control" [ngClass]="cssError(createAccount.get('phone'))"
+               id="phone" formControlName="phone" aria-describedby="field-phone">
+        <div id="field-phone" class="invalid-feedback">
+          Por favor, insira seu telefone.
+        </div>
+        <i class="fas fa-mobile-alt icon-input"></i>
+      </div>
+      <fieldset class="form-group col-12">
+        <legend class="col-form-label col-12 p-0 mb-2">Sexo</legend>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="gender" id="masculino" value="M" formControlName="gender">
+          <label class="form-check-label" for="masculino">Masculino</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="gender" id="feminino" value="F" formControlName="gender">
+          <label class="form-check-label" for="feminino">Feminino</label>
+        </div>
+      </fieldset>
+      <div class="col-12 text-right">
+        <button type="submit" class="btn btn-primary btn-submit" [disabled]="!createAccount.valid">Criar Conta</button>
+      </div>
+    </form>
+  </div>
+</div>
