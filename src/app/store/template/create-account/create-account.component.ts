@@ -72,7 +72,7 @@ export class CreateAccountComponent implements OnInit {
       birthDate: [''],
       phone: ['', Validators.required],
       gender: ['']
-    };
+    });
   }
 
   changePassword(inputPassword: HTMLInputElement): void {
