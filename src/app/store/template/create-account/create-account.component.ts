@@ -1,5 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {CustomerService} from '../../../shared/services/customer.service';
+import {User} from '../../../shared/models/user.model';
+import {Role} from '../../../shared/enums/role.enum';
+import {AuthService} from '../../../shared/services/auth.service';
+import {Customer} from '../../../shared/models/customer.model';
+import {AutheticationRequest} from '../../../shared/models/authetication-request.model';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-create-account',
@@ -11,8 +18,33 @@ export class CreateAccountComponent implements OnInit {
   // @ts-ignore
   createAccount: FormGroup;
 
+  user: User = {
+    id: '',
+    username: '',
+    password: '',
+    role: Role.USER
+  };
+
+  customer: Customer = {
+    id: '',
+    cpf: '',
+    birthDate: new Date(),
+    instagram: '',
+    name: '',
+    lastName: '',
+    phone: '',
+    userId: ''
+  };
+
+  authenticationRequest: AutheticationRequest = {
+    username: '',
+    password: ''
+  };
+
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private customerService: CustomerService,
+    private authService: AuthService
   ) {
 
   }
@@ -21,9 +53,9 @@ export class CreateAccountComponent implements OnInit {
     this.createForm();
   }
 
-  cssError(campo: any): any {
+  cssError(field: any): any {
     return {
-      'is-invalid': campo.invalid && campo.touched
+      'is-invalid': field.invalid && field.touched
     };
   }
 
@@ -51,8 +83,33 @@ export class CreateAccountComponent implements OnInit {
     inputPassword.type = 'password';
   }
 
+  checkPasswords(group: FormGroup): any { // here we have the 'passwords' group
+    const password = group.controls.password.value;
+    const passwordRepeat = group.controls.passwordRepeat.value;
+
+    return password === passwordRepeat ? null : {notSame: true};
+  }
+
   save(): void {
-    console.log(this.createAccount.value);
+    this.authenticationRequest.username = this.createAccount.get('email')?.value;
+    this.authenticationRequest.password = this.createAccount.get('password')?.value;
+
+    this.authService.registerUser(this.authenticationRequest)
+      .pipe(take(1)).subscribe(response => {
+
+        this.customer.cpf = this.createAccount.get('cpf')?.value;
+        this.customer.birthDate = this.createAccount.get('birthDate')?.value;
+        this.customer.instagram = '@' + this.createAccount.get('instagram')?.value;
+        this.customer.name = this.createAccount.get('name')?.value;
+        this.customer.lastName = this.createAccount.get('lastname')?.value;
+        this.customer.phone = this.createAccount.get('phone')?.value;
+        this.customer.userId = response.id;
+
+        this.customerService.create(this.customer)
+          .pipe(take(1)).subscribe(res => {
+            console.log(res);
+          });
+      });
   }
 
 }

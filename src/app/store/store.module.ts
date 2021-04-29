@@ -21,6 +21,7 @@ import { AccountMenuComponent } from './template/account-menu/account-menu.compo
 import { CreateAccountComponent } from './template/create-account/create-account.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserModule} from '@angular/platform-browser';
+import { CartComponent } from './template/cart/cart.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import {BrowserModule} from '@angular/platform-browser';
     CartPreviewComponent,
     LoginComponent,
     AccountMenuComponent,
-    CreateAccountComponent
+    CreateAccountComponent,
+    CartComponent
   ],
   imports: [
     CommonModule,

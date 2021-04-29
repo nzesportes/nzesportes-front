@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import {DashboardModule} from './dashboard/dashboard.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
+import {HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
     AppRoutingModule,
     DashboardModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     SweetAlert2Module.forRoot()
   ],
   providers: [],
