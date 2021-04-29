@@ -1,0 +1,10 @@
+.fundo{
+  background-color: rgba(0, 0, 0, 0.2);
+  min-width: 100vw;
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+  position: absolute;
+  z-index: 1000000;
+  overflow: hidden;
+}
