@@ -72,7 +72,7 @@ export class CreateAccountComponent implements OnInit {
       birthDate: [''],
       phone: ['', Validators.required],
       gender: ['']
-    });
+    };
   }
 
   changePassword(inputPassword: HTMLInputElement): void {
@@ -81,6 +81,13 @@ export class CreateAccountComponent implements OnInit {
       return;
     }
     inputPassword.type = 'password';
+  }
+
+  checkPasswords(group: FormGroup): any { // here we have the 'passwords' group
+    const password = group.controls.password.value;
+    const passwordRepeat = group.controls.passwordRepeat.value;
+
+    return password === passwordRepeat ? null : {notSame: true};
   }
 
   save(): void {
