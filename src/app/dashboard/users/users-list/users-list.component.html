@@ -3,7 +3,7 @@
     <h3>Gerenciar Usuários</h3>
   </div>
   <div>
-    <button type="button" class="btn btn-primary" routerLink="novo-cliente"> + Novo usuário</button>
+    <button type="button" class="btn btn-primary" routerLink="novo-usuario"> + Novo usuário</button>
   </div>
 
 </div>
@@ -12,6 +12,7 @@
     <div class="form-group col-lg-3 col-sm-12 mb-3 mb-lg-0">
       <label for="categorie">Função</label>
       <select class="form-control" id="categorie">
+        <option value="0">Todos</option>
         <option value="1">Admin</option>
         <option value="2">Moderador</option>
         <option value="3">Usuário Comum</option>
@@ -20,8 +21,9 @@
     <div class="form-group col-lg-3 col-sm-12 mb-3 mb-lg-0">
       <label for="filter">Filtrar</label>
       <select class="form-control" id="filter">
-        <option value="1">Em estoque</option>
-        <option value="2">Ativo na loja</option>
+        <option value="0">Todos</option>
+        <option value="1">Masculino</option>
+        <option value="2">Feminino</option>
       </select>
     </div>
     <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
@@ -44,19 +46,23 @@
     <table class="table table-hover">
       <thead>
       <tr>
-        <th scope="col">Código</th>
-        <th scope="col">Nome</th>
-        <th scope="col">Modelo</th>
-        <th scope="col">Preço</th>
-        <th scope="col">Ações</th>
+        <th scope="col" style="width: 25%;">Nome</th>
+        <th scope="col" style="width: 20%">Email</th>
+        <th scope="col" style="width: 15%">CPF</th>
+        <th scope="col" style="width: 15%">Sexo</th>
+        <th scope="col" style="width: 10%">Telefone</th>
+        <th scope="col" style="width: 10%">Dta Nasc.</th>
+        <th scope="col" style="width: 5%">Ações</th>
       </tr>
       </thead>
       <tbody>
-      <tr scope="row" class="row-table" *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10]">
-        <th >{{i}}</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
+      <tr scope="row" class="row-table" *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10]" routerLink="novo-usuario">
+        <th>Victor Hugo do Nascimento</th>
+        <td>teste.teste03@teste.com</td>
+        <td>455.225.225-55</td>
+        <td>{{i % 2 === 0 ? 'Masculino' : 'Feminino'}}</td>
+        <td>(11) 8525-8569</td>
+        <td>16/01/2000</td>
         <td><i class="fas fa-edit text-primary"></i></td>
       </tr>
       </tbody>

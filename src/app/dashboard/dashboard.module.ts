@@ -23,7 +23,7 @@ import {UsersModule} from './users/users.module';
     PromotionsModule,
     CategoriesModule,
     UsersModule,
-    CommonModule,
+    // angular modules
     DashboardRoutingModule,
     CommonModule,
     RouterModule,
