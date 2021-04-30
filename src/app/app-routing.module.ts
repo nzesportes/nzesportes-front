@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import {AuthDashGuard} from './shared/guards/auth-dash-guard';
 
 const routes: Routes = [
   {
@@ -8,6 +9,7 @@ const routes: Routes = [
   },
   {
     path: '',
+    canActivate: [AuthDashGuard],
     loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)
   }
 ];
