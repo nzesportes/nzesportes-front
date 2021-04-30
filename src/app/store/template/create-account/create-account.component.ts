@@ -45,10 +45,8 @@ export class CreateAccountComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private customerService: CustomerService,
-    private authService: AuthService,
     private tokenStorageService: TokenStorageService
   ) {
-
   }
 
   ngOnInit(): void {
@@ -96,12 +94,10 @@ export class CreateAccountComponent implements OnInit {
     this.authenticationRequest.username = this.createAccount.get('email')?.value;
     this.authenticationRequest.password = this.createAccount.get('password')?.value;
 
-    this.authService.registerUser(this.authenticationRequest)
+    this.tokenStorageService.registerUserSession(this.authenticationRequest)
       .pipe(
         take(1)
       ).subscribe(response => {
-      this.tokenStorageService.saveToken(response.token);
-      this.tokenStorageService.saveUser(response);
       this.customer.cpf = this.createAccount.get('cpf')?.value;
       this.customer.birthDate = this.createAccount.get('birthDate')?.value;
       this.customer.instagram = '@' + this.createAccount.get('instagram')?.value;
@@ -114,7 +110,7 @@ export class CreateAccountComponent implements OnInit {
         .pipe(take(1)).subscribe(res => {
         console.log(res);
       }, error => {
-          console.log(error);
+        console.log(error);
       });
     }, error => {
       console.log(error);

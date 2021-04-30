@@ -8,7 +8,10 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {Interceptor} from './shared/guards/interceptor';
-import { LoadingScreenComponent } from './shared/components/loading-screen/loading-screen.component';
+import {LoadingScreenComponent} from './shared/components/loading-screen/loading-screen.component';
+import {AuthGuard} from './shared/guards/auth-guard';
+import {AuthVerifyLogin} from './shared/guards/auth-not-logged-guard';
+import {AuthService} from './shared/services/auth.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,13 @@ import { LoadingScreenComponent } from './shared/components/loading-screen/loadi
     SweetAlert2Module.forRoot()
   ],
   providers: [
-    {provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true}
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: Interceptor,
+      multi: true
+    },
+    AuthGuard,
+    AuthVerifyLogin
   ],
   exports: [
   ],

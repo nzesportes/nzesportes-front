@@ -15,7 +15,6 @@ export class Interceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.url.includes(environment.NZESPORTES_API)) {
-      console.log(req.url)
       if (req.url.includes('?async=true')) {
         this.loader.isLoading.next(true);
         req.url.replace('?async=true', '');
