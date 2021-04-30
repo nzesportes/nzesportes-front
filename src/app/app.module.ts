@@ -12,6 +12,7 @@ import {LoadingScreenComponent} from './shared/components/loading-screen/loading
 import {AuthGuard} from './shared/guards/auth-guard';
 import {AuthVerifyLogin} from './shared/guards/auth-not-logged-guard';
 import {AuthService} from './shared/services/auth.service';
+import {AuthDashGuard} from './shared/guards/auth-dash-guard';
 
 @NgModule({
   declarations: [
@@ -33,10 +34,10 @@ import {AuthService} from './shared/services/auth.service';
       multi: true
     },
     AuthGuard,
-    AuthVerifyLogin
+    AuthVerifyLogin,
+    AuthDashGuard
   ],
-  exports: [
-  ],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
