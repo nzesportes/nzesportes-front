@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {BrandsService} from '../../shared/services/brands.service';
+import {take} from 'rxjs/operators';
+import {Brand} from '../../shared/models/brand.model';
 
 @Component({
   selector: 'app-brands-list',
@@ -7,9 +10,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BrandsListComponent implements OnInit {
 
-  constructor() { }
+  brands: Brand[] = [];
+  page = 0;
+  constructor(
+    private brandsService: BrandsService
+  ) {
+  }
 
   ngOnInit(): void {
+    this.getAll();
   }
+
+  getAll(): void {
+    this.brandsService.getAll(10, this.page)
+      .pipe(take(1))
+      .subscribe(r => {
+        this.brands = r.content;
+        console.log(r);
+      }, error => {
+
+      });
+  }
+
 
 }
