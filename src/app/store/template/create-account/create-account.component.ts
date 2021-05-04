@@ -5,8 +5,9 @@ import {User} from '../../../shared/models/user.model';
 import {Role} from '../../../shared/enums/role.enum';
 import {AuthService} from '../../../shared/services/auth.service';
 import {Customer} from '../../../shared/models/customer.model';
-import {AutheticationRequest} from '../../../shared/models/authetication-request.model';
+import {AuthenticationRequest} from '../../../shared/models/authentication-request.model';
 import {take} from 'rxjs/operators';
+import {TokenStorageService} from '../../../shared/services/token-storage.service';
 
 @Component({
   selector: 'app-create-account',
@@ -36,7 +37,7 @@ export class CreateAccountComponent implements OnInit {
     userId: ''
   };
 
-  authenticationRequest: AutheticationRequest = {
+  authenticationRequest: AuthenticationRequest = {
     username: '',
     password: ''
   };
@@ -44,9 +45,8 @@ export class CreateAccountComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private customerService: CustomerService,
-    private authService: AuthService
+    private tokenStorageService: TokenStorageService
   ) {
-
   }
 
   ngOnInit(): void {
@@ -94,22 +94,27 @@ export class CreateAccountComponent implements OnInit {
     this.authenticationRequest.username = this.createAccount.get('email')?.value;
     this.authenticationRequest.password = this.createAccount.get('password')?.value;
 
-    this.authService.registerUser(this.authenticationRequest)
-      .pipe(take(1)).subscribe(response => {
+    this.tokenStorageService.registerUserSession(this.authenticationRequest)
+      .pipe(
+        take(1)
+      ).subscribe(response => {
+      this.customer.cpf = this.createAccount.get('cpf')?.value;
+      this.customer.birthDate = this.createAccount.get('birthDate')?.value;
+      this.customer.instagram = '@' + this.createAccount.get('instagram')?.value;
+      this.customer.name = this.createAccount.get('name')?.value;
+      this.customer.lastName = this.createAccount.get('lastname')?.value;
+      this.customer.phone = this.createAccount.get('phone')?.value;
+      this.customer.userId = response.id;
 
-        this.customer.cpf = this.createAccount.get('cpf')?.value;
-        this.customer.birthDate = this.createAccount.get('birthDate')?.value;
-        this.customer.instagram = '@' + this.createAccount.get('instagram')?.value;
-        this.customer.name = this.createAccount.get('name')?.value;
-        this.customer.lastName = this.createAccount.get('lastname')?.value;
-        this.customer.phone = this.createAccount.get('phone')?.value;
-        this.customer.userId = response.id;
-
-        this.customerService.create(this.customer)
-          .pipe(take(1)).subscribe(res => {
-            console.log(res);
-          });
+      this.customerService.create(this.customer)
+        .pipe(take(1)).subscribe(res => {
+        console.log(res);
+      }, error => {
+        console.log(error);
       });
+    }, error => {
+      console.log(error);
+    });
   }
 
 }

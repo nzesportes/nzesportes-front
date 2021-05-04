@@ -4,6 +4,7 @@ import {StoreComponent} from './store.component';
 import {HomeContentComponent} from './template/home-content/home-content.component';
 import {CreateAccountComponent} from './template/create-account/create-account.component';
 import {CartComponent} from './template/cart/cart.component';
+import {AuthVerifyLogin} from '../shared/guards/auth-not-logged-guard';
 
 const routes: Routes = [
   {
@@ -16,7 +17,8 @@ const routes: Routes = [
       },
       {
         path: 'criar-conta',
-        component: CreateAccountComponent
+        component: CreateAccountComponent,
+        canActivate: [AuthVerifyLogin]
       },
       {
         path: 'carrinho',

@@ -34,6 +34,80 @@
     </div>
   </div>
 
+  <div class="card mb-3">
+    <div class="card-body">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="" id="isShowOnStore">
+        <label class="form-check-label" for="isShowOnStore">
+          Disponível na loja
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3">
+    <div class="col-12 mb-3">
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-9 col-sm-12">
+              <h5 class="card-title">Tipos</h5>
+            </div>
+            <div class="col-lg-3 col-sm-12 ">
+              <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#typeCategorie"> Adicionar Tipos</button>
+            </div>
+          </div>
+
+          <hr>
+          <div class="card mb-3">
+            <div class="table-responsive ">
+
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th scope="col" style="width: 15%">Código</th>
+                  <th scope="col" style="width: 50%">Nome</th>
+                  <th scope="col" style="width: 10%">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="row-table" *ngFor="let i of ['Masculino', 'Feminino', 'Tênis', 'Acessórios']" routerLink="/painel/produtos/produto/{{i}}">
+                  <th scope="row">####</th>
+                  <td>{{i}}</td>
+                  <td>
+                    <i class="fas fa-edit actions-button text-primary"></i>
+                    <i class="fas fa-trash actions-button text-danger" [swal]="swal1"></i>
+                    <swal
+                      [swalOptions]="{ confirmButtonText: 'Sim', cancelButtonText: 'Cancelar' }"
+                      [showCancelButton]="true"
+                      (confirm)="removeProduct(i)"
+                      #swal1 title="Tem certeza que deseja remover esse produto da categoria?"
+                      icon="question">
+                    </swal>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <nav aria-label="Page navigation example" >
+            <ul class="pagination justify-content-end  mr-3 ml-3">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="row mt-3">
     <div class="col-12 mb-3">
       <div class="card mb-3">
@@ -85,6 +159,20 @@
               </table>
             </div>
           </div>
+
+          <nav aria-label="Page navigation example" >
+            <ul class="pagination justify-content-end  mr-3 ml-3">
+              <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
@@ -100,6 +188,48 @@
     </div>
   </div>
 </form>
+
+
+<div class="modal fade" id="typeCategorie" tabindex="-1" aria-labelledby="typeCategorielLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="typeCategorie">
+          Escolha o tipos de categoria
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="height: 500px">
+        <div class="row item-product mb-3" *ngFor="let i of [0,1,2,3,4,5,6,7,9]">
+          <div class="col-3">
+          </div>
+          <div class="col-5 mt-lg-2 mt-sm-1">
+            <div class="row">
+              <div class="col-12">
+                Tipo {{i}}
+              </div>
+              <div class="col-12">
+                Código: ####
+              </div>
+            </div>
+          </div>
+          <div class="col-0 mt-3 ml-5">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="typeCategorie">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Adicionar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
