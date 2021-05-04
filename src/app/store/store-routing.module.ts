@@ -22,6 +22,10 @@ const routes: Routes = [
         path: 'carrinho',
         component: CartComponent
       },
+      {
+        path: 'minha-conta',
+        loadChildren: () => import('./template/account-details/account-details.module').then(m => m.AccountDetailsModule)
+      },
       { path: '', redirectTo: '', pathMatch: 'full' }
     ]
   }

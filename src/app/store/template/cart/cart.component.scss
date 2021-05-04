@@ -65,6 +65,8 @@
 .items-description {
   font-weight: 400;
   color: #2b2828;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .items-remove {
@@ -91,13 +93,108 @@
 .items-remove i {
   position: absolute;
   top: 5px;
-  left: 8px;
+  left: 6px;
   font-size: 20px;
   color: #b1b1b1;
 }
 
 .quantity {
   max-width: 160px;
+}
+
+.actions-cart {
+  text-transform: uppercase;
+}
+
+.btn-continue-shopping {
+  position: relative;
+  display: inline-block;
+  font-weight: 500;
+  padding: 15px 30px;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  -webkit-border-radius: 60px;
+  -moz-border-radius: 60px;
+  -ms-border-radius: 60px;
+  border-radius: 60px;
+  line-height: 20px;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+  background-color: #e5e5e5;
+  border: none;
+  color: #000;
+}
+
+.btn-continue-shopping:hover {
+  color: #fff;
+  background-color: #F37135;
+}
+
+.total-price {
+  font-size: 16px;
+  color: #2b2828;
+}
+
+.total-price span {
+  font-size: 24px;
+  color: #F37135;
+}
+
+.btn-finish-shopping {
+  position: relative;
+  display: inline-block;
+  font-weight: 500;
+  padding: 15px 30px;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  -webkit-border-radius: 60px;
+  -moz-border-radius: 60px;
+  -ms-border-radius: 60px;
+  border-radius: 60px;
+  line-height: 25px;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+  background-color: #F37135;
+  border: 7px solid #ededed;
+  color: #fff;
+}
+
+.btn-finish-shopping:hover {
+  opacity: 0.90;
+  color: #ededed;
+}
+
+.promocode {
+  margin-bottom: 20px;
+  height: 45px;
+  border-color: #d9d9d9;
+  background-color: #fff;
+  -webkit-border-radius: 45px;
+  -moz-border-radius: 45px;
+  -ms-border-radius: 45px;
+  border-radius: 45px;
+}
+
+.empty-cart h3 {
+  text-transform: uppercase;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.empty-cart p {
+  font-size: 16px;
+}
+
+.empty-cart a {
+  font-size: 18px;
+}
+
+.empty-cart a i {
+  font-size: 14px;
 }
 
 @media (min-width: 576px) {
@@ -111,7 +208,9 @@
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
-
+  .items-actions-cart {
+    max-width: 320px;
+  }
 }
 
 // Extra large devices (large desktops, 1200px and up)
