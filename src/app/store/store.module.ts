@@ -23,6 +23,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { CartComponent } from './template/cart/cart.component';
 import { AccountDetailsComponent } from './template/account-details/account-details.component';
 import {AccountDetailsModule} from './template/account-details/account-details.module';
+import {AuthGuard} from '../shared/guards/auth-guard';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,9 @@ import {AccountDetailsModule} from './template/account-details/account-details.m
     CarouselModule,
     FormsModule,
     ReactiveFormsModule
+  ],
+  providers: [
+    AuthGuard
   ]
 })
 export class StoreModule {

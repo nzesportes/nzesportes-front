@@ -9,7 +9,7 @@ import {Observable} from 'rxjs';
 })
 export class CustomerService {
 
-  apiURL: string = environment.NZESPORTES_API + 'profiles';
+  apiURL: string = environment.NZESPORTES_API + 'customers';
 
 
   constructor(
@@ -22,6 +22,10 @@ export class CustomerService {
 
   getById(uuid: string): Observable<Customer> {
     return this.http.get<Customer>(`${this.apiURL}/${uuid}`);
+  }
+
+  getByUserId(uuid: string): Observable<Customer> {
+    return this.http.get<Customer>(`${this.apiURL}/users/${uuid}`);
   }
 
   // TODO PAGEABLE

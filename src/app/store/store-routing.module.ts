@@ -1,10 +1,11 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {StoreComponent} from './store.component';
 import {HomeContentComponent} from './template/home-content/home-content.component';
 import {CreateAccountComponent} from './template/create-account/create-account.component';
 import {CartComponent} from './template/cart/cart.component';
 import {AuthVerifyLogin} from '../shared/guards/auth-not-logged-guard';
+import {AuthGuard} from '../shared/guards/auth-guard';
 
 const routes: Routes = [
   {
@@ -26,9 +27,10 @@ const routes: Routes = [
       },
       {
         path: 'minha-conta',
+        canActivate: [AuthGuard],
         loadChildren: () => import('./template/account-details/account-details.module').then(m => m.AccountDetailsModule)
       },
-      { path: '', redirectTo: '', pathMatch: 'full' }
+      {path: '', redirectTo: '', pathMatch: 'full'}
     ]
   }
 ];
@@ -37,4 +39,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class StoreRoutingModule { }
+export class StoreRoutingModule {
+}

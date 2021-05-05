@@ -25,4 +25,7 @@ export class AuthService {
     return this.http.post<AuthenticationResponse>(`${this.apiURL}/refresh-token?async=true`, null);
   }
 
+  authenticateUser(autheticationRequest: AuthenticationRequest): Observable<AuthenticationResponse> {
+    return this.http.post<AuthenticationResponse>(`${this.apiURL}?async=true`, autheticationRequest);
+  }
 }
