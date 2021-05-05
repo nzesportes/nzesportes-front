@@ -30,6 +30,7 @@
     "jquery": "^3.6.0",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.1",
+    "ngx-mask": "^11.1.5",
     "ngx-owl-carousel-o": "^5.0.0",
     "rxjs": "~6.6.0",
     "sweetalert2": "^10.16.5",
