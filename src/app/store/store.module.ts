@@ -20,9 +20,10 @@ import { LoginComponent } from './template/login/login.component';
 import { AccountMenuComponent } from './template/account-menu/account-menu.component';
 import { CreateAccountComponent } from './template/create-account/create-account.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {BrowserModule} from '@angular/platform-browser';
 import { CartComponent } from './template/cart/cart.component';
-
+import { AccountDetailsComponent } from './template/account-details/account-details.component';
+import {AccountDetailsModule} from './template/account-details/account-details.module';
+import {AuthGuard} from '../shared/guards/auth-guard';
 
 @NgModule({
   declarations: [
@@ -42,14 +43,19 @@ import { CartComponent } from './template/cart/cart.component';
     LoginComponent,
     AccountMenuComponent,
     CreateAccountComponent,
-    CartComponent
+    CartComponent,
+    AccountDetailsComponent
   ],
   imports: [
     CommonModule,
     StoreRoutingModule,
+    AccountDetailsModule,
     CarouselModule,
     FormsModule,
     ReactiveFormsModule
+  ],
+  providers: [
+    AuthGuard
   ]
 })
 export class StoreModule {

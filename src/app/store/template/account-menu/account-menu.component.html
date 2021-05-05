@@ -3,12 +3,12 @@
     <h3 class="user-name">Rafael Peinado da Silva</h3>
   </div>
   <ul class="items-menu-account">
-    <li><a href="#">Meus Pedidos</a></li>
-    <li><a href="#">Meus Dados</a></li>
-    <li><a href="#">Endereços</a></li>
-    <li><a href="#">Favoritos</a></li>
+    <li routerLink="/minha-conta/meus-pedidos" routerLinkActive="active-item-menu"><a>Meus Pedidos</a></li>
+    <li routerLink="/minha-conta/meus-dados" routerLinkActive="active-item-menu"><a>Meus Dados</a></li>
+    <li routerLink="/minha-conta/enderecos" routerLinkActive="active-item-menu"><a>Endereços</a></li>
+    <li routerLink="/minha-conta/favoritos" routerLinkActive="active-item-menu"><a>Favoritos</a></li>
   </ul>
-  <div class="container-logout">
+  <div class="container-logout" (click)="logout()">
     <a href="#">Sair <i class="fas fa-sign-out-alt ml-1"></i></a>
   </div>
 </div>
