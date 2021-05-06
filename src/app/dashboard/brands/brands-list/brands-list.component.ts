@@ -41,11 +41,13 @@ export class BrandsListComponent implements OnInit {
   getPageRange(): void {
     // @ts-ignore
     this.pages = Math.ceil(this.content?.totalElements / 10);
+
     this.pageRange = {
       first: this.page > 2 ? this.page - 3 : 0,
       last: this.page > 2 && this.pages > this.page + 3 ? this.page + 3 :
-        this.page < 3 ? 5 : this.page === this.pages ?
-          this.pages : this.page + (this.pages - this.page)
+        this.page < 3 && this.pages >= 5 ? 5 :
+          this.page === this.pages || this.pages < 5 ?
+            this.pages : this.page + (this.pages - this.page)
     };
   }
 

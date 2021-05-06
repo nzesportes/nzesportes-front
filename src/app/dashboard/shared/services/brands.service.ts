@@ -9,7 +9,7 @@ import {BrandPage} from '../models/brand-page.model';
   providedIn: 'root'
 })
 export class BrandsService {
-  api: string = environment.NZESPORTES_API + 'products/brands';
+  api: string = environment.NZESPORTES_API + 'products/brands/';
 
   constructor(
     private http: HttpClient
@@ -20,11 +20,18 @@ export class BrandsService {
     return this.http.post<Brand>(this.api + '?async=true', brand);
   }
 
-  getAll(size: number, page: number): Observable<BrandPage>{
+  getAll(size: number, page: number): Observable<BrandPage> {
     const params = new HttpParams()
       .set('async', 'true')
       .set('page', page.toString())
       .set('size', size.toString());
     return this.http.get<BrandPage>(this.api, {params});
+  }
+
+  getById(id: string): Observable<Brand> {
+    return this.http.get<Brand>(this.api + id + '?async=true');
+  }
+  update(brand: Brand): Observable<Brand> {
+    return this.http.put<Brand>(this.api + brand.id + '?async=true', brand);
   }
 }

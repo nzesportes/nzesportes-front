@@ -25,10 +25,10 @@ export class Interceptor implements HttpInterceptor {
       });
 
       if (req.urlWithParams.includes('?async=true')) {
+        this.loader.isLoading.next(true);
         request = request.clone({
           params: request.params.delete('async')
         });
-        this.loader.isLoading.next(true);
       }
       return next.handle(request).pipe(
         tap((ev: HttpEvent<any>) => {

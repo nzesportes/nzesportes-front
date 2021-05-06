@@ -12,6 +12,10 @@ const routes: Routes = [
   {
     path: 'nova-marca',
     component: BrandsNewComponent
+  },
+  {
+    path: 'marca/:id',
+    component: BrandsNewComponent
   }
 ];
 

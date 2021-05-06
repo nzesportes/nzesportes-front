@@ -36,7 +36,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr scope="row" class="row-table" *ngFor="let b of brands" routerLink="novo-produto">
+      <tr scope="row" class="row-table" *ngFor="let b of brands" routerLink="marca/{{b.id}}">
         <td>{{b.name}}</td>
         <td><i class="fas fa-edit text-primary"></i></td>
       </tr>
@@ -49,15 +49,15 @@
 <nav aria-label="Page navigation example" *ngIf="content">
   <ul class="pagination justify-content-end mr-3 ml-3">
     <li class="page-item" [ngClass]="{'disabled': page === 0}">
-      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+      <a class="page-link" tabindex="-1" aria-disabled="true" (click)="updateIndex(this.page-1)">Previous</a>
     </li>
     <li class="page-item" [ngClass]="{'active': i == page}"
         *ngFor="let i of this.getRange(); let in = index"
     >
       <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
     </li>
-    <li class="page-item">
-      <a class="page-link" [ngClass]="{'disabled': page === this.pages }">Next</a>
+    <li class="page-item" [ngClass]="{'disabled': (page + 1) === this.pages }">
+      <a class="page-link" (click)="updateIndex(this.page + 1)">Next</a>
     </li>
   </ul>
 </nav>
