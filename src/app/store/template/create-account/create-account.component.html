@@ -68,8 +68,10 @@
                id="cpf" formControlName="cpf" aria-describedby="field-cpf"
                [showMaskTyped]="true"
                mask="000.000.000-00">
+        {{ validateFields.cpf.errors | json }}
         <div id="field-cpf" class="invalid-feedback">
-          Por favor, insira seu CPF.
+          <span *ngIf="validateFields.cpf?.errors?.required || validateFields.cpf?.errors?.mask">Por favor, insira seu CPF.</span>
+          <span *ngIf="validateFields.cpf?.errors?.validCpf">Por favor, insira um CPF válido.</span>
         </div>
       </div>
       <div class="form-group input-create-account col-12 col-md-6">

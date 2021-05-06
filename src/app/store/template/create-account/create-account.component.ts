@@ -9,6 +9,8 @@ import {AuthenticationRequest} from '../../../shared/models/authentication-reque
 import {take} from 'rxjs/operators';
 import {TokenStorageService} from '../../../shared/services/token-storage.service';
 import {Router} from '@angular/router';
+import { cpf } from 'cpf-cnpj-validator';
+
 
 @Component({
   selector: 'app-create-account',
@@ -76,7 +78,8 @@ export class CreateAccountComponent implements OnInit {
         phone: ['', Validators.required],
         gender: ['']
       },
-      {validator: this.checkPasswords('password', 'passwordRepeat')}
+      {validator: [this.checkPasswords('password', 'passwordRepeat'),
+        this.checkCpf('cpf')]}
     );
   }
 
@@ -107,6 +110,24 @@ export class CreateAccountComponent implements OnInit {
         matchingControl.setErrors({mustMatch: true});
       } else {
         matchingControl.setErrors(null);
+      }
+    };
+  }
+
+  private checkCpf(controlName: string): Validators {
+    return (formGroup: FormGroup) => {
+      const control = formGroup.controls[controlName];
+
+      if (control.errors && !control.errors.validCpf) {
+        // return if another validator has already found an error on the matchingControl
+        return;
+      }
+
+      // set error on matchingControl if validation fails
+      if (!cpf.isValid(control.value)) {
+        control.setErrors({validCpf: true});
+      } else {
+        control.setErrors(null);
       }
     };
   }
