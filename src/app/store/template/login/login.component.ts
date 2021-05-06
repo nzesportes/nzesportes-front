@@ -46,6 +46,10 @@ export class LoginComponent implements OnInit {
     inputPassword.type = 'password';
   }
 
+  get validateFields(): any {
+    return this.formLogin.controls;
+  }
+
   singIn(): void {
     this.authenticationRequest.username = this.formLogin.get('email')?.value;
     this.authenticationRequest.password = this.formLogin.get('password')?.value;
