@@ -22,9 +22,10 @@ export class BrandsService {
 
   getAll(size: number, page: number): Observable<BrandPage>{
     const params = new HttpParams()
+      .set('async', 'true')
       .set('page', page.toString())
-      .set('size', size.toString())
-      .set('async', 'true');
+      .set('size', size.toString());
+
     return this.http.get<BrandPage>(this.api, {params});
   }
 }
