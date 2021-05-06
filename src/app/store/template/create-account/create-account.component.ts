@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CustomerService} from '../../../shared/services/customer.service';
 import {User} from '../../../shared/models/user.model';
 import {Role} from '../../../shared/enums/role.enum';
@@ -9,12 +9,15 @@ import {AuthenticationRequest} from '../../../shared/models/authentication-reque
 import {take} from 'rxjs/operators';
 import {TokenStorageService} from '../../../shared/services/token-storage.service';
 import {Router} from '@angular/router';
+import { cpf } from 'cpf-cnpj-validator';
+
 
 @Component({
   selector: 'app-create-account',
   templateUrl: './create-account.component.html',
   styleUrls: ['./create-account.component.scss']
 })
+
 export class CreateAccountComponent implements OnInit {
 
   // @ts-ignore
@@ -64,17 +67,24 @@ export class CreateAccountComponent implements OnInit {
 
   private createForm(): void {
     this.createAccount = this.formBuilder.group({
-      name: ['', Validators.required],
-      lastname: ['', Validators.required],
-      email: ['', [Validators.email, Validators.required]],
-      password: ['', Validators.required],
-      passwordRepeat: ['', Validators.required],
-      cpf: ['', Validators.required],
-      instagram: [''],
-      birthDate: [''],
-      phone: ['', Validators.required],
-      gender: ['']
-    });
+        name: ['', Validators.required],
+        lastname: ['', Validators.required],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        passwordRepeat: ['', Validators.required],
+        cpf: ['', Validators.required],
+        instagram: [''],
+        birthDate: [''],
+        phone: ['', Validators.required],
+        gender: ['']
+      },
+      {validator: [this.checkPasswords('password', 'passwordRepeat'),
+        this.checkCpf('cpf')]}
+    );
+  }
+
+  get validateFields(): any {
+    return this.createAccount.controls;
   }
 
   changePassword(inputPassword: HTMLInputElement): void {
@@ -85,11 +95,41 @@ export class CreateAccountComponent implements OnInit {
     inputPassword.type = 'password';
   }
 
-  checkPasswords(group: FormGroup): any { // here we have the 'passwords' group
-    const password = group.controls.password.value;
-    const passwordRepeat = group.controls.passwordRepeat.value;
+  private checkPasswords(controlName: string, matchingControlName: string): Validators {
+    return (formGroup: FormGroup) => {
+      const control = formGroup.controls[controlName];
+      const matchingControl = formGroup.controls[matchingControlName];
 
-    return password === passwordRepeat ? null : {notSame: true};
+      if (matchingControl.errors && !matchingControl.errors.mustMatch) {
+        // return if another validator has already found an error on the matchingControl
+        return;
+      }
+
+      // set error on matchingControl if validation fails
+      if (control.value !== matchingControl.value) {
+        matchingControl.setErrors({mustMatch: true});
+      } else {
+        matchingControl.setErrors(null);
+      }
+    };
+  }
+
+  private checkCpf(controlName: string): Validators {
+    return (formGroup: FormGroup) => {
+      const control = formGroup.controls[controlName];
+
+      if (control.errors && !control.errors.validCpf) {
+        // return if another validator has already found an error on the matchingControl
+        return;
+      }
+
+      // set error on matchingControl if validation fails
+      if (!cpf.isValid(control.value)) {
+        control.setErrors({validCpf: true});
+      } else {
+        control.setErrors(null);
+      }
+    };
   }
 
   save(): void {
@@ -110,7 +150,7 @@ export class CreateAccountComponent implements OnInit {
 
       this.customerService.create(this.customer)
         .pipe(take(1)).subscribe(() => {
-          window.location.reload();
+        window.location.reload();
       }, error => {
         console.log(error);
       });
@@ -118,5 +158,4 @@ export class CreateAccountComponent implements OnInit {
       console.log(error);
     });
   }
-
 }
