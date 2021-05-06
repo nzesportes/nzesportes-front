@@ -23,7 +23,7 @@ export class BrandsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getAllBrands(5, this.page);
+    this.getAllBrands(10, this.page);
   }
 
   getAllBrands(size: number, page: number): void {
@@ -33,26 +33,19 @@ export class BrandsListComponent implements OnInit {
         this.brands = r.content;
         this.content = r;
         this.getPageRange();
-      }, error => {
+      }, () => {
 
       });
   }
 
-  getArrayFromNumber(totalitems: number): any[] {
-    console.log(Array(Math.ceil(totalitems / 5)));
-    return new Array(Math.ceil(totalitems / 5));
-  }
-
-  getTotalIndex(totalitems: number): number {
-    return Math.ceil(totalitems / 5);
-  }
-
   getPageRange(): void {
     // @ts-ignore
-    this.pages = Math.ceil(this.content?.totalElements / 5);
+    this.pages = Math.ceil(this.content?.totalElements / 10);
     this.pageRange = {
       first: this.page > 2 ? this.page - 3 : 0,
-      last: this.page > 2 && this.pages > this.page + 3 ? this.page + 3 : this.page < 3 ? 5 : this.page === this.pages ? this.pages : this.page + (this.pages - this.page)
+      last: this.page > 2 && this.pages > this.page + 3 ? this.page + 3 :
+        this.page < 3 ? 5 : this.page === this.pages ?
+          this.pages : this.page + (this.pages - this.page)
     };
   }
 
@@ -66,8 +59,7 @@ export class BrandsListComponent implements OnInit {
 
 
   updateIndex(index: number): void {
-    console.log(index);
-    this.getAllBrands(5, index);
+    this.getAllBrands(10, index);
     this.page = index;
   }
 

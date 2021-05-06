@@ -25,7 +25,6 @@ export class BrandsService {
       .set('async', 'true')
       .set('page', page.toString())
       .set('size', size.toString());
-
     return this.http.get<BrandPage>(this.api, {params});
   }
 }

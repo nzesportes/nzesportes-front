@@ -12,7 +12,8 @@
     <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
       <label for="name">Pesquisa</label>
       <div class="input-group mb-3">
-        <input type="text" class="form-control" id="name" placeholder="Camiseta Leblon James" aria-label="Camiseta Leblon James"
+        <input type="text" class="form-control" id="name" placeholder="Camiseta Leblon James"
+               aria-label="Camiseta Leblon James"
                aria-describedby="basic-addon2">
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
@@ -28,9 +29,9 @@
 
     <table class="table table-hover">
       <thead>
-      <tr >
-        <th scope="col" >Nome</th>
-        <th scope="col">Ações</th>
+      <tr>
+        <th scope="col" style="width: 70%">Nome</th>
+        <th scope="col" style="width: 30%">Ações</th>
 
       </tr>
       </thead>
@@ -46,17 +47,17 @@
 
 
 <nav aria-label="Page navigation example" *ngIf="content">
-  <ul class="pagination justify-content-end">
-    <li class="page-item" [ngClass]="{'disabled': page == 0}">
+  <ul class="pagination justify-content-end mr-3 ml-3">
+    <li class="page-item" [ngClass]="{'disabled': page === 0}">
       <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
     </li>
     <li class="page-item" [ngClass]="{'active': i == page}"
         *ngFor="let i of this.getRange(); let in = index"
-      >
-      <a class="page-link"  (click)="updateIndex(i)">{{i+1}}</a>
+    >
+      <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
     </li>
-    <li class="page-item" >
-      <a class="page-link" [ngClass]="{'disabled': page == getTotalIndex(content.totalElements)}">Next</a>
+    <li class="page-item">
+      <a class="page-link" [ngClass]="{'disabled': page === this.pages }">Next</a>
     </li>
   </ul>
 </nav>
