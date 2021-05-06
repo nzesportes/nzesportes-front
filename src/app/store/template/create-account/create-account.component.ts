@@ -8,6 +8,7 @@ import {Customer} from '../../../shared/models/customer.model';
 import {AuthenticationRequest} from '../../../shared/models/authentication-request.model';
 import {take} from 'rxjs/operators';
 import {TokenStorageService} from '../../../shared/services/token-storage.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-account',
@@ -45,7 +46,8 @@ export class CreateAccountComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private customerService: CustomerService,
-    private tokenStorageService: TokenStorageService
+    private tokenStorageService: TokenStorageService,
+    private router: Router
   ) {
   }
 
@@ -107,8 +109,8 @@ export class CreateAccountComponent implements OnInit {
       this.customer.userId = response.id;
 
       this.customerService.create(this.customer)
-        .pipe(take(1)).subscribe(res => {
-        console.log(res);
+        .pipe(take(1)).subscribe(() => {
+          window.location.reload();
       }, error => {
         console.log(error);
       });

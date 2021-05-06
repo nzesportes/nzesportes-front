@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CartComponent implements OnInit {
 
+  emptyCart = false;
   teste = 0;
 
   itemsCart = [
@@ -44,5 +45,13 @@ export class CartComponent implements OnInit {
 
   minusItem(qtde: number): void {
     qtde--;
+  }
+
+  calculateTotal(): number {
+    let total = 0;
+    this.itemsCart.forEach(item => {
+      total += (item.qtde * item.price);
+    });
+    return total;
   }
 }

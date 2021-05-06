@@ -56,6 +56,16 @@ export class TokenStorageService {
       );
   }
 
+  authenticateUserSession(authenticationRequest: AuthenticationRequest): Observable<AuthenticationResponse> {
+    return this.authService.authenticateUser(authenticationRequest)
+      .pipe(
+        tap(response => {
+          this.setSession(response);
+          return response;
+        })
+      );
+  }
+
   refreshToken(): any {
     if (moment().isBetween(this.getExpiration().subtract(1, 'days'), this.getExpiration())) {
       return this.authService.refreshToken()
