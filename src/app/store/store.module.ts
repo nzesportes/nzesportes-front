@@ -24,6 +24,7 @@ import { CartComponent } from './template/cart/cart.component';
 import { AccountDetailsComponent } from './template/account-details/account-details.component';
 import {AccountDetailsModule} from './template/account-details/account-details.module';
 import {AuthGuard} from '../shared/guards/auth-guard';
+import {NgxMaskModule} from 'ngx-mask';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import {AuthGuard} from '../shared/guards/auth-guard';
     AccountDetailsModule,
     CarouselModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxMaskModule.forRoot()
   ],
   providers: [
     AuthGuard

@@ -35,7 +35,6 @@ export class HeaderComponent implements OnInit {
         .pipe(take(1))
         .subscribe(response => {
           this.customer = response;
-          console.log(response);
         }, error => {
           this.customer = undefined;
           console.log(error);
