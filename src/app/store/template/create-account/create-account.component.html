@@ -7,7 +7,7 @@
           <input type="text" class="form-control"
                  [ngClass]="{ 'is-invalid': validateFields.name.errors && validateFields.name.touched }"
                  id="name" formControlName="name" aria-describedby="field-name">
-          <div id="field-name" class="invalid-feedback" *ngIf="validateFields.name.errors.required">
+          <div id="field-name" class="invalid-feedback" *ngIf="validateFields.name?.errors?.required">
             Por favor, insira seu nome.
           </div>
         </div>
@@ -16,7 +16,7 @@
           <input type="text" class="form-control"
                  [ngClass]="{ 'is-invalid': validateFields.lastname.errors && validateFields.lastname.touched }"
                  id="lastname" formControlName="lastname" aria-describedby="field-lastname">
-          <div id="field-lastname" class="invalid-feedback" *ngIf="validateFields.lastname.errors.required">
+          <div id="field-lastname" class="invalid-feedback" *ngIf="validateFields.lastname?.errors?.required">
             Por favor, insira seu sobrenome.
           </div>
         </div>
@@ -26,8 +26,8 @@
                  [ngClass]="{ 'is-invalid': validateFields.email.errors && validateFields.email.touched }"
                  id="email" formControlName="email" aria-describedby="field-email">
           <div id="field-email" class="invalid-feedback">
-            <span *ngIf="validateFields.email.errors.required">Por favor, insira seu e-mail.</span>
-            <span *ngIf="validateFields.email.errors.email">Por favor, insira um e-mail válido</span>
+            <span *ngIf="validateFields.email?.errors?.required">Por favor, insira seu e-mail.</span>
+            <span *ngIf="validateFields.email?.errors?.email">Por favor, insira um e-mail válido</span>
           </div>
           <i class="fas fa-envelope icon-input"></i>
         </div>
@@ -86,7 +86,7 @@
         <input type="text" class="form-control" [ngClass]="cssError(createAccount.get('phone'))"
                id="phone" formControlName="phone" aria-describedby="field-phone"
                [showMaskTyped]="true"
-               mask="(00) 0000-00009">
+               mask="(00) 00000-0000 || (00) 0000-0000">
         <div id="field-phone" class="invalid-feedback">
           <span *ngIf="validateFields.phone?.errors?.required">Por favor, insira seu telefone.</span>
           <span *ngIf="validateFields.phone?.errors?.mask?.requiredMask">Por favor, insira um telefone válido.</span>

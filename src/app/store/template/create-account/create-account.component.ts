@@ -137,5 +137,4 @@ export class CreateAccountComponent implements OnInit {
       console.log(error);
     });
   }
-
 }
