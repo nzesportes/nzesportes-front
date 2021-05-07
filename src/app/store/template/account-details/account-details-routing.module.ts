@@ -6,6 +6,7 @@ import {AccountDetailsComponent} from './account-details.component';
 import {MyOrdersComponent} from './my-orders/my-orders.component';
 import {MyAddressesComponent} from './my-addresses/my-addresses.component';
 import {MyFavoritesComponent} from './my-favorites/my-favorites.component';
+import {AuthGuard} from '../../../shared/guards/auth-guard';
 
 const routes: Routes = [
   {
@@ -21,12 +22,13 @@ const routes: Routes = [
         component: MyOrdersComponent
       },
       {
-        path: 'enderecos',
-        component: MyAddressesComponent
-      },
-      {
         path: 'favoritos',
         component: MyFavoritesComponent
+      },
+      {
+        path: 'enderecos',
+        canActivate: [AuthGuard],
+        loadChildren: () => import('./my-addresses/my-addresses.module').then(m => m.MyAddressesModule)
       },
       { path: '', redirectTo: 'meus-dados', pathMatch: 'full' }
     ]

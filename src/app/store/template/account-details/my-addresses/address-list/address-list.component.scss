@@ -1,0 +1,67 @@
+.page-title {
+  font-weight: 700;
+  font-size: 22px;
+  color: #2b2828;
+  margin-bottom: 22px;
+  text-transform: uppercase;
+}
+
+.container-card {
+  border-radius: 0;
+  text-transform: uppercase;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.container-card h5 {
+  font-size: 16px;
+}
+
+.container-card p {
+  font-size: 14px;
+  color: #B4B4B4;
+}
+
+.btn-add-address {
+  width: 100%;
+  border-radius: 0;
+  background-color: #F37135;
+  border: #F37135;
+  font-size: 14px;
+  margin-top: 10px;
+  font-weight: 500;
+  padding: 10px 6px;
+  text-transform: uppercase;
+  max-width: 380px;
+}
+
+.btn-add-address:hover {
+  opacity: 0.8;
+}
+
+.card-body {
+  min-height: 180px;
+}
+
+
+@media (min-width: 576px) {
+
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .container-card {
+    max-width: none;
+  }
+}
+
