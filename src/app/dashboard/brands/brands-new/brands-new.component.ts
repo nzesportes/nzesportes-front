@@ -27,11 +27,10 @@ export class BrandsNewComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
-    if (this.router.url.includes('marca')) {
+    if (this.router.url.includes('marcas/marca')) {
       this.route.params.pipe(
         map(p => p.id)
       ).subscribe(id => {
-        console.log(id);
         this.brandService.getById(id)
           .pipe(take(1))
           .subscribe(b => {
@@ -59,7 +58,6 @@ export class BrandsNewComponent implements OnInit {
 
   save(): void {
     if (this.brand?.id) {
-      console.log(this.formBrand.value)
       this.brandService.update(this.formBrand.value)
         .pipe(take(1))
         .subscribe(r => {

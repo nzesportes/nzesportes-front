@@ -32,6 +32,6 @@ export class BrandsService {
     return this.http.get<Brand>(this.api + id + '?async=true');
   }
   update(brand: Brand): Observable<Brand> {
-    return this.http.put<Brand>(this.api + brand.id + '?async=true', brand);
+    return this.http.put<Brand>(this.api + '?async=true', brand);
   }
 }
