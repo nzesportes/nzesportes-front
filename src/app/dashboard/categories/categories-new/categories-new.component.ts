@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-categories-new',
@@ -6,7 +6,6 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./categories-new.component.scss']
 })
 export class CategoriesNewComponent implements OnInit {
-
   constructor() {
   }
 

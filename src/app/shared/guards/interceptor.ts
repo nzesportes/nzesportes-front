@@ -15,11 +15,7 @@ export class Interceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.url.includes(environment.NZESPORTES_API)) {
-      if (req.url.includes('?async=true')) {
-        this.loader.isLoading.next(true);
-        req.url.replace('?async=true', '');
-      }
-      const request = req.clone({
+      let request = req.clone({
         setHeaders: {
           // 'Access-Control-Allow-Origin': '*',
           // 'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
@@ -27,6 +23,13 @@ export class Interceptor implements HttpInterceptor {
           Authorization: `Bearer ${this.tokenStorageService.getToken()}`,
         },
       });
+
+      if (req.urlWithParams.includes('?async=true')) {
+        this.loader.isLoading.next(true);
+        request = request.clone({
+          params: request.params.delete('async')
+        });
+      }
       return next.handle(request).pipe(
         tap((ev: HttpEvent<any>) => {
             if (ev instanceof HttpResponse) {
