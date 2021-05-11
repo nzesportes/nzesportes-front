@@ -16,6 +16,7 @@ export class BrandsListComponent implements OnInit {
   content: BrandPage | undefined;
   pages: number | undefined;
   public pageRange: any;
+  hasError!: boolean;
 
   constructor(
     private brandsService: BrandsService
@@ -34,7 +35,7 @@ export class BrandsListComponent implements OnInit {
         this.content = r;
         this.getPageRange();
       }, () => {
-
+        this.hasError = true;
       });
   }
 

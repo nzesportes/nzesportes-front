@@ -29,7 +29,7 @@
           <div class="form-row">
             <div class="form-group col-12 mb-3">
               <label for="categorieName">Nome da Marca</label>
-              <input type="text" class="form-control" id="categorieName" formControlName="name" placeholder="Adidas"
+              <input type="text" class="form-control" id="categorieName" formControlName="name" placeholder="ex: Adidas"
                      [ngClass]="cssError(formBrand.get('name'))">
               <div id="field-name" class="invalid-feedback">
                 Por favor, insira o nome de uma marca.
@@ -46,4 +46,16 @@
   (confirm)="redirect()"
   #success title="Marca {{brand?.id ? 'atualizada' : 'criada'}} com sucesso!"
   icon="success">
+</swal>
+
+<swal
+  (confirm)="ngOnInit()"
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
 </swal>

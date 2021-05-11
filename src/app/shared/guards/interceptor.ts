@@ -3,14 +3,16 @@ import {HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpResponse} from
 import {AuthService} from '../services/auth.service';
 import {Observable} from 'rxjs';
 import {environment} from '../../../environments/environment';
-import {tap} from 'rxjs/operators';
+import {catchError, tap} from 'rxjs/operators';
 import {TokenStorageService} from '../services/token-storage.service';
 import {LoaderService} from '../services/loader.service';
+import {AbstractService} from '../services/abstract.service';
 
 @Injectable()
-export class Interceptor implements HttpInterceptor {
+export class Interceptor extends AbstractService implements HttpInterceptor {
 
   constructor(private auth: AuthService, private tokenStorageService: TokenStorageService, private loader: LoaderService) {
+    super();
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -30,6 +32,7 @@ export class Interceptor implements HttpInterceptor {
           params: request.params.delete('async')
         });
       }
+      // @ts-ignore
       return next.handle(request).pipe(
         tap((ev: HttpEvent<any>) => {
             if (ev instanceof HttpResponse) {
@@ -42,10 +45,12 @@ export class Interceptor implements HttpInterceptor {
             if (this.loader.isLoading.value) {
               this.loader.isLoading.next(false);
             }
-          })
+          }),
+        catchError(this.parserErrorResponse)
       );
     } else {
       const request = req.clone({});
+      // @ts-ignore
       return next.handle(request).pipe(
         tap((ev: HttpEvent<any>) => {
             if (ev instanceof HttpResponse) {
@@ -58,7 +63,8 @@ export class Interceptor implements HttpInterceptor {
             if (this.loader.isLoading.value) {
               this.loader.isLoading.next(false);
             }
-          })
+          }),
+        catchError(this.parserErrorResponse)
       );
     }
 
