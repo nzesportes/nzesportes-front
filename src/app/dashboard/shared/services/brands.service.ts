@@ -17,7 +17,9 @@ export class BrandsService {
   }
 
   create(brand: Brand): Observable<Brand> {
-    return this.http.post<Brand>(this.api + '?async=true', brand);
+    const params = new HttpParams()
+      .set('async', 'true');
+    return this.http.post<Brand>(this.api, brand, {params});
   }
 
   getAll(size: number, page: number): Observable<BrandPage> {
@@ -25,13 +27,17 @@ export class BrandsService {
       .set('async', 'true')
       .set('page', page.toString())
       .set('size', size.toString());
-    return this.http.get<BrandPage>(this.api, {params});
+    return this.http.get<BrandPage>(this.api + '?async=true', {params});
   }
 
   getById(id: string): Observable<Brand> {
-    return this.http.get<Brand>(this.api + id + '?async=true');
+    const params = new HttpParams()
+      .set('async', 'true');
+    return this.http.get<Brand>(this.api + id, {params});
   }
   update(brand: Brand): Observable<Brand> {
-    return this.http.put<Brand>(this.api + '?async=true', brand);
+    const params = new HttpParams()
+      .set('async', 'true');
+    return this.http.put<Brand>(this.api, brand, {params});
   }
 }
