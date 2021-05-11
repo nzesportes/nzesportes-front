@@ -41,9 +41,7 @@ export class BrandsNewComponent implements OnInit {
             this.brand = b;
             this.createForm();
           }, (error: ErrorWarning) => {
-            this.dialogError.confirmButtonText = error.action;
-            this.dialogError.title = error.title;
-            this.dialogError.text = error.message;
+            this.setErrorDialog(error);
             this.dialogError.fire();
           });
       });
