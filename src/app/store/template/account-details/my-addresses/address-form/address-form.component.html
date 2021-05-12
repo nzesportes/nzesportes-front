@@ -19,7 +19,7 @@
       <input type="text" class="form-control" id="number" formControlName="number">
     </div>
     <div class="form-group col-12 col-md-6">
-      <label for="complement">Complemento *</label>
+      <label for="complement">Complemento</label>
       <input type="text" class="form-control" id="complement" formControlName="complement">
     </div>
     <div class="form-group col-12 col-md-6">
@@ -43,8 +43,9 @@
       <input type="text" class="form-control" id="phone" formControlName="phone"
              mask="(00) 0000-0000 || (00) 00000-0000" [showMaskTyped]="true">
     </div>
-    <div class="col-12 text-center">
-      <button type="submit" class="btn btn-primary btn-submit">Salvar</button>
+    <div class="col-12 text-center mt-3">
+      <button class="btn btn-secondary btn-back-page mr-1" routerLink="../"><i class="fas fa-arrow-left"></i></button>
+      <button type="submit" class="btn btn-primary btn-submit" [disabled]="!newAddressForm.valid">Salvar</button>
     </div>
   </form>
 </div>

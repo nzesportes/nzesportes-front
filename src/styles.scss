@@ -11,7 +11,7 @@ a {
 }
 
 // owl-theme
-.owl-theme .owl-nav [class*=owl-] {
+.owl-nz-store .owl-theme .owl-nav [class*=owl-] {
   position: absolute;
   top: 0;
   color: #8d8d8d;
@@ -21,20 +21,20 @@ a {
   text-transform: uppercase;
 }
 
-.owl-theme .owl-nav .owl-prev {
+.owl-nz-store .owl-theme .owl-nav .owl-prev {
   right: 105px;
 }
 
-.owl-theme .owl-nav .owl-next {
+.owl-nz-store .owl-theme .owl-nav .owl-next {
   right: 0px;
 }
 
-.owl-theme .owl-nav [class*=owl-]:hover {
+.owl-nz-store .owl-theme .owl-nav [class*=owl-]:hover {
   color: #F37135;
   background-color: #fff;
 }
 
-.owl-stage {
+.owl-nz-store .owl-stage {
   margin: 70px 0 15px;
 }
 // end owl-theme

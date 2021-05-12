@@ -26,6 +26,7 @@ import {AccountDetailsModule} from './template/account-details/account-details.m
 import {AuthGuard} from '../shared/guards/auth-guard';
 import {NgxMaskModule} from 'ngx-mask';
 import { ForgotPasswordComponent } from './template/forgot-password/forgot-password.component';
+import { ProductDetailComponent } from './template/product-detail/product-detail.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { ForgotPasswordComponent } from './template/forgot-password/forgot-passw
     CreateAccountComponent,
     CartComponent,
     AccountDetailsComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    ProductDetailComponent
   ],
   imports: [
     CommonModule,

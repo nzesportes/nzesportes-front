@@ -4,11 +4,11 @@
   </div>
 
   <div class="p-2">
-    <owl-carousel-o [options]="customOptions">
+    <owl-carousel-o [options]="customOptions" class="owl-nz-store">
       <ng-container *ngFor="let slide of dynamicSlides">
         <ng-template carouselSlide id="{slide.id}">
           <!--produto começa aqui-->
-          <div class="product">
+          <div class="product" routerLink="produtos/{{ slide.url }}">
             <div class="product-content">
               <div class="product-image">
                 <div class="badge-product" *ngIf="slide.new"><span>Novo</span></div>
@@ -18,7 +18,7 @@
                 <a class="image-overlay"></a>
               </div>
               <div class="product-detail pt-2">
-                <a href="#" class="product-description">Jersey NBA Golden</a>
+                <a href="#" class="product-description">{{ slide.title }}</a>
                 <p class="product-categories mb-0"><a href="#">Marca</a>, <a href="#">Modelo</a></p>
                 <span><del *ngIf="slide.promotion">R$ 150,00</del> R$ 123,00</span>
               </div>

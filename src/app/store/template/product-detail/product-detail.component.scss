@@ -1,0 +1,159 @@
+h1 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #313131;
+  text-transform: uppercase;
+  margin: 20px 0 0;
+}
+
+h2 {
+  font-size: 26px;
+  color: #000;
+}
+
+h2 del {
+  font-size: 20px;
+  color: #bcbcbc;
+  margin: 20px 0 15px 5px;
+}
+
+.rating i {
+  color: #ffb727;
+}
+
+.categories {
+  color: #5b5b5b;
+}
+
+.categories a {
+  text-decoration: none;
+  color: #5b5b5b;
+  font-size: 14px;
+}
+
+.categories a:hover {
+  color: #f37135;
+}
+
+.title-details {
+  display: block;
+  padding-bottom: 10px;
+  font-size: 18px;
+  color: #313131;
+  border-bottom: 1px solid #e5e5e5;
+  margin: 10px 0 15px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.description-details {
+  font-size: 14px;
+  line-height: 1.8em;
+  color: #5b5b5b;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  display: inline-block;
+}
+
+li a {
+  display: inline-block;
+  width: 60px;
+  border: 3px solid #e5e5e5;
+  margin-right: 10px;
+}
+
+li a:hover {
+  border: 3px solid #f37135;
+}
+
+li a img {
+  max-width: 100%;
+}
+
+.container-size-qtde input, .container-size-qtde select {
+  height: 50px;
+  font-size: 16px;
+  line-height: 1.4em;
+  color: #5b5b5b;
+  border: none;
+  text-transform: uppercase;
+  background-color: #e4e4e4;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+}
+
+.btn-add-cart {
+  position: relative;
+  display: inline-block;
+  font-weight: 500;
+  padding: 15px 30px;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 60px;
+  line-height: 25px;
+  transition: all 0.4s ease;
+  background-color: #F37135;
+  border: 7px solid #ededed;
+  color: #fff;
+  border-radius: 60px;
+  -webkit-border-radius: 60px;
+  -moz-border-radius: 60px;
+  -ms-border-radius: 60px;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+}
+
+.btn-add-cart i {
+  margin-left: 10px;
+  font-size: 12px;
+}
+
+.btn-add-cart:hover {
+  opacity: 0.90;
+  color: #ededed;
+}
+
+.zoomImage img:hover {
+  transform: scale(1.5);
+}
+
+@media (min-width: 576px) {
+
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .btn-add-cart {
+    font-size: 18px;
+  }
+
+  .btn-add-cart i {
+    font-size: 14px;
+  }
+}
