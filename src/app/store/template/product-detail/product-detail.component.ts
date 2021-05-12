@@ -14,53 +14,29 @@ export class ProductDetailComponent implements OnInit {
   dynamicSlides = [
     {
       id: 1,
-      src: 'https://images.unsplash.com/photo-1620734885969-a3c21e9f34c7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1101&q=80',
-      alt: 'Side 1',
-      title: 'Camiseta Preta',
-      url: 'camiseta-preta',
-      promotion: true,
-      new: false
+      fullImage: 'assets/images/nike-preto.jpg',
+      thumb: 'assets/images/nike-preto-thumb.jpg'
     },
     {
       id: 2,
-      src: 'https://images.unsplash.com/photo-1593643946890-b5b85ade6451?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1229&q=80',
-      alt: 'Side 2',
-      title: 'Bermuda NBA',
-      url: 'bermuda-nba',
-      promotion: false,
-      new: false
+      fullImage: 'assets/images/nike-vermelho.jpg',
+      thumb: 'assets/images/nike-vermelho-thumb.jpg'
     },
     {
       id: 3,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 3',
-      title: 'Agasalho Rosa',
-      url: 'agasalho-rosa',
-      promotion: false,
-      new: false
+      fullImage: 'assets/images/tenis-vermelho.jpg',
+      thumb: 'assets/images/tenis-vermelho-thumb.jpg'
     },
     {
       id: 4,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 4',
-      title: 'Tênis Jordan',
-      url: 'tenis-jordan',
-      promotion: true,
-      new: true
-    },
-    {
-      id: 5,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 5',
-      title: 'Side 5',
-      promotion: false,
-      new: false
+      fullImage: 'assets/images/vans-vinho.jpg',
+      thumb: 'assets/images/vans-vinho-thumb.jpg'
     }
   ];
 
   customOptions: OwlOptions = {
     loop: true,
-    margin: 30,
+    margin: 0,
     autoplay: false,
     autoplaySpeed: 700,
     mouseDrag: true,

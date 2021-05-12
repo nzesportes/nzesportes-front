@@ -2,14 +2,20 @@
   <div class="row m-0 pt-5 pb-5">
     <div class="col-12 col-lg-6 pt-5">
       <div class="w-100 mb-3 zoomImage">
-        <img class="w-100" [src]="dynamicSlides[positionImage].src">
+        <lib-ngx-image-zoom
+          [thumbImage]="dynamicSlides[positionImage].thumb"
+          [fullImage]="dynamicSlides[positionImage].fullImage"
+          zoomMode="hover"
+          [magnification]="0.5"
+          [enableScrollZoom]="true"
+        ></lib-ngx-image-zoom>
       </div>
       <owl-carousel-o [options]="customOptions">
         <ng-container *ngFor="let slide of dynamicSlides; let i = index;">
           <ng-template carouselSlide id="{slide.id}">
             <!--produto começa aqui-->
-            <div>
-              <img [src]="slide.src" (click)="changeImage(i)">
+            <div class="carousel-images">
+              <img [src]="slide.thumb" (click)="changeImage(i)">
             </div>
           </ng-template>
         </ng-container>

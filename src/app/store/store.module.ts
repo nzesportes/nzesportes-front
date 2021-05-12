@@ -27,6 +27,7 @@ import {AuthGuard} from '../shared/guards/auth-guard';
 import {NgxMaskModule} from 'ngx-mask';
 import { ForgotPasswordComponent } from './template/forgot-password/forgot-password.component';
 import { ProductDetailComponent } from './template/product-detail/product-detail.component';
+import {NgxImageZoomModule} from 'ngx-image-zoom';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { ProductDetailComponent } from './template/product-detail/product-detail
     CarouselModule,
     FormsModule,
     ReactiveFormsModule,
-    NgxMaskModule.forRoot()
+    NgxMaskModule.forRoot(),
+    NgxImageZoomModule
   ],
   providers: [
     AuthGuard
