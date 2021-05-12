@@ -19,8 +19,7 @@ export class BrandsNewComponent implements OnInit {
   public readonly dialogError!: SwalComponent;
 
   public formBrand: FormGroup = new FormGroup({});
-  public brand: Brand | undefined;
-
+  public brand!: Brand;
   constructor(
     private formBuilder: FormBuilder,
     private brandService: BrandsService,
@@ -65,7 +64,8 @@ export class BrandsNewComponent implements OnInit {
     if (this.brand?.id) {
       this.brandService.update(this.formBrand.value)
         .pipe(take(1))
-        .subscribe(r => {
+        .subscribe(() => {
+          this.dialogSuccess.title = 'Marca atualizada com sucesso!';
           this.dialogSuccess.fire();
         }, (error: ErrorWarning) => {
           this.setErrorDialog(error);
@@ -75,6 +75,7 @@ export class BrandsNewComponent implements OnInit {
       this.brandService.create(this.formBrand.value)
         .pipe(take(1))
         .subscribe(() => {
+          this.dialogSuccess.title = 'Marca criada com sucesso!';
           this.dialogSuccess.fire();
         }, (error) => {
           this.setErrorDialog(error);
@@ -82,6 +83,18 @@ export class BrandsNewComponent implements OnInit {
         });
     }
 
+  }
+
+  delete(): void {
+    this.brandService.delete(this.brand?.id)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.dialogSuccess.title = 'Marca excluída com sucesso!';
+        this.dialogSuccess.fire();
+      }, error => {
+        this.setErrorDialog(error);
+        this.dialogError.fire();
+      });
   }
 
   redirect(): void {
