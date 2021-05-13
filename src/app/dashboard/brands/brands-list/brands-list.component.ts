@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {BrandsService} from '../../shared/services/brands.service';
 import {take} from 'rxjs/operators';
 import {Brand} from '../../shared/models/brand.model';
-import {BrandPage} from '../../shared/models/brand-page.model';
+import {BrandPage} from '../../shared/models/pagination-model/brand-page.model';
 
 @Component({
   selector: 'app-brands-list',
@@ -65,6 +65,4 @@ export class BrandsListComponent implements OnInit {
     this.getAllBrands(10, index);
     this.page = index;
   }
-
-
 }

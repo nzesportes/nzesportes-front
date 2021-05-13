@@ -12,8 +12,7 @@
     <div class="form-group col-lg-3 col-sm-12 mb-3 mb-lg-0">
       <label for="categorie">Tipo de Categoria</label>
       <select class="form-control" id="categorie">
-        <option value="1">Acessórios</option>
-        <option value="2">NZesportes</option>
+        <option value="{{i}}" *ngFor="let i of typeCategorieList">{{i | titlecase}}</option>
       </select>
     </div>
     <div class="form-group col-lg-3 col-sm-12 mb-3 mb-lg-0">
@@ -42,19 +41,21 @@
     <table class="table table-hover">
       <thead>
       <tr>
-        <th scope="col">Código</th>
-        <th scope="col">Nome</th>
-        <th scope="col">Tipo</th>
-        <th scope="col">No site</th>
-        <th scope="col">Produtos</th>
-        <th scope="col">Ações</th>
+        <th scope="col" style="width: 30%">Nome</th>
+        <th scope="col" style="width: 30%">Tipo</th>
+        <th scope="col" style="width: 20%">No site</th>
+        <th scope="col" style="width: 10%">Produtos</th>
+        <th scope="col" style="width: 10%">Ações</th>
       </tr>
       </thead>
       <tbody>
-      <tr class="row-table" *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10]" routerLink="nova-categoria">
-        <th scope="row">{{i}}</th>
-        <td>Shorts</td>
-        <td>Acessórios</td>
+      <tr class="row-table" *ngFor="let c of categories; let i = index" routerLink="nova-categoria">
+        <td>{{c.name}}</td>
+        <td>
+          <div *ngFor="let t of c.type">
+            {{t | titlecase}}
+          </div>
+        </td>
         <td [ngClass]="{
         'text-success': i % 2 === 0,
         'text-secondary': i % 2 !== 0
@@ -68,16 +69,18 @@
 </div>
 
 
-<nav aria-label="Page navigation example" >
-  <ul class="pagination justify-content-end  mr-3 ml-3">
-    <li class="page-item disabled">
-      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+<nav aria-label="Page navigation example" *ngIf="content && categories.length > 0">
+  <ul class="pagination justify-content-end mr-3 ml-3">
+    <li class="page-item" [ngClass]="{'disabled': page === 0}">
+      <a class="page-link" tabindex="-1" aria-disabled="true" (click)="updateIndex(this.page-1)">Previous</a>
     </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#">Next</a>
+    <li class="page-item" [ngClass]="{'active': i == page}"
+        *ngFor="let i of this.getRange(); let in = index"
+    >
+      <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
+    </li>
+    <li class="page-item" [ngClass]="{'disabled': (page + 1) === this.pages }">
+      <a class="page-link" (click)="updateIndex(this.page + 1)">Next</a>
     </li>
   </ul>
 </nav>

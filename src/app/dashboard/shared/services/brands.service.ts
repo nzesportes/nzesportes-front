@@ -3,7 +3,7 @@ import {environment} from '../../../../environments/environment';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Brand} from '../models/brand.model';
 import {Observable} from 'rxjs';
-import {BrandPage} from '../models/brand-page.model';
+import {BrandPage} from '../models/pagination-model/brand-page.model';
 
 @Injectable({
   providedIn: 'root'
