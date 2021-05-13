@@ -20,7 +20,10 @@
       </button>
     </div>
   </div>
-  <div class="row mt-3">
+  <div class="alert alert-danger" role="alert" *ngIf="hasError">
+    Não foi possível carregar algumas informações. Por favor, <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+  </div>
+  <div class="row mt-3"  *ngIf="!hasError">
     <div class="col-12 mb-3">
       <div class="card">
         <div class="card-body">
@@ -53,7 +56,7 @@
 </swal>
 
 <swal
-  (confirm)="ngOnInit()"
+  (confirm)="save()"
   #error
   [title]="''"
   [text]="''"

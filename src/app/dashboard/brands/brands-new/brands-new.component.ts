@@ -20,6 +20,7 @@ export class BrandsNewComponent implements OnInit {
 
   public formBrand: FormGroup = new FormGroup({});
   public brand!: Brand;
+  hasError!: boolean;
   constructor(
     private formBuilder: FormBuilder,
     private brandService: BrandsService,
@@ -39,9 +40,8 @@ export class BrandsNewComponent implements OnInit {
           .subscribe(b => {
             this.brand = b;
             this.createForm();
-          }, (error: ErrorWarning) => {
-            this.setErrorDialog(error);
-            this.dialogError.fire();
+          }, () => {
+            this.hasError = true;
           });
       });
     }

@@ -1,7 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Categorie} from '../../shared/models/categorie.model';
 import {TypeCategorie, TypeCategorieList} from '../../shared/enums/type-categorie';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
+import {Router} from '@angular/router';
+import {CategoriesService} from '../../shared/services/categories.service';
+import {take} from 'rxjs/operators';
+import {ErrorWarning} from '../../../shared/models/error-warning.model';
 
 @Component({
   selector: 'app-categories-new',
@@ -9,19 +14,30 @@ import {TypeCategorie, TypeCategorieList} from '../../shared/enums/type-categori
   styleUrls: ['./categories-new.component.scss']
 })
 export class CategoriesNewComponent implements OnInit {
+  @ViewChild('success')
+  public readonly dialogSuccess!: SwalComponent;
+  @ViewChild('error')
+  public readonly dialogError!: SwalComponent;
+
   public formCategorie: FormGroup = new FormGroup({});
   public formCategorieList: FormGroup = new FormGroup({});
   public categorie!: Categorie;
   public typeCategorieList = TypeCategorieList;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private categorieService: CategoriesService
   ) {
     this.createFormCategorieList();
   }
 
   ngOnInit(): void {
     this.createForm();
+  }
+
+  removeTypeCategorie(i: number): void {
+    this.type.removeAt(i);
   }
 
   removeProduct(id: any): void {
@@ -32,7 +48,7 @@ export class CategoriesNewComponent implements OnInit {
     this.formCategorie = this.formBuilder.group({
       id: new FormControl(this.categorie?.id ? this.categorie.id : null),
       name: new FormControl(this.categorie?.name ? this.categorie.name : '', Validators.required),
-      type: this.formBuilder.array([])
+      type: this.formBuilder.array([], Validators.required)
     });
   }
 
@@ -41,6 +57,14 @@ export class CategoriesNewComponent implements OnInit {
       typelist: this.formBuilder.array([])
     });
     this.initTypeList();
+  }
+
+  loadCategorieOnList(): void {
+    this.typeList.clear();
+    this.typeCategorieList.forEach(t => {
+      const hasType = this.type.controls.find(t1 => t1.value === t);
+      this.typeList.push(this.createTypeListForm(hasType ? true : false, t));
+    });
   }
 
   initTypeList(): void {
@@ -66,11 +90,38 @@ export class CategoriesNewComponent implements OnInit {
   }
 
   addTypeListCategorie(): void {
-    this.type.controls = [];
+    this.type.clear();
     this.typeList.controls.forEach(t => {
       if (t.value.checked) {
-        this.type.push(t.value.type);
+        this.type.push(this.formBuilder.control(t.value.type));
       }
     });
+  }
+
+  get validateFields(): any {
+    return this.formCategorie.controls;
+  }
+
+  redirect(): void {
+    this.router.navigateByUrl('/painel/categorias');
+  }
+
+  save(): void {
+    this.categorieService.create(this.formCategorie.value)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.dialogSuccess.title = 'Categoria criada com sucesso!';
+        this.dialogSuccess.fire();
+      }, error => {
+        this.setErrorDialog(error);
+        this.dialogError.fire();
+      });
+  }
+
+
+  setErrorDialog(error: ErrorWarning): void {
+    this.dialogError.confirmButtonText = error.action;
+    this.dialogError.title = error.title;
+    this.dialogError.text = error.message;
   }
 }

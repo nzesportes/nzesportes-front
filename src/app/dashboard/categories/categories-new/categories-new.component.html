@@ -13,7 +13,13 @@
       <button type="button" class="btn btn-secondary w-100">Cancelar</button>
     </div>
     <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
-      <button type="button" class="btn btn-primary w-100">Salvar</button>
+      <button
+        type="button"
+        class="btn btn-primary w-100"
+        [disabled]="formCategorie.invalid"
+        (click)="save()">
+        Salvar
+      </button>
     </div>
   </div>
   <div class="row mt-3">
@@ -27,8 +33,13 @@
               <label for="categorieName">Nome da Categoria</label>
               <input type="text" class="form-control" formControlName="name" id="categorieName"
                      aria-describedby="emailHelp"
-                     placeholder="ex: Camiseta Chicago Bulls">
+                     placeholder="ex: Camiseta Chicago Bulls"
+                     [ngClass]="{ 'is-invalid': validateFields.name.errors && validateFields.name.touched }">
+              <div id="field-name" class="invalid-feedback" *ngIf="validateFields.name?.errors?.required">
+                Por favor, insira o nome da categoria.
+              </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -54,36 +65,39 @@
               <h5 class="card-title">Tipos de categoria</h5>
             </div>
             <div class="col-lg-3 col-sm-12 ">
-              <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#typeCategorie">
+              <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#typeCategorie"
+                      (click)="loadCategorieOnList()">
                 Adicionar Tipo
               </button>
             </div>
           </div>
 
           <hr>
-          <div class="card mb-3">
+          <div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="type.controls.length === 0">
+            Essa categoria não possui nenhum tipo de categoria. Por favor, adicione um tipo.
+          </div>
+          <div class="card mb-3" *ngIf="type.controls.length > 0">
             <div class="table-responsive ">
 
               <table class="table table-hover">
                 <thead>
                 <tr>
-                  <th scope="col" style="width: 15%">Código</th>
                   <th scope="col" style="width: 50%">Nome</th>
                   <th scope="col" style="width: 10%">Ações</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="row-table" *ngFor="let i of type.controls" routerLink="/painel/produtos/produto/{{i}}">
-                  <th scope="row">####</th>
-                  <td>{{i}}</td>
+                <tr class="row-table" *ngFor="let categorie of type.controls; let i = index">
+                  <td>{{categorie.value}}</td>
                   <td>
-                    <i class="fas fa-edit actions-button text-primary"></i>
-                    <i class="fas fa-trash actions-button text-danger" [swal]="swal1"></i>
+                    <i class="fas fa-edit actions-button text-primary" data-toggle="modal" data-target="#typeCategorie"
+                       (click)="loadCategorieOnList()"></i>
+                    <i class="fas fa-trash actions-button text-danger" [swal]="swalCategorieExcluir"></i>
                     <swal
                       [swalOptions]="{ confirmButtonText: 'Sim', cancelButtonText: 'Cancelar' }"
                       [showCancelButton]="true"
-                      (confirm)="removeProduct(i)"
-                      #swal1 title="Tem certeza que deseja remover esse produto da categoria?"
+                      (confirm)="removeTypeCategorie(i)"
+                      #swalCategorieExcluir title="Tem certeza que deseja remover esse tipo de categoria"
                       icon="question">
                     </swal>
                   </td>
@@ -194,7 +208,8 @@
           </button>
         </div>
         <div class="modal-body" style="height: 500px">
-          <div  formArrayName="typelist" class="row item-product mb-3" *ngFor="let type of typeList.controls; let i = index">
+          <div formArrayName="typelist" class="row item-product mb-3"
+               *ngFor="let type of typeList.controls; let i = index">
             <div class="col-3">
             </div>
             <div class="col-5 mt-lg-2 mt-sm-1">
@@ -213,13 +228,17 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-primary" (click)="addTypeListCategorie()">Adicionar</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addTypeListCategorie()">
+            Adicionar
+          </button>
         </div>
       </div>
     </div>
   </div>
 </form>
-
+<div>
+  {{formCategorie.value | json}}
+</div>
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
@@ -260,3 +279,22 @@
     </div>
   </div>
 </div>
+
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirect()"
+  #success
+  [title]="''"
+  icon="success">
+</swal>
+<swal
+  (confirm)="save()"
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>
