@@ -1,4 +1,4 @@
-<form>
+<form [formGroup]="formCategorie">
 
   <div class="row mt-3">
     <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
@@ -13,7 +13,13 @@
       <button type="button" class="btn btn-secondary w-100">Cancelar</button>
     </div>
     <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
-      <button type="button" class="btn btn-primary w-100">Salvar</button>
+      <button
+        type="button"
+        class="btn btn-primary w-100"
+        [disabled]="formCategorie.invalid"
+        (click)="save()">
+        Salvar
+      </button>
     </div>
   </div>
   <div class="row mt-3">
@@ -25,9 +31,15 @@
           <div class="form-row">
             <div class="form-group col-12 mb-3">
               <label for="categorieName">Nome da Categoria</label>
-              <input type="text" class="form-control" id="categorieName" aria-describedby="emailHelp"
-                     placeholder="Camiseta Chicago Bulls">
+              <input type="text" class="form-control" formControlName="name" id="categorieName"
+                     aria-describedby="emailHelp"
+                     placeholder="ex: Camiseta Chicago Bulls"
+                     [ngClass]="{ 'is-invalid': validateFields.name.errors && validateFields.name.touched }">
+              <div id="field-name" class="invalid-feedback" *ngIf="validateFields.name?.errors?.required">
+                Por favor, insira o nome da categoria.
+              </div>
             </div>
+
           </div>
         </div>
       </div>
@@ -50,37 +62,42 @@
         <div class="card-body">
           <div class="row">
             <div class="col-lg-9 col-sm-12">
-              <h5 class="card-title">Tipos</h5>
+              <h5 class="card-title">Tipos de categoria</h5>
             </div>
             <div class="col-lg-3 col-sm-12 ">
-              <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#typeCategorie"> Adicionar Tipos</button>
+              <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#typeCategorie"
+                      (click)="loadCategorieOnList()">
+                Adicionar Tipo
+              </button>
             </div>
           </div>
 
           <hr>
-          <div class="card mb-3">
+          <div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="type.controls.length === 0">
+            Essa categoria não possui nenhum tipo de categoria. Por favor, adicione um tipo.
+          </div>
+          <div class="card mb-3" *ngIf="type.controls.length > 0">
             <div class="table-responsive ">
 
               <table class="table table-hover">
                 <thead>
                 <tr>
-                  <th scope="col" style="width: 15%">Código</th>
                   <th scope="col" style="width: 50%">Nome</th>
                   <th scope="col" style="width: 10%">Ações</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="row-table" *ngFor="let i of ['Masculino', 'Feminino', 'Tênis', 'Acessórios']" routerLink="/painel/produtos/produto/{{i}}">
-                  <th scope="row">####</th>
-                  <td>{{i}}</td>
+                <tr class="row-table" *ngFor="let categorie of type.controls; let i = index">
+                  <td>{{categorie.value}}</td>
                   <td>
-                    <i class="fas fa-edit actions-button text-primary"></i>
-                    <i class="fas fa-trash actions-button text-danger" [swal]="swal1"></i>
+                    <i class="fas fa-edit actions-button text-primary" data-toggle="modal" data-target="#typeCategorie"
+                       (click)="loadCategorieOnList()"></i>
+                    <i class="fas fa-trash actions-button text-danger" [swal]="swalCategorieExcluir"></i>
                     <swal
                       [swalOptions]="{ confirmButtonText: 'Sim', cancelButtonText: 'Cancelar' }"
                       [showCancelButton]="true"
-                      (confirm)="removeProduct(i)"
-                      #swal1 title="Tem certeza que deseja remover esse produto da categoria?"
+                      (confirm)="removeTypeCategorie(i)"
+                      #swalCategorieExcluir title="Tem certeza que deseja remover esse tipo de categoria"
                       icon="question">
                     </swal>
                   </td>
@@ -89,20 +106,6 @@
               </table>
             </div>
           </div>
-
-          <nav aria-label="Page navigation example" >
-            <ul class="pagination justify-content-end  mr-3 ml-3">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-              </li>
-            </ul>
-          </nav>
         </div>
       </div>
     </div>
@@ -117,7 +120,9 @@
               <h5 class="card-title">Produtos na Categoria</h5>
             </div>
             <div class="col-lg-3 col-sm-12 ">
-              <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#exampleModal"> Adicionar Produtos</button>
+              <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#exampleModal">
+                Adicionar Produtos
+              </button>
             </div>
           </div>
 
@@ -137,7 +142,8 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr class="row-table" *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10]" routerLink="/painel/produtos/produto/{{i}}">
+                <tr class="row-table" *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10]"
+                    routerLink="/painel/produtos/produto/{{i}}">
                   <th scope="row">{{i}}</th>
                   <td>Camisa</td>
                   <td>black</td>
@@ -160,7 +166,7 @@
             </div>
           </div>
 
-          <nav aria-label="Page navigation example" >
+          <nav aria-label="Page navigation example">
             <ul class="pagination justify-content-end  mr-3 ml-3">
               <li class="page-item disabled">
                 <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
@@ -189,49 +195,50 @@
   </div>
 </form>
 
-
-<div class="modal fade" id="typeCategorie" tabindex="-1" aria-labelledby="typeCategorielLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="typeCategorie">
-          Escolha o tipos de categoria
-        </h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" style="height: 500px">
-        <div class="row item-product mb-3" *ngFor="let i of [0,1,2,3,4,5,6,7,9]">
-          <div class="col-3">
-          </div>
-          <div class="col-5 mt-lg-2 mt-sm-1">
-            <div class="row">
-              <div class="col-12">
-                Tipo {{i}}
-              </div>
-              <div class="col-12">
-                Código: ####
+<form [formGroup]="formCategorieList">
+  <div class="modal fade" id="typeCategorie" tabindex="-1" aria-labelledby="typeCategorielLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="typeCategorie">
+            Escolha o tipos de categoria
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="height: 500px">
+          <div formArrayName="typelist" class="row item-product mb-3"
+               *ngFor="let type of typeList.controls; let i = index">
+            <div class="col-3">
+            </div>
+            <div class="col-5 mt-lg-2 mt-sm-1">
+              <div class="row">
+                <div class="col-12">
+                  {{type.value.type}}
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-0 mt-3 ml-5">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="typeCategorie">
+            <div class="col-0 mt-3 ml-5">
+              <div class="form-check" [formGroupName]="i">
+                <input class="form-check-input" type="checkbox" name="checked" formControlName="checked">
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Adicionar</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addTypeListCategorie()">
+            Adicionar
+          </button>
+        </div>
       </div>
     </div>
   </div>
+</form>
+<div>
+  {{formCategorie.value | json}}
 </div>
-
-
-
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">
@@ -272,3 +279,22 @@
     </div>
   </div>
 </div>
+
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirect()"
+  #success
+  [title]="''"
+  icon="success">
+</swal>
+<swal
+  (confirm)="save()"
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>

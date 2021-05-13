@@ -20,7 +20,10 @@
       </button>
     </div>
   </div>
-  <div class="row mt-3">
+  <div class="alert alert-danger" role="alert" *ngIf="hasError">
+    Não foi possível carregar algumas informações. Por favor, <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+  </div>
+  <div class="row mt-3"  *ngIf="!hasError">
     <div class="col-12 mb-3">
       <div class="card">
         <div class="card-body">
@@ -36,6 +39,9 @@
               </div>
             </div>
           </div>
+          <div class="d-flex justify-content-end" *ngIf="brand?.id">
+            <button type="button" class="btn btn-danger col-lg-2 col-sm-12" (click)="delete()">Remover</button>
+          </div>
         </div>
       </div>
     </div>
@@ -44,12 +50,13 @@
 <swal
   [swalOptions]="{ confirmButtonText: 'ok'}"
   (confirm)="redirect()"
-  #success title="Marca {{brand?.id ? 'atualizada' : 'criada'}} com sucesso!"
+  #success
+  [title]="''"
   icon="success">
 </swal>
 
 <swal
-  (confirm)="ngOnInit()"
+  (confirm)="save()"
   #error
   [title]="''"
   [text]="''"
