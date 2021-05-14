@@ -11,6 +11,8 @@ export class ProductDetailComponent implements OnInit {
   avaliacao = 3.8;
   positionImage = 0;
 
+  shipping: any;
+
   dynamicSlides = [
     {
       id: 1,
@@ -44,7 +46,7 @@ export class ProductDetailComponent implements OnInit {
     pullDrag: false,
     dots: false,
     navSpeed: 700,
-    navText: ['<i class="fas fa-arrow-left"></i> Anterior', 'Próxima <i class="fas fa-arrow-right"></i>'],
+    navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
     responsive: {
       0: {
         items: 3
@@ -71,5 +73,9 @@ export class ProductDetailComponent implements OnInit {
 
   changeImage(index: number): void {
     this.positionImage = index;
+  }
+
+  calculate(): void {
+    this.shipping = { dias: 4, valor: 27.50};
   }
 }

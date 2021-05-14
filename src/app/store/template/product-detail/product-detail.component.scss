@@ -52,28 +52,28 @@ h2 del {
   color: #5b5b5b;
 }
 
-ul {
+.choose-model {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-li {
+.choose-model li {
   display: inline-block;
 }
 
-li a {
+.choose-model li a {
   display: inline-block;
   width: 60px;
   border: 3px solid #e5e5e5;
   margin-right: 10px;
 }
 
-li a:hover {
+.choose-model li a:hover {
   border: 3px solid #f37135;
 }
 
-li a img {
+.choose-model li a img {
   max-width: 100%;
 }
 
@@ -85,6 +85,25 @@ li a img {
   border: none;
   text-transform: uppercase;
   background-color: #e4e4e4;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  border-radius: 3px;
+  outline: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+}
+
+.cep input {
+  background-color: #fff;
+  border: 1px solid #2b2828;
+  height: 50px;
+  font-size: 16px;
+  line-height: 1.4em;
+  color: #5b5b5b;
+  text-transform: uppercase;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
@@ -136,6 +155,51 @@ li a img {
 
 .carousel-images:hover {
   border: 3px solid #f37135;
+  cursor: pointer;
+}
+
+.container-review h2 {
+  font-size: 18px;
+  font-weight: 700;
+  width: 100%;
+  border-bottom: 1px solid #e5e5e5;
+  margin: 10px 0 15px;
+  padding-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.review {
+  margin-top: 40px;
+  border-bottom: 1px solid #e5e5e5;
+  font-size: 16px;
+}
+
+.review:last-child {
+  border-bottom: 0;
+}
+
+.review h3 {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.review .rating i {
+  color: #2b2828;
+  font-size: 12px;
+}
+
+.rated-by {
+  font-size: 14px;
+  color: #767677;
+  font-weight: 500;
+}
+
+.page-link {
+  color: #f37135;
+}
+
+.page-link:first-child, .page-link:last-child {
+  border-radius: 0;
 }
 
 @media (min-width: 576px) {

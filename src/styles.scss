@@ -10,7 +10,7 @@ a {
   text-decoration: none;
 }
 
-// owl-theme
+// owl-theme nz store
 .owl-nz-store .owl-theme .owl-nav [class*=owl-] {
   position: absolute;
   top: 0;
@@ -37,7 +37,7 @@ a {
 .owl-nz-store .owl-stage {
   margin: 70px 0 15px;
 }
-// end owl-theme
+// end owl-theme nz store
 
 
 // ngx-image-zoom
@@ -53,3 +53,36 @@ a {
 }
 
 // end ngx-image-zoom
+
+
+// owl-theme product details
+.owl-product-details .owl-theme .owl-nav [class*=owl-] {
+  position: absolute;
+  top: calc(50% - 25px);
+  color: #fff;
+  font-size: 26px;
+  background: #2b2828;
+  opacity: 0.6;
+  font-weight: 700;
+  height: 50px;
+  width: 40px;
+}
+
+.owl-product-details .owl-theme .owl-nav .owl-prev {
+  left: -10px;
+}
+
+.owl-product-details .owl-theme .owl-nav .owl-next {
+  right: -10px;
+}
+
+.owl-product-details .owl-theme .owl-nav [class*=owl-]:hover {
+  opacity: 0.8;
+}
+
+.owl-product-details .carousel-images.ng-star-inserted {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+// end owl-theme product details
