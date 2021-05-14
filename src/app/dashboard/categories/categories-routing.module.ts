@@ -12,6 +12,10 @@ const routes: Routes = [
   {
     path: 'nova-categoria',
     component: CategoriesNewComponent
+  },
+  {
+    path: 'categoria/:id',
+    component: CategoriesNewComponent
   }
 ];
 

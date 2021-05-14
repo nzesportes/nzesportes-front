@@ -3,9 +3,9 @@ import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angul
 import {Categorie} from '../../shared/models/categorie.model';
 import {TypeCategorie, TypeCategorieList} from '../../shared/enums/type-categorie';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {CategoriesService} from '../../shared/services/categories.service';
-import {take} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 import {ErrorWarning} from '../../../shared/models/error-warning.model';
 
 @Component({
@@ -23,17 +23,33 @@ export class CategoriesNewComponent implements OnInit {
   public formCategorieList: FormGroup = new FormGroup({});
   public categorie!: Categorie;
   public typeCategorieList = TypeCategorieList;
+  hasError!: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private categorieService: CategoriesService
+    private categorieService: CategoriesService,
+    private route: ActivatedRoute
   ) {
     this.createFormCategorieList();
   }
 
   ngOnInit(): void {
     this.createForm();
+    if (this.router.url.includes('categorias/categoria')) {
+      this.route.params.pipe(
+        map(p => p.id)
+      ).subscribe(id => {
+        this.categorieService.getById(id)
+          .pipe(take(1))
+          .subscribe(c => {
+            this.categorie = c;
+            this.createForm();
+          }, () => {
+            this.hasError = true;
+          });
+      });
+    }
   }
 
   removeTypeCategorie(i: number): void {
@@ -48,7 +64,8 @@ export class CategoriesNewComponent implements OnInit {
     this.formCategorie = this.formBuilder.group({
       id: new FormControl(this.categorie?.id ? this.categorie.id : null),
       name: new FormControl(this.categorie?.name ? this.categorie.name : '', Validators.required),
-      type: this.formBuilder.array([], Validators.required)
+      status: new FormControl(this.categorie?.status ? this.categorie.status : ''),
+      type: this.formBuilder.array(this.categorie?.type ? this.categorie.type : [], Validators.required)
     });
   }
 
@@ -107,15 +124,28 @@ export class CategoriesNewComponent implements OnInit {
   }
 
   save(): void {
-    this.categorieService.create(this.formCategorie.value)
-      .pipe(take(1))
-      .subscribe(() => {
-        this.dialogSuccess.title = 'Categoria criada com sucesso!';
-        this.dialogSuccess.fire();
-      }, error => {
-        this.setErrorDialog(error);
-        this.dialogError.fire();
-      });
+    if (this.categorie?.id) {
+      this.categorieService.update(this.formCategorie.value)
+        .pipe(take(1))
+        .subscribe(() => {
+          this.dialogSuccess.title = 'Categoria atualizada com sucesso!';
+          this.dialogSuccess.fire();
+        }, error => {
+          this.setErrorDialog(error);
+          this.dialogError.fire();
+        });
+    } else {
+      this.categorieService.create(this.formCategorie.value)
+        .pipe(take(1))
+        .subscribe(() => {
+          this.dialogSuccess.title = 'Categoria criada com sucesso!';
+          this.dialogSuccess.fire();
+        }, error => {
+          this.setErrorDialog(error);
+          this.dialogError.fire();
+        });
+    }
+
   }
 
 

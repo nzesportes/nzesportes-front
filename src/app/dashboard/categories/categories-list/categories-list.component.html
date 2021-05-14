@@ -49,17 +49,17 @@
       </tr>
       </thead>
       <tbody>
-      <tr class="row-table" *ngFor="let c of categories; let i = index" routerLink="nova-categoria">
+      <tr class="row-table" *ngFor="let c of categories; let i = index" routerLink="categoria/{{c.id}}">
         <td>{{c.name}}</td>
         <td>
-          <div *ngFor="let t of c.type">
-            {{t | titlecase}}
+          <div>
+            {{TypeCategorieString(c.type)}}
           </div>
         </td>
         <td [ngClass]="{
-        'text-success': i % 2 === 0,
-        'text-secondary': i % 2 !== 0
-        }"><b>{{i % 2 === 0 ? 'Ativo' : 'Inativo'}}</b></td>
+        'text-success': c.status,
+        'text-secondary': !c.status
+        }"><b>{{c.status ? 'Ativo' : 'Inativo'}}</b></td>
         <td>{{i * 2}}</td>
         <td><i class="fas fa-edit text-primary"></i></td>
       </tr>
