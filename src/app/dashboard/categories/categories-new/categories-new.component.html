@@ -22,177 +22,187 @@
       </button>
     </div>
   </div>
-  <div class="row mt-3">
-    <div class="col-12 mb-3">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Informações da Categoria</h5>
-          <hr>
-          <div class="form-row">
-            <div class="form-group col-12 mb-3">
-              <label for="categorieName">Nome da Categoria</label>
-              <input type="text" class="form-control" formControlName="name" id="categorieName"
-                     aria-describedby="emailHelp"
-                     placeholder="ex: Camiseta Chicago Bulls"
-                     [ngClass]="{ 'is-invalid': validateFields.name.errors && validateFields.name.touched }">
-              <div id="field-name" class="invalid-feedback" *ngIf="validateFields.name?.errors?.required">
-                Por favor, insira o nome da categoria.
+  <div class="alert alert-danger" role="alert" *ngIf="hasError">
+    Não foi possível carregar algumas informações. Por favor,
+    <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+  </div>
+
+  <div *ngIf="!hasError">
+    <div class="row mt-3">
+      <div class="col-12 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Informações da Categoria</h5>
+            <hr>
+            <div class="form-row">
+              <div class="form-group col-12 mb-3">
+                <label for="categorieName">Nome da Categoria</label>
+                <input type="text" class="form-control" formControlName="name" id="categorieName"
+                       aria-describedby="emailHelp"
+                       placeholder="ex: Camiseta Chicago Bulls"
+                       [ngClass]="{ 'is-invalid': validateFields.name.errors && validateFields.name.touched }">
+                <div id="field-name" class="invalid-feedback" *ngIf="validateFields.name?.errors?.required">
+                  Por favor, insira o nome da categoria.
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-3" *ngIf="categorie?.id">
+      <div class="card-body">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="isShowOnStore" formControlName="status">
+          <label class="form-check-label" for="isShowOnStore">
+            Disponível na loja
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col-12 mb-3">
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-9 col-sm-12">
+                <h5 class="card-title">Tipos de categoria</h5>
+              </div>
+              <div class="col-lg-3 col-sm-12 ">
+                <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#typeCategorie"
+                        (click)="loadCategorieOnList()">
+                  Adicionar Tipo
+                </button>
               </div>
             </div>
 
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="card mb-3">
-    <div class="card-body">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="" id="isShowOnStore">
-        <label class="form-check-label" for="isShowOnStore">
-          Disponível na loja
-        </label>
-      </div>
-    </div>
-  </div>
-  <div class="row mt-3">
-    <div class="col-12 mb-3">
-      <div class="card mb-3">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-lg-9 col-sm-12">
-              <h5 class="card-title">Tipos de categoria</h5>
+            <hr>
+            <div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="type.controls.length === 0">
+              Essa categoria não possui nenhum tipo de categoria. Por favor, adicione um tipo.
             </div>
-            <div class="col-lg-3 col-sm-12 ">
-              <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#typeCategorie"
-                      (click)="loadCategorieOnList()">
-                Adicionar Tipo
-              </button>
-            </div>
-          </div>
+            <div class="card mb-3" *ngIf="type.controls.length > 0">
+              <div class="table-responsive ">
 
-          <hr>
-          <div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="type.controls.length === 0">
-            Essa categoria não possui nenhum tipo de categoria. Por favor, adicione um tipo.
-          </div>
-          <div class="card mb-3" *ngIf="type.controls.length > 0">
-            <div class="table-responsive ">
-
-              <table class="table table-hover">
-                <thead>
-                <tr>
-                  <th scope="col" style="width: 50%">Nome</th>
-                  <th scope="col" style="width: 10%">Ações</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="row-table" *ngFor="let categorie of type.controls; let i = index">
-                  <td>{{categorie.value}}</td>
-                  <td>
-                    <i class="fas fa-edit actions-button text-primary" data-toggle="modal" data-target="#typeCategorie"
-                       (click)="loadCategorieOnList()"></i>
-                    <i class="fas fa-trash actions-button text-danger" [swal]="swalCategorieExcluir"></i>
-                    <swal
-                      [swalOptions]="{ confirmButtonText: 'Sim', cancelButtonText: 'Cancelar' }"
-                      [showCancelButton]="true"
-                      (confirm)="removeTypeCategorie(i)"
-                      #swalCategorieExcluir title="Tem certeza que deseja remover esse tipo de categoria"
-                      icon="question">
-                    </swal>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th scope="col" style="width: 50%">Nome</th>
+                    <th scope="col" style="width: 10%">Ações</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr class="row-table" *ngFor="let categorie of type.controls; let i = index">
+                    <td>{{categorie.value | titlecase}}</td>
+                    <td>
+                      <i class="fas fa-edit actions-button text-primary" data-toggle="modal"
+                         data-target="#typeCategorie"
+                         (click)="loadCategorieOnList()"></i>
+                      <i class="fas fa-trash actions-button text-danger" [swal]="swalCategorieExcluir"></i>
+                      <swal
+                        [swalOptions]="{ confirmButtonText: 'Sim', cancelButtonText: 'Cancelar' }"
+                        [showCancelButton]="true"
+                        (confirm)="removeTypeCategorie(i)"
+                        #swalCategorieExcluir title="Tem certeza que deseja remover esse tipo de categoria"
+                        icon="question">
+                      </swal>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 
-  <div class="row mt-3">
-    <div class="col-12 mb-3">
-      <div class="card mb-3">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-lg-9 col-sm-12">
-              <h5 class="card-title">Produtos na Categoria</h5>
+    <div class="row mt-3" *ngIf="categorie?.id">
+      <div class="col-12 mb-3">
+        <div class="card mb-3">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-9 col-sm-12">
+                <h5 class="card-title">Produtos na Categoria</h5>
+              </div>
+              <div class="col-lg-3 col-sm-12 ">
+                <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#exampleModal">
+                  Adicionar Produtos
+                </button>
+              </div>
             </div>
-            <div class="col-lg-3 col-sm-12 ">
-              <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#exampleModal">
-                Adicionar Produtos
-              </button>
+
+            <hr>
+            <div class="card mb-3">
+              <div class="table-responsive ">
+
+                <table class="table table-hover">
+                  <thead>
+                  <tr>
+                    <th scope="col" style="width: 15%">Código</th>
+                    <th scope="col" style="width: 50%">Nome</th>
+                    <th scope="col" style="width: 15%">Modelo</th>
+                    <th scope="col" style="width: 10%">Tamanho</th>
+
+                    <th scope="col" style="width: 10%">Ações</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr class="row-table" *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10]"
+                      routerLink="/painel/produtos/produto/{{i}}">
+                    <th scope="row">{{i}}</th>
+                    <td>Camisa</td>
+                    <td>black</td>
+
+                    <td>{{i * 2}}</td>
+                    <td>
+                      <i class="fas fa-edit actions-button text-primary"></i>
+                      <i class="fas fa-trash actions-button text-danger" [swal]="swal1"></i>
+                      <swal
+                        [swalOptions]="{ confirmButtonText: 'Sim', cancelButtonText: 'Cancelar' }"
+                        [showCancelButton]="true"
+                        (confirm)="removeProduct(i)"
+                        #swal1 title="Tem certeza que deseja remover esse produto da categoria?"
+                        icon="question">
+                      </swal>
+                    </td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
+
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-end  mr-3 ml-3">
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#">Next</a>
+                </li>
+              </ul>
+            </nav>
           </div>
+        </div>
+      </div>
+    </div>
 
-          <hr>
-          <div class="card mb-3">
-            <div class="table-responsive ">
-
-              <table class="table table-hover">
-                <thead>
-                <tr>
-                  <th scope="col" style="width: 15%">Código</th>
-                  <th scope="col" style="width: 50%">Nome</th>
-                  <th scope="col" style="width: 15%">Modelo</th>
-                  <th scope="col" style="width: 10%">Tamanho</th>
-
-                  <th scope="col" style="width: 10%">Ações</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr class="row-table" *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10]"
-                    routerLink="/painel/produtos/produto/{{i}}">
-                  <th scope="row">{{i}}</th>
-                  <td>Camisa</td>
-                  <td>black</td>
-
-                  <td>{{i * 2}}</td>
-                  <td>
-                    <i class="fas fa-edit actions-button text-primary"></i>
-                    <i class="fas fa-trash actions-button text-danger" [swal]="swal1"></i>
-                    <swal
-                      [swalOptions]="{ confirmButtonText: 'Sim', cancelButtonText: 'Cancelar' }"
-                      [showCancelButton]="true"
-                      (confirm)="removeProduct(i)"
-                      #swal1 title="Tem certeza que deseja remover esse produto da categoria?"
-                      icon="question">
-                    </swal>
-                  </td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <nav aria-label="Page navigation example">
-            <ul class="pagination justify-content-end  mr-3 ml-3">
-              <li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-              </li>
-            </ul>
-          </nav>
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Promoções</h5>
+        <hr>
+        <div class="card-link">
+          <i class="fas fa-ticket-alt p-1" style="color: cornflowerblue"></i><a href="#">Criar cupom de desconto</a>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="card mb-3">
-    <div class="card-body">
-      <h5 class="card-title">Promoções</h5>
-      <hr>
-      <div class="card-link">
-        <i class="fas fa-ticket-alt p-1" style="color: cornflowerblue"></i><a href="#">Criar cupom de desconto</a>
-      </div>
-    </div>
-  </div>
+
 </form>
 
 <form [formGroup]="formCategorieList">
@@ -215,7 +225,7 @@
             <div class="col-5 mt-lg-2 mt-sm-1">
               <div class="row">
                 <div class="col-12">
-                  {{type.value.type}}
+                  {{type.value.type | titlecase}}
                 </div>
               </div>
             </div>
@@ -236,9 +246,7 @@
     </div>
   </div>
 </form>
-<div>
-  {{formCategorie.value | json}}
-</div>
+
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-scrollable">
     <div class="modal-content">

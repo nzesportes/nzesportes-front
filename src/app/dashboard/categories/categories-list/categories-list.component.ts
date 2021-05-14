@@ -1,5 +1,5 @@
 import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {TypeCategorieList} from '../../shared/enums/type-categorie';
+import {TypeCategorie, TypeCategorieList} from '../../shared/enums/type-categorie';
 import {Categorie} from '../../shared/models/categorie.model';
 import {CategoriePage} from '../../shared/models/pagination-model/categorie-page.model';
 import {CategoriesService} from '../../shared/services/categories.service';
@@ -73,6 +73,9 @@ export class CategoriesListComponent implements OnInit, AfterContentInit  {
   updateIndex(index: number): void {
     this.getAllCategories(10, index);
     this.page = index;
+  }
+  TypeCategorieString(types: TypeCategorie[]): string {
+    return types.map((x) => x).join(', ');
   }
 
 }
