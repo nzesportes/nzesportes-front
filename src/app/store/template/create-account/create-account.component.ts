@@ -27,7 +27,7 @@ export class CreateAccountComponent implements OnInit {
     id: '',
     username: '',
     password: '',
-    role: Role.USER
+    role: Role.ROLE_USER
   };
 
   customer: Customer = {

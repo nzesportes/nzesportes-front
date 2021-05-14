@@ -15,7 +15,7 @@ export class AuthDashGuard implements CanActivate {
   }
 
   canActivate(): Observable<boolean> | boolean {
-    const isAdmin = this.tokenStorageService.getSessionUser().roles.find(r => r === Role.ADMIN || r === Role.MODERATOR);
+    const isAdmin = this.tokenStorageService.getSessionUser().roles.find(r => r === Role.ROLE_ADMIN || r === Role.ROLE_MODERATOR);
     if (isAdmin) {
       return true;
     }

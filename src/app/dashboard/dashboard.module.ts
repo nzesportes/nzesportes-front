@@ -10,6 +10,7 @@ import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 import {PromotionsModule} from './promotions/promotions.module';
 import {CategoriesModule} from './categories/categories.module';
 import {UsersModule} from './users/users.module';
+import {BrandsModule} from './brands/brands.module';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import {UsersModule} from './users/users.module';
     PromotionsModule,
     CategoriesModule,
     UsersModule,
+    BrandsModule,
     // angular modules
     DashboardRoutingModule,
     CommonModule,
