@@ -43,7 +43,16 @@ body {
 //    width: calc(100% - 30px);
 //  }
 //}
+
+.menu_right{
+  visibility: hidden;
+}
 @media (min-width: 768px) {
+  .menu_right{
+    position: absolute;
+    right: 0;
+    visibility: visible;
+  }
   #sidebar-wrapper {
     margin-left: 0;
   }
