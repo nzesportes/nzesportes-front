@@ -28,6 +28,8 @@ import {NgxMaskModule} from 'ngx-mask';
 import { ForgotPasswordComponent } from './template/forgot-password/forgot-password.component';
 import { ProductDetailComponent } from './template/product-detail/product-detail.component';
 import {NgxImageZoomModule} from 'ngx-image-zoom';
+import { ProductListingComponent } from './template/product-listing/product-listing.component';
+import { FiltersComponent } from './template/filters/filters.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,9 @@ import {NgxImageZoomModule} from 'ngx-image-zoom';
     CartComponent,
     AccountDetailsComponent,
     ForgotPasswordComponent,
-    ProductDetailComponent
+    ProductDetailComponent,
+    ProductListingComponent,
+    FiltersComponent
   ],
   imports: [
     CommonModule,

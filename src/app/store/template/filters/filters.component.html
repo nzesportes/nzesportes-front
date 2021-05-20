@@ -1,0 +1,72 @@
+<ul class="ml-md-3 mr-md-3 pt-1 pb-1 filters mb-md-2 row m-0 p-0">
+  <div class="col-xl-10 col-md-9 p-0 nav">
+    <li class="nav-item">
+      <a class="nav-link" (click)="changeStateItemMenu(gender)">Gênero<i class="fas fa-angle-down ml-1"></i></a>
+      <div class="submenu" #gender>
+        <ul class="items-submenu">
+          <li><a class="item-submenu">Masculino</a></li>
+          <li><a class="item-submenu">Feminino</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" (click)="changeStateItemMenu(category)">Categoria<i class="fas fa-angle-down ml-1"></i></a>
+      <div class="submenu" #category>
+        <ul class="items-submenu">
+          <li><a class="item-submenu">Corrida</a></li>
+          <li><a class="item-submenu">Tênis</a></li>
+          <li><a class="item-submenu">Basquete</a></li>
+          <li><a class="item-submenu">Futebol Americano</a></li>
+          <li><a class="item-submenu">Rugby</a></li>
+          <li><a class="item-submenu">Futebol</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" (click)="changeStateItemMenu(size)">Tamanho<i class="fas fa-angle-down ml-1"></i></a>
+      <div class="submenu" #size>
+        <ul class="items-submenu p-2 row">
+          <li class="col-4 mb-2 pr-2 pl-2"><a class="item-submenu size">34</a></li>
+          <li class="col-4 mb-2 pr-2 pl-2"><a class="item-submenu size">36</a></li>
+          <li class="col-4 mb-2 pr-2 pl-2"><a class="item-submenu size">38</a></li>
+          <li class="col-4 mb-2 pr-2 pl-2"><a class="item-submenu size">40</a></li>
+          <li class="col-4 mb-2 pr-2 pl-2"><a class="item-submenu size">42</a></li>
+          <li class="col-4 mb-2 pr-2 pl-2"><a class="item-submenu size">44</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" (click)="changeStateItemMenu(color)">Cor<i class="fas fa-angle-down ml-1"></i></a>
+      <div class="submenu" #color>
+        <ul class="items-submenu">
+          <li><a class="item-submenu">Azul</a></li>
+          <li><a class="item-submenu">Rosa</a></li>
+          <li><a class="item-submenu">Verde</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" (click)="changeStateItemMenu(brand)">Marca<i class="fas fa-angle-down ml-1"></i></a>
+      <div class="submenu" #brand>
+        <ul class="items-submenu">
+          <li><a class="item-submenu">Adidas</a></li>
+          <li><a class="item-submenu">Jordan</a></li>
+          <li><a class="item-submenu">Nike</a></li>
+        </ul>
+      </div>
+    </li>
+  </div>
+  <div class="nav col-xl-2 col-md-3 p-0 justify-content-end">
+    <li class="nav-item">
+      <a class="nav-link" (click)="changeStateOrderBy(orderBy)">Classificar por<i class="fas fa-angle-down ml-1"></i></a>
+      <div class="submenu order-by" #orderBy>
+        <ul class="items-submenu">
+          <li><a class="item-submenu">Mais relevantes</a></li>
+          <li><a class="item-submenu">Menor preço</a></li>
+          <li><a class="item-submenu">Maior preço</a></li>
+          <li><a class="item-submenu">Maior desconto</a></li>
+        </ul>
+      </div>
+    </li>
+  </div>
+</ul>
