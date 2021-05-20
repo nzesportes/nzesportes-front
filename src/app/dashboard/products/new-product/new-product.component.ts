@@ -9,6 +9,7 @@ import {take} from 'rxjs/operators';
 import {Brand} from '../../shared/models/brand.model';
 import {Categorie} from '../../shared/models/categorie.model';
 import {CategoriesService} from '../../shared/services/categories.service';
+import {ProductsService} from '../../shared/services/products.service';
 
 @Component({
   selector: 'app-new-product',
@@ -35,6 +36,7 @@ export class NewProductComponent implements OnInit {
     private formBuilder: FormBuilder,
     private brandsService: BrandsService,
     private categoriesService: CategoriesService,
+    private productService: ProductsService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -53,8 +55,8 @@ export class NewProductComponent implements OnInit {
       id: new FormControl(this.product?.id ? this.product.id : null),
       description: new FormControl(this.product?.description ? this.product.description : '', Validators.required),
       model: new FormControl(this.product?.model ? this.product.model : '', Validators.required),
-      category: this.formBuilder.array(this.product?.category ? this.product.category : []),
-      productDetails: this.formBuilder.array(this.product?.productDetails ? this.product.productDetails : []),
+      category: this.formBuilder.array(this.product?.category ? this.product.category : [], Validators.required),
+      productDetails: this.formBuilder.array(this.product?.productDetails ? this.product.productDetails : [], Validators.required),
       status: new FormControl(this.product?.status ? this.product.status : null),
     });
   }
@@ -80,6 +82,19 @@ export class NewProductComponent implements OnInit {
     });
   }
 
+  private setArrayCategorieProduct(categorie: Categorie): FormGroup {
+    return new FormGroup({
+      id: new FormControl(categorie?.id ? categorie.id : null),
+      name: new FormControl(categorie?.name ? categorie.name : '', Validators.required),
+      status: new FormControl(categorie?.status ? categorie.status : false),
+      type: this.formBuilder.array(categorie?.type ? categorie.type : [], Validators.required),
+    });
+  }
+
+  get categoriesArrayFormProduct(): FormArray {
+    return this.formProduct.get('category') as FormArray;
+  }
+
   get categoriesArrayForm(): FormArray {
     return this.formCategorie.get('categories') as FormArray;
   }
@@ -101,6 +116,10 @@ export class NewProductComponent implements OnInit {
 
   get validateFieldsFormProductDetail(): { [p: string]: AbstractControl } {
     return this.formProductDetail.controls;
+  }
+
+  get validateFieldsFormProduct(): { [p: string]: AbstractControl } {
+    return this.formProduct.controls;
   }
 
   cssError(field: any): any {
@@ -157,14 +176,33 @@ export class NewProductComponent implements OnInit {
       });
   }
 
-  save(): void {
-  }
-
   redirect(): void {
   }
 
   setCategorie(): void {
     console.log('passou');
+    this.categoriesArrayFormProduct.clear();
+    this.categoriesArrayForm.controls.forEach(form => {
+      if (form.value.checked) {
+        this.categoriesArrayFormProduct.push(
+          this.setArrayCategorieProduct(form.value)
+        );
+      }
+    });
+  }
+
+  save(): void {
+    if (this.product) {
+
+    } else {
+      this.productService.create(this.formProduct.value)
+        .pipe(take(1))
+        .subscribe(r => {
+          console.log(r);
+        }, error => {
+
+        });
+    }
   }
 
 }
