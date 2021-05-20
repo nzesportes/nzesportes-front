@@ -1,4 +1,4 @@
-<form>
+<form [formGroup]="formProduct">
 
   <div class="row mt-3">
     <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
@@ -35,8 +35,8 @@
           <hr>
           <div class="form-row">
             <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
-              <label for="name">Modelo do Produto</label>
-              <input type="text" class="form-control" id="name" aria-describedby="emailHelp"
+              <label for="model">Modelo do Produto</label>
+              <input type="text" class="form-control" id="model" aria-describedby="emailHelp"
                      placeholder="Camiseta Chicago Bulls">
               <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
@@ -86,94 +86,56 @@
 
       <div class="card mb-3">
         <div class="card-body">
-          <h5 class="card-title">Detalhes do produto</h5>
-          <hr>
-          <div class="form-row">
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
-              <label for="niche">Nicho</label>
-              <input type="text" class="form-control" id="niche" aria-describedby="emailHelp"
-                     placeholder="Ex: Bulls">
-            </div>
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
-              <label for="color">Cor</label>
-              <select class="form-control" id="color">
-                <option value="1">Azul</option>
-                <option value="2">Vermelho</option>
-                <option value="3">Preto</option>
-              </select>
-            </div>
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
-              <label for="brand">Marca</label>
-              <select class="form-control" id="brand">
-                <option value="1">Adidas</option>
-                <option value="2">Puma</option>
-                <option value="3">Nike</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
-              <label for="size">Tamanho</label>
-              <select class="form-control" id="size">
-                <option value="1">M</option>
-                <option value="2">P</option>
-              </select>
-            </div>
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
-              <label for="genrer">Sexo</label>
-              <select class="form-control" id="genrer">
-                <option value="M">Masculino</option>
-                <option value="F">Feminino</option>
-              </select>
-            </div>
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
-              <label for="price">Preço</label>
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">R$</span>
-                </div>
-                <input type="text" id="price" class="form-control" aria-label="Amount (to the nearest dollar)">
-              </div>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
-              <label for="description">Descrição</label>
-              <textarea class="form-control mb-3" id="description" rows="3"
-                        placeholder="Descreva seu produto"></textarea>
-            </div>
-          </div>
-          <div class="form-row p-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="onSale" data-toggle="collapse"
-                     href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-              <label class="form-check-label" for="onSale">
-                Em promoção
-              </label>
-            </div>
-          </div>
           <div class="row">
-            <div class="collapse m-3" id="collapseExample">
-              <div class="row">
-                <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
-                  <label for="price">Porcentagem</label>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">%</span>
-                    </div>
-                    <input type="text" id="percentDiscount" class="form-control">
-                  </div>
-                </div>
-                <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
-                  <label for="priceSale">Preço de venda</label>
-                  <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">%</span>
-                    </div>
-                    <input type="text" id="priceSale" class="form-control">
-                  </div>
-                </div>
-              </div>
+            <div class="col-lg-9 col-sm-12">
+              <h5 class="card-title">Detalhes do produto</h5>
+            </div>
+            <div class="col-lg-3 col-sm-12 ">
+              <button
+                type="button"
+                class="btn btn-primary w-100"
+                (click)="initDetailForm()"
+                data-toggle="modal"
+                data-target="#modalProductDetail">
+                Adicionar
+              </button>
+            </div>
+          </div>
+          <hr>
+          <div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="productDetails.controls.length === 0">
+            Essa categoria não possui detalhe. Por favor, adicione um.
+          </div>
+          <div class="card mb-3" *ngIf="productDetails.controls.length > 0">
+            <div class="table-responsive ">
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th scope="col" style="width: 50%">Nome</th>
+                  <th scope="col" style="width: 50%">Preço</th>
+                  <th scope="col" style="width: 10%">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="row-table" formArrayName="productDetails"
+                    *ngFor="let productDetail of productDetails.controls; let i = index">
+                  <td>{{productDetail.value.color | titlecase}}</td>
+                  <td>{{productDetail.value.price | titlecase}}</td>
+                  <td>
+                    <i class="fas fa-edit actions-button text-primary" data-toggle="modal"
+                       data-target="#typeCategorie"
+                       (click)="initDetailForm()"></i>
+                    <i class="fas fa-trash actions-button text-danger" [swal]="swalProductDetailRemove"></i>
+                    <swal
+                      [swalOptions]="{ confirmButtonText: 'Sim', cancelButtonText: 'Cancelar' }"
+                      [showCancelButton]="true"
+                      (confirm)="removeProductDetails(i)"
+                      #swalProductDetailRemove title="Tem certeza que deseja remover esse tipo de categoria"
+                      icon="question">
+                    </swal>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -190,28 +152,28 @@
           </div>
         </div>
       </div>
-
-      <div class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title">Categorias</h5>
-          <hr>
-          <div class="overflow-auto" style="height: 300px">
-            <div class="list-group">
-              <button
-                *ngFor="let categoria of ['tenis', 'blusa', 'calca', 'camiseta', 'regata', 'short', 'toca', 'bermuda' ,'nzesportes']"
-                type="button"
-                class="list-group-item d-flex justify-content-between list-group-item-action"
-              >
-                {{categoria}}
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="categoria">
-                </div>
-              </button>
+      <form [formGroup]="formCategorie">
+        <div class="card mb-3">
+          <div class="card-body">
+            <h5 class="card-title">Categorias</h5>
+            <hr>
+            <div class="overflow-auto" style="height: 300px">
+              <div class="list-group">
+                <button formArrayName="categories"
+                        *ngFor="let categorie of categoriesArrayForm.controls; let i = index"
+                        type="button"
+                        class="list-group-item d-flex justify-content-between list-group-item-action"
+                >
+                  {{categorie.value.name | titlecase}}
+                  <div class="form-check" [formGroupName]="i">
+                    <input class="form-check-input" type="checkbox" value="" id="categoria" formControlName="checked">
+                  </div>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-
+      </form>
       <div class="card mb-3">
         <div class="card-body">
           <h5 class="card-title">Promoções</h5>
@@ -228,7 +190,121 @@
 
 </form>
 
+<form [formGroup]="formProductDetail">
+  <div class="modal fade" id="modalProductDetail" tabindex="-1" aria-labelledby="modalProductDetailLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalProductDetailLabel">
+            Detalhe do produto
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+              <label for="niche">Nicho</label>
+              <input type="text" class="form-control" id="niche" formControlName="niche" aria-describedby="emailHelp"
+                     placeholder="Ex: Bulls"
+                     [ngClass]="cssError(validateFieldsFormProductDetail.niche)">
+              <div id="field-niche" class="invalid-feedback">
+                Por favor, insira o nicho.
+              </div>
+            </div>
+            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+              <label for="color">Cor</label>
+              <select class="form-control" id="color"
+                      formControlName="color"
+                      [ngClass]="cssError(validateFieldsFormProductDetail.color)">
+                <option value="1">Azul</option>
+                <option value="2">Vermelho</option>
+                <option value="3">Preto</option>
+              </select>
+              <div id="field-color" class="invalid-feedback">
+                Por favor, insira a cor.
+              </div>
+            </div>
+            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0" formGroupName="brand">
+              <label for="name">Marca</label>
+              <select class="form-control" id="name" (change)="setIdBrand()"
+                      formControlName="name"
+                      [ngClass]="cssError(validateFieldsFormProductDetail.brand)">
+                <option value="{{b.name.toLowerCase()}}" *ngFor="let b of brands">{{b.name | titlecase}}</option>
+              </select>
+              <div id="field-brand" class="invalid-feedback">
+                Por favor, insira a marca.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+              <label for="size">Tamanho</label>
+              <select class="form-control" id="size"
+                      formControlName="size"
+                      [ngClass]="cssError(validateFieldsFormProductDetail.size)">
+                <option value="1">M</option>
+                <option value="2">P</option>
+              </select>
+              <div id="field-size" class="invalid-feedback">
+                Por favor, insira o tamanho.
+              </div>
+            </div>
+            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+              <label for="genrer">Sexo</label>
+              <select class="form-control" id="genrer"
+                      formControlName="gender"
+                      [ngClass]="cssError(validateFieldsFormProductDetail.gender)">
+                <option value="M">Masculino</option>
+                <option value="F">Feminino</option>
+              </select>
+              <div id="field-genrer" class="invalid-feedback">
+                Por favor, insira o sexo.
+              </div>
+            </div>
+            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+              <label for="price">Preço</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">R$</span>
+                </div>
+                <input type="text" id="price" class="form-control"
+                       formControlName="price"
+                       [ngClass]="cssError(validateFieldsFormProductDetail.price)">
+                <div id="field-price" class="invalid-feedback">
+                  Por favor, insira o preço.
+                </div>
+              </div>
+            </div>
+          </div>
 
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="statusProductDetail" formControlName="status">
+            <label class="form-check-label" for="statusProductDetail">
+              Disponível na loja
+            </label>
+          </div>
+        </div>
+        <div>
+          {{formProductDetail.value | json}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-dismiss="modal"
+            [disabled]="formProductDetail.invalid"
+            (click)="addProductDetails(formProductDetail.value)">
+            Adicionar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
 
 <swal
   [swalOptions]="{ confirmButtonText: 'ok'}"
@@ -249,3 +325,4 @@
   [showCancelButton]="true"
   icon="error">
 </swal>
+<p>{{formProduct.value | json}}</p>

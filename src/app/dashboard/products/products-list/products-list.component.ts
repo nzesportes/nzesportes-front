@@ -1,5 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {BrandsService} from '../../shared/services/brands.service';
+import {CategoriesService} from '../../shared/services/categories.service';
+import {zip} from 'rxjs';
+import {take} from 'rxjs/operators';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
+import {Router} from '@angular/router';
 
 
 export interface PeriodicElement {
@@ -27,24 +33,49 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./products-list.component.scss']
 })
 export class ProductsListComponent implements OnInit {
-  // @ts-ignore
-  public formSearch: FormGroup;
+  @ViewChild('warn')
+  public readonly dialogWarn!: SwalComponent;
+  public formSearch!: FormGroup;
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private brandsService: BrandsService,
+    private categoriesService: CategoriesService,
+    private router: Router,
   ) {
   }
 
   ngOnInit(): void {
     this.createForm();
+    this.verifyHasBrandsCategories();
   }
 
   private createForm(): void {
     this.formSearch = this.formBuilder.group({
       search: new FormControl(null)
     });
+  }
+  verifyHasBrandsCategories(): void {
+    zip(
+      this.brandsService.getAll(300, 0),
+      this.categoriesService.getAll(300, 0)
+    )
+      .pipe(take(1))
+      .subscribe(([brands, categories]) => {
+        if (brands.content.length === 0 && categories.content.length === 0) {
+          this.dialogWarn.title = 'Ops, ocorreu um problema';
+          this.dialogWarn.text = 'Para acessar a página de produto é necessário ter cadastrado ao menos uma categoria e marca!';
+          this.dialogWarn.fire();
+        }
+      }, () => {
+
+      });
+  }
+  redirectTo(): void {
+    this.router.navigateByUrl('/painel/categorias');
+
   }
 
 }

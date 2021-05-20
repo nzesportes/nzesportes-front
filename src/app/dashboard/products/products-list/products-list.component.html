@@ -81,3 +81,11 @@
   </ul>
 </nav>
 <!--</div>-->
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  #warn
+  [title]="''"
+  [text]="''"
+  (confirm)="redirectTo()"
+  icon="warning">
+</swal>

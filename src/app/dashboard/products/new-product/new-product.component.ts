@@ -1,9 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
-import {Brand} from '../../shared/models/brand.model';
 import {Product} from '../../shared/models/product.model';
+import {ProductDetails} from '../../shared/models/product-details.mode';
+import {BrandsService} from '../../shared/services/brands.service';
+import {take} from 'rxjs/operators';
+import {Brand} from '../../shared/models/brand.model';
+import {Categorie} from '../../shared/models/categorie.model';
+import {CategoriesService} from '../../shared/services/categories.service';
 
 @Component({
   selector: 'app-new-product',
@@ -17,11 +22,19 @@ export class NewProductComponent implements OnInit {
   public readonly dialogError!: SwalComponent;
 
   public formProduct: FormGroup = new FormGroup({});
+  public formProductDetail: FormGroup = new FormGroup({});
+  public formCategorie: FormGroup = new FormGroup({});
+
+
   public product!: Product;
+  public brands!: Brand[];
+  public categories!: Categorie[];
   hasError!: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
+    private brandsService: BrandsService,
+    private categoriesService: CategoriesService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -29,6 +42,10 @@ export class NewProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
+    this.createFormCategorie();
+    this.initDetailForm();
+    this.getAllBrands();
+    this.getAllCategories();
   }
 
   private createForm(): void {
@@ -36,16 +53,118 @@ export class NewProductComponent implements OnInit {
       id: new FormControl(this.product?.id ? this.product.id : null),
       description: new FormControl(this.product?.description ? this.product.description : '', Validators.required),
       model: new FormControl(this.product?.model ? this.product.model : '', Validators.required),
-      category:  this.formBuilder.array(this.product?.category ? this.product.category : []),
-      productDetails:  this.formBuilder.array(this.product?.productDetails ? this.product.productDetails : []),
+      category: this.formBuilder.array(this.product?.category ? this.product.category : []),
+      productDetails: this.formBuilder.array(this.product?.productDetails ? this.product.productDetails : []),
       status: new FormControl(this.product?.status ? this.product.status : null),
     });
+  }
+
+  private createFormCategorie(): void {
+    this.formCategorie = this.formBuilder.group({
+        categories: this.formBuilder.array([]),
+      }
+    );
+  }
+
+  private createFormArrayCategorie(categorie: Categorie): FormGroup {
+    let hasChecked;
+    if (this.product) {
+      hasChecked = this.product.category.find(c => c.id === categorie.id);
+    }
+    return new FormGroup({
+      id: new FormControl(categorie?.id ? categorie.id : null),
+      name: new FormControl(categorie?.name ? categorie.name : '', Validators.required),
+      status: new FormControl(categorie?.status ? categorie.status : false),
+      type: this.formBuilder.array(categorie?.type ? categorie.type : [], Validators.required),
+      checked: new FormControl(hasChecked ? true : false),
+    });
+  }
+
+  get categoriesArrayForm(): FormArray {
+    return this.formCategorie.get('categories') as FormArray;
+  }
+
+  getAllCategories(): void {
+    this.categoriesService.getAll(300, 0)
+      .pipe(take(1))
+      .subscribe(result => {
+        this.categories = result.content;
+        this.categories.forEach(c => this.categoriesArrayForm.push(this.createFormArrayCategorie(c)));
+      }, () => {
+
+      });
+  }
+
+  initDetailForm(): void {
+    this.formProductDetail = this.createProductDetailsForm();
+  }
+
+  get validateFieldsFormProductDetail(): { [p: string]: AbstractControl } {
+    return this.formProductDetail.controls;
+  }
+
+  cssError(field: any): any {
+    return {
+      'is-invalid': field.errors && field.touched
+    };
+  }
+
+  get productDetails(): FormArray {
+    return this.formProduct.get('productDetails') as FormArray;
+  }
+
+  addProductDetails(productDetails: any): void {
+    console.log(productDetails);
+    this.productDetails.insert(0, this.createProductDetailsForm(productDetails));
+  }
+
+  removeProductDetails(index: number): void {
+    this.productDetails.removeAt(index);
+  }
+
+  private createProductDetailsForm(productDetails?: ProductDetails): FormGroup {
+    return new FormGroup({
+        id: new FormControl(productDetails ? productDetails.id : null),
+        color: new FormControl(productDetails ? productDetails.color : null, Validators.required),
+        size: new FormControl(productDetails ? productDetails.size : null, Validators.required),
+        price: new FormControl(productDetails ? productDetails.price : null, Validators.required),
+        brand: this.formBuilder.group({
+          id: new FormControl(productDetails ? productDetails.brand.id : null, Validators.required),
+          name: new FormControl(productDetails ? productDetails.brand.name : '', Validators.required),
+        }),
+        gender: new FormControl(productDetails ? productDetails.gender : null, Validators.required),
+        niche: new FormControl(productDetails ? productDetails.niche : null, Validators.required),
+        status: new FormControl(productDetails ? productDetails.status : false),
+      }
+    );
+  }
+
+  setIdBrand(): void {
+    const name = this.formProductDetail.get('brand')?.get('name')?.value;
+    const brand = this.brands.find(b => b.name === name);
+    if (brand) {
+      this.formProductDetail.get('brand')?.get('id')?.setValue(brand.id);
+    }
+  }
+
+  getAllBrands(): void {
+    this.brandsService.getAll(300, 0)
+      .pipe(take(1))
+      .subscribe(result => {
+        this.brands = result.content;
+      }, () => {
+
+      });
   }
 
   save(): void {
   }
 
-  redirect(): void{
+  redirect(): void {
+  }
+
+  setCategorie(): void {
+    console.log('passou');
   }
 
 }

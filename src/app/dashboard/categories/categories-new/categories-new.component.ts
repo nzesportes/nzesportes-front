@@ -64,7 +64,7 @@ export class CategoriesNewComponent implements OnInit {
     this.formCategorie = this.formBuilder.group({
       id: new FormControl(this.categorie?.id ? this.categorie.id : null),
       name: new FormControl(this.categorie?.name ? this.categorie.name : '', Validators.required),
-      status: new FormControl(this.categorie?.status ? this.categorie.status : ''),
+      status: new FormControl(this.categorie?.status ? this.categorie.status : false),
       type: this.formBuilder.array(this.categorie?.type ? this.categorie.type : [], Validators.required)
     });
   }
