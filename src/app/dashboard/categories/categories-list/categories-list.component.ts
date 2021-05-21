@@ -1,8 +1,8 @@
 import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {TypeCategorie, TypeCategorieList} from '../../shared/enums/type-categorie';
-import {Categorie} from '../../shared/models/categorie.model';
-import {CategoriePage} from '../../shared/models/pagination-model/categorie-page.model';
-import {CategoriesService} from '../../shared/services/categories.service';
+import {TypeCategorie, TypeCategorieList} from '../../../shared/enums/type-categorie';
+import {Category} from '../../../shared/models/category.model';
+import {CategoryPage} from '../../../shared/models/pagination-model/category-page.model';
+import {CategoriesService} from '../../../shared/services/categories.service';
 import {take} from 'rxjs/operators';
 
 @Component({
@@ -13,9 +13,9 @@ import {take} from 'rxjs/operators';
 export class CategoriesListComponent implements OnInit, AfterContentInit  {
   public typeCategorieList = TypeCategorieList;
 
-  categories: Categorie[] = [];
+  categories: Category[] = [];
   page = 0;
-  content: CategoriePage | undefined;
+  content: CategoryPage | undefined;
   pages: number | undefined;
   public pageRange: any;
   hasError!: boolean;

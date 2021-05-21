@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Categorie} from '../../shared/models/categorie.model';
-import {TypeCategorie, TypeCategorieList} from '../../shared/enums/type-categorie';
+import {Category} from '../../../shared/models/category.model';
+import {TypeCategorie, TypeCategorieList} from '../../../shared/enums/type-categorie';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 import {ActivatedRoute, Router} from '@angular/router';
-import {CategoriesService} from '../../shared/services/categories.service';
+import {CategoriesService} from '../../../shared/services/categories.service';
 import {map, take} from 'rxjs/operators';
 import {ErrorWarning} from '../../../shared/models/error-warning.model';
 
@@ -21,7 +21,7 @@ export class CategoriesNewComponent implements OnInit {
 
   public formCategorie: FormGroup = new FormGroup({});
   public formCategorieList: FormGroup = new FormGroup({});
-  public categorie!: Categorie;
+  public categorie!: Category;
   public typeCategorieList = TypeCategorieList;
   hasError!: boolean;
 
@@ -64,7 +64,7 @@ export class CategoriesNewComponent implements OnInit {
     this.formCategorie = this.formBuilder.group({
       id: new FormControl(this.categorie?.id ? this.categorie.id : null),
       name: new FormControl(this.categorie?.name ? this.categorie.name : '', Validators.required),
-      status: new FormControl(this.categorie?.status ? this.categorie.status : ''),
+      status: new FormControl(this.categorie?.status ? this.categorie.status : false),
       type: this.formBuilder.array(this.categorie?.type ? this.categorie.type : [], Validators.required)
     });
   }

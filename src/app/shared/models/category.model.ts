@@ -1,6 +1,6 @@
 import {TypeCategorie} from '../enums/type-categorie';
 
-export interface Categorie {
+export interface Category {
   id: string;
   name: string;
   status: boolean;

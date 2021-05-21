@@ -34,8 +34,13 @@
     </div>
   </div>
 </div>
-
-<div class="card mb-3 mr-3 ml-3" >
+<div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="categories.length === 0 && !hasError">
+  Não encontramos nenhuma categoria.
+</div>
+<div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
+  Não foi possível carregar algumas informações. Por favor, <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+</div>
+<div class="card mb-3 mr-3 ml-3" *ngIf="categories.length > 0">
   <div class="table-responsive ">
 
     <table class="table table-hover">

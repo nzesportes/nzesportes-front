@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {BrandsService} from '../../shared/services/brands.service';
+import {BrandsService} from '../../../shared/services/brands.service';
 import {map, take} from 'rxjs/operators';
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
-import {Brand} from '../../shared/models/brand.model';
+import {Brand} from '../../../shared/models/brand.model';
 import {ErrorWarning} from '../../../shared/models/error-warning.model';
 
 @Component({
@@ -21,6 +21,7 @@ export class BrandsNewComponent implements OnInit {
   public formBrand: FormGroup = new FormGroup({});
   public brand!: Brand;
   hasError!: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private brandService: BrandsService,
@@ -56,7 +57,7 @@ export class BrandsNewComponent implements OnInit {
 
   cssError(field: any): any {
     return {
-      'is-invalid': field.invalid && field.touched
+      'is-invalid': field.errors && field.touched
     };
   }
 
@@ -69,7 +70,11 @@ export class BrandsNewComponent implements OnInit {
           this.dialogSuccess.fire();
         }, (error: ErrorWarning) => {
           this.setErrorDialog(error);
-          this.dialogError.fire();
+          this.dialogError.fire().then(r => {
+            if (r.isConfirmed) {
+              this.save();
+            }
+          });
         });
     } else {
       this.brandService.create(this.formBrand.value)
@@ -79,7 +84,11 @@ export class BrandsNewComponent implements OnInit {
           this.dialogSuccess.fire();
         }, (error) => {
           this.setErrorDialog(error);
-          this.dialogError.fire();
+          this.dialogError.fire().then(r => {
+            if (r.isConfirmed) {
+              this.save();
+            }
+          });
         });
     }
 
@@ -93,7 +102,11 @@ export class BrandsNewComponent implements OnInit {
         this.dialogSuccess.fire();
       }, error => {
         this.setErrorDialog(error);
-        this.dialogError.fire();
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.delete();
+          }
+        });
       });
   }
 
