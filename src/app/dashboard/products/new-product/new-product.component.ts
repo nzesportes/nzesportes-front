@@ -5,11 +5,12 @@ import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 import {Product} from '../../../shared/models/product.model';
 import {ProductDetails} from '../../../shared/models/product-details.model';
 import {BrandsService} from '../../../shared/services/brands.service';
-import {take} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 import {Brand} from '../../../shared/models/brand.model';
 import {Category} from '../../../shared/models/category.model';
 import {CategoriesService} from '../../../shared/services/categories.service';
 import {ProductsService} from '../../../shared/services/products.service';
+import {ErrorWarning} from '../../../shared/models/error-warning.model';
 
 @Component({
   selector: 'app-new-product',
@@ -43,6 +44,24 @@ export class NewProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.initAllForms();
+    if (this.router.url.includes('produtos/produto')) {
+      this.route.params.pipe(
+        map(p => p.id)
+      ).subscribe(id => {
+        this.productService.getById(id)
+          .pipe(take(1))
+          .subscribe(p => {
+            this.product = p;
+            this.initAllForms();
+          }, () => {
+            this.hasError = true;
+          });
+      });
+    }
+  }
+
+  initAllForms(): void {
     this.createForm();
     this.createFormCategorie();
     this.initDetailForm();
@@ -177,10 +196,10 @@ export class NewProductComponent implements OnInit {
   }
 
   redirect(): void {
+    this.router.navigateByUrl('/painel/produtos');
   }
 
   setCategorie(): void {
-    console.log('passou');
     this.categoriesArrayFormProduct.clear();
     this.categoriesArrayForm.controls.forEach(form => {
       if (form.value.checked) {
@@ -197,12 +216,28 @@ export class NewProductComponent implements OnInit {
     } else {
       this.productService.create(this.formProduct.value)
         .pipe(take(1))
-        .subscribe(r => {
-          console.log(r);
+        .subscribe(() => {
+          this.dialogSuccess.title = 'Produto criado com sucesso!';
+          this.dialogSuccess.fire();
         }, error => {
-
+          this.setErrorDialog(error);
+          this.erroCallSaveAgain();
         });
     }
+  }
+
+  erroCallSaveAgain(): void {
+    this.dialogError.fire().then(r => {
+      if (r.isConfirmed) {
+        this.save();
+      }
+    });
+  }
+
+  setErrorDialog(error: ErrorWarning): void {
+    this.dialogError.confirmButtonText = error.action;
+    this.dialogError.title = error.title;
+    this.dialogError.text = error.message;
   }
 
 }
