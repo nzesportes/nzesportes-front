@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {CartService} from '../../services/cart.service';
 
 @Component({
   selector: 'app-cart',
@@ -10,48 +11,38 @@ export class CartComponent implements OnInit {
   emptyCart = false;
   teste = 0;
 
-  itemsCart = [
+  items = [
     {
-      id: 1,
-      src: 'assets/images/product.jpg',
-      name: 'Camiseta NBA',
-      price: 129.00,
-      qtde: 1
-    },
-    {
-      id: 2,
-      src: 'assets/images/product.jpg',
-      name: 'Camiseta NBL',
-      price: 129.00,
-      qtde: 3
-    },
-    {
-      id: 3,
-      src: 'assets/images/product.jpg',
-      name: 'Camiseta Rugby',
-      price: 129.00,
-      qtde: 2
+      id: 0,
+      img: '',
+      name: '',
+      price: 0.00,
+      qtde: 0
     }
   ];
 
-  constructor() { }
+  constructor(
+    private cartService: CartService
+  ) {
+  }
 
   ngOnInit(): void {
+    this.getItemsCart();
   }
 
-  plusItem(qtde: number): void {
-    qtde++;
+  getItemsCart(): any {
+    return this.cartService.getProductsCart();
   }
 
-  minusItem(qtde: number): void {
-    qtde--;
+  plusItem(id: number): void {
+    this.cartService.plusItem(id);
+  }
+
+  minusItem(id: number): void {
+    this.cartService.minusItem(id);
   }
 
   calculateTotal(): number {
-    let total = 0;
-    this.itemsCart.forEach(item => {
-      total += (item.qtde * item.price);
-    });
-    return total;
+    return this.cartService.getTotalPrice();
   }
 }

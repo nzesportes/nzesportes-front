@@ -13,26 +13,26 @@
         <div class="col-2 title-header">Total</div>
         <div class="col-1 title-header"></div>
       </div>
-      <div class="row w-100 m-0 listing-body align-items-center" *ngFor="let itemCart of itemsCart">
+      <div class="row w-100 m-0 listing-body align-items-center" *ngFor="let item of getItemsCart()">
         <div class="col-12 col-xl-5">
           <a class="items-description">
             <img class="mr-3" src="assets/images/cart-preview.jpg">
             Nome do Produto
           </a>
         </div>
-        <div class="col-6 col-xl-2 pt-3 pb-3"><span class="title-items">Preço </span>R$ {{ itemCart.price | number:'.2' }}</div>
+        <div class="col-6 col-xl-2 pt-3 pb-3"><span class="title-items">Preço </span>R$ {{ item.price | number:'.2' }}</div>
         <div class="col-6 col-xl-2 pt-3 pb-3">
           <div class="input-group quantity ml-auto ml-xl-0">
             <div class="input-group-prepend">
-              <button type="button" class="btn btn-controls-cart" (click)="minusItem(itemCart.qtde)">-</button>
+              <button type="button" class="btn btn-controls-cart" (click)="minusItem(item.id)">-</button>
             </div>
-            <input type="number" class="form-control input-qtde" [value]="itemCart.qtde">
+            <input type="number" class="form-control input-qtde" [min]="1" [value]="item.qtde">
             <div class="input-group-append">
-              <button type="button" class="btn btn-controls-cart" (click)="plusItem(itemCart.qtde)">+</button>
+              <button type="button" class="btn btn-controls-cart" (click)="plusItem(item.id)">+</button>
             </div>
           </div>
         </div>
-        <div class="col-9 col-xl-2 pt-3 pb-3"><span class="title-items">Total </span>R$ {{ itemCart.price * itemCart.qtde | number:'.2'  }}</div>
+        <div class="col-9 col-xl-2 pt-3 pb-3"><span class="title-items">Total </span>R$ {{ item.price * item.qtde | number:'.2'  }}</div>
         <div class="col-3 col-xl-1 pt-3 pb-3 text-right text-xl-center">
           <div class="items-remove"><i class="fas fa-trash-alt"></i></div>
         </div>

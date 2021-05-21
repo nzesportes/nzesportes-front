@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {OwlOptions} from 'ngx-owl-carousel-o';
+import {CartService} from '../../services/cart.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -64,7 +65,9 @@ export class ProductDetailComponent implements OnInit {
     nav: true
   };
 
-  constructor() {
+  constructor(
+    private cartService: CartService
+  ) {
   }
 
   ngOnInit(): void {
@@ -77,5 +80,17 @@ export class ProductDetailComponent implements OnInit {
 
   calculate(): void {
     this.shipping = { dias: 4, valor: 27.50};
+  }
+
+  addToCart(id: string): void {
+    const product = {
+      id: 1,
+      img: 'assets/images/product.jpg',
+      name: 'Camiseta NBL',
+      price: 129.00,
+      qtde: 3
+    };
+    this.cartService.addToCart(product);
+
   }
 }
