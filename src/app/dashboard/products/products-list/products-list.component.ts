@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
-import {BrandsService} from '../../shared/services/brands.service';
-import {CategoriesService} from '../../shared/services/categories.service';
+import {BrandsService} from '../../../shared/services/brands.service';
+import {CategoriesService} from '../../../shared/services/categories.service';
 import {zip} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';

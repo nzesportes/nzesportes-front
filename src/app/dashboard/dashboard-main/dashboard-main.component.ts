@@ -2,8 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 // @ts-ignore
 import * as $ from 'jquery';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
-import {BrandsService} from '../shared/services/brands.service';
-import {CategoriesService} from '../shared/services/categories.service';
+import {BrandsService} from '../../shared/services/brands.service';
+import {CategoriesService} from '../../shared/services/categories.service';
 import {zip} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {Router} from '@angular/router';

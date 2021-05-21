@@ -2,14 +2,14 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
-import {Product} from '../../shared/models/product.model';
-import {ProductDetails} from '../../shared/models/product-details.mode';
-import {BrandsService} from '../../shared/services/brands.service';
+import {Product} from '../../../shared/models/product.model';
+import {ProductDetails} from '../../../shared/models/product-details.model';
+import {BrandsService} from '../../../shared/services/brands.service';
 import {take} from 'rxjs/operators';
-import {Brand} from '../../shared/models/brand.model';
-import {Categorie} from '../../shared/models/categorie.model';
-import {CategoriesService} from '../../shared/services/categories.service';
-import {ProductsService} from '../../shared/services/products.service';
+import {Brand} from '../../../shared/models/brand.model';
+import {Category} from '../../../shared/models/category.model';
+import {CategoriesService} from '../../../shared/services/categories.service';
+import {ProductsService} from '../../../shared/services/products.service';
 
 @Component({
   selector: 'app-new-product',
@@ -29,7 +29,7 @@ export class NewProductComponent implements OnInit {
 
   public product!: Product;
   public brands!: Brand[];
-  public categories!: Categorie[];
+  public categories!: Category[];
   hasError!: boolean;
 
   constructor(
@@ -68,7 +68,7 @@ export class NewProductComponent implements OnInit {
     );
   }
 
-  private createFormArrayCategorie(categorie: Categorie): FormGroup {
+  private createFormArrayCategorie(categorie: Category): FormGroup {
     let hasChecked;
     if (this.product) {
       hasChecked = this.product.category.find(c => c.id === categorie.id);
@@ -82,7 +82,7 @@ export class NewProductComponent implements OnInit {
     });
   }
 
-  private setArrayCategorieProduct(categorie: Categorie): FormGroup {
+  private setArrayCategorieProduct(categorie: Category): FormGroup {
     return new FormGroup({
       id: new FormControl(categorie?.id ? categorie.id : null),
       name: new FormControl(categorie?.name ? categorie.name : '', Validators.required),

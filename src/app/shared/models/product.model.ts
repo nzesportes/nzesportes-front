@@ -1,11 +1,11 @@
-import {Categorie} from './categorie.model';
-import {ProductDetails} from './product-details.mode';
+import {Category} from './category.model';
+import {ProductDetails} from './product-details.model';
 
 export interface Product {
   id: string;
   description: string;
   model: string;
-  category: Categorie[];
+  category: Category[];
   productDetails: ProductDetails[];
   status: boolean;
 }
