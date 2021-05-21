@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {TokenStorageService} from '../../../shared/services/token-storage.service';
-import {AuthService} from '../../../shared/services/auth.service';
+import {TokenStorageService} from '../../../../shared/services/token-storage.service';
+import {AuthService} from '../../../../shared/services/auth.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthenticationRequest} from '../../../shared/models/authentication-request.model';
+import {AuthenticationRequest} from '../../../../shared/models/authentication-request.model';
 import {take} from 'rxjs/operators';
 import {Router} from '@angular/router';
 

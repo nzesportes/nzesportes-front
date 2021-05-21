@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthenticationResponse} from '../../../shared/models/authentication-response.model';
-import {TokenStorageService} from '../../../shared/services/token-storage.service';
-import {CustomerService} from '../../../shared/services/customer.service';
+import {AuthenticationResponse} from '../../../../shared/models/authentication-response.model';
+import {TokenStorageService} from '../../../../shared/services/token-storage.service';
+import {CustomerService} from '../../../../shared/services/customer.service';
 import {take} from 'rxjs/operators';
-import {Customer} from '../../../shared/models/customer.model';
+import {Customer} from '../../../../shared/models/customer.model';
 
 @Component({
   selector: 'app-header',
