@@ -1,0 +1,326 @@
+.container-product-listing {
+  padding: 80px 0px;
+}
+
+.product-content:hover:before {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transform: scale(1, 1);
+  -moz-transform: scale(1, 1);
+  -ms-transform: scale(1, 1);
+  -o-transform: scale(1, 1);
+  transform: scale(1, 1);
+}
+
+.product-content:before {
+  content: '';
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #000;
+  z-index: 0;
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transform: scale(0.8, 0.8);
+  -moz-transform: scale(0.8, 0.8);
+  -ms-transform: scale(0.8, 0.8);
+  -o-transform: scale(0.8, 0.8);
+  transform: scale(0.8, 0.8);
+  -webkit-transition: all 0.3s ease;
+  -moz-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+
+.product-image {
+  position: relative;
+}
+
+.image-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  cursor: pointer;
+}
+
+.product {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.product-description {
+  font-size: 15px;
+  font-weight: 700;
+  color: #2b2828;
+  line-height: 1.4em;
+  text-decoration: none;
+}
+
+.product-description:hover {
+  color: #F37135;
+}
+
+.product-categories {
+  font-size: 14px;
+  line-height: 1.5em;
+}
+
+.product-categories a {
+  text-decoration: none;
+  color: #2b2828;
+}
+
+.product-categories a:hover {
+  color: #F37135;
+}
+
+.product-detail span {
+  display: inline-block;
+  position: absolute;
+  bottom: 0px;
+  right: 10px;
+  font-size: 18px;
+  color: #F37135;
+  font-weight: 700;
+}
+
+.product-detail del {
+  font-size: 14px;
+  color: #bcbcbc;
+}
+
+.product-detail {
+  position: relative;
+}
+
+.badge-product {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 35px;
+  z-index: 10;
+  background-color: #2AC37D;
+  border-radius: 0;
+}
+
+.badge-product span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  font-size: 16px;
+  font-weight: 500;
+  color: #efefef;
+}
+
+.badge-sale {
+  top: 0px;
+  background-color: #cf5050;
+}
+
+.second-sale {
+  top: 50px;
+  background-color: #cf5050;
+}
+
+.product-favorite:hover {
+  -webkit-transform: scale(1, 1);
+  -moz-transform: scale(1, 1);
+  -ms-transform: scale(1, 1);
+  -o-transform: scale(1, 1);
+  transform: scale(1, 1);
+  background-color: #F37135;
+}
+
+.product-favorite {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  z-index: 10000;
+  background-color: #4d4d4d;
+  cursor: pointer;
+}
+
+.product-favorite i {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  color: #fff;
+}
+
+#button-filters {
+  padding: 0 15px;
+  display: block;
+  font-size: 20px;
+  font-weight: 500;
+  text-transform: uppercase;
+  position: relative;
+}
+
+#button-filters button {
+  font-size: 14px;
+  position: absolute;
+  right: 15px;
+}
+
+#filters-component {
+  display: none;
+}
+
+.modal-header {
+  text-transform: uppercase;
+}
+
+.modal-content {
+  border: 0;
+  border-radius: 0;
+  height: calc(100% - 40px);
+}
+
+.modal-dialog {
+  width: 100%;
+  margin: 0;
+  max-width: none;
+  height: 100%;
+}
+
+.modal-body {
+  overflow-y: scroll;
+}
+
+.btn-filter {
+  background-color: #f37135;
+  text-transform: uppercase;
+  width: 100%;
+  border-radius: 0;
+  border: #F37135;
+  font-size: 14px;
+  padding: 10px 6px;
+}
+
+.modal-content {
+  position: relative;
+}
+
+.btn-filter {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+}
+
+.page-item {
+  margin-right: 15px;
+}
+
+.page-link {
+  color: #f37135;
+  border-radius: 100%;
+  width: 45px;
+  height: 45px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 500;
+  border: 3px solid #e5e5e5;
+}
+
+.page-link:hover {
+  background-color: #f37135;
+  color: #fff;
+}
+
+.page-item.active .page-link {
+  background-color: #f37135;
+  border: 3px solid #e5e5e5;
+}
+
+.page-link:first-child, .page-link:last-child {
+  border-radius: 100%;
+}
+
+// Extra small devices (portrait phones, less than 576px)
+// No media query for `xs` since this is the default in Bootstrap
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+  .coming-up-title {
+    min-width: 0;
+    width: 100%;
+    font-size: 20px;
+    line-height: 60px;
+  }
+  .coming-up-title:before {
+    font-size: 60px;
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  #button-filters {
+    display: none;
+  }
+
+  #filters-component {
+    display: block;
+  }
+
+  .coming-up-title {
+    display: block;
+    font-size: 25px;
+    line-height: 100px;
+  }
+  .coming-up-title:before {
+    font-size: 70px;
+  }
+
+  .coming-up-filter li {
+    margin-right: 50px;
+  }
+
+  .coming-up-filter li a {
+    font-size: 16px;
+  }
+
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .coming-up-title {
+    min-width: 500px;
+  }
+  .coming-up-title:before {
+    font-size: 80px;
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .coming-up-title {
+    min-width: 1000px;
+
+  }
+  .coming-up-title:before {
+    font-size: 100px;
+  }
+
+  .container-product-listing {
+    padding: 80px 30px;
+  }
+}

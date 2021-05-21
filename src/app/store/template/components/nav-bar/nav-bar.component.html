@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-limit-bottom">
+  <div class="container-fluid">
+    <div class="nav-column-left text-left float-left">
+      <a class="navbar-brand" href="#">
+        <img src="../../../../../assets/images/logo_nz.png" width="auto" height="60" alt="">
+      </a>
+    </div>
+
+    <div class="nav-column-center float-left">
+      <app-menu-items></app-menu-items>
+    </div>
+
+    <div class="nav-column-right text-right float-left">
+      <form class="search-header">
+        <input class="form-control" type="search" placeholder="PESQUISAR..." aria-label="Search">
+        <button><i class="fas fa-search"></i></button>
+      </form>
+      <div class="nav-cart">
+        <a class="nav-cart-button">
+          <span><i>{{ getTotalItemsCart() }}</i></span>
+          <i class="fas fa-shopping-cart"></i>
+        </a>
+        <div class="cart-preview">
+          <app-cart-preview></app-cart-preview>
+        </div>
+      </div>
+      <div (click)="changeStateSidebar()" class="nav-toggle">
+        <i class="fas fa-bars" [ngClass]="!isSidebarOpened ? 'fas fa-bars' : 'fas fa-times'"></i>
+      </div>
+    </div>
+  </div>
+</nav>
+

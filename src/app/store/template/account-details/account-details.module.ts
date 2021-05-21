@@ -6,6 +6,7 @@ import { MyDataComponent } from './my-data/my-data.component';
 import { MyOrdersComponent } from './my-orders/my-orders.component';
 import { MyAddressesComponent } from './my-addresses/my-addresses.component';
 import { MyFavoritesComponent } from './my-favorites/my-favorites.component';
+import {MyAddressesModule} from './my-addresses/my-addresses.module';
 
 
 @NgModule({

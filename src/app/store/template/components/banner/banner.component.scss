@@ -1,0 +1,46 @@
+.carousel-indicators li {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+}
+
+.carousel-item {
+  width: 100%;
+  max-height: 210px;
+  overflow: hidden;
+}
+.carousel-item img {
+  height: 100%;
+  width: auto;
+}
+
+// Extra small devices (portrait phones, less than 576px)
+// No media query for `xs` since this is the default in Bootstrap
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+  .carousel-item {
+    max-height: 380px;
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .carousel-item {
+    max-height: 510px;
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .carousel-item {
+    max-height: 660px;
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .carousel-item {
+    max-height: 750px;
+  }
+}
