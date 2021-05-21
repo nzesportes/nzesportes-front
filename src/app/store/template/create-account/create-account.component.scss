@@ -50,7 +50,6 @@ legend, label, h1 {
   background-color: #F37135;
   border: #F37135;
   font-size: 14px;
-  margin-top: 10px;
   padding: 10px 6px;
   text-transform: uppercase;
 }
@@ -65,6 +64,12 @@ legend, label, h1 {
   padding: 0;
   top: 38px;
   right: 20px;
+}
+
+.btn-back-page {
+  border-radius: 0;
+  font-size: 14px;
+  padding: 9px 13px;
 }
 
 .password input {

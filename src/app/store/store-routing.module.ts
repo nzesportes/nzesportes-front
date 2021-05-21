@@ -6,6 +6,8 @@ import {CreateAccountComponent} from './template/create-account/create-account.c
 import {CartComponent} from './template/cart/cart.component';
 import {AuthVerifyLogin} from '../shared/guards/auth-not-logged-guard';
 import {AuthGuard} from '../shared/guards/auth-guard';
+import {ProductDetailComponent} from './template/product-detail/product-detail.component';
+import {ProductListingComponent} from './template/product-listing/product-listing.component';
 
 const routes: Routes = [
   {
@@ -24,6 +26,14 @@ const routes: Routes = [
       {
         path: 'carrinho',
         component: CartComponent
+      },
+      {
+        path: 'produtos/:url',
+        component: ProductDetailComponent
+      },
+      {
+        path: 'search',
+        component: ProductListingComponent
       },
       {
         path: 'minha-conta',

@@ -1,0 +1,30 @@
+<form [formGroup]="formLogin">
+  <div class="form-group input-login">
+    <input type="email" class="form-control" formControlName="email" placeholder="E-mail"
+           [ngClass]="{ 'is-invalid': validateFields.email.errors && validateFields.email.touched }">
+    <i class="fas fa-user icon-input"></i>
+    <div class="invalid-feedback text-errors">
+      <span *ngIf="validateFields.email?.errors?.required">Por favor, insira seu e-mail.</span>
+      <span *ngIf="validateFields.email?.errors?.email">Por favor, insira um e-mail válido</span>
+    </div>
+  </div>
+  <div class="form-group input-login">
+    <input type="password" #pwd class="form-control password" formControlName="password" placeholder="Senha"
+           [ngClass]="{ 'is-invalid': validateFields.password.errors && validateFields.password.touched }">
+    <i class="fas fa-lock icon-input"></i>
+    <button type="button" class="btn btn-input" (click)="changePassword(pwd)">
+      <i [class]="pwd.type == 'password' ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+    </button>
+    <div class="invalid-feedback text-errors" *ngIf="validateFields.password?.errors?.required">
+      Por favor, insira sua senha.
+    </div>
+  </div>
+  <div>
+    <button type="button" class="btn btn-primary btn-submit" [disabled]="!formLogin.valid" (click)="singIn()">ENTRAR
+    </button>
+  </div>
+  <div class="forgot-password">
+    <span><a href="#" data-toggle="modal" data-target="#esqueci-minha-senha">Esqueci minha senha</a></span>
+  </div>
+</form>
+

@@ -1,0 +1,32 @@
+.form-container {
+  max-width: 600px;
+}
+
+h2 {
+  color: #F37135;
+}
+
+.form-group label {
+  text-transform: uppercase;
+  color: #F37135;
+  font-size: 14px;
+}
+
+.form-group input, .form-group textarea {
+  border-radius: 10px;
+}
+
+.form-group textarea {
+  min-height: 110px;
+}
+
+.bg-nz-gray {
+  background-color: #ededed;
+}
+
+.btn-orange-crayola {
+  background-color: #F37135;
+  color: #fff;
+  border-radius: 40px;
+}
+
