@@ -72,16 +72,16 @@
 
 <nav aria-label="Page navigation example" *ngIf="content && products.length > 0">
   <ul class="pagination justify-content-end mr-3 ml-3">
-    <li class="page-item" [ngClass]="{'disabled': page === 0}">
-      <a class="page-link" tabindex="-1" aria-disabled="true" (click)="updateIndex(this.page-1)">Previous</a>
+    <li class="page-item" [ngClass]="{'disabled': paginationService.page === 0}">
+      <a class="page-link" tabindex="-1" aria-disabled="true" (click)="updateIndex(paginationService.page-1)">Previous</a>
     </li>
-    <li class="page-item" [ngClass]="{'active': i == page}"
-        *ngFor="let i of this.getRange(); let in = index"
+    <li class="page-item" [ngClass]="{'active': i == paginationService.page}"
+        *ngFor="let i of paginationService.getRange(); let in = index"
     >
       <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
     </li>
-    <li class="page-item" [ngClass]="{'disabled': (page + 1) === this.pages }">
-      <a class="page-link" (click)="updateIndex(this.page + 1)">Next</a>
+    <li class="page-item" [ngClass]="{'disabled': (paginationService.page + 1) === paginationService.pages }">
+      <a class="page-link" (click)="updateIndex(paginationService.page + 1)">Next</a>
     </li>
   </ul>
 </nav>
