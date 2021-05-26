@@ -45,13 +45,15 @@ body {
 //}
 
 .menu_right{
-  visibility: hidden;
+  //visibility: hidden;
+  display: none;
 }
 @media (min-width: 768px) {
   .menu_right{
     position: absolute;
     right: 0;
-    visibility: visible;
+    //visibility: visible;
+    display: block;
   }
   #sidebar-wrapper {
     margin-left: 0;

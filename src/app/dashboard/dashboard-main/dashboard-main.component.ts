@@ -7,6 +7,7 @@ import {CategoriesService} from '../../shared/services/categories.service';
 import {zip} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {TokenStorageService} from '../../shared/services/token-storage.service';
 
 @Component({
   selector: 'app-dashboard-main',
@@ -16,11 +17,11 @@ import {Router} from '@angular/router';
 export class DashboardMainComponent implements OnInit {
   @ViewChild('warn')
   public readonly dialogWarn!: SwalComponent;
-  sideBarOpen = true;
 
   constructor(
     private brandsService: BrandsService,
     private categoriesService: CategoriesService,
+    private tokenStorageService: TokenStorageService,
     private router: Router,
   ) {
   }
@@ -53,12 +54,16 @@ export class DashboardMainComponent implements OnInit {
           this.dialogWarn.text = 'Para acessar a página de produto é necessário ter cadastrado ao menos uma categoria e marca!';
           this.dialogWarn.fire();
         } else {
-            this.router.navigateByUrl('/painel/produtos');
+          this.router.navigateByUrl('/painel/produtos');
         }
       }, () => {
 
       });
   }
 
+  logout(): void {
+    this.tokenStorageService.signOut();
+    window.location.reload();
+  }
 
 }
