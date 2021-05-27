@@ -1,6 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {OwlOptions} from 'ngx-owl-carousel-o';
 import {CartService} from '../../services/cart.service';
+import {Store} from '@ngrx/store';
+import {CartState, CartStateReducer} from '../../redux/cart/cart.state';
+import {AddItemCart, CartActionsType} from '../../redux/cart/cart.actions';
 
 @Component({
   selector: 'app-product-detail',
@@ -66,7 +69,8 @@ export class ProductDetailComponent implements OnInit {
   };
 
   constructor(
-    private cartService: CartService
+    private cartService: CartService,
+    private store: Store<CartState>,
   ) {
   }
 
@@ -90,7 +94,23 @@ export class ProductDetailComponent implements OnInit {
       price: 129.00,
       qtde: 3
     };
-    this.cartService.addToCart(product);
+
+    this.store.dispatch(new AddItemCart(product));4
+
+    const product1 = {
+      id: 2,
+      img: 'assets/images/product.jpg',
+      name: 'Camiseta NBL',
+      price: 129.00,
+      qtde: 3
+    };
+
+    this.store.dispatch(new AddItemCart(product1));
+    /*this.store.dispatch({
+      type: CartActionsType.ADD_ITEM_CART,
+      payload: product
+    });*/
+    // this.cartService.addToCart(product);
 
   }
 }

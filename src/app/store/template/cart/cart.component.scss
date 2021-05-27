@@ -29,6 +29,10 @@
   font-size: 16px;
 }
 
+.listing-body:last-child {
+  border-bottom: 0;
+}
+
 /* Chrome, Safari, Edge, Opera */
 .input-qtde::-webkit-outer-spin-button,
 .input-qtde::-webkit-inner-spin-button {

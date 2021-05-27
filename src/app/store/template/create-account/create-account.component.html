@@ -1,6 +1,6 @@
 <div class="container-fluid container-create-account">
   <div class="form-create-account">
-    <h1 class="page-title mb-5">Criar Conta</h1>
+    <h1 class="page-title mb-5">{{ id ? 'Editar Conta' : 'Criar Conta'}}</h1>
     <form class="row" [formGroup]="createAccount" (ngSubmit)="save()">
         <div class="form-group col-12 col-md-6">
           <label for="name">Nome *</label>
@@ -14,17 +14,17 @@
         <div class="form-group col-12 col-md-6">
           <label for="lastname">Sobrenome *</label>
           <input type="text" class="form-control"
-                 [ngClass]="{ 'is-invalid': validateFields.lastname.errors && validateFields.lastname.touched }"
-                 id="lastname" formControlName="lastname" aria-describedby="field-lastname">
-          <div id="field-lastname" class="invalid-feedback" *ngIf="validateFields.lastname?.errors?.required">
+                 [ngClass]="{ 'is-invalid': validateFields.lastName.errors && validateFields.lastName.touched }"
+                 id="lastname" formControlName="lastName" aria-describedby="field-lastname">
+          <div id="field-lastname" class="invalid-feedback" *ngIf="validateFields.lastName?.errors?.required">
             Por favor, insira seu sobrenome.
           </div>
         </div>
         <div class="form-group input-create-account col-12 col-md-12 col-lg-6">
           <label for="email">E-mail *</label>
           <input type="email" class="form-control"
-                 [ngClass]="{ 'is-invalid': validateFields.email.errors && validateFields.email.touched }"
-                 id="email" formControlName="email" aria-describedby="field-email">
+                 [ngClass]="{ 'is-invalid': validateFields.username.errors && validateFields.username.touched }"
+                 id="email" formControlName="username" aria-describedby="field-email">
           <div id="field-email" class="invalid-feedback">
             <span *ngIf="validateFields.email?.errors?.required">Por favor, insira seu e-mail.</span>
             <span *ngIf="validateFields.email?.errors?.email">Por favor, insira um e-mail válido</span>
@@ -41,7 +41,7 @@
           <span *ngIf="validateFields.password?.errors?.minlength">Senha deve conter no mínimo 8 caracteres</span>
         </div>
         <i class="fas fa-lock icon-input"></i>
-        <button type="button" class="btn btn-input" (click)="changePassword(password)">
+        <button type="button" class="btn btn-input" (click)="changePassword(password)" [disabled]="this.id">
           <i [class]="password.type == 'password' ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
         </button>
       </div>
@@ -55,7 +55,7 @@
           <span *ngIf="validateFields.passwordRepeat?.errors?.mustMatch">Senhas não coincidem.</span>
         </div>
         <i class="fas fa-lock icon-input"></i>
-        <button type="button" class="btn btn-input" (click)="changePassword(passwordRepeat)">
+        <button type="button" class="btn btn-input" (click)="changePassword(passwordRepeat)" [disabled]="this.id">
           <i [class]="passwordRepeat.type == 'password' ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
         </button>
       </div>
@@ -107,8 +107,8 @@
         </div>
       </fieldset>
       <div class="col-12 text-right mt-3">
-        <button class="btn btn-secondary btn-back-page mr-1" routerLink="../"><i class="fas fa-arrow-left"></i></button>
-        <button type="submit" class="btn btn-primary btn-submit" [disabled]="!createAccount.valid">Criar Conta</button>
+        <button class="btn btn-secondary btn-back-page mr-1" routerLink="{{ id ? '/minha-conta/meus-dados' : '../'}}"><i class="fas fa-arrow-left"></i></button>
+        <button type="submit" class="btn btn-primary btn-submit" [disabled]="!createAccount.valid">{{ id ? 'Salvar' : 'Criar Conta'}}</button>
       </div>
     </form>
   </div>

@@ -1,16 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CustomerService} from '../../../shared/services/customer.service';
 import {User} from '../../../shared/models/user.model';
 import {Role} from '../../../shared/enums/role.enum';
-import {AuthService} from '../../../shared/services/auth.service';
 import {Customer} from '../../../shared/models/customer.model';
 import {AuthenticationRequest} from '../../../shared/models/authentication-request.model';
 import {take} from 'rxjs/operators';
 import {TokenStorageService} from '../../../shared/services/token-storage.service';
-import {Router} from '@angular/router';
-import { cpf } from 'cpf-cnpj-validator';
-
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {cpf} from 'cpf-cnpj-validator';
+import {Observable} from 'rxjs';
+import {Gender} from '../../../shared/enums/gender';
 
 @Component({
   selector: 'app-create-account',
@@ -22,6 +22,7 @@ export class CreateAccountComponent implements OnInit {
 
   // @ts-ignore
   createAccount: FormGroup;
+  id = '';
 
   user: User = {
     id: '',
@@ -38,6 +39,13 @@ export class CreateAccountComponent implements OnInit {
     name: '',
     lastName: '',
     phone: '',
+    gender: Gender.M,
+    user: {
+      id: '',
+      username: '',
+      password: '',
+      role: Role.ROLE_USER,
+    },
     userId: ''
   };
 
@@ -50,11 +58,29 @@ export class CreateAccountComponent implements OnInit {
     private formBuilder: FormBuilder,
     private customerService: CustomerService,
     private tokenStorageService: TokenStorageService,
+    private activatedRoute: ActivatedRoute,
     private router: Router
   ) {
   }
 
   ngOnInit(): void {
+    const params: Observable<Params> = this.activatedRoute.params;
+    params.subscribe(urlParams => {
+      this.id = urlParams.id;
+      if (this.id) {
+        this.customerService.getByUserId(this.id)
+          .subscribe(response => {
+              this.customer = response;
+              this.createAccount.patchValue(response);
+              this.createAccount.controls.username.setValue(response.user.username);
+              this.createAccount.controls.password.setValue('******');
+              this.createAccount.controls.passwordRepeat.setValue('******');
+            },
+            error => {
+              console.log(error);
+            });
+      }
+    });
     this.createForm();
   }
 
@@ -64,22 +90,23 @@ export class CreateAccountComponent implements OnInit {
     };
   }
 
-
   private createForm(): void {
     this.createAccount = this.formBuilder.group({
         name: ['', Validators.required],
-        lastname: ['', Validators.required],
-        email: ['', [Validators.required, Validators.email]],
-        password: ['', [Validators.required, Validators.minLength(8)]],
-        passwordRepeat: ['', Validators.required],
-        cpf: ['', Validators.required],
+        lastName: ['', Validators.required],
+        username: [{value: '', disabled: this.id ? true : false}, [Validators.required, Validators.email]],
+        password: [{value: '', disabled: this.id ? true : false}, [Validators.required, Validators.minLength(8)]],
+        passwordRepeat: [{value: '', disabled: this.id ? true : false}, Validators.required],
+        cpf: [{value: '', disabled: this.id ? true : false}, Validators.required],
         instagram: [''],
         birthDate: [''],
         phone: ['', Validators.required],
         gender: ['']
       },
-      {validator: [this.checkPasswords('password', 'passwordRepeat'),
-        this.checkCpf('cpf')]}
+      {
+        validator: [this.checkPasswords('password', 'passwordRepeat'),
+          this.checkCpf('cpf')]
+      }
     );
   }
 
@@ -133,29 +160,48 @@ export class CreateAccountComponent implements OnInit {
   }
 
   save(): void {
-    this.authenticationRequest.username = this.createAccount.get('email')?.value;
-    this.authenticationRequest.password = this.createAccount.get('password')?.value;
+    if (!this.id) {
+      this.authenticationRequest.username = this.createAccount.get('username')?.value;
+      this.authenticationRequest.password = this.createAccount.get('password')?.value;
 
-    this.tokenStorageService.registerUserSession(this.authenticationRequest)
-      .pipe(
-        take(1)
-      ).subscribe(response => {
+      this.tokenStorageService.registerUserSession(this.authenticationRequest)
+        .pipe(
+          take(1)
+        ).subscribe(response => {
+        this.customer.cpf = this.createAccount.get('cpf')?.value;
+        this.customer.birthDate = this.createAccount.get('birthDate')?.value;
+        this.customer.instagram = '@' + this.createAccount.get('instagram')?.value;
+        this.customer.name = this.createAccount.get('name')?.value;
+        this.customer.lastName = this.createAccount.get('lastName')?.value;
+        this.customer.phone = this.createAccount.get('phone')?.value;
+        this.customer.gender = this.createAccount.get('gender')?.value;
+        this.customer.userId = response.id;
+
+
+        this.customerService.create(this.customer)
+          .pipe(take(1)).subscribe(() => {
+          window.location.reload();
+        }, error => {
+          console.log(error);
+        });
+      }, error => {
+        console.log(error);
+      });
+    } else {
+
       this.customer.cpf = this.createAccount.get('cpf')?.value;
       this.customer.birthDate = this.createAccount.get('birthDate')?.value;
       this.customer.instagram = '@' + this.createAccount.get('instagram')?.value;
       this.customer.name = this.createAccount.get('name')?.value;
-      this.customer.lastName = this.createAccount.get('lastname')?.value;
+      this.customer.lastName = this.createAccount.get('lastName')?.value;
       this.customer.phone = this.createAccount.get('phone')?.value;
-      this.customer.userId = response.id;
-
-      this.customerService.create(this.customer)
-        .pipe(take(1)).subscribe(() => {
-        window.location.reload();
-      }, error => {
-        console.log(error);
-      });
-    }, error => {
-      console.log(error);
-    });
+      this.customer.gender = this.createAccount.get('gender')?.value;
+      this.customerService.update(this.customer)
+        .subscribe(() => {
+          window.location.reload();
+        }, error => {
+          console.log(error);
+        });
+    }
   }
 }

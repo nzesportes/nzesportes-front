@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {CartService} from '../../../services/cart.service';
+import {Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-cart-preview',
@@ -18,12 +20,17 @@ export class CartPreviewComponent implements OnInit {
     }
   ];
 
+  teste$: Observable<any>;
+
   qtdeTotal = 0;
   priceTotal = 0.00;
 
   constructor(
-    private cartService: CartService
-  ) { }
+    private cartService: CartService,
+    private store: Store<any>
+  ) {
+    this.teste$ = this.store.select('cart');
+  }
 
   ngOnInit(): void {
     this.getItemsCart();

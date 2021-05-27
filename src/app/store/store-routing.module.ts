@@ -21,7 +21,11 @@ const routes: Routes = [
       {
         path: 'criar-conta',
         component: CreateAccountComponent,
-        canActivate: [AuthVerifyLogin]
+        // canActivate: [AuthVerifyLogin]
+      },
+      {
+        path: 'editar-conta/:id',
+        component: CreateAccountComponent
       },
       {
         path: 'carrinho',
@@ -37,7 +41,7 @@ const routes: Routes = [
       },
       {
         path: 'minha-conta',
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
         loadChildren: () => import('./template/account-details/account-details.module').then(m => m.AccountDetailsModule)
       },
       {path: '', redirectTo: '', pathMatch: 'full'}
