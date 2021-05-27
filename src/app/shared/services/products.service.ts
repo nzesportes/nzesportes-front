@@ -43,6 +43,6 @@ export class ProductsService {
   delete(id: string): Observable<Product> {
     const params = new HttpParams()
       .set('async', 'true');
-    return this.http.get<Product>(this.api + id, {params});
+    return this.http.delete<Product>(this.api + id, {params});
   }
 }
