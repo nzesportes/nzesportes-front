@@ -67,7 +67,6 @@ export class TokenStorageService {
       .pipe(
         tap(response => {
           this.setSession(response);
-          console.log('user', this.getSessionUser());
           return response;
         })
       );
