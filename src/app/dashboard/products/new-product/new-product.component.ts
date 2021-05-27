@@ -52,6 +52,7 @@ export class NewProductComponent implements OnInit {
         this.productService.getById(id)
           .pipe(take(1))
           .subscribe(p => {
+            console.log(p);
             this.product = p;
             this.initAllForms();
           }, () => {
@@ -76,7 +77,7 @@ export class NewProductComponent implements OnInit {
       model: new FormControl(this.product?.model ? this.product.model : '', Validators.required),
       category: this.formBuilder.array(this.product?.category ? this.product.category : [], Validators.required),
       productDetails: this.formBuilder.array(this.product?.productDetails ? this.product.productDetails : [], Validators.required),
-      status: new FormControl(this.product?.status ? this.product.status : null),
+      status: new FormControl(this.product?.status ? this.product.status : false),
     });
   }
 
@@ -125,7 +126,7 @@ export class NewProductComponent implements OnInit {
         this.categories = result.content;
         this.categories.forEach(c => this.categoriesArrayForm.push(this.createFormArrayCategorie(c)));
       }, () => {
-
+        this.hasError = true;
       });
   }
 
@@ -191,7 +192,7 @@ export class NewProductComponent implements OnInit {
       .subscribe(result => {
         this.brands = result.content;
       }, () => {
-
+        this.hasError = true;
       });
   }
 
@@ -211,19 +212,19 @@ export class NewProductComponent implements OnInit {
   }
 
   save(): void {
-    if (this.product) {
-
-    } else {
-      this.productService.create(this.formProduct.value)
-        .pipe(take(1))
-        .subscribe(() => {
-          this.dialogSuccess.title = 'Produto criado com sucesso!';
-          this.dialogSuccess.fire();
-        }, error => {
-          this.setErrorDialog(error);
-          this.erroCallSaveAgain();
-        });
-    }
+    const request =
+      this.product ?
+        this.productService.update(this.formProduct.value) :
+        this.productService.create(this.formProduct.value);
+    request
+      .pipe(take(1))
+      .subscribe(() => {
+        this.dialogSuccess.title = 'Produto salvo com sucesso!';
+        this.dialogSuccess.fire();
+      }, error => {
+        this.setErrorDialog(error);
+        this.erroCallSaveAgain();
+      });
   }
 
   erroCallSaveAgain(): void {

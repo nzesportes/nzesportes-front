@@ -5,18 +5,21 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a routerLink="/painel/produtos">Produtos</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Novo Produto</li>
+          <li class="breadcrumb-item active" aria-current="page"> {{product?.id ? 'Editar' : 'Novo produto' }}</li>
         </ol>
       </nav>
     </div>
     <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
-      <button type="button" class="btn btn-secondary w-100">Cancelar</button>
+      <button type="button" class="btn btn-secondary w-100" routerLink="/painel/produtos">Cancelar</button>
     </div>
     <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
-      <button type="button" class="btn btn-primary w-100"  (click)="save()">Salvar</button>
+      <button type="button" class="btn btn-primary w-100" [disabled]="formProduct.invalid"  (click)="save()">Salvar</button>
     </div>
   </div>
-  <div class="row mt-3">
+  <div class="alert alert-danger" role="alert" *ngIf="hasError">
+    Não foi possível carregar algumas informações. Por favor, <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+  </div>
+  <div class="row mt-3"  *ngIf="!hasError">
     <div class="col-lg-8 mb-3">
       <div class="card mb-3">
         <div class="card-body">
@@ -127,7 +130,7 @@
                 <tr class="row-table" formArrayName="productDetails"
                     *ngFor="let productDetail of productDetails.controls; let i = index">
                   <td>{{productDetail.value.color | titlecase}}</td>
-                  <td>{{productDetail.value.price | titlecase}}</td>
+                  <td>{{productDetail.value.price}}</td>
                   <td>
                     <i class="fas fa-edit actions-button text-primary" data-toggle="modal"
                        data-target="#typeCategorie"
@@ -240,7 +243,7 @@
               <select class="form-control" id="name" (change)="setIdBrand()"
                       formControlName="name"
                       [ngClass]="cssError(validateFieldsFormProductDetail.brand)">
-                <option value="{{b.name.toLowerCase()}}" *ngFor="let b of brands">{{b.name | titlecase}}</option>
+                <option value="{{b.name.toLowerCase()}}" *ngFor="let b of brands">{{b?.name | titlecase}}</option>
               </select>
               <div id="field-brand" class="invalid-feedback">
                 Por favor, insira a marca.
@@ -295,9 +298,7 @@
             </label>
           </div>
         </div>
-        <div>
-          {{formProductDetail.value | json}}
-        </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
           <button
@@ -333,4 +334,3 @@
   [showCancelButton]="true"
   icon="error">
 </swal>
-<p>{{formProduct.value | json}}</p>

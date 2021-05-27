@@ -190,6 +190,17 @@
         </div>
       </div>
     </div>
+    <div class="card mb-3"  *ngIf="categorie?.id">
+      <div class="card-body">
+        <h5 class="card-title">Excluir categoria</h5>
+        <hr>
+        Ao exclui-lá ela será apagada definitivamente e não aparecerá mais em sua loja.
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-danger col-lg-2 col-sm-12" (click)="delete()">Excluir</button>
+        </div>
+      </div>
+
+    </div>
 
     <div class="card mb-3">
       <div class="card-body">
@@ -287,7 +298,6 @@
     </div>
   </div>
 </div>
-
 <swal
   [swalOptions]="{ confirmButtonText: 'ok'}"
   (confirm)="redirect()"
@@ -296,7 +306,6 @@
   icon="success">
 </swal>
 <swal
-  (confirm)="save()"
   #error
   [title]="''"
   [text]="''"

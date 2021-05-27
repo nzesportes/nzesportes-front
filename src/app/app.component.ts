@@ -1,6 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {LoaderService} from './shared/services/loader.service';
 import {Observable, Subscription} from 'rxjs';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +11,8 @@ import {Observable, Subscription} from 'rxjs';
 export class AppComponent implements OnInit {
 
   title = 'nzesportes-front';
-  subscription: Observable<boolean> | undefined;
+  subscription!: Observable<boolean>;
+  isLoading = false;
 
   constructor(
     private loaderService: LoaderService
@@ -18,7 +20,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscription = this.loaderService.isLoading;
+    this.loaderService.isLoading
+      .subscribe(res => Promise.resolve(null).then(() => this.isLoading = res));
   }
-
 }

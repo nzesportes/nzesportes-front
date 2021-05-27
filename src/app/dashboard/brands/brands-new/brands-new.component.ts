@@ -62,36 +62,22 @@ export class BrandsNewComponent implements OnInit {
   }
 
   save(): void {
-    if (this.brand?.id) {
-      this.brandService.update(this.formBrand.value)
-        .pipe(take(1))
-        .subscribe(() => {
-          this.dialogSuccess.title = 'Marca atualizada com sucesso!';
-          this.dialogSuccess.fire();
-        }, (error: ErrorWarning) => {
-          this.setErrorDialog(error);
-          this.dialogError.fire().then(r => {
-            if (r.isConfirmed) {
-              this.save();
-            }
-          });
+    const request = this.brand ?
+      this.brandService.update(this.formBrand.value) :
+      this.brandService.create(this.formBrand.value);
+    request
+      .pipe(take(1))
+      .subscribe(() => {
+        this.dialogSuccess.title = 'Marca salva com sucesso!';
+        this.dialogSuccess.fire();
+      }, (error) => {
+        this.setErrorDialog(error);
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.save();
+          }
         });
-    } else {
-      this.brandService.create(this.formBrand.value)
-        .pipe(take(1))
-        .subscribe(() => {
-          this.dialogSuccess.title = 'Marca criada com sucesso!';
-          this.dialogSuccess.fire();
-        }, (error) => {
-          this.setErrorDialog(error);
-          this.dialogError.fire().then(r => {
-            if (r.isConfirmed) {
-              this.save();
-            }
-          });
-        });
-    }
-
+      });
   }
 
   delete(): void {
