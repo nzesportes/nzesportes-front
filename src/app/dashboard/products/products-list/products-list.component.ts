@@ -73,7 +73,7 @@ export class ProductsListComponent implements OnInit {
     )
       .pipe(take(1))
       .subscribe(([brands, categories]) => {
-        if (brands.content.length === 0 && categories.content.length === 0) {
+        if (brands.content.length === 0 || categories.content.length === 0) {
           this.dialogWarn.title = 'Ops, ocorreu um problema';
           this.dialogWarn.text = 'Para acessar a página de produto é necessário ter cadastrado ao menos uma categoria e marca!';
           this.dialogWarn.fire();
