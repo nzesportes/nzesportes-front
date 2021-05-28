@@ -11,9 +11,21 @@ export function cartReducer(
   state = initialState,
   action: { type: any; payload: any; }
 ): CartState {
+  let newCartList = [];
   switch (action.type) {
     case CartActionsType.ADD_ITEM_CART:
-      const newCartList = [...state.items, action.payload];
+      newCartList = [...state.items, action.payload];
+      return {
+        ...state,
+        items: newCartList
+      };
+
+    case CartActionsType.REMOVE_ITEM_CART:
+      newCartList = state.items.filter(item => {
+        // @ts-ignore
+        return item.id !== action.payload.id;
+      });
+
       return {
         ...state,
         items: newCartList

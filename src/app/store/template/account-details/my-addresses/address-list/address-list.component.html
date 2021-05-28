@@ -1,6 +1,9 @@
 <div class="container-fluid p-0">
   <h1 class="page-title mb-3 mb-lg-4">Endereço</h1>
   <div class="row p-0 m-0">
+    <div *ngIf="!addresses" class="col-12 p-0">
+      Você ainda não possui endereços cadastrados.
+    </div>
     <div class="col-12 col-md-6 mb-4" *ngFor="let address of addresses">
       <div class="card container-card">
         <div class="card-body">

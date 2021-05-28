@@ -16,7 +16,7 @@ export class AddItemCart {
 
 export class RemoveItemCart {
   readonly type = CartActionsType.REMOVE_ITEM_CART;
-  constructor(public payload: ItemCart) {}
+  constructor(public payload: any) {}
 }
 
 export class DecreaseItemCart {

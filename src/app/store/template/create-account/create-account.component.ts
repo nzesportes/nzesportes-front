@@ -176,8 +176,6 @@ export class CreateAccountComponent implements OnInit {
         this.customer.phone = this.createAccount.get('phone')?.value;
         this.customer.gender = this.createAccount.get('gender')?.value;
         this.customer.userId = response.id;
-
-
         this.customerService.create(this.customer)
           .pipe(take(1)).subscribe(() => {
           window.location.reload();
@@ -188,10 +186,9 @@ export class CreateAccountComponent implements OnInit {
         console.log(error);
       });
     } else {
-
       this.customer.cpf = this.createAccount.get('cpf')?.value;
       this.customer.birthDate = this.createAccount.get('birthDate')?.value;
-      this.customer.instagram = '@' + this.createAccount.get('instagram')?.value;
+      this.customer.instagram = this.createAccount.get('instagram')?.value;
       this.customer.name = this.createAccount.get('name')?.value;
       this.customer.lastName = this.createAccount.get('lastName')?.value;
       this.customer.phone = this.createAccount.get('phone')?.value;

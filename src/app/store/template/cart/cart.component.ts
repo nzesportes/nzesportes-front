@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {CartService} from '../../services/cart.service';
 import {Observable} from 'rxjs';
 import {Store} from '@ngrx/store';
+import {AddItemCart, RemoveItemCart} from '../../redux/cart/cart.actions';
 
 @Component({
   selector: 'app-cart',
@@ -48,5 +49,17 @@ export class CartComponent implements OnInit {
 
   calculateTotal(): number {
     return this.cartService.getTotalPrice();
+  }
+
+  removeItem(): void {
+    const product = {
+      id: 1,
+      img: 'assets/images/product.jpg',
+      name: 'Camiseta NBL',
+      price: 129.00,
+      qtde: 3
+    };
+
+    this.store.dispatch(new RemoveItemCart(product));
   }
 }

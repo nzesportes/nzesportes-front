@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {AddressService} from '../../../../../shared/services/address.service';
+import {Address} from '../../../../../shared/models/address.model';
 
 @Component({
   selector: 'app-address-list',
@@ -8,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 export class AddressListComponent implements OnInit {
 
 
-  addresses = [
+  /*addresses = [
     {
       rua: 'Rua São Florêncio',
       numero: 1464,
@@ -45,11 +47,19 @@ export class AddressListComponent implements OnInit {
       uf: 'SP',
       cep: '03733-020'
     }
-  ];
+  ];*/
 
-  constructor() { }
+  // @ts-ignore
+  addresses: any;
+
+  constructor(
+    private addressService: AddressService
+  ) { }
 
   ngOnInit(): void {
+    this.addressService.getByUser()
+      .subscribe(response => {
+        console.log(response);
+      });
   }
-
 }
