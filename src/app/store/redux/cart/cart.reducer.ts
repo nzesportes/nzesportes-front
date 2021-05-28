@@ -11,21 +11,11 @@ export function cartReducer(
   state = initialState,
   action: { type: any; payload: any; }
 ): CartState {
-  let newCartList = [];
+  const statusCart = localStorage.getItem('state');
+  const newInitialState = (statusCart && JSON.parse(statusCart)) ?? initialState;
   switch (action.type) {
     case CartActionsType.ADD_ITEM_CART:
-      newCartList = [...state.items, action.payload];
-      return {
-        ...state,
-        items: newCartList
-      };
-
-    case CartActionsType.REMOVE_ITEM_CART:
-      newCartList = state.items.filter(item => {
-        // @ts-ignore
-        return item.id !== action.payload.id;
-      });
-
+      const newCartList = [...state.items, action.payload];
       return {
         ...state,
         items: newCartList

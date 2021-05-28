@@ -87,6 +87,10 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addToCart(id: string): void {
+    this.store.subscribe(state => {
+      localStorage.setItem('state', JSON.stringify(state));
+    });
+
     const product = {
       id: 1,
       img: 'assets/images/product.jpg',

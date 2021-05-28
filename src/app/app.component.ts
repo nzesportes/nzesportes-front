@@ -26,11 +26,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.loaderService.isLoading;
-    this.sub = this.store.subscribe(state => {
-      if (!this.storeService.getState()) {
-        localStorage.setItem('state', JSON.stringify(state));
-      }
-    });
   }
 
   ngOnDestroy(): void {
