@@ -13,6 +13,10 @@ import {AuthGuard} from './shared/guards/auth-guard';
 import {AuthVerifyLogin} from './shared/guards/auth-not-logged-guard';
 import {AuthService} from './shared/services/auth.service';
 import {AuthDashGuard} from './shared/guards/auth-dash-guard';
+import {StoreModule} from '@ngrx/store';
+import {cartReducer} from './store/redux/cart/cart.reducer';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -25,7 +29,10 @@ import {AuthDashGuard} from './shared/guards/auth-dash-guard';
     DashboardModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    SweetAlert2Module.forRoot()
+    SweetAlert2Module.forRoot(),
+    StoreModule.forRoot({}),
+    StoreModule.forFeature('cart', cartReducer),
+    StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production})
   ],
   providers: [
     {
@@ -37,7 +44,9 @@ import {AuthDashGuard} from './shared/guards/auth-dash-guard';
     AuthVerifyLogin,
     AuthDashGuard
   ],
-  exports: [],
+  exports: [
+    StoreModule
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

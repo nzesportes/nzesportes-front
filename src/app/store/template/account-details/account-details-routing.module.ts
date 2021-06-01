@@ -27,7 +27,7 @@ const routes: Routes = [
       },
       {
         path: 'enderecos',
-        canActivate: [AuthGuard],
+        // canActivate: [AuthGuard],
         loadChildren: () => import('./my-addresses/my-addresses.module').then(m => m.MyAddressesModule)
       },
       { path: '', redirectTo: 'meus-dados', pathMatch: 'full' }
