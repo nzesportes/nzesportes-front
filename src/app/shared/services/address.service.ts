@@ -31,7 +31,7 @@ export class AddressService {
     return this.http.put<Address>(`${this.apiURL}`, address);
   }
 
-  deleteById(uuid: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiURL}/${uuid}`);
+  deleteById(uuid: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiURL}/${uuid}`);
   }
 }

@@ -11,5 +11,4 @@ export interface Customer {
   birthDate: Date;
   cpf: string;
   gender: Gender;
-  user: User;
 }

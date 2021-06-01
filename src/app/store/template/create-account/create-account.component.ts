@@ -40,12 +40,6 @@ export class CreateAccountComponent implements OnInit {
     lastName: '',
     phone: '',
     gender: Gender.M,
-    user: {
-      id: '',
-      username: '',
-      password: '',
-      role: Role.ROLE_USER,
-    },
     userId: ''
   };
 
@@ -72,9 +66,6 @@ export class CreateAccountComponent implements OnInit {
           .subscribe(response => {
               this.customer = response;
               this.createAccount.patchValue(response);
-              this.createAccount.controls.username.setValue(response.user.username);
-              this.createAccount.controls.password.setValue('******');
-              this.createAccount.controls.passwordRepeat.setValue('******');
             },
             error => {
               console.log(error);
@@ -191,7 +182,7 @@ export class CreateAccountComponent implements OnInit {
 
       this.customer.cpf = this.createAccount.get('cpf')?.value;
       this.customer.birthDate = this.createAccount.get('birthDate')?.value;
-      this.customer.instagram = '@' + this.createAccount.get('instagram')?.value;
+      this.customer.instagram = this.createAccount.get('instagram')?.value;
       this.customer.name = this.createAccount.get('name')?.value;
       this.customer.lastName = this.createAccount.get('lastName')?.value;
       this.customer.phone = this.createAccount.get('phone')?.value;

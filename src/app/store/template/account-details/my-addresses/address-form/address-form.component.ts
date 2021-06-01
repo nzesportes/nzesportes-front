@@ -69,12 +69,14 @@ export class AddressFormComponent implements OnInit {
 
   save(): void {
     this.address = this.newAddressForm.value;
+    this.address.street = this.newAddressForm.get('street')?.value;
+    this.address.state = this.newAddressForm.get('state')?.value;
+    this.address.city = this.newAddressForm.get('city')?.value;
+    this.address.district = this.newAddressForm.get('district')?.value;
     this.address.customer = this.customer;
-
-    console.log(this.address);
     this.addressService.save(this.address)
-      .subscribe(response => {
-        console.log(response);
+      .subscribe(() => {
+        window.location.reload();
       }, error => {
         console.log(error);
       });
