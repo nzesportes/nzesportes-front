@@ -95,7 +95,7 @@ export class ProductDetailComponent implements OnInit {
       qtde: 3
     };
 
-    this.store.dispatch(new AddItemCart(product));4
+    this.store.dispatch(new AddItemCart(product));
 
     const product1 = {
       id: 2,
