@@ -52,7 +52,6 @@ export class NewProductComponent implements OnInit {
         this.productService.getById(id)
           .pipe(take(1))
           .subscribe(p => {
-            console.log(p);
             this.product = p;
             this.initAllForms();
           }, () => {
@@ -98,7 +97,7 @@ export class NewProductComponent implements OnInit {
       name: new FormControl(categorie?.name ? categorie.name : '', Validators.required),
       status: new FormControl(categorie?.status ? categorie.status : false),
       type: this.formBuilder.array(categorie?.type ? categorie.type : [], Validators.required),
-      checked: new FormControl(hasChecked ? true : false),
+      checked: new FormControl(hasChecked ? true : false)
     });
   }
 
@@ -153,7 +152,6 @@ export class NewProductComponent implements OnInit {
   }
 
   addProductDetails(productDetails: any): void {
-    console.log(productDetails);
     this.productDetails.insert(0, this.createProductDetailsForm(productDetails));
   }
 
