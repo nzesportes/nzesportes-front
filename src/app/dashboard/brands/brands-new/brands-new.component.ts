@@ -1,11 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {BrandsService} from '../../../shared/services/brands.service';
 import {map, take} from 'rxjs/operators';
-import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 import {Brand} from '../../../shared/models/brand.model';
 import {ErrorWarning} from '../../../shared/models/error-warning.model';
+import {BrandsService} from '../../../shared/services/brands.service';
 
 @Component({
   selector: 'app-brands-new',
@@ -38,7 +38,7 @@ export class BrandsNewComponent implements OnInit {
       ).subscribe(id => {
         this.brandService.getById(id)
           .pipe(take(1))
-          .subscribe(b => {
+          .subscribe((b: Brand) => {
             this.brand = b;
             this.createForm();
           }, () => {
@@ -62,36 +62,22 @@ export class BrandsNewComponent implements OnInit {
   }
 
   save(): void {
-    if (this.brand?.id) {
-      this.brandService.update(this.formBrand.value)
-        .pipe(take(1))
-        .subscribe(() => {
-          this.dialogSuccess.title = 'Marca atualizada com sucesso!';
-          this.dialogSuccess.fire();
-        }, (error: ErrorWarning) => {
-          this.setErrorDialog(error);
-          this.dialogError.fire().then(r => {
-            if (r.isConfirmed) {
-              this.save();
-            }
-          });
+    const request = this.brand ?
+      this.brandService.update(this.formBrand.value) :
+      this.brandService.create(this.formBrand.value);
+    request
+      .pipe(take(1))
+      .subscribe(() => {
+        this.dialogSuccess.title = 'Marca salva com sucesso!';
+        this.dialogSuccess.fire();
+      }, (error: ErrorWarning) => {
+        this.setErrorDialog(error);
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.save();
+          }
         });
-    } else {
-      this.brandService.create(this.formBrand.value)
-        .pipe(take(1))
-        .subscribe(() => {
-          this.dialogSuccess.title = 'Marca criada com sucesso!';
-          this.dialogSuccess.fire();
-        }, (error) => {
-          this.setErrorDialog(error);
-          this.dialogError.fire().then(r => {
-            if (r.isConfirmed) {
-              this.save();
-            }
-          });
-        });
-    }
-
+      });
   }
 
   delete(): void {
@@ -100,7 +86,7 @@ export class BrandsNewComponent implements OnInit {
       .subscribe(() => {
         this.dialogSuccess.title = 'Marca excluída com sucesso!';
         this.dialogSuccess.fire();
-      }, error => {
+      }, (error: ErrorWarning) => {
         this.setErrorDialog(error);
         this.dialogError.fire().then(r => {
           if (r.isConfirmed) {

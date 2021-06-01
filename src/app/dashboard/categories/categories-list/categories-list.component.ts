@@ -4,6 +4,7 @@ import {Category} from '../../../shared/models/category.model';
 import {CategoryPage} from '../../../shared/models/pagination-model/category-page.model';
 import {CategoriesService} from '../../../shared/services/categories.service';
 import {take} from 'rxjs/operators';
+import {PaginationService} from '../../../shared/services/pagination.service';
 
 @Component({
   selector: 'app-categories-list',
@@ -22,7 +23,8 @@ export class CategoriesListComponent implements OnInit, AfterContentInit  {
 
   constructor(
     private categorieService: CategoriesService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    public paginationService: PaginationService
   ) {
   }
 
@@ -31,6 +33,7 @@ export class CategoriesListComponent implements OnInit, AfterContentInit  {
   }
 
   ngAfterContentInit(): void {
+    this.paginationService.initPagination();
     this.getAllCategories(10, this.page);
     this.cdr.detectChanges();
   }
@@ -42,37 +45,17 @@ export class CategoriesListComponent implements OnInit, AfterContentInit  {
       .subscribe(r => {
         this.categories = r.content;
         this.content = r;
-        this.getPageRange();
+        this.paginationService.getPageRange(this.content.totalElements);
       }, () => {
         this.hasError = true;
       });
   }
 
-  getPageRange(): void {
-    // @ts-ignore
-    this.pages = Math.ceil(this.content?.totalElements / 10);
-
-    this.pageRange = {
-      first: this.page > 2 ? this.page - 3 : 0,
-      last: this.page > 2 && this.pages > this.page + 3 ? this.page + 3 :
-        this.page < 3 && this.pages >= 5 ? 5 :
-          this.page === this.pages || this.pages < 5 ?
-            this.pages : this.page + (this.pages - this.page)
-    };
-  }
-
-  getRange(): any[] {
-    const result = [];
-    for (let i = this.pageRange.first; i < this.pageRange.last; i++) {
-      result.push(i);
-    }
-    return result;
-  }
 
 
   updateIndex(index: number): void {
     this.getAllCategories(10, index);
-    this.page = index;
+    this.paginationService.page = index;
   }
   TypeCategorieString(types: TypeCategorie[]): string {
     return types.map((x) => x).join(', ');

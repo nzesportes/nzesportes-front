@@ -1,18 +1,21 @@
 import {Injectable} from '@angular/core';
 import {AuthenticationResponse} from '../models/authentication-response.model';
 
+import jwt_decode from 'jwt-decode';
+import * as moment from 'moment';
+import {shareReplay, tap} from 'rxjs/operators';
+import {AuthService} from './auth.service';
+import {Observable} from 'rxjs';
+import {AuthenticationRequest} from '../models/authentication-request.model';
+import * as CryptoJS from 'crypto-js';
+import {environment} from '../../../environments/environment';
 
 const TOKEN_KEY = 'auth-token';
 const USER_KEY = 'auth-user';
 const EXPIRES_AT = 'expires_at';
+const TOKEN_HASH_KEY = environment.TOKEN_HASH_KEY;
+const USER_HASH_KEY = environment.USER_HASH_KEY;
 
-
-import jwt_decode from 'jwt-decode';
-import * as moment from 'moment';
-import {map, shareReplay, tap} from 'rxjs/operators';
-import {AuthService} from './auth.service';
-import {Observable} from 'rxjs';
-import {AuthenticationRequest} from '../models/authentication-request.model';
 
 
 @Injectable({
@@ -37,8 +40,11 @@ export class TokenStorageService {
     const payload = jwt_decode(token) as JWTPayload;
     const expiresAt = moment.unix(payload.exp);
 
-    window.localStorage.setItem(TOKEN_KEY, token);
-    window.localStorage.setItem(EXPIRES_AT, JSON.stringify(expiresAt.valueOf()));
+    const tokenHash = CryptoJS.AES.encrypt(token, TOKEN_HASH_KEY).toString();
+    const expiraAtRash = CryptoJS.AES.encrypt(JSON.stringify(expiresAt.valueOf()), TOKEN_HASH_KEY).toString();
+
+    window.localStorage.setItem(TOKEN_KEY, tokenHash);
+    window.localStorage.setItem(EXPIRES_AT, expiraAtRash);
   }
 
   setSession(authenticationResponse: AuthenticationResponse): void {
@@ -79,7 +85,7 @@ export class TokenStorageService {
   getExpiration(): any {
     const expiration = localStorage.getItem(EXPIRES_AT);
     if (expiration != null) {
-      const expiresAt = JSON.parse(expiration);
+      const expiresAt = JSON.parse(CryptoJS.AES.decrypt(expiration, TOKEN_HASH_KEY).toString(CryptoJS.enc.Utf8));
       return moment(expiresAt);
     }
   }
@@ -89,22 +95,28 @@ export class TokenStorageService {
   }
 
   public getToken(): string | null {
-    return window.localStorage.getItem(TOKEN_KEY);
+    const token = window.localStorage.getItem(TOKEN_KEY);
+    if (token) {
+      return CryptoJS.AES.decrypt(token, TOKEN_HASH_KEY).toString(CryptoJS.enc.Utf8);
+    }
+    return null;
   }
 
   public setSessionUser(user: AuthenticationResponse): void {
     window.localStorage.removeItem(USER_KEY);
-    window.localStorage.setItem(USER_KEY, JSON.stringify(user));
+    const userHash = CryptoJS.AES.encrypt(JSON.stringify(user), USER_HASH_KEY).toString();
+    window.localStorage.setItem(USER_KEY, userHash);
   }
 
   public getSessionUser(): AuthenticationResponse {
     const user = window.localStorage.getItem(USER_KEY);
     if (user) {
-      return JSON.parse(user);
+      return JSON.parse(CryptoJS.AES.decrypt(user, USER_HASH_KEY).toString(CryptoJS.enc.Utf8));
     }
     return {id: '', roles: [], token: '', username: ''};
   }
 }
+
 interface JWTPayload {
   exp: number;
 }

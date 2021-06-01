@@ -76,7 +76,7 @@ export class NewProductComponent implements OnInit {
       model: new FormControl(this.product?.model ? this.product.model : '', Validators.required),
       category: this.formBuilder.array(this.product?.category ? this.product.category : [], Validators.required),
       productDetails: this.formBuilder.array(this.product?.productDetails ? this.product.productDetails : [], Validators.required),
-      status: new FormControl(this.product?.status ? this.product.status : null),
+      status: new FormControl(this.product?.status ? this.product.status : false),
     });
   }
 
@@ -97,7 +97,7 @@ export class NewProductComponent implements OnInit {
       name: new FormControl(categorie?.name ? categorie.name : '', Validators.required),
       status: new FormControl(categorie?.status ? categorie.status : false),
       type: this.formBuilder.array(categorie?.type ? categorie.type : [], Validators.required),
-      checked: new FormControl(hasChecked ? true : false),
+      checked: new FormControl(hasChecked ? true : false)
     });
   }
 
@@ -125,7 +125,7 @@ export class NewProductComponent implements OnInit {
         this.categories = result.content;
         this.categories.forEach(c => this.categoriesArrayForm.push(this.createFormArrayCategorie(c)));
       }, () => {
-
+        this.hasError = true;
       });
   }
 
@@ -152,7 +152,6 @@ export class NewProductComponent implements OnInit {
   }
 
   addProductDetails(productDetails: any): void {
-    console.log(productDetails);
     this.productDetails.insert(0, this.createProductDetailsForm(productDetails));
   }
 
@@ -191,7 +190,7 @@ export class NewProductComponent implements OnInit {
       .subscribe(result => {
         this.brands = result.content;
       }, () => {
-
+        this.hasError = true;
       });
   }
 
@@ -211,19 +210,19 @@ export class NewProductComponent implements OnInit {
   }
 
   save(): void {
-    if (this.product) {
-
-    } else {
-      this.productService.create(this.formProduct.value)
-        .pipe(take(1))
-        .subscribe(() => {
-          this.dialogSuccess.title = 'Produto criado com sucesso!';
-          this.dialogSuccess.fire();
-        }, error => {
-          this.setErrorDialog(error);
-          this.erroCallSaveAgain();
-        });
-    }
+    const request =
+      this.product ?
+        this.productService.update(this.formProduct.value) :
+        this.productService.create(this.formProduct.value);
+    request
+      .pipe(take(1))
+      .subscribe(() => {
+        this.dialogSuccess.title = 'Produto salvo com sucesso!';
+        this.dialogSuccess.fire();
+      }, error => {
+        this.setErrorDialog(error);
+        this.erroCallSaveAgain();
+      });
   }
 
   erroCallSaveAgain(): void {

@@ -124,28 +124,22 @@ export class CategoriesNewComponent implements OnInit {
   }
 
   save(): void {
-    if (this.categorie?.id) {
-      this.categorieService.update(this.formCategorie.value)
-        .pipe(take(1))
-        .subscribe(() => {
-          this.dialogSuccess.title = 'Categoria atualizada com sucesso!';
-          this.dialogSuccess.fire();
-        }, error => {
-          this.setErrorDialog(error);
-          this.dialogError.fire();
+    const request = this.categorie ?
+      this.categorieService.update(this.formCategorie.value) :
+      this.categorieService.create(this.formCategorie.value);
+    request
+      .pipe(take(1))
+      .subscribe(() => {
+        this.dialogSuccess.title = 'Categoria salva com sucesso!';
+        this.dialogSuccess.fire();
+      }, error => {
+        this.setErrorDialog(error);
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.save();
+          }
         });
-    } else {
-      this.categorieService.create(this.formCategorie.value)
-        .pipe(take(1))
-        .subscribe(() => {
-          this.dialogSuccess.title = 'Categoria criada com sucesso!';
-          this.dialogSuccess.fire();
-        }, error => {
-          this.setErrorDialog(error);
-          this.dialogError.fire();
-        });
-    }
-
+      });
   }
 
 
@@ -153,5 +147,21 @@ export class CategoriesNewComponent implements OnInit {
     this.dialogError.confirmButtonText = error.action;
     this.dialogError.title = error.title;
     this.dialogError.text = error.message;
+  }
+
+  delete(): void {
+    this.categorieService.delete(this.categorie?.id)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.dialogSuccess.title = 'Categoria excluída com sucesso!';
+        this.dialogSuccess.fire();
+      }, error => {
+        this.setErrorDialog(error);
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.delete();
+          }
+        });
+      });
   }
 }

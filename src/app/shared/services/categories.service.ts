@@ -40,4 +40,9 @@ export class CategoriesService {
     const params = new HttpParams().set('async', 'true');
     return this.http.get<Category>(this.api + id, {params});
   }
+
+  delete(id: string): Observable<void> {
+    const params = new HttpParams().set('async', 'true');
+    return this.http.delete<void>(this.api + id, {params});
+  }
 }

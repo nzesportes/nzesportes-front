@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {BrandsService} from '../../../shared/services/brands.service';
 import {take} from 'rxjs/operators';
 import {Brand} from '../../../shared/models/brand.model';
 import {BrandPage} from '../../../shared/models/pagination-model/brand-page.model';
+import {PaginationService} from '../../../shared/services/pagination.service';
 
 @Component({
   selector: 'app-brands-list',
@@ -12,19 +13,18 @@ import {BrandPage} from '../../../shared/models/pagination-model/brand-page.mode
 export class BrandsListComponent implements OnInit {
 
   brands: Brand[] = [];
-  page = 0;
   content: BrandPage | undefined;
-  pages: number | undefined;
-  public pageRange: any;
   hasError!: boolean;
 
   constructor(
-    private brandsService: BrandsService
+    private brandsService: BrandsService,
+    public paginationService: PaginationService
   ) {
   }
 
   ngOnInit(): void {
-    this.getAllBrands(10, this.page);
+    this.paginationService.initPagination();
+    this.getAllBrands(10, this.paginationService.page);
   }
 
   getAllBrands(size: number, page: number): void {
@@ -33,36 +33,15 @@ export class BrandsListComponent implements OnInit {
       .subscribe(r => {
         this.brands = r.content;
         this.content = r;
-        this.getPageRange();
+        this.paginationService.getPageRange(this.content.totalElements);
       }, () => {
         this.hasError = true;
       });
   }
 
-  getPageRange(): void {
-    // @ts-ignore
-    this.pages = Math.ceil(this.content?.totalElements / 10);
-
-    this.pageRange = {
-      first: this.page > 2 ? this.page - 3 : 0,
-      last: this.page > 2 && this.pages > this.page + 3 ? this.page + 3 :
-        this.page < 3 && this.pages >= 5 ? 5 :
-          this.page === this.pages || this.pages < 5 ?
-            this.pages : this.page + (this.pages - this.page)
-    };
-  }
-
-  getRange(): any[] {
-    const result = [];
-    for (let i = this.pageRange.first; i < this.pageRange.last; i++) {
-      result.push(i);
-    }
-    return result;
-  }
-
-
   updateIndex(index: number): void {
     this.getAllBrands(10, index);
-    this.page = index;
+    this.paginationService.page = index;
   }
+
 }
