@@ -48,6 +48,19 @@
             </div>
           </div>
           <div class="form-row">
+            <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0" formGroupName="brand">
+              <label for="name">Marca</label>
+              <select class="form-control" id="name" (change)="setIdBrand()"
+                      formControlName="name"
+                      [ngClass]="cssError(validateFieldsFormBrand.name)">
+                <option value="{{b.name.toLowerCase()}}" *ngFor="let b of brands">{{b?.name | titlecase}}</option>
+              </select>
+              <div id="field-brand" class="invalid-feedback">
+                Por favor, insira a marca.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
             <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
               <label for="description">Descrição</label>
               <textarea class="form-control mb-3" id="description" rows="3"
@@ -117,7 +130,7 @@
             Essa categoria não possui detalhe. Por favor, adicione um.
           </div>
           <div class="card mb-3" *ngIf="productDetails.controls.length > 0">
-            <div class="table-responsive ">
+            <div class="table-responsive">
               <table class="table table-hover">
                 <thead>
                 <tr>
@@ -133,14 +146,14 @@
                   <td>{{productDetail.value.price}}</td>
                   <td>
                     <i class="fas fa-edit actions-button text-primary" data-toggle="modal"
-                       data-target="#typeCategorie"
-                       (click)="initDetailForm()"></i>
+                       data-target="#modalProductDetail"
+                       (click)="initDetailForm(productDetail.value)"></i>
                     <i class="fas fa-trash actions-button text-danger" [swal]="swalProductDetailRemove"></i>
                     <swal
                       [swalOptions]="{ confirmButtonText: 'Sim', cancelButtonText: 'Cancelar' }"
                       [showCancelButton]="true"
                       (confirm)="removeProductDetails(i)"
-                      #swalProductDetailRemove title="Tem certeza que deseja remover esse tipo de categoria"
+                      #swalProductDetailRemove title="Tem certeza que deseja remover esse detalhe de produto?"
                       icon="question">
                     </swal>
                   </td>
@@ -238,19 +251,6 @@
                 Por favor, insira a cor.
               </div>
             </div>
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0" formGroupName="brand">
-              <label for="name">Marca</label>
-              <select class="form-control" id="name" (change)="setIdBrand()"
-                      formControlName="name"
-                      [ngClass]="cssError(validateFieldsFormProductDetail.brand)">
-                <option value="{{b.name.toLowerCase()}}" *ngFor="let b of brands">{{b?.name | titlecase}}</option>
-              </select>
-              <div id="field-brand" class="invalid-feedback">
-                Por favor, insira a marca.
-              </div>
-            </div>
-          </div>
-          <div class="form-row">
             <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
               <label for="size">Tamanho</label>
               <select class="form-control" id="size"
@@ -263,6 +263,8 @@
                 Por favor, insira o tamanho.
               </div>
             </div>
+          </div>
+          <div class="form-row">
             <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
               <label for="genrer">Sexo</label>
               <select class="form-control" id="genrer"

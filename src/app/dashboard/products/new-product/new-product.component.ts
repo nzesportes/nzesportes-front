@@ -2,15 +2,16 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
-import {Product} from '../../../shared/models/product.model';
-import {ProductDetails} from '../../../shared/models/product-details.model';
+import {Product, ProductUpdateTO} from '../../../shared/models/product.model';
+import {ProductDetails, ProductDetailUpdateTO} from '../../../shared/models/product-details.model';
 import {BrandsService} from '../../../shared/services/brands.service';
-import {map, take} from 'rxjs/operators';
+import {map, mergeMap, take} from 'rxjs/operators';
 import {Brand} from '../../../shared/models/brand.model';
 import {Category} from '../../../shared/models/category.model';
 import {CategoriesService} from '../../../shared/services/categories.service';
 import {ProductsService} from '../../../shared/services/products.service';
 import {ErrorWarning} from '../../../shared/models/error-warning.model';
+import {Observable, zip} from 'rxjs';
 
 @Component({
   selector: 'app-new-product',
@@ -77,6 +78,10 @@ export class NewProductComponent implements OnInit {
       category: this.formBuilder.array(this.product?.category ? this.product.category : [], Validators.required),
       productDetails: this.formBuilder.array(this.product?.productDetails ? this.product.productDetails : [], Validators.required),
       status: new FormControl(this.product?.status ? this.product.status : false),
+      brand: this.formBuilder.group({
+        id: new FormControl(this.product?.brand ? this.product.brand.id : null, Validators.required),
+        name: new FormControl(this.product?.brand ? this.product.brand.name : '', Validators.required),
+      }),
     });
   }
 
@@ -129,8 +134,8 @@ export class NewProductComponent implements OnInit {
       });
   }
 
-  initDetailForm(): void {
-    this.formProductDetail = this.createProductDetailsForm();
+  initDetailForm(productDetail?: ProductDetails): void {
+    this.formProductDetail = this.createProductDetailsForm(productDetail);
   }
 
   get validateFieldsFormProductDetail(): { [p: string]: AbstractControl } {
@@ -139,6 +144,11 @@ export class NewProductComponent implements OnInit {
 
   get validateFieldsFormProduct(): { [p: string]: AbstractControl } {
     return this.formProduct.controls;
+  }
+
+  get validateFieldsFormBrand(): { [p: string]: AbstractControl } {
+    // @ts-ignore
+    return this.formProduct.get('brand').controls;
   }
 
   cssError(field: any): any {
@@ -152,7 +162,12 @@ export class NewProductComponent implements OnInit {
   }
 
   addProductDetails(productDetails: any): void {
-    this.productDetails.insert(0, this.createProductDetailsForm(productDetails));
+    if (productDetails.id) {
+      this.productDetails.at(0).setValue(productDetails);
+    } else {
+      this.productDetails.insert(0, this.createProductDetailsForm(productDetails));
+
+    }
   }
 
   removeProductDetails(index: number): void {
@@ -165,22 +180,19 @@ export class NewProductComponent implements OnInit {
         color: new FormControl(productDetails ? productDetails.color : null, Validators.required),
         size: new FormControl(productDetails ? productDetails.size : null, Validators.required),
         price: new FormControl(productDetails ? productDetails.price : null, Validators.required),
-        brand: this.formBuilder.group({
-          id: new FormControl(productDetails ? productDetails.brand.id : null, Validators.required),
-          name: new FormControl(productDetails ? productDetails.brand.name : '', Validators.required),
-        }),
         gender: new FormControl(productDetails ? productDetails.gender : null, Validators.required),
         niche: new FormControl(productDetails ? productDetails.niche : null, Validators.required),
         status: new FormControl(productDetails ? productDetails.status : false),
+        productId: new FormControl(this.product ? this.product.id : false),
       }
     );
   }
 
   setIdBrand(): void {
-    const name = this.formProductDetail.get('brand')?.get('name')?.value;
+    const name = this.formProduct.get('brand')?.get('name')?.value;
     const brand = this.brands.find(b => b.name === name);
     if (brand) {
-      this.formProductDetail.get('brand')?.get('id')?.setValue(brand.id);
+      this.formProduct.get('brand')?.get('id')?.setValue(brand.id);
     }
   }
 
@@ -210,12 +222,37 @@ export class NewProductComponent implements OnInit {
   }
 
   save(): void {
-    const request =
-      this.product ?
-        this.productService.update(this.formProduct.value) :
-        this.productService.create(this.formProduct.value);
+    let request;
+    if (this.product) {
+      const productDetailRequest: Observable<ProductDetailUpdateTO>[] = [];
+      this.formProduct.value.productDetails.forEach((pd: ProductDetailUpdateTO) => {
+        productDetailRequest.push(
+          pd.id ? this.productService.updateProductDetails(pd) : this.productService.saveProductDetails(pd)
+        );
+      });
+
+      const productRequest: ProductUpdateTO = {
+        id: this.formProduct.value.id,
+        description: this.formProduct.value.description,
+        model: this.formProduct.value.model,
+        status: this.formProduct.value.status
+      };
+      request = this.productService.update(productRequest);
+      if (productDetailRequest.length > 0) {
+        request = request.pipe(
+          take((1)),
+          mergeMap(() => {
+            return zip(...productDetailRequest);
+          })
+        );
+      }
+    } else {
+      request = this.productService.create(this.formProduct.value);
+    }
     request
+      // @ts-ignore
       .pipe(take(1))
+      // @ts-ignore
       .subscribe(() => {
         this.dialogSuccess.title = 'Produto salvo com sucesso!';
         this.dialogSuccess.fire();
