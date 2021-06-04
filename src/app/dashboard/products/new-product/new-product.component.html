@@ -166,7 +166,7 @@
       </div>
     </div>
     <div class="col-lg-4 mb-3">
-      <div class="card mb-3">
+      <div class="card mb-3"  *ngIf="product?.id">
         <div class="card-body">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="isShowOnStore" formControlName="status">
@@ -176,7 +176,7 @@
           </div>
         </div>
       </div>
-      <form [formGroup]="formCategorie">
+      <form [formGroup]="formCategory">
         <div class="card mb-3">
           <div class="card-body">
             <h5 class="card-title">Categorias</h5>
@@ -309,7 +309,7 @@
             data-dismiss="modal"
             [disabled]="formProductDetail.invalid"
             (click)="addProductDetails(formProductDetail.value)">
-            Adicionar
+            Salvar
           </button>
         </div>
       </div>

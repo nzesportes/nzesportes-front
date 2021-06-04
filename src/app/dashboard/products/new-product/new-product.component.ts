@@ -1,24 +1,23 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 import {Product, ProductUpdateTO} from '../../../shared/models/product.model';
-import {ProductDetails, ProductDetailUpdateTO} from '../../../shared/models/product-details.model';
+import {ProductDetails} from '../../../shared/models/product-details.model';
 import {BrandsService} from '../../../shared/services/brands.service';
-import {map, mergeMap, take} from 'rxjs/operators';
+import {map, take} from 'rxjs/operators';
 import {Brand} from '../../../shared/models/brand.model';
 import {Category} from '../../../shared/models/category.model';
 import {CategoriesService} from '../../../shared/services/categories.service';
 import {ProductsService} from '../../../shared/services/products.service';
 import {ErrorWarning} from '../../../shared/models/error-warning.model';
-import {Observable, zip} from 'rxjs';
 
 @Component({
   selector: 'app-new-product',
   templateUrl: './new-product.component.html',
   styleUrls: ['./new-product.component.scss']
 })
-export class NewProductComponent implements OnInit {
+export class NewProductComponent implements OnInit, OnDestroy {
   @ViewChild('success')
   public readonly dialogSuccess!: SwalComponent;
   @ViewChild('error')
@@ -26,7 +25,7 @@ export class NewProductComponent implements OnInit {
 
   public formProduct: FormGroup = new FormGroup({});
   public formProductDetail: FormGroup = new FormGroup({});
-  public formCategorie: FormGroup = new FormGroup({});
+  public formCategory: FormGroup = new FormGroup({});
 
 
   public product!: Product;
@@ -75,7 +74,7 @@ export class NewProductComponent implements OnInit {
       id: new FormControl(this.product?.id ? this.product.id : null),
       description: new FormControl(this.product?.description ? this.product.description : '', Validators.required),
       model: new FormControl(this.product?.model ? this.product.model : '', Validators.required),
-      category: this.formBuilder.array(this.product?.category ? this.product.category : [], Validators.required),
+      category: this.formBuilder.array(this.product?.category ? this.product.category : []),
       productDetails: this.formBuilder.array(this.product?.productDetails ? this.product.productDetails : [], Validators.required),
       status: new FormControl(this.product?.status ? this.product.status : false),
       brand: this.formBuilder.group({
@@ -86,7 +85,7 @@ export class NewProductComponent implements OnInit {
   }
 
   private createFormCategorie(): void {
-    this.formCategorie = this.formBuilder.group({
+    this.formCategory = this.formBuilder.group({
         categories: this.formBuilder.array([]),
       }
     );
@@ -120,14 +119,16 @@ export class NewProductComponent implements OnInit {
   }
 
   get categoriesArrayForm(): FormArray {
-    return this.formCategorie.get('categories') as FormArray;
+    return this.formCategory.get('categories') as FormArray;
   }
 
   getAllCategories(): void {
     this.categoriesService.getAll(300, 0)
       .pipe(take(1))
       .subscribe(result => {
+        this.categories = [];
         this.categories = result.content;
+        this.categoriesArrayForm.clear();
         this.categories.forEach(c => this.categoriesArrayForm.push(this.createFormArrayCategorie(c)));
       }, () => {
         this.hasError = true;
@@ -162,13 +163,29 @@ export class NewProductComponent implements OnInit {
   }
 
   addProductDetails(productDetails: any): void {
-    if (productDetails.id) {
-      this.productDetails.at(0).setValue(productDetails);
+    if (this.product) {
+      const request = productDetails.id ?
+        this.productService.updateProductDetails(productDetails) :
+        this.productService.saveProductDetails(productDetails);
+
+      request
+        .pipe(take(1))
+        .subscribe(result => {
+          if (productDetails.id) {
+            const index = this.productDetails.controls.findIndex(pd => productDetails.id === pd.value.id);
+            this.productDetails.at(index).setValue(result);
+          } else {
+            this.productDetails.insert(0, this.createProductDetailsForm(result));
+          }
+        }, error => {
+          this.setErrorDialog(error);
+          this.errorCallSaveProductDetail(productDetails);
+        });
     } else {
       this.productDetails.insert(0, this.createProductDetailsForm(productDetails));
-
     }
   }
+
 
   removeProductDetails(index: number): void {
     this.productDetails.removeAt(index);
@@ -224,13 +241,6 @@ export class NewProductComponent implements OnInit {
   save(): void {
     let request;
     if (this.product) {
-      const productDetailRequest: Observable<ProductDetailUpdateTO>[] = [];
-      this.formProduct.value.productDetails.forEach((pd: ProductDetailUpdateTO) => {
-        productDetailRequest.push(
-          pd.id ? this.productService.updateProductDetails(pd) : this.productService.saveProductDetails(pd)
-        );
-      });
-
       const productRequest: ProductUpdateTO = {
         id: this.formProduct.value.id,
         description: this.formProduct.value.description,
@@ -238,34 +248,33 @@ export class NewProductComponent implements OnInit {
         status: this.formProduct.value.status
       };
       request = this.productService.update(productRequest);
-      if (productDetailRequest.length > 0) {
-        request = request.pipe(
-          take((1)),
-          mergeMap(() => {
-            return zip(...productDetailRequest);
-          })
-        );
-      }
     } else {
       request = this.productService.create(this.formProduct.value);
     }
     request
-      // @ts-ignore
-      .pipe(take(1))
-      // @ts-ignore
-      .subscribe(() => {
-        this.dialogSuccess.title = 'Produto salvo com sucesso!';
-        this.dialogSuccess.fire();
-      }, error => {
-        this.setErrorDialog(error);
-        this.erroCallSaveAgain();
-      });
+      .pipe(
+        take(1)
+      ).subscribe(() => {
+      this.dialogSuccess.title = 'Produto salvo com sucesso!';
+      this.dialogSuccess.fire();
+    }, error => {
+      this.setErrorDialog(error);
+      this.errorCallSaveAgain();
+    });
   }
 
-  erroCallSaveAgain(): void {
+  errorCallSaveAgain(): void {
     this.dialogError.fire().then(r => {
       if (r.isConfirmed) {
         this.save();
+      }
+    });
+  }
+
+  errorCallSaveProductDetail(productDetail: ProductDetails): void {
+    this.dialogError.fire().then(r => {
+      if (r.isConfirmed) {
+        this.addProductDetails(productDetail);
       }
     });
   }
@@ -275,5 +284,12 @@ export class NewProductComponent implements OnInit {
     this.dialogError.title = error.title;
     this.dialogError.text = error.message;
   }
+
+  ngOnDestroy(): void {
+    this.formProduct.reset();
+    this.formProductDetail.reset();
+    this.formCategory.reset();
+  }
+
 
 }

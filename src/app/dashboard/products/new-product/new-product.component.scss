@@ -60,3 +60,10 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+
+.row-table:hover{
+  transition: all .2s linear;
+  cursor: pointer;
+}
+
