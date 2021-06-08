@@ -227,15 +227,24 @@ export class NewProductComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/painel/produtos');
   }
 
-  setCategorie(): void {
-    this.categoriesArrayFormProduct.clear();
-    this.categoriesArrayForm.controls.forEach(form => {
-      if (form.value.checked) {
-        this.categoriesArrayFormProduct.push(
-          this.setArrayCategorieProduct(form.value)
-        );
-      }
-    });
+  setCategorie(idCategory: string): void {
+    this.productService.updateCategories(idCategory, this.product.id)
+      .pipe(
+        take(1)
+      )
+      .subscribe(() => {
+        this.categoriesArrayFormProduct.clear();
+        this.categoriesArrayForm.controls.forEach(form => {
+          if (form.value.checked) {
+            this.categoriesArrayFormProduct.push(
+              this.setArrayCategorieProduct(form.value)
+            );
+          }
+        });
+      }, error => {
+        this.setErrorDialog(error);
+        this.errorCallSaveCategory(idCategory);
+      });
   }
 
   save(): void {
@@ -275,6 +284,14 @@ export class NewProductComponent implements OnInit, OnDestroy {
     this.dialogError.fire().then(r => {
       if (r.isConfirmed) {
         this.addProductDetails(productDetail);
+      }
+    });
+  }
+
+  errorCallSaveCategory(idCategory: string): void {
+    this.dialogError.fire().then(r => {
+      if (r.isConfirmed) {
+        this.setCategorie(idCategory);
       }
     });
   }

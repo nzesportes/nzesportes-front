@@ -124,9 +124,11 @@ export class CategoriesNewComponent implements OnInit {
   }
 
   save(): void {
+    const category = this.formCategorie.value;
+    category.name = category.name.toLowerCase();
     const request = this.categorie ?
-      this.categorieService.update(this.formCategorie.value) :
-      this.categorieService.create(this.formCategorie.value);
+      this.categorieService.update(category) :
+      this.categorieService.create(category);
     request
       .pipe(take(1))
       .subscribe(() => {

@@ -59,4 +59,9 @@ export class ProductsService {
       .set('async', 'true');
     return this.http.delete<Product>(this.api + id, {params});
   }
+  updateCategories(idCategory: string, idProduct: string): Observable<Product>{
+    const params = new HttpParams()
+      .set('async', 'true');
+    return this.http.put<Product>(this.api + idProduct + '/category/' + idCategory, {params});
+  }
 }
