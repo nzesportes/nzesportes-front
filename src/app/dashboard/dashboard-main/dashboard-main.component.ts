@@ -44,8 +44,8 @@ export class DashboardMainComponent implements OnInit {
 
   verifyHasBrandsCategories(): void {
     zip(
-      this.brandsService.getAll(300, 0),
-      this.categoriesService.getAll(300, 0)
+      this.brandsService.getAll(1, 0),
+      this.categoriesService.getAll(1, 0)
     )
       .pipe(take(1))
       .subscribe(([brands, categories]) => {

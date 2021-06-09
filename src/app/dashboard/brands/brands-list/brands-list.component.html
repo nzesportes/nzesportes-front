@@ -14,9 +14,9 @@
       <div class="input-group mb-3">
         <input type="text" class="form-control" id="name" placeholder="Camiseta Leblon James"
                aria-label="Camiseta Leblon James"
-               aria-describedby="basic-addon2">
+               aria-describedby="basic-addon2" #search>
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+          <button class="btn btn-outline-secondary" type="button" (click)="onChangeFilter(search.value)"><i class="fas fa-search"></i></button>
         </div>
       </div>
     </div>
