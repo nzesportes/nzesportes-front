@@ -4,6 +4,11 @@ import {CartService} from '../../services/cart.service';
 import {Store} from '@ngrx/store';
 import {CartState, CartStateReducer} from '../../redux/cart/cart.state';
 import {AddItemCart, CartActionsType} from '../../redux/cart/cart.actions';
+import {ProductsService} from '../../../shared/services/products.service';
+import {Observable} from 'rxjs';
+import {ActivatedRoute, Params} from '@angular/router';
+import {Product} from '../../../shared/models/product.model';
+import {ProductDetails} from '../../../shared/models/product-details.model';
 
 @Component({
   selector: 'app-product-detail',
@@ -11,6 +16,13 @@ import {AddItemCart, CartActionsType} from '../../redux/cart/cart.actions';
   styleUrls: ['./product-detail.component.scss']
 })
 export class ProductDetailComponent implements OnInit {
+
+  private id = '';
+
+  // @ts-ignore
+  productDetails: ProductDetails;
+  // @ts-ignore
+  product: Product;
 
   avaliacao = 3.8;
   positionImage = 0;
@@ -39,6 +51,7 @@ export class ProductDetailComponent implements OnInit {
       thumb: 'assets/images/vans-vinho-thumb.jpg'
     }
   ];
+
 
   customOptions: OwlOptions = {
     loop: true,
@@ -70,20 +83,38 @@ export class ProductDetailComponent implements OnInit {
 
   constructor(
     private cartService: CartService,
-    private store: Store<CartState>,
+    private productsService: ProductsService,
+    private activatedRoute: ActivatedRoute,
+    private store: Store<CartState>
   ) {
   }
 
   ngOnInit(): void {
+    const params: Observable<Params> = this.activatedRoute.params;
+    params.subscribe(urlParams => {
+      this.id = urlParams.url;
+      if (this.id) {
+        this.productsService.getDetailById(this.id)
+          .subscribe(response => {
+              this.productDetails = response;
+              const productJson = localStorage.getItem('product');
+              if (productJson) {
+                this.product = JSON.parse(productJson);
+              }
+            },
+            error => {
+              console.log(error);
+            });
+      }
+    });
   }
-
 
   changeImage(index: number): void {
     this.positionImage = index;
   }
 
   calculate(): void {
-    this.shipping = { dias: 4, valor: 27.50};
+    this.shipping = {dias: 4, valor: 27.50};
   }
 
   addToCart(id: string): void {

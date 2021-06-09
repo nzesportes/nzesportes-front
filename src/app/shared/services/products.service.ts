@@ -4,6 +4,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Product} from '../models/product.model';
 import {ProductPage} from '../models/pagination-model/product-page.model';
+import {ProductDetails} from '../models/product-details.model';
 
 @Injectable({
   providedIn: 'root'
@@ -44,5 +45,9 @@ export class ProductsService {
     const params = new HttpParams()
       .set('async', 'true');
     return this.http.delete<Product>(this.api + id, {params});
+  }
+
+  getDetailById(uuid: string): Observable<ProductDetails> {
+    return this.http.get<ProductDetails>(`${this.api}details/${uuid}`);
   }
 }

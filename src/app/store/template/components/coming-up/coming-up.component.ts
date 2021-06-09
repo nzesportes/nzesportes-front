@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ProductsService} from '../../../../shared/services/products.service';
+import {map, take} from 'rxjs/operators';
+import {Product} from '../../../../shared/models/product.model';
+import {ProductsStore} from '../../../../shared/models/products-store.model';
+import {Brand} from '../../../../shared/models/brand.model';
+import {Sale} from '../../../../shared/models/sale.model';
+import {Gender} from '../../../../shared/enums/gender';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-coming-up',
@@ -7,9 +15,61 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ComingUpComponent implements OnInit {
 
-  constructor() { }
+  // @ts-ignore
+  products: Product[];
+// @ts-ignore
+  productsStore: ProductsStore[];
 
-  ngOnInit(): void {
+  constructor(
+    private productsService: ProductsService,
+    private router: Router
+  ) {
   }
 
+  ngOnInit(): void {
+    this.getProduct();
+  }
+
+  getProduct(): void {
+    this.productsService.getAll(8, 0)
+      .pipe(
+        take(1),
+        map(productsStore => {
+          const result: ProductsStore[] = [];
+          productsStore.content.forEach(p => {
+            p.productDetails.forEach(pd => {
+              const productStore = {
+                id: p.id,
+                description: p.description,
+                model: p.model,
+
+                idProductDetails: pd.id,
+                color: pd.color,
+                size: pd.size,
+                price: pd.price,
+                brand: pd.brand,
+                sale: pd.sale,
+                gender: pd.gender,
+                niche: pd.niche,
+                status: pd.status
+              };
+              result.push(productStore);
+            });
+          });
+          return result;
+        })
+      )
+      .subscribe(products => {
+        this.productsStore = products;
+      });
+  }
+
+  goToProductDetails(idProductDetails: string, id: string): void {
+    this.productsService.getById(id)
+      .pipe(take(1))
+      .subscribe(product => {
+        localStorage.setItem('product', JSON.stringify(product));
+      });
+    this.router.navigateByUrl('/produtos/' + idProductDetails);
+  }
 }
