@@ -48,6 +48,12 @@ body {
   //visibility: hidden;
   display: none;
 }
+.button-profile {
+  color: #b7b7b7;
+}
+.active-button-profile{
+  color: white;
+}
 @media (min-width: 768px) {
   .menu_right{
     position: absolute;

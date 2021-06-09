@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-start m-3">
+  <div>
+    <h3>Meus dados</h3>
+  </div>
+</div>
+<div class="container-fluid">
+  <div class="card w-100">
+    <div class="card-body">
+      <form>
+        <div class="form-row">
+          <div class="form-group col-12 mb-3">
+            <label for="categorieName">Usuário</label>
+            <input type="text" class="form-control" [value]="authResponse.username" disabled id="categorieName"
+                   formControlName="username">
+          </div>
+        </div>
+        <div class="form-row mb-3">
+          Permissões:
+          <br>
+          <div *ngFor="let auth of authResponse.roles; let i = index">
+            {{mapRolesTranslate.get(auth)}}{{ i  === authResponse.roles.length - 1 ? '.' : ','}}
+          </div>
+        </div>
+          <hr>
+        <div class="form-row">
+         <h5> Recuperação de senha</h5>
+        </div>
+
+        <div class="form-row">
+          <p>Envie o código para o seu email para recuperar sua senha.</p>
+        </div>
+        <div class="form-row">
+          <button type="button" class="btn btn-primary w-100">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
