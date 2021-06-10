@@ -227,7 +227,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
   }
 
   setCategorie(idCategory: string): void {
-    if(this.product){
+    if (this.product) {
       this.productService.updateCategories(idCategory, this.product.id)
         .pipe(
           take(1)
