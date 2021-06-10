@@ -195,12 +195,11 @@ export class NewProductComponent implements OnInit, OnDestroy {
     return new FormGroup({
         id: new FormControl(productDetails ? productDetails.id : null),
         color: new FormControl(productDetails ? productDetails.color : null, Validators.required),
-        size: new FormControl(productDetails ? productDetails.size : null, Validators.required),
+        size: new FormControl(productDetails ? productDetails.size : null),
         price: new FormControl(productDetails ? productDetails.price : null, Validators.required),
         gender: new FormControl(productDetails ? productDetails.gender : null, Validators.required),
-        niche: new FormControl(productDetails ? productDetails.niche : null, Validators.required),
         status: new FormControl(productDetails ? productDetails.status : false),
-        productId: new FormControl(this.product ? this.product.id : false),
+        productId: new FormControl(this.product ? this.product.id : ''),
       }
     );
   }
@@ -228,23 +227,31 @@ export class NewProductComponent implements OnInit, OnDestroy {
   }
 
   setCategorie(idCategory: string): void {
-    this.productService.updateCategories(idCategory, this.product.id)
-      .pipe(
-        take(1)
-      )
-      .subscribe(() => {
-        this.categoriesArrayFormProduct.clear();
-        this.categoriesArrayForm.controls.forEach(form => {
-          if (form.value.checked) {
-            this.categoriesArrayFormProduct.push(
-              this.setArrayCategorieProduct(form.value)
-            );
-          }
+    if (this.product) {
+      this.productService.updateCategories(idCategory, this.product.id)
+        .pipe(
+          take(1)
+        )
+        .subscribe(() => {
+          this.updateFormCategories();
+        }, error => {
+          this.setErrorDialog(error);
+          this.errorCallSaveCategory(idCategory);
         });
-      }, error => {
-        this.setErrorDialog(error);
-        this.errorCallSaveCategory(idCategory);
-      });
+    }else{
+      this.updateFormCategories();
+    }
+
+  }
+  updateFormCategories(): void {
+    this.categoriesArrayFormProduct.clear();
+    this.categoriesArrayForm.controls.forEach(form => {
+      if (form.value.checked) {
+        this.categoriesArrayFormProduct.push(
+          this.setArrayCategorieProduct(form.value)
+        );
+      }
+    });
   }
 
   save(): void {
