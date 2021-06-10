@@ -195,12 +195,11 @@ export class NewProductComponent implements OnInit, OnDestroy {
     return new FormGroup({
         id: new FormControl(productDetails ? productDetails.id : null),
         color: new FormControl(productDetails ? productDetails.color : null, Validators.required),
-        size: new FormControl(productDetails ? productDetails.size : null, Validators.required),
+        size: new FormControl(productDetails ? productDetails.size : null),
         price: new FormControl(productDetails ? productDetails.price : null, Validators.required),
         gender: new FormControl(productDetails ? productDetails.gender : null, Validators.required),
-        niche: new FormControl(productDetails ? productDetails.niche : null, Validators.required),
         status: new FormControl(productDetails ? productDetails.status : false),
-        productId: new FormControl(this.product ? this.product.id : false),
+        productId: new FormControl(this.product ? this.product.id : ''),
       }
     );
   }
