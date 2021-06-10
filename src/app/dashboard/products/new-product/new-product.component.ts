@@ -228,23 +228,31 @@ export class NewProductComponent implements OnInit, OnDestroy {
   }
 
   setCategorie(idCategory: string): void {
-    this.productService.updateCategories(idCategory, this.product.id)
-      .pipe(
-        take(1)
-      )
-      .subscribe(() => {
-        this.categoriesArrayFormProduct.clear();
-        this.categoriesArrayForm.controls.forEach(form => {
-          if (form.value.checked) {
-            this.categoriesArrayFormProduct.push(
-              this.setArrayCategorieProduct(form.value)
-            );
-          }
+    if(this.product){
+      this.productService.updateCategories(idCategory, this.product.id)
+        .pipe(
+          take(1)
+        )
+        .subscribe(() => {
+          this.updateFormCategories();
+        }, error => {
+          this.setErrorDialog(error);
+          this.errorCallSaveCategory(idCategory);
         });
-      }, error => {
-        this.setErrorDialog(error);
-        this.errorCallSaveCategory(idCategory);
-      });
+    }else{
+      this.updateFormCategories();
+    }
+
+  }
+  updateFormCategories(): void {
+    this.categoriesArrayFormProduct.clear();
+    this.categoriesArrayForm.controls.forEach(form => {
+      if (form.value.checked) {
+        this.categoriesArrayFormProduct.push(
+          this.setArrayCategorieProduct(form.value)
+        );
+      }
+    });
   }
 
   save(): void {
