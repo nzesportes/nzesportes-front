@@ -22,11 +22,14 @@ export class CategoriesService {
     return this.http.post<Category>(this.api, categorie, {params});
   }
 
-  getAll(size: number, page: number): Observable<CategoryPage> {
+  getAll(size: number, page: number, status?: string, type?: string, name?: string): Observable<CategoryPage> {
     const params = new HttpParams()
       .set('async', 'true')
       .set('page', page.toString())
-      .set('size', size.toString());
+      .set('size', size.toString())
+      .set('status', status === 'true' ? 'true' : status === 'false' ? 'false' : '')
+      .set('type', type ? type : '')
+      .set('name', name ? name : '');
     return this.http.get<CategoryPage>(this.api, {params});
   }
 

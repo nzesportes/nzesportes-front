@@ -48,6 +48,19 @@
             </div>
           </div>
           <div class="form-row">
+            <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0" formGroupName="brand">
+              <label for="name">Marca</label>
+              <select class="form-control" id="name" (change)="setIdBrand()"
+                      formControlName="name"
+                      [ngClass]="cssError(validateFieldsFormBrand.name)">
+                <option value="{{b.name.toLowerCase()}}" *ngFor="let b of brands">{{b?.name | titlecase}}</option>
+              </select>
+              <div id="field-brand" class="invalid-feedback">
+                Por favor, insira a marca.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
             <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
               <label for="description">Descrição</label>
               <textarea class="form-control mb-3" id="description" rows="3"
@@ -117,7 +130,7 @@
             Essa categoria não possui detalhe. Por favor, adicione um.
           </div>
           <div class="card mb-3" *ngIf="productDetails.controls.length > 0">
-            <div class="table-responsive ">
+            <div class="table-responsive">
               <table class="table table-hover">
                 <thead>
                 <tr>
@@ -133,14 +146,14 @@
                   <td>{{productDetail.value.price}}</td>
                   <td>
                     <i class="fas fa-edit actions-button text-primary" data-toggle="modal"
-                       data-target="#typeCategorie"
-                       (click)="initDetailForm()"></i>
+                       data-target="#modalProductDetail"
+                       (click)="initDetailForm(productDetail.value)"></i>
                     <i class="fas fa-trash actions-button text-danger" [swal]="swalProductDetailRemove"></i>
                     <swal
                       [swalOptions]="{ confirmButtonText: 'Sim', cancelButtonText: 'Cancelar' }"
                       [showCancelButton]="true"
                       (confirm)="removeProductDetails(i)"
-                      #swalProductDetailRemove title="Tem certeza que deseja remover esse tipo de categoria"
+                      #swalProductDetailRemove title="Tem certeza que deseja remover esse detalhe de produto?"
                       icon="question">
                     </swal>
                   </td>
@@ -153,7 +166,7 @@
       </div>
     </div>
     <div class="col-lg-4 mb-3">
-      <div class="card mb-3">
+      <div class="card mb-3"  *ngIf="product?.id">
         <div class="card-body">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="isShowOnStore" formControlName="status">
@@ -163,7 +176,7 @@
           </div>
         </div>
       </div>
-      <form [formGroup]="formCategorie">
+      <form [formGroup]="formCategory">
         <div class="card mb-3">
           <div class="card-body">
             <h5 class="card-title">Categorias</h5>
@@ -171,13 +184,13 @@
             <div class="overflow-auto" style="height: 300px">
               <div class="list-group">
                 <button formArrayName="categories"
-                        *ngFor="let categorie of categoriesArrayForm.controls; let i = index"
+                        *ngFor="let category of categoriesArrayForm.controls; let i = index"
                         type="button"
                         class="list-group-item d-flex justify-content-between list-group-item-action"
                 >
-                  {{categorie.value.name | titlecase}}
+                  {{category.value.name | titlecase}}
                   <div class="form-check" [formGroupName]="i">
-                    <input class="form-check-input" type="checkbox" value="" id="categoria" formControlName="checked" (change)="setCategorie()">
+                    <input class="form-check-input" type="checkbox" value="" id="categoria" formControlName="checked" (change)="setCategorie(category.value.id)">
                   </div>
                 </button>
               </div>
@@ -216,16 +229,7 @@
         </div>
         <div class="modal-body">
           <div class="form-row">
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
-              <label for="niche">Nicho</label>
-              <input type="text" class="form-control" id="niche" formControlName="niche" aria-describedby="emailHelp"
-                     placeholder="Ex: Bulls"
-                     [ngClass]="cssError(validateFieldsFormProductDetail.niche)">
-              <div id="field-niche" class="invalid-feedback">
-                Por favor, insira o nicho.
-              </div>
-            </div>
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+            <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
               <label for="color">Cor</label>
               <select class="form-control" id="color"
                       formControlName="color"
@@ -238,20 +242,7 @@
                 Por favor, insira a cor.
               </div>
             </div>
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0" formGroupName="brand">
-              <label for="name">Marca</label>
-              <select class="form-control" id="name" (change)="setIdBrand()"
-                      formControlName="name"
-                      [ngClass]="cssError(validateFieldsFormProductDetail.brand)">
-                <option value="{{b.name.toLowerCase()}}" *ngFor="let b of brands">{{b?.name | titlecase}}</option>
-              </select>
-              <div id="field-brand" class="invalid-feedback">
-                Por favor, insira a marca.
-              </div>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+            <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
               <label for="size">Tamanho</label>
               <select class="form-control" id="size"
                       formControlName="size"
@@ -263,7 +254,9 @@
                 Por favor, insira o tamanho.
               </div>
             </div>
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+          </div>
+          <div class="form-row">
+            <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
               <label for="genrer">Sexo</label>
               <select class="form-control" id="genrer"
                       formControlName="gender"
@@ -275,7 +268,7 @@
                 Por favor, insira o sexo.
               </div>
             </div>
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+            <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
               <label for="price">Preço</label>
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
@@ -299,6 +292,7 @@
           </div>
         </div>
 
+        <div>{{ formProductDetail.value | json }}</div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
           <button
@@ -307,7 +301,7 @@
             data-dismiss="modal"
             [disabled]="formProductDetail.invalid"
             (click)="addProductDetails(formProductDetail.value)">
-            Adicionar
+            Salvar
           </button>
         </div>
       </div>

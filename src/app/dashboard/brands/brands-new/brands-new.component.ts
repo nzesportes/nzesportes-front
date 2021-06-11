@@ -62,9 +62,11 @@ export class BrandsNewComponent implements OnInit {
   }
 
   save(): void {
+    const brand = this.formBrand.value;
+    brand.name = brand.name.toLowerCase();
     const request = this.brand ?
-      this.brandService.update(this.formBrand.value) :
-      this.brandService.create(this.formBrand.value);
+      this.brandService.update(brand) :
+      this.brandService.create(brand);
     request
       .pipe(take(1))
       .subscribe(() => {

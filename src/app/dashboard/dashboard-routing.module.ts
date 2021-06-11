@@ -31,6 +31,10 @@ const routes: Routes = [
         path: 'usuarios',
         loadChildren: () => import('./users/users.module').then(m => m.UsersModule)
       },
+      {
+        path: 'conta',
+        loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
+      },
       { path: '', redirectTo: 'produtos', pathMatch: 'full' },
     ]
   }

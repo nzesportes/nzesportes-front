@@ -11,6 +11,7 @@ import {PromotionsModule} from './promotions/promotions.module';
 import {CategoriesModule} from './categories/categories.module';
 import {UsersModule} from './users/users.module';
 import {BrandsModule} from './brands/brands.module';
+import {AccountModule} from './account/account.module';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {BrandsModule} from './brands/brands.module';
     CategoriesModule,
     UsersModule,
     BrandsModule,
+    AccountModule,
     // angular modules
     DashboardRoutingModule,
     CommonModule,

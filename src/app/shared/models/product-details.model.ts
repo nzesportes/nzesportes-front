@@ -13,3 +13,16 @@ export interface ProductDetails {
   niche: string;
   status: string;
 }
+
+export interface ProductDetailUpdateTO {
+  id: string;
+  color: string;
+  size: string;
+  price: number;
+  brand: Brand;
+  sale: Sale;
+  gender: Gender;
+  niche: string;
+  status: string;
+}
+

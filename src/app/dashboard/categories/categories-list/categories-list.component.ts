@@ -5,31 +5,41 @@ import {CategoryPage} from '../../../shared/models/pagination-model/category-pag
 import {CategoriesService} from '../../../shared/services/categories.service';
 import {take} from 'rxjs/operators';
 import {PaginationService} from '../../../shared/services/pagination.service';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-categories-list',
   templateUrl: './categories-list.component.html',
   styleUrls: ['./categories-list.component.scss']
 })
-export class CategoriesListComponent implements OnInit, AfterContentInit  {
+export class CategoriesListComponent implements OnInit, AfterContentInit {
   public typeCategorieList = TypeCategorieList;
 
   categories: Category[] = [];
   page = 0;
   content: CategoryPage | undefined;
-  pages: number | undefined;
-  public pageRange: any;
   hasError!: boolean;
+  public formFilter: FormGroup = new FormGroup({});
 
   constructor(
     private categorieService: CategoriesService,
     private cdr: ChangeDetectorRef,
-    public paginationService: PaginationService
+    public paginationService: PaginationService,
+    private formBuilder: FormBuilder,
+
   ) {
   }
 
   ngOnInit(): void {
+    this.createForm();
 
+  }
+  private createForm(): void {
+    this.formFilter = this.formBuilder.group({
+      name: new FormControl(),
+      status: new FormControl(),
+      type: new FormControl(),
+    });
   }
 
   ngAfterContentInit(): void {
@@ -39,8 +49,8 @@ export class CategoriesListComponent implements OnInit, AfterContentInit  {
   }
 
 
-  getAllCategories(size: number, page: number): void {
-    this.categorieService.getAll(size, page)
+  getAllCategories(size: number, page: number, status?: string, type?: string, name?: string): void {
+    this.categorieService.getAll(size, page, status, type, name)
       .pipe(take(1))
       .subscribe(r => {
         this.categories = r.content;
@@ -52,13 +62,21 @@ export class CategoriesListComponent implements OnInit, AfterContentInit  {
   }
 
 
-
   updateIndex(index: number): void {
     this.getAllCategories(10, index);
     this.paginationService.page = index;
   }
+
   TypeCategorieString(types: TypeCategorie[]): string {
     return types.map((x) => x).join(', ');
+  }
+
+  onChangeFilter(): void {
+    this.page = 0;
+    const status = this.formFilter.get('status')?.value;
+    const type = this.formFilter.get('type')?.value;
+    const name = this.formFilter.get('name')?.value;
+    this.getAllCategories(10, 0, status, type, name);
   }
 
 }

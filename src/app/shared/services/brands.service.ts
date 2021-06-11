@@ -22,11 +22,12 @@ export class BrandsService {
     return this.http.post<Brand>(this.api, brand, {params});
   }
 
-  getAll(size: number, page: number): Observable<BrandPage> {
+  getAll(size: number, page: number, name?: string): Observable<BrandPage> {
     const params = new HttpParams()
       .set('async', 'true')
       .set('page', page.toString())
-      .set('size', size.toString());
+      .set('size', size.toString())
+      .set('name', name ? name : '');
     return this.http.get<BrandPage>(this.api, {params});
   }
 

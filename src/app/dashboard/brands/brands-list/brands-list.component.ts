@@ -15,7 +15,6 @@ export class BrandsListComponent implements OnInit {
   brands: Brand[] = [];
   content: BrandPage | undefined;
   hasError!: boolean;
-
   constructor(
     private brandsService: BrandsService,
     public paginationService: PaginationService
@@ -27,8 +26,8 @@ export class BrandsListComponent implements OnInit {
     this.getAllBrands(10, this.paginationService.page);
   }
 
-  getAllBrands(size: number, page: number): void {
-    this.brandsService.getAll(size, page)
+  getAllBrands(size: number, page: number, search?: string): void {
+    this.brandsService.getAll(size, page, search)
       .pipe(take(1))
       .subscribe(r => {
         this.brands = r.content;
@@ -42,6 +41,11 @@ export class BrandsListComponent implements OnInit {
   updateIndex(index: number): void {
     this.getAllBrands(10, index);
     this.paginationService.page = index;
+  }
+
+  onChangeFilter(search: string): void {
+    this.paginationService.page = 0;
+    this.getAllBrands(10, 0, search);
   }
 
 }
