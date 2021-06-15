@@ -36,15 +36,27 @@
     <table class="table table-hover">
       <thead>
       <tr>
-        <th scope="col" style="width: 70%">Nome</th>
-        <th scope="col" style="width: 30%">Ações</th>
+        <th scope="col" style="width: 30%">Nome</th>
+        <th scope="col" style="width: 20%">CPF</th>
+        <th scope="col" style="width: 15%">Telefone</th>
+        <th scope="col" style="width: 15%">instagram</th>
 
+        <th scope="col" style="width: 10%">Ações</th>
       </tr>
       </thead>
       <tbody>
-      <tr scope="row" class="row-table" *ngFor="let c of customers" routerLink="customer/{{c.id}}">
-        <td>{{c.name}}</td>
-        <td><i class="fas fa-edit text-primary"></i></td>
+      <tr scope="row" class="row-table" *ngFor="let c of customers">
+        <td>{{c.name}} {{c.lastName}}</td>
+        <td>{{c.cpf}}</td>
+        <td>
+          <a
+            href="https://www.instagram.com/{{c.instagram.replace('@', '')}}"
+            class="badge badge-info"
+            target="_blank"
+          > {{c.instagram}}</a>
+        </td>
+        <td>{{c.phone}}</td>
+        <td ><i class="fas fa-eye text-primary" routerLink="customer/{{c.id}}"></i></td>
       </tr>
       </tbody>
     </table>

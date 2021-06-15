@@ -7,6 +7,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CategoriesService} from '../../../shared/services/categories.service';
 import {map, take} from 'rxjs/operators';
 import {ErrorWarning} from '../../../shared/models/error-warning.model';
+import {ProductsService} from '../../../shared/services/products.service';
+import {Product} from '../../../shared/models/product.model';
 
 @Component({
   selector: 'app-categories-new',
@@ -25,11 +27,14 @@ export class CategoriesNewComponent implements OnInit {
   public typeCategorieList = TypeCategorieList;
   hasError!: boolean;
 
+  public products!: Product[];
+
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private categorieService: CategoriesService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private productsService: ProductsService
   ) {
     this.createFormCategorieList();
   }
@@ -44,6 +49,7 @@ export class CategoriesNewComponent implements OnInit {
           .pipe(take(1))
           .subscribe(c => {
             this.categorie = c;
+            this.getProductsByCategory();
             this.createForm();
           }, () => {
             this.hasError = true;
@@ -164,6 +170,17 @@ export class CategoriesNewComponent implements OnInit {
             this.delete();
           }
         });
+      });
+  }
+
+  getProductsByCategory(): void {
+    this.productsService.getByCategoryId(this.categorie.id, 10, 0)
+      .pipe(take(1))
+      .subscribe(products => {
+        console.log(products);
+        this.products = products.content;
+      }, error => {
+
       });
   }
 }
