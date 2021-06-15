@@ -40,7 +40,7 @@
             Clientes
           </a>
         </li>
-        <li>
+        <li *ngIf="isAdmin">
           <a routerLink="usuarios" routerLinkActive="active" class="nav-link text-white">
             <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
             Gerenciar Usuários
@@ -81,7 +81,7 @@
           <li class="nav-item " routerLink="clientes" routerLinkActive="active">
             <a class="nav-link">Clientes</a>
           </li>
-          <li class="nav-item" routerLink="usuarios" routerLinkActive="active">
+          <li class="nav-item" routerLink="usuarios" routerLinkActive="active" *ngIf="isAdmin">
             <a class="nav-link">Gerenciar Usuários</a>
           </li>
           <li class="nav-item" routerLink="usuarios" routerLinkActive="active">

@@ -8,6 +8,7 @@ import {zip} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {TokenStorageService} from '../../shared/services/token-storage.service';
+import {Role} from '../../shared/enums/role.enum';
 
 @Component({
   selector: 'app-dashboard-main',
@@ -17,6 +18,8 @@ import {TokenStorageService} from '../../shared/services/token-storage.service';
 export class DashboardMainComponent implements OnInit {
   @ViewChild('warn')
   public readonly dialogWarn!: SwalComponent;
+
+  isAdmin = false;
 
   constructor(
     private brandsService: BrandsService,
@@ -33,6 +36,11 @@ export class DashboardMainComponent implements OnInit {
       e.preventDefault();
       $('#wrapper').toggleClass('toggled');
     });
+
+    const isAdmin = this.tokenStorageService.getSessionUser().roles.find(r => r === Role.ROLE_ADMIN);
+    if (isAdmin) {
+      this.isAdmin = true;
+    }
   }
 
   isMobile(): boolean {

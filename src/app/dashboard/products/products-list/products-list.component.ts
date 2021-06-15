@@ -79,7 +79,7 @@ export class ProductsListComponent implements OnInit {
           this.dialogWarn.fire();
         }
       }, () => {
-
+        this.hasError = true;
       });
   }
 

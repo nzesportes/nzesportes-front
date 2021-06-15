@@ -1,0 +1,148 @@
+<div class="row mt-3">
+  <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/painel/clientes">Clientes</a></li>
+        <li class="breadcrumb-item active" aria-current="page">André Nascimento de Freitas</li>
+      </ol>
+    </nav>
+  </div>
+  <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
+    <button type="button" class="btn btn-secondary w-100">Cancelar</button>
+  </div>
+</div>
+<div class="alert alert-danger" role="alert">
+  Não foi possível carregar algumas informações. Por favor,
+  <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+</div>
+
+<div>
+  <div class="row mt-3">
+    <div class="col-12 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Informações de pessoais</h5>
+          <hr>
+          <h6 class="card-subtitle mb-2 text-muted">André Nascimento de Freitas</h6>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="isShowOnStore" formControlName="status">
+      <label class="form-check-label" for="isShowOnStore">
+        Disponível na loja
+      </label>
+    </div>
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-12 mb-3">
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-9 col-sm-12">
+            <h5 class="card-title">Tipos de categoria</h5>
+          </div>
+        </div>
+
+        <hr>
+        <div class="card mb-3">
+          <div class="table-responsive ">
+
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th scope="col" style="width: 50%">Nome</th>
+                <th scope="col" style="width: 10%">Ações</th>
+              </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-3">
+  <div class="col-12 mb-3">
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-9 col-sm-12">
+            <h5 class="card-title">Produtos na Categoria</h5>
+          </div>
+          <div class="col-lg-3 col-sm-12 ">
+            <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#exampleModal">
+              Adicionar Produtos
+            </button>
+          </div>
+        </div>
+
+        <hr>
+        <div class="card mb-3">
+          <div class="table-responsive ">
+
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th scope="col" style="width: 15%">Código</th>
+                <th scope="col" style="width: 50%">Nome</th>
+                <th scope="col" style="width: 15%">Modelo</th>
+                <th scope="col" style="width: 10%">Tamanho</th>
+
+                <th scope="col" style="width: 10%">Ações</th>
+              </tr>
+              </thead>
+              <tbody>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-end  mr-3 ml-3">
+            <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">Excluir categoria</h5>
+    <hr>
+    Ao exclui-lá ela será apagada definitivamente e não aparecerá mais em sua loja.
+    <div class="d-flex justify-content-end">
+      <button type="button" class="btn btn-danger col-lg-2 col-sm-12">Excluir</button>
+    </div>
+  </div>
+
+</div>
+
+<div class="card mb-3">
+  <div class="card-body">
+    <h5 class="card-title">Promoções</h5>
+    <hr>
+    <div class="card-link">
+      <i class="fas fa-ticket-alt p-1" style="color: cornflowerblue"></i><a href="#">Criar cupom de desconto</a>
+    </div>
+  </div>
+</div>
