@@ -11,7 +11,9 @@
     <button type="button" class="btn btn-secondary w-100">Cancelar</button>
   </div>
   <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
-    <button type="button" class="btn btn-primary w-100" [disabled]="formUser.invalid">Salvar</button>
+    <button type="button" class="btn btn-primary w-100"
+            [disabled]="formUser.invalid"
+            (click)="save()">Salvar</button>
   </div>
 </div>
 <form [formGroup]="formUser">
@@ -50,3 +52,23 @@
     </div>
   </div>
 </form>
+
+
+<swal
+  #success
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirectToUsersPage()"
+  [title]="''"
+  icon="success">
+</swal>
+
+<swal
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirectToUsersPage()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>
