@@ -31,7 +31,7 @@
           <i class="far fa-star"></i>
         </p>
         <h1>{{ product?.model }}</h1>
-        <p class="categories"><a href="#">{{ productDetails?.brand?.name | titlecase }}</a>, <a href="#">Modelo</a>, <a href="#">Tag</a></p>
+        <p class="categories"><a href="#">{{ product?.brand?.name | titlecase }}</a>, <a href="#">Modelo</a>, <a href="#">Tag</a></p>
         <h2>R$ {{ productDetails?.price }}
           <del *ngIf="false">R$ 150,00</del>
         </h2>

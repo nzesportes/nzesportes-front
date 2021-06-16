@@ -47,7 +47,7 @@ export class ComingUpComponent implements OnInit {
                 color: pd.color,
                 size: pd.size,
                 price: pd.price,
-                brand: pd.brand,
+                brand: p.brand,
                 sale: pd.sale,
                 gender: pd.gender,
                 niche: pd.niche,
