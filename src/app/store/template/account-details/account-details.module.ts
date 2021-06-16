@@ -7,6 +7,8 @@ import { MyOrdersComponent } from './my-orders/my-orders.component';
 import { MyAddressesComponent } from './my-addresses/my-addresses.component';
 import { MyFavoritesComponent } from './my-favorites/my-favorites.component';
 import {MyAddressesModule} from './my-addresses/my-addresses.module';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -14,11 +16,13 @@ import {MyAddressesModule} from './my-addresses/my-addresses.module';
     MyDataComponent,
     MyOrdersComponent,
     MyAddressesComponent,
-    MyFavoritesComponent
+    MyFavoritesComponent,
+    ChangePasswordComponent
   ],
   imports: [
     CommonModule,
-    AccountDetailsRoutingModule
+    AccountDetailsRoutingModule,
+    ReactiveFormsModule
   ]
 })
 export class AccountDetailsModule { }

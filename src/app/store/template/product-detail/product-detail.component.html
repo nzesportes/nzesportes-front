@@ -30,31 +30,19 @@
           <i class="fas fa-star-half-alt"></i>
           <i class="far fa-star"></i>
         </p>
-        <h1>AIR STRONG TRAINING</h1>
-        <p class="categories"><a href="#">Marca</a>, <a href="#">Modelo</a>, <a href="#">Tag</a></p>
-        <h2>R$ 123,00
-          <del>R$ 150,00</del>
+        <h1>{{ product?.model }}</h1>
+        <p class="categories"><a href="#">{{ product?.brand?.name | titlecase }}</a>, <a href="#">Modelo</a>, <a href="#">Tag</a></p>
+        <h2>R$ {{ productDetails?.price }}
+          <del *ngIf="false">R$ 150,00</del>
         </h2>
         <h3 class="title-details">Descrição</h3>
         <p class="description-details">
-          Caramels tootsie roll carrot cake sugar plum. Sweet roll jelly bear claw liquorice. Gingerbread lollipop
-          dragée
-          cake. Pie topping jelly-o. Fruitcake dragée candy canes tootsie roll. Pastry jelly-o cupcake. Bonbon brownie
-          soufflé muffin.
+          {{ product?.description }}
         </p>
         <h3 class="title-details">Escolher Modelo</h3>
         <ul class="choose-model">
-          <li>
-            <a href="#">
-              <img src="assets/images/product.jpg">
-            </a>
-            <a href="#">
-              <img src="assets/images/product.jpg">
-            </a>
-            <a href="#">
-              <img src="assets/images/product.jpg">
-            </a>
-            <a href="#">
+          <li *ngFor="let model of product.productDetails">
+            <a routerLink="/produtos/{{ model.id }}">
               <img src="assets/images/product.jpg">
             </a>
           </li>

@@ -12,5 +12,5 @@ export interface Address {
   city: string;
   district: string;
   phone: string;
-  customer: Customer;
+  customerId: string;
 }

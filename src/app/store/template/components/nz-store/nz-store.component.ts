@@ -1,5 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import { OwlOptions } from 'ngx-owl-carousel-o';
+import {OwlOptions} from 'ngx-owl-carousel-o';
+import {map, take} from 'rxjs/operators';
+import {ProductsStore} from '../../../../shared/models/products-store.model';
+import {ProductsService} from '../../../../shared/services/products.service';
+import {Product} from '../../../../shared/models/product.model';
 
 
 @Component({
@@ -8,6 +12,11 @@ import { OwlOptions } from 'ngx-owl-carousel-o';
   styleUrls: ['./nz-store.component.scss']
 })
 export class NzStoreComponent implements OnInit {
+
+  // @ts-ignore
+  products: Product[];
+  // @ts-ignore
+  productsStore: ProductsStore[];
 
   dynamicSlides = [
     {
@@ -85,11 +94,51 @@ export class NzStoreComponent implements OnInit {
   };
 
 
-  constructor() {
+  constructor(
+    private productsService: ProductsService
+  ) {
   }
 
   ngOnInit(): void {
+    this.getProduct();
+  }
 
+
+  getProduct(): void {
+    this.productsService.getAll(8, 0)
+      .pipe(
+        take(1),
+        map(productsStore => {
+          const result: ProductsStore[] = [];
+          productsStore.content.forEach(p => {
+            p.productDetails.forEach(pd => {
+              const productStore = {
+                id: p.id,
+                description: p.description,
+                model: p.model,
+
+                idProductDetails: pd.id,
+                color: pd.color,
+                size: pd.size,
+                price: pd.price,
+                brand: p.brand,
+                sale: pd.sale,
+                gender: pd.gender,
+                niche: pd.niche,
+                status: pd.status
+              };
+
+              result.push(productStore);
+            });
+          });
+          return result;
+        })
+      )
+      .subscribe(products => {
+        this.productsStore = products.filter(value => {
+          return value.brand.name === 'nz esportes';
+        });
+      });
   }
 
 }
