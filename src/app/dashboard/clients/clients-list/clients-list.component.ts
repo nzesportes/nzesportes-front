@@ -21,6 +21,7 @@ export class ClientsListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.paginationService.initPagination();
     this.getAllCustomers(10, this.paginationService.page);
   }
   updateIndex(index: number): void {

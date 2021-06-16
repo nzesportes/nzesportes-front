@@ -3,146 +3,123 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/painel/clientes">Clientes</a></li>
-        <li class="breadcrumb-item active" aria-current="page">André Nascimento de Freitas</li>
+        <li class="breadcrumb-item active" aria-current="page">{{customer.name | titlecase}} {{customer.lastName | titlecase}}</li>
       </ol>
     </nav>
   </div>
-  <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
-    <button type="button" class="btn btn-secondary w-100">Cancelar</button>
+  <div class="col-lg-4 col-sm-12 mb-3 mb-lg-0" routerLink="/painel/clientes">
+    <button type="button" class="btn btn-secondary w-100">Voltar</button>
   </div>
 </div>
-<div class="alert alert-danger" role="alert">
+<div class="alert alert-danger" role="alert" *ngIf="hasError">
   Não foi possível carregar algumas informações. Por favor,
   <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
 </div>
 
-<div>
-  <div class="row mt-3">
-    <div class="col-12 mb-3">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Informações de pessoais</h5>
-          <hr>
-          <h6 class="card-subtitle mb-2 text-muted">André Nascimento de Freitas</h6>
-
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="card mb-3">
-  <div class="card-body">
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="isShowOnStore" formControlName="status">
-      <label class="form-check-label" for="isShowOnStore">
-        Disponível na loja
-      </label>
-    </div>
-  </div>
-</div>
-<div class="row mt-3">
+<div class="row mt-3" *ngIf="!hasError">
   <div class="col-12 mb-3">
-    <div class="card mb-3">
+    <div class="card">
       <div class="card-body">
-        <div class="row">
-          <div class="col-lg-9 col-sm-12">
-            <h5 class="card-title">Tipos de categoria</h5>
-          </div>
-        </div>
-
+        <h5 class="card-title">Informações do usuário</h5>
         <hr>
-        <div class="card mb-3">
-          <div class="table-responsive ">
-
-            <table class="table table-hover">
-              <thead>
-              <tr>
-                <th scope="col" style="width: 50%">Nome</th>
-                <th scope="col" style="width: 10%">Ações</th>
-              </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
+        <div class="form-row mb-lg-3">
+          <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+            <h6 for="name" class="">Nome</h6>
+            <div id="name"> {{customer.name | titlecase}} {{customer.lastName | titlecase}}</div>
           </div>
+          <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+            <h6 for="email">Email</h6>
+            <div id="email"> apreencher@gmail.com</div>
+          </div>
+          <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+            <h6 for="cpf">CPF</h6>
+            <div id="cpf">{{customer.cpf}}</div>
+          </div>
+        </div>
+
+        <div class="form-row mb-lg-3">
+          <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+            <h6 for="number">Telefone</h6>
+            <div id="number">{{customer.phone}}</div>
+          </div>
+          <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+            <h6 for="sexo">Sexo</h6>
+            <div id="sexo">{{customer.gender.toLowerCase() === 'm' ? 'Masculino' : 'Feminino' }}</div>
+
+          </div>
+          <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+            <h6 for="dateNasc">Data de Nascimento</h6>
+            <div id="dateNasc">{{customer.birthDate}}</div>
+          </div>
+        </div>
+
+        <div class="form-row mb-lg-3">
+          <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
+            <h6 for="instagram">Instagram</h6>
+            <div id="instagram">{{customer.instagram}}</div>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="row mt-3">
+<div class="row mt-3" *ngIf="!hasError">
   <div class="col-12 mb-3">
     <div class="card mb-3">
       <div class="card-body">
         <div class="row">
           <div class="col-lg-9 col-sm-12">
-            <h5 class="card-title">Produtos na Categoria</h5>
+            <h5 class="card-title">Endereço</h5>
           </div>
           <div class="col-lg-3 col-sm-12 ">
-            <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#exampleModal">
-              Adicionar Produtos
-            </button>
+            <button type="button" class="btn btn-primary w-100"> Adicionar outro endereço</button>
           </div>
         </div>
 
         <hr>
         <div class="card mb-3">
-          <div class="table-responsive ">
-
-            <table class="table table-hover">
-              <thead>
-              <tr>
-                <th scope="col" style="width: 15%">Código</th>
-                <th scope="col" style="width: 50%">Nome</th>
-                <th scope="col" style="width: 15%">Modelo</th>
-                <th scope="col" style="width: 10%">Tamanho</th>
-
-                <th scope="col" style="width: 10%">Ações</th>
-              </tr>
-              </thead>
-              <tbody>
-              </tbody>
-            </table>
+          <div class="card-body">
+            <div class="form-row mb-lg-3">
+              <div class="form-group col-lg-3 col-sm-12 mb-3 mb-lg-0">
+                <label for="cep">CEP</label>
+                <input type="text" class="form-control" id="cep" placeholder="00000-000">
+              </div>
+              <div class="form-group col-lg-9 col-sm-12 mb-3 mb-lg-0">
+                <label for="address">Endereço</label>
+                <input type="text" class="form-control" id="address" placeholder="Avenida Paulista">
+              </div>
+            </div>
+            <div class="form-row mb-lg-3">
+              <div class="form-group col-lg-3 col-sm-12 mb-3 mb-lg-0">
+                <label for="numerAddress">Número</label>
+                <input type="text" class="form-control" id="numerAddress" placeholder="177">
+              </div>
+              <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+                <label for="bairro">Bairro</label>
+                <input type="text" class="form-control" id="bairro" placeholder="Tatupé">
+              </div>
+              <div class="form-group col-lg-5 col-sm-12 mb-3 mb-lg-0">
+                <label for="complement">Complemento</label>
+                <input type="text" class="form-control" id="complement" placeholder="Perto da marginal">
+              </div>
+            </div>
+            <div class="form-row mb-lg-3">
+              <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
+                <label for="state">Estado</label>
+                <input type="text" class="form-control" id="state" placeholder="São Paulo">
+              </div>
+              <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
+                <label for="city">Cidade</label>
+                <input type="text" class="form-control" id="city" placeholder="Suzano">
+              </div>
+            </div>
           </div>
         </div>
 
-        <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-end  mr-3 ml-3">
-            <li class="page-item disabled">
-              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-              <a class="page-link" href="#">Next</a>
-            </li>
-          </ul>
-        </nav>
       </div>
     </div>
   </div>
 </div>
-<div class="card mb-3">
-  <div class="card-body">
-    <h5 class="card-title">Excluir categoria</h5>
-    <hr>
-    Ao exclui-lá ela será apagada definitivamente e não aparecerá mais em sua loja.
-    <div class="d-flex justify-content-end">
-      <button type="button" class="btn btn-danger col-lg-2 col-sm-12">Excluir</button>
-    </div>
-  </div>
 
-</div>
-
-<div class="card mb-3">
-  <div class="card-body">
-    <h5 class="card-title">Promoções</h5>
-    <hr>
-    <div class="card-link">
-      <i class="fas fa-ticket-alt p-1" style="color: cornflowerblue"></i><a href="#">Criar cupom de desconto</a>
-    </div>
-  </div>
-</div>

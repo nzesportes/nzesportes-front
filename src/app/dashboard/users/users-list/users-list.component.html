@@ -29,7 +29,7 @@
     <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
       <label for="name">Pesquisa</label>
       <div class="input-group mb-3">
-        <input type="text" class="form-control" id="name" placeholder="Victor Hugo" aria-label="Victor Hugo"
+        <input type="text" class="form-control" id="name" placeholder="joao@gmail.com" aria-label="Victor Hugo"
                aria-describedby="basic-addon2">
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
@@ -39,30 +39,31 @@
   </div>
 
 </div>
-
-<div class="card mb-3 mr-3 ml-3">
+<div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="users.length === 0 && !hasError">
+  Não encontramos nenhum usuário.
+</div>
+<div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
+  Não foi possível carregar algumas informações. Por favor, <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+</div>
+<div class="card mb-3 mr-3 ml-3" *ngIf="users.length > 0">
   <div class="table-responsive ">
 
     <table class="table table-hover">
       <thead>
       <tr>
-        <th scope="col" style="width: 25%;">Nome</th>
-        <th scope="col" style="width: 20%">Email</th>
-        <th scope="col" style="width: 15%">CPF</th>
-        <th scope="col" style="width: 15%">Sexo</th>
-        <th scope="col" style="width: 10%">Telefone</th>
-        <th scope="col" style="width: 10%">Dta Nasc.</th>
-        <th scope="col" style="width: 5%">Ações</th>
+        <th scope="col" style="width: 40%">Email</th>
+        <th scope="col" style="width: 40%">Permissão</th>
+        <th scope="col" style="width: 20%">Ações</th>
       </tr>
       </thead>
       <tbody>
-      <tr scope="row" class="row-table" *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10]" routerLink="novo-usuario">
-        <th>Victor Hugo do Nascimento</th>
-        <td>teste.teste03@teste.com</td>
-        <td>455.225.225-55</td>
-        <td>{{i % 2 === 0 ? 'Masculino' : 'Feminino'}}</td>
-        <td>(11) 8525-8569</td>
-        <td>16/01/2000</td>
+      <tr scope="row" class="row-table" *ngFor="let u of users" routerLink="usuario/{{u.id}}">
+        <th>{{u.username}}</th>
+        <td>
+          <div *ngFor="let role of u.roles, let i = index">
+            {{mapRolesTranslate.get(role)}}{{ i  === getTotalRoles(u) - 1 ? '.' : ','}}
+          </div>
+        </td>
         <td><i class="fas fa-edit text-primary"></i></td>
       </tr>
       </tbody>
@@ -71,16 +72,18 @@
 </div>
 
 
-<nav aria-label="Page navigation example">
-  <ul class="pagination justify-content-end">
-    <li class="page-item disabled">
-      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+<nav aria-label="Page navigation example" *ngIf="content && users.length > 0">
+  <ul class="pagination justify-content-end mr-3 ml-3">
+    <li class="page-item" [ngClass]="{'disabled': this.paginationService.page === 0}">
+      <a class="page-link" tabindex="-1" aria-disabled="true" (click)="updateIndex(this.paginationService.page-1)">Previous</a>
     </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#">Next</a>
+    <li class="page-item" [ngClass]="{'active': i == this.paginationService.page }"
+        *ngFor="let i of this.paginationService.getRange(); let in = index"
+    >
+      <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
+    </li>
+    <li class="page-item" [ngClass]="{'disabled': (this.paginationService.page  + 1) === this.paginationService.pages }">
+      <a class="page-link" (click)="updateIndex(this.paginationService.page + 1)">Next</a>
     </li>
   </ul>
 </nav>

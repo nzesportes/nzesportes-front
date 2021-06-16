@@ -6,6 +6,7 @@ import {User} from '../../../shared/models/user.model';
 import {UserPage} from '../../../shared/models/pagination-model/user-page.model';
 import {PaginationService} from '../../../shared/services/pagination.service';
 import {take} from 'rxjs/operators';
+import {mapRolesTranslate} from '../../../shared/enums/role.enum';
 
 @Component({
   selector: 'app-users-list',
@@ -16,6 +17,7 @@ export class UsersListComponent implements OnInit {
   users: User[] = [];
   content: UserPage | undefined;
   hasError!: boolean;
+  mapRolesTranslate = mapRolesTranslate;
 
   constructor(
     private userService: UserService,
@@ -49,6 +51,13 @@ export class UsersListComponent implements OnInit {
   onChangeFilter(search: string): void {
     this.paginationService.page = 0;
     this.getAllUsers(10, 0, search);
+  }
+
+  getTotalRoles(u: User): number {
+    if (u.roles?.length) {
+      return u.roles.length;
+    }
+    return 0;
   }
 
 }

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Role} from '../../../shared/enums/role.enum';
 
 @Component({
   selector: 'app-users-new',
@@ -7,8 +8,8 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
   styleUrls: ['./users-new.component.scss']
 })
 export class UsersNewComponent implements OnInit {
-  public formUser: FormGroup | undefined;
-
+  public formUser: FormGroup = new FormGroup({});
+  roles = Role;
   constructor(
     private formBuilder: FormBuilder
   ) {
@@ -20,8 +21,18 @@ export class UsersNewComponent implements OnInit {
 
   private createForm(): void {
     this.formUser = this.formBuilder.group({
-      title: new FormControl(null, Validators.required),
-      address: this.formBuilder.array([])
+      id: new FormControl(null),
+      username: new FormControl(null,  [Validators.required, Validators.email]),
+      role: new FormControl(null, Validators.required),
     });
+  }
+
+  get validateFieldsFormUser(): { [p: string]: AbstractControl } {
+    return this.formUser.controls;
+  }
+  cssError(field: any): any {
+    return {
+      'is-invalid': field.errors && field.touched
+    };
   }
 }

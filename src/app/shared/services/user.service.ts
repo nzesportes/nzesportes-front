@@ -32,7 +32,7 @@ export class UserService {
     return this.http.delete<void>(this.apiURL + idUser, {params});
   }
 
-  getAdmins(page: number, size: number): Observable<UserPage>{
+  getAdmins( size: number, page: number): Observable<UserPage>{
     const params = new HttpParams()
       .set('async', 'true')
       .set('page', page.toString())
