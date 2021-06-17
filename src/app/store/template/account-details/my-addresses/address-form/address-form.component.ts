@@ -73,7 +73,8 @@ export class AddressFormComponent implements OnInit {
     this.address.state = this.newAddressForm.get('state')?.value;
     this.address.city = this.newAddressForm.get('city')?.value;
     this.address.district = this.newAddressForm.get('district')?.value;
-    this.address.customer = this.customer;
+    this.address.customerId = this.customer.id;
+    console.log(this.address);
     this.addressService.save(this.address)
       .subscribe(() => {
         window.location.reload();

@@ -7,6 +7,7 @@ import {MyOrdersComponent} from './my-orders/my-orders.component';
 import {MyAddressesComponent} from './my-addresses/my-addresses.component';
 import {MyFavoritesComponent} from './my-favorites/my-favorites.component';
 import {AuthGuard} from '../../../shared/guards/auth-guard';
+import {ChangePasswordComponent} from './change-password/change-password.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
       {
         path: 'favoritos',
         component: MyFavoritesComponent
+      },
+      {
+        path: 'alterar-senha',
+        component: ChangePasswordComponent
       },
       {
         path: 'enderecos',

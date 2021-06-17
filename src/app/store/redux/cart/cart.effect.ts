@@ -17,7 +17,7 @@ export class CartEffect {
       console.log(action);
       return [];
     }));
-    /*return this.actions.pipe(
+    /*return this.actions.pipes(
       ofType(CartActionsType.ADD_ITEM_CART),
       map(payload => {
           console.log(payload);

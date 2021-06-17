@@ -34,6 +34,7 @@ export class ProductsService {
       .set('async', 'true');
     return this.http.put<ProductDetailUpdateTO>(this.api + 'details', productDetailTO, {params});
   }
+
   saveProductDetails(productDetailTO: ProductDetails): Observable<ProductDetails> {
     const params = new HttpParams()
       .set('async', 'true');
@@ -67,7 +68,12 @@ export class ProductsService {
       .set('async', 'true');
     return this.http.delete<Product>(this.api + id, {params});
   }
-  updateCategories(idCategory: string, idProduct: string): Observable<Product>{
+
+  getDetailById(uuid: string): Observable<ProductDetails> {
+    return this.http.get<ProductDetails>(`${this.api}details/${uuid}`);
+  }
+
+  updateCategories(idCategory: string, idProduct: string): Observable<Product> {
     const params = new HttpParams()
       .set('async', 'true');
     return this.http.put<Product>(this.api + idProduct + '/category/' + idCategory, {params});
