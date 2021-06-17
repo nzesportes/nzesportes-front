@@ -88,8 +88,8 @@
                 <table class="table table-hover">
                   <thead>
                   <tr>
-                    <th scope="col" style="width: 50%">Nome</th>
-                    <th scope="col" style="width: 10%">Ações</th>
+                    <th scope="col" style="width: 80%">Nome</th>
+                    <th scope="col" style="width: 20%">Ações</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -127,42 +127,41 @@
                 <h5 class="card-title">Produtos na Categoria</h5>
               </div>
               <div class="col-lg-3 col-sm-12 ">
-                <button type="button" class="btn btn-primary w-100" data-toggle="modal" data-target="#exampleModal">
+                <button type="button" (click)="getAllProducts()" class="btn btn-primary w-100" data-toggle="modal"
+                        data-target="#exampleModal">
                   Adicionar Produtos
                 </button>
               </div>
             </div>
 
             <hr>
-            <div class="card mb-3">
+            <div class="alert alert-warning mr-3 ml-3" role="alert"
+                 *ngIf="content && products.length === 0 && !hasError">
+              Não existe nenhum produto cadastrado nessa categoria.
+            </div>
+            <div class="card mb-3" *ngIf="content && products.length > 0 && !hasError">
               <div class="table-responsive ">
 
                 <table class="table table-hover">
                   <thead>
                   <tr>
-                    <th scope="col" style="width: 15%">Código</th>
-                    <th scope="col" style="width: 50%">Nome</th>
-                    <th scope="col" style="width: 15%">Modelo</th>
-                    <th scope="col" style="width: 10%">Tamanho</th>
+                    <th scope="col" style="width: 80%">Modelo</th>
 
-                    <th scope="col" style="width: 10%">Ações</th>
+                    <th scope="col" style="width: 20%">Ações</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr class="row-table" *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10]"
+                  <tr class="row-table" *ngFor="let c of products; let i = index"
                       routerLink="/painel/produtos/produto/{{i}}">
-                    <th scope="row">{{i}}</th>
-                    <td>Camisa</td>
-                    <td>black</td>
+                    <td>{{c.model}}</td>
 
-                    <td>{{i * 2}}</td>
                     <td>
-                      <i class="fas fa-edit actions-button text-primary"></i>
+                      <i class="fas fa-eye actions-button text-primary" routerLink="/painel/produtos/produto/{{c.id}}"></i>
                       <i class="fas fa-trash actions-button text-danger" [swal]="swal1"></i>
                       <swal
                         [swalOptions]="{ confirmButtonText: 'Sim', cancelButtonText: 'Cancelar' }"
                         [showCancelButton]="true"
-                        (confirm)="removeProduct(i)"
+                        (confirm)="removeProduct(c.id)"
                         #swal1 title="Tem certeza que deseja remover esse produto da categoria?"
                         icon="question">
                       </swal>
@@ -173,24 +172,29 @@
               </div>
             </div>
 
-            <nav aria-label="Page navigation example">
-              <ul class="pagination justify-content-end  mr-3 ml-3">
-                <li class="page-item disabled">
-                  <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            <nav aria-label="Page navigation example" *ngIf="content && products.length > 0">
+              <ul class="pagination justify-content-end mr-3 ml-3">
+                <li class="page-item" [ngClass]="{'disabled': paginationService.page === 0}">
+                  <a class="page-link" tabindex="-1" aria-disabled="true"
+                     (click)="updateIndex(paginationService.page-1)">Previous</a>
                 </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                  <a class="page-link" href="#">Next</a>
+                <li class="page-item" [ngClass]="{'active': i == paginationService.page}"
+                    *ngFor="let i of paginationService.getRange(); let in = index"
+                >
+                  <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
+                </li>
+                <li class="page-item"
+                    [ngClass]="{'disabled': (paginationService.page + 1) === paginationService.pages }">
+                  <a class="page-link" (click)="updateIndex(paginationService.page + 1)">Next</a>
                 </li>
               </ul>
             </nav>
+
           </div>
         </div>
       </div>
     </div>
-    <div class="card mb-3"  *ngIf="categorie?.id">
+    <div class="card mb-3" *ngIf="categorie?.id">
       <div class="card-body">
         <h5 class="card-title">Excluir categoria</h5>
         <hr>
@@ -270,30 +274,53 @@
         </button>
       </div>
       <div class="modal-body" style="height: 500px">
-        <div class="row item-product mb-3" *ngFor="let i of [0,1,2,3,4,5,6,7,9]">
-          <div class="col-4">
-            <img src="./assets/images/nike.jpg" class="card-img-top" alt="...">
-          </div>
-          <div class="col-5 mt-lg-2 mt-sm-1">
-            <div class="row">
-              <div class="col-12">
-                Camiseta Nike {{i}}
+        <div class="row" *ngIf="filteredProducts.length !== 0 && !hasError">
+          <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
+            <label for="name">Filtrar</label>
+            <div class="input-group mb-3">
+              <input type="text" class="form-control" id="name" placeholder="Camiseta Leblon James"
+                     aria-label="Camiseta Leblon James"
+                     aria-describedby="basic-addon2" [(ngModel)]="searchProduct">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" (click)="filterProductsList()"><i
+                  class="fas fa-search"></i></button>
               </div>
-              <div class="col-12">
-                Código: 111111
-              </div>
-            </div>
-          </div>
-          <div class="col-0 mt-3 ml-5">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="produto">
             </div>
           </div>
         </div>
+        <div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="filteredProducts.length === 0 && !hasError">
+          Não existe nenhum produto cadastrado ou os produtos já estão cadastrados nessa categoria.
+        </div>
+        <form [formGroup]="formProductFilter">
+          <div class="row item-product mb-3" formArrayName="products"
+               *ngFor="let c of filterProductsList(); let i = index">
+            <div class="col-4">
+              <img src="./assets/images/nike.jpg" class="card-img-top" alt="...">
+            </div>
+            <div class="col-5 mt-lg-2 mt-sm-1">
+              <div class="row">
+                <div class="col-12">
+                  {{c.value.model}}
+                </div>
+              </div>
+            </div>
+            <div class="col-0 mt-3 ml-5">
+              <div class="form-check" [formGroupName]="i">
+                <input class="form-check-input" formControlName="checked" type="checkbox">
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" *ngIf="filteredProducts.length !== 0 && !hasError">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Adicionar</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          (click)="addProductsCategory()">
+          Adicionar
+        </button>
       </div>
     </div>
   </div>

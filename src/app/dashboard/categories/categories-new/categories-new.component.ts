@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Category} from '../../../shared/models/category.model';
 import {TypeCategorie, TypeCategorieList} from '../../../shared/enums/type-categorie';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
@@ -9,6 +9,9 @@ import {map, take} from 'rxjs/operators';
 import {ErrorWarning} from '../../../shared/models/error-warning.model';
 import {ProductsService} from '../../../shared/services/products.service';
 import {Product} from '../../../shared/models/product.model';
+import {PaginationService} from '../../../shared/services/pagination.service';
+import {ProductPage} from '../../../shared/models/pagination-model/product-page.model';
+import {Observable, zip} from 'rxjs';
 
 @Component({
   selector: 'app-categories-new',
@@ -23,24 +26,33 @@ export class CategoriesNewComponent implements OnInit {
 
   public formCategorie: FormGroup = new FormGroup({});
   public formCategorieList: FormGroup = new FormGroup({});
+  public formProductFilter: FormGroup = new FormGroup({});
   public categorie!: Category;
   public typeCategorieList = TypeCategorieList;
   hasError!: boolean;
 
   public products!: Product[];
+  content: ProductPage | undefined;
+  filteredProducts: Product[] = [];
+  page = 0;
+
+
+  searchProduct = '';
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private categorieService: CategoriesService,
     private route: ActivatedRoute,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    public paginationService: PaginationService
   ) {
     this.createFormCategorieList();
   }
 
   ngOnInit(): void {
     this.createForm();
+    this.createFormProducts();
     if (this.router.url.includes('categorias/categoria')) {
       this.route.params.pipe(
         map(p => p.id)
@@ -49,7 +61,7 @@ export class CategoriesNewComponent implements OnInit {
           .pipe(take(1))
           .subscribe(c => {
             this.categorie = c;
-            this.getProductsByCategory();
+            this.getProductsByCategory(10, 0);
             this.createForm();
           }, () => {
             this.hasError = true;
@@ -62,8 +74,17 @@ export class CategoriesNewComponent implements OnInit {
     this.type.removeAt(i);
   }
 
-  removeProduct(id: any): void {
-    console.log('remove', id);
+  removeProduct(id: string): void {
+    this.productsService.updateCategories(this.categorie.id, id)
+      .pipe(
+        take(1)
+      )
+      .subscribe(() => {
+        this.page = 0;
+        this.getProductsByCategory(10, this.page);
+      }, () => {
+        this.hasError = true;
+      });
   }
 
   private createForm(): void {
@@ -173,14 +194,90 @@ export class CategoriesNewComponent implements OnInit {
       });
   }
 
-  getProductsByCategory(): void {
-    this.productsService.getByCategoryId(this.categorie.id, 10, 0)
+  getProductsByCategory(size: number, page: number): void {
+    this.productsService.getByCategoryId(this.categorie.id, size, page)
       .pipe(take(1))
       .subscribe(products => {
-        console.log(products);
         this.products = products.content;
-      }, error => {
-
+        this.content = products;
+        this.paginationService.getPageRange(this.content.totalElements);
+      }, () => {
+        this.hasError = true;
       });
   }
+
+  getAllProducts(): void {
+    this.productsService.getAll(300, 0)
+      .pipe(take(1))
+      .subscribe(r => {
+        // @ts-ignore
+        this.filteredProducts = r.content.filter(p => {
+          const hasCategory = p.category.find(c => c.name === this.categorie.name);
+          if (!hasCategory) {
+            return p;
+          }
+        });
+        this.productFilterFormArray.clear();
+        this.filteredProducts
+          .forEach(p => this.productFilterFormArray.push(this.createProductFilterForm(false, p)));
+      }, () => {
+        this.hasError = true;
+      });
+  }
+
+
+  updateIndex(index: number): void {
+    this.getProductsByCategory(10, index);
+    this.paginationService.page = index;
+  }
+
+  filterProductsList(): AbstractControl[] {
+    if (!this.searchProduct) {
+      return this.productFilterFormArray.controls;
+    }
+    return this.productFilterFormArray
+      .controls.filter(p => p.value.model.toLowerCase().includes(this.searchProduct));
+  }
+
+  private createFormProducts(): void {
+    this.formProductFilter = this.formBuilder.group({
+        products: this.formBuilder.array([]),
+      }
+    );
+  }
+
+  private createProductFilterForm(checked: boolean, product: Product): FormGroup {
+    return new FormGroup({
+        checked: new FormControl(checked),
+        id: new FormControl(product.id, Validators.required),
+        model: new FormControl(product.model, Validators.required),
+      }
+    );
+  }
+
+  get productFilterFormArray(): FormArray {
+    return this.formProductFilter.get('products') as FormArray;
+  }
+
+  addProductsCategory(): void {
+    const requests: Observable<Product>[] = [];
+    this.productFilterFormArray.controls.forEach(form => {
+      if (form.value.checked) {
+        requests.push(
+          this.productsService.updateCategories(this.categorie.id, form.value.id)
+        );
+      }
+    });
+    zip(
+      ...requests
+    ).pipe(take(1))
+      .subscribe(() => {
+        this.page = 0;
+        this.getProductsByCategory(10, this.page);
+      }, () => {
+        this.hasError = true;
+      });
+
+  }
+
 }
