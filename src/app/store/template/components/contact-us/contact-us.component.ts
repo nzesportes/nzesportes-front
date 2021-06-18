@@ -41,8 +41,8 @@ export class ContactUsComponent implements OnInit {
     this.contact = this.formContact?.value;
     this.contactService.save(this.contact)
       .pipe(take(1))
-      .subscribe(response => console.log(response),
-        error => console.log(error));
+      .subscribe(() => {
 
+        }, error => console.log(error));
   }
 }
