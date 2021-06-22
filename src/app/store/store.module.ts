@@ -30,6 +30,7 @@ import { ProductDetailComponent } from './template/product-detail/product-detail
 import {NgxImageZoomModule} from 'ngx-image-zoom';
 import { ProductListingComponent } from './template/product-listing/product-listing.component';
 import { FiltersComponent } from './template/components/filters/filters.component';
+import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 
 @NgModule({
   declarations: [
@@ -56,16 +57,17 @@ import { FiltersComponent } from './template/components/filters/filters.componen
     ProductListingComponent,
     FiltersComponent
   ],
-  imports: [
-    CommonModule,
-    StoreRoutingModule,
-    AccountDetailsModule,
-    CarouselModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgxMaskModule.forRoot(),
-    NgxImageZoomModule
-  ],
+    imports: [
+        CommonModule,
+        StoreRoutingModule,
+        AccountDetailsModule,
+        CarouselModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgxMaskModule.forRoot(),
+        NgxImageZoomModule,
+        SweetAlert2Module
+    ],
   providers: [
     AuthGuard
   ]

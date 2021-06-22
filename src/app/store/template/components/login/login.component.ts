@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {TokenStorageService} from '../../../../shared/services/token-storage.service';
 import {AuthService} from '../../../../shared/services/auth.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationRequest} from '../../../../shared/models/authentication-request.model';
 import {take} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
+import {ErrorWarning} from '../../../../shared/models/error-warning.model';
 
 @Component({
   selector: 'app-login',
@@ -13,6 +15,8 @@ import {Router} from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
+  @ViewChild('error')
+  public readonly dialogError!: SwalComponent;
 
   // @ts-ignore
   formLogin: FormGroup;
@@ -56,10 +60,24 @@ export class LoginComponent implements OnInit {
     this.tokenStorageService.authenticateUserSession(this.authenticationRequest)
       .pipe(take(1))
       .subscribe(() => {
-        console.log('Logado com sucesso');
         window.location.reload();
-      }, error => {
-        console.log(error);
+      }, (error: ErrorWarning) => {
+        this.setErrorDialog(error);
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.singIn();
+          }
+        });
       });
+  }
+
+  redirect(): void {
+    this.router.navigateByUrl('/');
+  }
+
+  setErrorDialog(error: ErrorWarning): void {
+    this.dialogError.confirmButtonText = error.action;
+    this.dialogError.title = error.title;
+    this.dialogError.text = error.message;
   }
 }
