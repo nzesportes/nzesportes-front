@@ -12,6 +12,7 @@ export interface ProductDetails {
   gender: Gender;
   niche: string;
   status: string;
+  stock: Stock[];
 }
 
 export interface ProductDetailUpdateTO {
@@ -24,5 +25,12 @@ export interface ProductDetailUpdateTO {
   gender: Gender;
   niche: string;
   status: string;
+  stock: Stock[];
+}
+
+export interface Stock {
+  id: string;
+  size: string;
+  quantity: number;
 }
 

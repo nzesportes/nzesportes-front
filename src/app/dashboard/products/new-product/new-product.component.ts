@@ -3,7 +3,7 @@ import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validat
 import {ActivatedRoute, Router} from '@angular/router';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 import {Product, ProductUpdateTO} from '../../../shared/models/product.model';
-import {ProductDetails} from '../../../shared/models/product-details.model';
+import {ProductDetails, Stock} from '../../../shared/models/product-details.model';
 import {BrandsService} from '../../../shared/services/brands.service';
 import {map, take} from 'rxjs/operators';
 import {Brand} from '../../../shared/models/brand.model';
@@ -162,6 +162,10 @@ export class NewProductComponent implements OnInit, OnDestroy {
     return this.formProduct.get('productDetails') as FormArray;
   }
 
+  get productDetailsStock(): FormArray {
+    return this.formProductDetail.get('stock') as FormArray;
+  }
+
   addProductDetails(productDetails: any): void {
     if (this.product) {
       const request = productDetails.id ?
@@ -191,15 +195,34 @@ export class NewProductComponent implements OnInit, OnDestroy {
     this.productDetails.removeAt(index);
   }
 
+  removeProductDetailsStock(index: number): void {
+    this.productDetailsStock.removeAt(index);
+  }
+  addStock(): void {
+    this.productDetailsStock.insert(0, this.createProductDetailsStockForm());
+  }
+
   private createProductDetailsForm(productDetails?: ProductDetails): FormGroup {
     return new FormGroup({
         id: new FormControl(productDetails ? productDetails.id : null),
         color: new FormControl(productDetails ? productDetails.color : null, Validators.required),
-        size: new FormControl(productDetails ? productDetails.size : null),
         price: new FormControl(productDetails ? productDetails.price : null, Validators.required),
         gender: new FormControl(productDetails ? productDetails.gender : null, Validators.required),
         status: new FormControl(productDetails ? productDetails.status : false),
         productId: new FormControl(this.product ? this.product.id : ''),
+        stock: this.formBuilder.array(
+          productDetails?.stock ? productDetails.stock : [this.createProductDetailsStockForm()],
+          Validators.required
+        ),
+      }
+    );
+  }
+
+  private createProductDetailsStockForm(stock?: Stock): FormGroup {
+    return new FormGroup({
+        id: new FormControl(stock ? stock.id : null),
+        size: new FormControl(stock ? stock.size : null, Validators.required),
+        quantity: new FormControl(stock ? stock.quantity : null, Validators.required)
       }
     );
   }
@@ -238,11 +261,12 @@ export class NewProductComponent implements OnInit, OnDestroy {
           this.setErrorDialog(error);
           this.errorCallSaveCategory(idCategory);
         });
-    }else{
+    } else {
       this.updateFormCategories();
     }
 
   }
+
   updateFormCategories(): void {
     this.categoriesArrayFormProduct.clear();
     this.categoriesArrayForm.controls.forEach(form => {
