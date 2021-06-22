@@ -1,28 +1,28 @@
 <div class="container-fluid p-4  bg-nz-gray fc-orange-crayola">
   <h2 class="text-center font-weight-bolder text-uppercase">Contato</h2>
-  <form class="form-container mr-auto ml-auto">
+  <form class="form-container mr-auto ml-auto" [formGroup]="formContact">
     <div class="form-group">
       <label for="nome">Nome Completo</label>
-      <input type="text" class="form-control" id="nome">
+      <input type="text" class="form-control" id="nome" formControlName="fullName">
     </div>
     <div class="form-group">
       <label for="email">E-mail</label>
-      <input type="email" class="form-control" id="email">
+      <input type="email" class="form-control" id="email" formControlName="email">
     </div>
     <div class="form-group">
       <label for="telefone">Telefone</label>
-      <input type="text" class="form-control" id="telefone">
+      <input type="text" class="form-control" id="telefone" formControlName="phone">
     </div>
     <div class="form-group">
       <label for="instagram">Instagram</label>
-      <input type="text" class="form-control" id="instagram">
+      <input type="text" class="form-control" id="instagram" formControlName="instagram">
     </div>
     <div class="form-group">
       <label for="sua-mensagem">Sua Mensagem</label>
-      <textarea class="form-control" id="sua-mensagem" rows="4"></textarea>
+      <textarea class="form-control" id="sua-mensagem" rows="4" formControlName="message"></textarea>
     </div>
     <div class="text-center">
-      <button type="button" class="btn btn-orange-crayola font-weight-bolder pl-5 pr-5 text-uppercase">Enviar</button>
+      <button type="button" (click)="save()" class="btn btn-orange-crayola font-weight-bolder pl-5 pr-5 text-uppercase">Enviar</button>
     </div>
   </form>
 </div>
