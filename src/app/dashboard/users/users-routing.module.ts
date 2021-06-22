@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'novo-usuario',
     component: UsersNewComponent
+  },
+  {
+    path: 'usuario/:id',
+    component: UsersNewComponent
   }
 ];
 
@@ -18,4 +22,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class UsersRoutingModule { }
+export class UsersRoutingModule {
+}

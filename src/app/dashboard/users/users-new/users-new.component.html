@@ -16,7 +16,11 @@
             (click)="save()">Salvar</button>
   </div>
 </div>
-<form [formGroup]="formUser">
+
+<div class="alert alert-danger" role="alert" *ngIf="hasError">
+  Não foi possível carregar algumas informações. Por favor, <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+</div>
+<form [formGroup]="formUser" *ngIf="!hasError">
   <div class="row mt-3">
     <div class="col-12 mb-3">
       <div class="card">

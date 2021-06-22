@@ -27,6 +27,11 @@ export class UserService {
     return this.http.put<User>(this.apiURL, adminSaveTO, {params});
   }
 
+  getById(idUser: string): Observable<User> {
+    const params = new HttpParams().set('async', 'true');
+    return this.http.get<User>(this.apiURL + idUser, {params});
+  }
+
   delete(idUser: string): Observable<void> {
     const params = new HttpParams().set('async', 'true');
     return this.http.delete<void>(this.apiURL + idUser, {params});

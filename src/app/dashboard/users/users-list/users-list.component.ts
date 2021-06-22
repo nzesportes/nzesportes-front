@@ -36,7 +36,6 @@ export class UsersListComponent implements OnInit {
       .subscribe(r => {
         this.users = r.content;
         this.content = r;
-        console.log(r);
         this.paginationService.getPageRange(this.content.totalElements);
       }, () => {
         this.hasError = true;
