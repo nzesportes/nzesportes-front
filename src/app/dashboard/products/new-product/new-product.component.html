@@ -276,11 +276,11 @@
               Adicionar outro tamanho
             </button>
           </div>
-          <div class="form-row" formArrayName="stock" *ngFor="let type of productDetailsStock.controls; let i = index">
+          <div class="form-row" formArrayName="stock" *ngFor="let stockForm of productDetailsStock.controls; let i = index">
             <div class="form-group col-lg-5 col-sm-12 mb-3 mb-lg-0" [formGroupName]="i">
               <label for="categorieName">Tamanho</label>
               <input type="text" class="form-control" id="size" formControlName="size" placeholder="ex: P "
-                     [ngClass]="cssError(validateFieldsFormProductDetail.color)">
+                     [ngClass]="cssError(stockForm.get('size'))">
 
               <div id="field-size" class="invalid-feedback">
                 Por favor, insira o tamanho.
@@ -288,8 +288,8 @@
             </div>
             <div class="form-group col-lg-5 col-sm-12 mb-3 mb-lg-0" [formGroupName]="i">
               <label for="categorieName">Quantidade</label>
-              <input type="number" class="form-control" id="categorieName" formControlName="quantity" placeholder="0"
-                       [ngClass]="cssError(validateFieldsFormProductDetail.color)">
+              <input type="number" class="form-control" id="categorieName" formControlName="quantity" min="0" placeholder="0"
+                       [ngClass]="cssError(stockForm.get('quantity'))">
 
               <div id="field-quantity" class="invalid-feedback">
                 Por favor, insira a quantidade.
@@ -297,7 +297,13 @@
             </div>
 
             <div class="form-group col-lg-2 col-sm-12 mb-3 mb-lg-0 mt-lg-4 pt-lg-2 " [formGroupName]="i">
-              <button type="button" class="btn btn-danger w-100" (click)="removeProductDetailsStock(i)">x</button>
+              <button
+                type="button"
+                class="btn btn-danger w-100"
+                (click)="removeProductDetailsStock(i)"
+                [disabled]="productDetailsStock.controls.length === 1">
+                x
+              </button>
             </div>
           </div>
 
