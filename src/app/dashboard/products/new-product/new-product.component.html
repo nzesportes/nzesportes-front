@@ -278,7 +278,7 @@
           </div>
           <div class="form-row" formArrayName="stock" *ngFor="let stockForm of productDetailsStock.controls; let i = index">
             <div class="form-group col-lg-5 col-sm-12 mb-3 mb-lg-0" [formGroupName]="i">
-              <label for="categorieName">Tamanho</label>
+              <label for="categorieName">Tamanho {{i}}</label>
               <input type="text" class="form-control" id="size" formControlName="size" placeholder="ex: P "
                      [ngClass]="cssError(stockForm.get('size'))">
 
@@ -314,6 +314,7 @@
             </label>
           </div>
         </div>
+        {{formProductDetail.value | json}}
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
           <button

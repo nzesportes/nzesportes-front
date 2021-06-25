@@ -154,7 +154,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
 
   cssError(field: any): any {
     return {
-      'is-invalid': field.errors && field.touched
+      'is-invalid': field?.errors && field?.touched
     };
   }
 
@@ -198,6 +198,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
   removeProductDetailsStock(index: number): void {
     this.productDetailsStock.removeAt(index);
   }
+
   addStock(): void {
     this.productDetailsStock.insert(0, this.createProductDetailsStockForm());
   }
@@ -211,18 +212,23 @@ export class NewProductComponent implements OnInit, OnDestroy {
         status: new FormControl(productDetails ? productDetails.status : false),
         productId: new FormControl(this.product ? this.product.id : ''),
         stock: this.formBuilder.array(
-          productDetails?.stock ? productDetails.stock : [this.createProductDetailsStockForm()],
+          productDetails?.stock ? this.createListStockForm(productDetails.stock) : [this.createProductDetailsStockForm()],
           Validators.required
         ),
       }
     );
   }
 
+  createListStockForm(stocks: Stock[]): FormGroup[] {
+    return stocks.map(s => this.createProductDetailsStockForm(s));
+  }
+
+
   private createProductDetailsStockForm(stock?: Stock): FormGroup {
     return new FormGroup({
-        id: new FormControl(stock ? stock.id : null),
-        size: new FormControl(stock ? stock.size : null, Validators.required),
-        quantity: new FormControl(stock ? stock.quantity : null, Validators.required)
+        id: new FormControl(  stock?.id ? stock.id : null),
+        size: new FormControl({value: stock ? stock.size : null,  disabled: stock?.id ? true : false} , Validators.required),
+        quantity: new FormControl({value: stock ? stock.quantity : null,  disabled: stock?.id ? true : false} ,  Validators.required)
       }
     );
   }
