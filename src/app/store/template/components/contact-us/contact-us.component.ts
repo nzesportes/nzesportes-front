@@ -1,8 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ContactService} from '../../../../shared/services/contact.service';
 import {Contact} from '../../../../shared/models/contact.model';
 import {take} from 'rxjs/operators';
+import {ErrorWarning} from '../../../../shared/models/error-warning.model';
+import {Router} from '@angular/router';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
   selector: 'app-contact-us',
@@ -10,6 +13,9 @@ import {take} from 'rxjs/operators';
   styleUrls: ['./contact-us.component.scss']
 })
 export class ContactUsComponent implements OnInit {
+
+  @ViewChild('error')
+  public readonly dialogError!: SwalComponent;
 
   // @ts-ignore
   formContact: FormGroup;
@@ -19,7 +25,8 @@ export class ContactUsComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private contactService: ContactService
+    private contactService: ContactService,
+    private router: Router
   ) {
   }
 
@@ -43,6 +50,23 @@ export class ContactUsComponent implements OnInit {
       .pipe(take(1))
       .subscribe(() => {
 
-        }, error => console.log(error));
+      }, (error: ErrorWarning) => {
+        this.setErrorDialog(error);
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.save();
+          }
+        });
+      });
+  }
+
+  redirect(): void {
+    this.router.navigateByUrl('/');
+  }
+
+  setErrorDialog(error: ErrorWarning): void {
+    this.dialogError.confirmButtonText = error.action;
+    this.dialogError.title = error.title;
+    this.dialogError.text = error.message;
   }
 }

@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {AddressService} from '../../../../../shared/services/address.service';
 import {Address} from '../../../../../shared/models/address.model';
+import {take} from 'rxjs/operators';
+import {ErrorWarning} from '../../../../../shared/models/error-warning.model';
+import {Router} from '@angular/router';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
   selector: 'app-address-list',
@@ -9,52 +13,17 @@ import {Address} from '../../../../../shared/models/address.model';
 })
 export class AddressListComponent implements OnInit {
 
-
-  /*addresses = [
-    {
-      rua: 'Rua São Florêncio',
-      numero: 1464,
-      complemento: 'Bloco A2 apto 34',
-      bairro: 'Cangaíba',
-      cidade: 'São Paulo',
-      uf: 'SP',
-      cep: '03733-020'
-    },
-    {
-      rua: 'Rua Cecília Iter',
-      numero: 185,
-      complemento: 'Casa 7',
-      bairro: 'Itaquera',
-      cidade: 'São Paulo',
-      uf: 'SP',
-      cep: '08240-730'
-    },
-    {
-      rua: 'Rua Mário Bastos',
-      numero: 38,
-      complemento: '',
-      bairro: 'Jardim Mercedes',
-      cidade: 'Ferraz de Vasconcelos',
-      uf: 'SP',
-      cep: '08541-240'
-    },
-    {
-      rua: 'Rua Sena Madureira',
-      numero: 1500,
-      complemento: '4ºANDAR STI ',
-      bairro: 'Vila Clementino',
-      cidade: 'São Paulo',
-      uf: 'SP',
-      cep: '03733-020'
-    }
-  ];*/
+  @ViewChild('error')
+  public readonly dialogError!: SwalComponent;
 
   // @ts-ignore
   addresses: Address[];
 
   constructor(
-    private addressService: AddressService
-  ) { }
+    private addressService: AddressService,
+    private router: Router
+  ) {
+  }
 
   ngOnInit(): void {
     this.getByUser();
@@ -71,11 +40,26 @@ export class AddressListComponent implements OnInit {
 
   removeAddress(id: string): void {
     this.addressService.deleteById(id)
+      .pipe(take(1))
       .subscribe(() => {
-        window.location.reload();
-      }, error => {
-        console.log(error);
+        this.addresses = this.addresses.filter(a => a.id !== id);
+      }, (error: ErrorWarning) => {
+        this.setErrorDialog(error);
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.removeAddress(id);
+          }
+        });
       });
   }
 
+  redirect(): void {
+    this.router.navigateByUrl('/minha-conta/enderecos');
+  }
+
+  setErrorDialog(error: ErrorWarning): void {
+    this.dialogError.confirmButtonText = error.action;
+    this.dialogError.title = error.title;
+    this.dialogError.text = error.message;
+  }
 }
