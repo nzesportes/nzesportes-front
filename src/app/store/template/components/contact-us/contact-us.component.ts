@@ -49,7 +49,7 @@ export class ContactUsComponent implements OnInit {
     this.contactService.save(this.contact)
       .pipe(take(1))
       .subscribe(() => {
-
+        this.formContact.reset();
       }, (error: ErrorWarning) => {
         this.setErrorDialog(error);
         this.dialogError.fire().then(r => {
