@@ -7,6 +7,7 @@ export interface ProductDetails {
   color: string;
   size: string;
   price: number;
+  description: string;
   brand: Brand;
   sale: Sale;
   gender: Gender;
@@ -20,6 +21,7 @@ export interface ProductDetailUpdateTO {
   color: string;
   size: string;
   price: number;
+  description: string;
   brand: Brand;
   sale: Sale;
   gender: Gender;

@@ -60,18 +60,6 @@
               </div>
             </div>
           </div>
-          <div class="form-row">
-            <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
-              <label for="description">Descrição</label>
-              <textarea class="form-control mb-3" id="description" rows="3"
-                        placeholder="Descreva seu produto" formControlName="description"
-                        [ngClass]="cssError(validateFieldsFormProduct.description)">
-              </textarea>
-              <div id="field-description" class="invalid-feedback">
-                Por favor, insira o descrição.
-              </div>
-            </div>
-          </div>
           <div class="form-row p-2">
             <div class="form-check">
               <input class="form-check-input" type="checkbox" value="" id="onSale" data-toggle="collapse"
@@ -268,6 +256,18 @@
                 <div id="field-price" class="invalid-feedback">
                   Por favor, insira o preço.
                 </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
+              <label for="description">Descrição</label>
+              <textarea class="form-control mb-3" id="description" rows="3"
+                        placeholder="Descreva seu produto" formControlName="description"
+                        [ngClass]="cssError(validateFieldsFormProductDetail.description)">
+              </textarea>
+              <div id="field-description" class="invalid-feedback">
+                Por favor, insira o descrição.
               </div>
             </div>
           </div>

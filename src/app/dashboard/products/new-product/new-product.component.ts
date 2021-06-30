@@ -72,7 +72,6 @@ export class NewProductComponent implements OnInit, OnDestroy {
   private createForm(): void {
     this.formProduct = this.formBuilder.group({
       id: new FormControl(this.product?.id ? this.product.id : null),
-      description: new FormControl(this.product?.description ? this.product.description : '', Validators.required),
       model: new FormControl(this.product?.model ? this.product.model : '', Validators.required),
       category: this.formBuilder.array(this.product?.category ? this.product.category : []),
       productDetails: this.formBuilder.array(this.product?.productDetails ? this.product.productDetails : [], Validators.required),
@@ -220,6 +219,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
         color: new FormControl(productDetails ? productDetails.color : null, Validators.required),
         price: new FormControl(productDetails ? productDetails.price : null, Validators.required),
         gender: new FormControl(productDetails ? productDetails.gender : null, Validators.required),
+        description: new FormControl(productDetails ?  productDetails.description : '', Validators.required),
         status: new FormControl(productDetails ? productDetails.status : false),
         productId: new FormControl(this.product ? this.product.id : ''),
         stock: this.formBuilder.array(
@@ -301,7 +301,6 @@ export class NewProductComponent implements OnInit, OnDestroy {
     if (this.product) {
       const productRequest: ProductUpdateTO = {
         id: this.formProduct.value.id,
-        description: this.formProduct.value.description,
         model: this.formProduct.value.model,
         status: this.formProduct.value.status
       };
