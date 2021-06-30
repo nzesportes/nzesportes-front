@@ -6,7 +6,7 @@ import {Gender} from '../enums/gender';
 
 export interface ProductsStore {
   id: string;
-  description: string;
+  // description: string;
   model: string;
   idProductDetails: string;
   color: string;

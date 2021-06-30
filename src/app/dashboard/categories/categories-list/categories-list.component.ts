@@ -6,6 +6,7 @@ import {CategoriesService} from '../../../shared/services/categories.service';
 import {take} from 'rxjs/operators';
 import {PaginationService} from '../../../shared/services/pagination.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Product} from '../../../shared/models/product.model';
 
 @Component({
   selector: 'app-categories-list',
@@ -21,12 +22,13 @@ export class CategoriesListComponent implements OnInit, AfterContentInit {
   hasError!: boolean;
   public formFilter: FormGroup = new FormGroup({});
 
+  public formProductFilter: FormGroup = new FormGroup({});
+
   constructor(
     private categorieService: CategoriesService,
     private cdr: ChangeDetectorRef,
     public paginationService: PaginationService,
     private formBuilder: FormBuilder,
-
   ) {
   }
 
@@ -34,6 +36,7 @@ export class CategoriesListComponent implements OnInit, AfterContentInit {
     this.createForm();
 
   }
+
   private createForm(): void {
     this.formFilter = this.formBuilder.group({
       name: new FormControl(),
@@ -78,5 +81,4 @@ export class CategoriesListComponent implements OnInit, AfterContentInit {
     const name = this.formFilter.get('name')?.value;
     this.getAllCategories(10, 0, status, type, name);
   }
-
 }

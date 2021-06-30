@@ -4,7 +4,7 @@ import {CategoriesRoutingModule} from './categories-routing.module';
 import {CategoriesListComponent} from './categories-list/categories-list.component';
 import {CategoriesNewComponent} from './categories-new/categories-new.component';
 import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -16,7 +16,8 @@ import {ReactiveFormsModule} from '@angular/forms';
         CommonModule,
         CategoriesRoutingModule,
         SweetAlert2Module,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        FormsModule
     ]
 })
 export class CategoriesModule {
