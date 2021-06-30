@@ -135,8 +135,8 @@ export class NewProductComponent implements OnInit, OnDestroy {
       });
   }
 
-  initDetailForm(productDetail?: ProductDetails): void {
-    this.formProductDetail = this.createProductDetailsForm(productDetail);
+  initDetailForm(productDetail?: ProductDetails, index?: number): void {
+    this.formProductDetail = this.createProductDetailsForm(productDetail, index);
   }
 
   get validateFieldsFormProductDetail(): { [p: string]: AbstractControl } {
@@ -166,7 +166,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
     return this.formProductDetail.get('stock') as FormArray;
   }
 
-  addProductDetails(productDetails: any): void {
+  addProductDetails(productDetails: any, indexArray?: number): void {
     if (this.product) {
       const request = productDetails.id ?
         this.productService.updateProductDetails(productDetails) :
@@ -186,7 +186,18 @@ export class NewProductComponent implements OnInit, OnDestroy {
           this.errorCallSaveProductDetail(productDetails);
         });
     } else {
-      this.productDetails.insert(0, this.createProductDetailsForm(productDetails));
+      if (indexArray !== null && indexArray !== undefined) {
+        this.productDetails.at(indexArray).get('color')?.setValue(productDetails.color);
+        this.productDetails.at(indexArray).get('price')?.setValue(productDetails.price);
+        this.productDetails.at(indexArray).get('status')?.setValue(productDetails.status);
+        (this.productDetails.at(indexArray).get('stock') as FormArray).clear();
+        productDetails.stock.forEach((s: any) =>
+          (this.productDetails.at(indexArray).get('stock') as FormArray)
+            .push(this.createProductDetailsStockForm(s))
+        );
+      } else {
+        this.productDetails.insert(0, this.createProductDetailsForm(productDetails, indexArray));
+      }
     }
   }
 
@@ -203,7 +214,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
     this.productDetailsStock.insert(0, this.createProductDetailsStockForm());
   }
 
-  private createProductDetailsForm(productDetails?: ProductDetails): FormGroup {
+  private createProductDetailsForm(productDetails?: ProductDetails, index?: number): FormGroup {
     return new FormGroup({
         id: new FormControl(productDetails ? productDetails.id : null),
         color: new FormControl(productDetails ? productDetails.color : null, Validators.required),
@@ -215,6 +226,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
           productDetails?.stock ? this.createListStockForm(productDetails.stock) : [this.createProductDetailsStockForm()],
           Validators.required
         ),
+        indexArray: new FormControl(index !== null && index !== undefined ? index : null)
       }
     );
   }
@@ -226,9 +238,9 @@ export class NewProductComponent implements OnInit, OnDestroy {
 
   private createProductDetailsStockForm(stock?: Stock): FormGroup {
     return new FormGroup({
-        id: new FormControl(  stock?.id ? stock.id : null),
-        size: new FormControl({value: stock ? stock.size : null,  disabled: stock?.id ? true : false} , Validators.required),
-        quantity: new FormControl({value: stock ? stock.quantity : null,  disabled: stock?.id ? true : false} ,  Validators.required)
+        id: new FormControl(stock?.id ? stock.id : null),
+        size: new FormControl({value: stock ? stock.size : null, disabled: stock?.id ? true : false}, Validators.required),
+        quantity: new FormControl({value: stock ? stock.quantity : null, disabled: stock?.id ? true : false}, Validators.required)
       }
     );
   }
