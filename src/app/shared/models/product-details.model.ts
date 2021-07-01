@@ -14,6 +14,7 @@ export interface ProductDetails {
   niche: string;
   status: string;
   stock: Stock[];
+  stockToAdd: any[];
 }
 
 export interface ProductDetailUpdateTO {
@@ -28,6 +29,7 @@ export interface ProductDetailUpdateTO {
   niche: string;
   status: string;
   stock: Stock[];
+  stockToAdd: any[];
 }
 
 export interface Stock {

@@ -167,9 +167,13 @@ export class NewProductComponent implements OnInit, OnDestroy {
 
   addProductDetails(productDetails: any, indexArray?: number): void {
     if (this.product) {
-      const request = productDetails.id ?
-        this.productService.updateProductDetails(productDetails) :
-        this.productService.saveProductDetails(productDetails);
+      let request;
+      if (productDetails.id) {
+        productDetails.stockToAdd = productDetails.stock.filter((s: Stock) => s.id ? false : true);
+        request = this.productService.updateProductDetails(productDetails);
+      } else {
+        request = this.productService.saveProductDetails(productDetails);
+      }
 
       request
         .pipe(take(1))
@@ -219,7 +223,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
         color: new FormControl(productDetails ? productDetails.color : null, Validators.required),
         price: new FormControl(productDetails ? productDetails.price : null, Validators.required),
         gender: new FormControl(productDetails ? productDetails.gender : null, Validators.required),
-        description: new FormControl(productDetails ?  productDetails.description : '', Validators.required),
+        description: new FormControl(productDetails ? productDetails.description : '', Validators.required),
         status: new FormControl(productDetails ? productDetails.status : false),
         productId: new FormControl(this.product ? this.product.id : ''),
         stock: this.formBuilder.array(
