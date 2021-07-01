@@ -37,11 +37,11 @@
         </h2>
         <h3 class="title-details">Descrição</h3>
         <p class="description-details">
-<!--          {{ product?.description }}-->
+          {{ productDetails?.description }}
         </p>
         <h3 class="title-details">Escolher Modelo</h3>
         <ul class="choose-model">
-          <li *ngFor="let model of product.productDetails">
+          <li *ngFor="let model of product?.productDetails">
             <a routerLink="/produtos/{{ model.id }}">
               <img src="assets/images/product.jpg">
             </a>
@@ -52,9 +52,7 @@
           <div class="form-group col-9 p-0 pr-2">
             <select id="inputSize" class="form-control">
               <option selected>Tamanho...</option>
-              <option>38</option>
-              <option>39</option>
-              <option>40</option>
+              <option *ngFor="let stock of productDetails?.stock">{{ stock.size }}</option>
             </select>
           </div>
           <div class="form-group col-3 p-0">
