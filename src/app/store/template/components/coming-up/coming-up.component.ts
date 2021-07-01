@@ -40,7 +40,7 @@ export class ComingUpComponent implements OnInit {
             p.productDetails.forEach(pd => {
               const productStore = {
                 id: p.id,
-                description: p.description,
+                // description: p.description,
                 model: p.model,
 
                 idProductDetails: pd.id,

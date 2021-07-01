@@ -7,11 +7,13 @@ export interface ProductDetails {
   color: string;
   size: string;
   price: number;
+  description: string;
   brand: Brand;
   sale: Sale;
   gender: Gender;
   niche: string;
   status: string;
+  stock: Stock[];
 }
 
 export interface ProductDetailUpdateTO {
@@ -19,10 +21,18 @@ export interface ProductDetailUpdateTO {
   color: string;
   size: string;
   price: number;
+  description: string;
   brand: Brand;
   sale: Sale;
   gender: Gender;
   niche: string;
   status: string;
+  stock: Stock[];
+}
+
+export interface Stock {
+  id: string;
+  size: string;
+  quantity: number;
 }
 

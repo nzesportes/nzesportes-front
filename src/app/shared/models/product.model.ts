@@ -4,7 +4,6 @@ import {Brand} from './brand.model';
 
 export interface Product {
   id: string;
-  description: string;
   model: string;
   brand: Brand;
   category: Category[];
@@ -14,7 +13,6 @@ export interface Product {
 
 export interface ProductUpdateTO {
   id: string;
-  description: string;
   model: string;
   status: boolean;
 }

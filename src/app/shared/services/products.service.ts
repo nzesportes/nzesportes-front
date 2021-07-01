@@ -49,6 +49,14 @@ export class ProductsService {
     return this.http.get<ProductPage>(this.api, {params});
   }
 
+  getByCategoryId(idCategory: string, size: number, page: number): Observable<ProductPage> {
+    const params = new HttpParams()
+      .set('async', 'true')
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<ProductPage>(this.api + 'category/' + idCategory, {params});
+  }
+
   getById(id: string): Observable<Product> {
     const params = new HttpParams()
       .set('async', 'true');

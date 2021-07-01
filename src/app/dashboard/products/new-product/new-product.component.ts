@@ -3,7 +3,7 @@ import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validat
 import {ActivatedRoute, Router} from '@angular/router';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 import {Product, ProductUpdateTO} from '../../../shared/models/product.model';
-import {ProductDetails} from '../../../shared/models/product-details.model';
+import {ProductDetails, Stock} from '../../../shared/models/product-details.model';
 import {BrandsService} from '../../../shared/services/brands.service';
 import {map, take} from 'rxjs/operators';
 import {Brand} from '../../../shared/models/brand.model';
@@ -72,7 +72,6 @@ export class NewProductComponent implements OnInit, OnDestroy {
   private createForm(): void {
     this.formProduct = this.formBuilder.group({
       id: new FormControl(this.product?.id ? this.product.id : null),
-      description: new FormControl(this.product?.description ? this.product.description : '', Validators.required),
       model: new FormControl(this.product?.model ? this.product.model : '', Validators.required),
       category: this.formBuilder.array(this.product?.category ? this.product.category : []),
       productDetails: this.formBuilder.array(this.product?.productDetails ? this.product.productDetails : [], Validators.required),
@@ -135,8 +134,8 @@ export class NewProductComponent implements OnInit, OnDestroy {
       });
   }
 
-  initDetailForm(productDetail?: ProductDetails): void {
-    this.formProductDetail = this.createProductDetailsForm(productDetail);
+  initDetailForm(productDetail?: ProductDetails, index?: number): void {
+    this.formProductDetail = this.createProductDetailsForm(productDetail, index);
   }
 
   get validateFieldsFormProductDetail(): { [p: string]: AbstractControl } {
@@ -154,7 +153,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
 
   cssError(field: any): any {
     return {
-      'is-invalid': field.errors && field.touched
+      'is-invalid': field?.errors && field?.touched
     };
   }
 
@@ -162,7 +161,11 @@ export class NewProductComponent implements OnInit, OnDestroy {
     return this.formProduct.get('productDetails') as FormArray;
   }
 
-  addProductDetails(productDetails: any): void {
+  get productDetailsStock(): FormArray {
+    return this.formProductDetail.get('stock') as FormArray;
+  }
+
+  addProductDetails(productDetails: any, indexArray?: number): void {
     if (this.product) {
       const request = productDetails.id ?
         this.productService.updateProductDetails(productDetails) :
@@ -182,7 +185,18 @@ export class NewProductComponent implements OnInit, OnDestroy {
           this.errorCallSaveProductDetail(productDetails);
         });
     } else {
-      this.productDetails.insert(0, this.createProductDetailsForm(productDetails));
+      if (indexArray !== null && indexArray !== undefined) {
+        this.productDetails.at(indexArray).get('color')?.setValue(productDetails.color);
+        this.productDetails.at(indexArray).get('price')?.setValue(productDetails.price);
+        this.productDetails.at(indexArray).get('status')?.setValue(productDetails.status);
+        (this.productDetails.at(indexArray).get('stock') as FormArray).clear();
+        productDetails.stock.forEach((s: any) =>
+          (this.productDetails.at(indexArray).get('stock') as FormArray)
+            .push(this.createProductDetailsStockForm(s))
+        );
+      } else {
+        this.productDetails.insert(0, this.createProductDetailsForm(productDetails, indexArray));
+      }
     }
   }
 
@@ -191,15 +205,42 @@ export class NewProductComponent implements OnInit, OnDestroy {
     this.productDetails.removeAt(index);
   }
 
-  private createProductDetailsForm(productDetails?: ProductDetails): FormGroup {
+  removeProductDetailsStock(index: number): void {
+    this.productDetailsStock.removeAt(index);
+  }
+
+  addStock(): void {
+    this.productDetailsStock.insert(0, this.createProductDetailsStockForm());
+  }
+
+  private createProductDetailsForm(productDetails?: ProductDetails, index?: number): FormGroup {
     return new FormGroup({
         id: new FormControl(productDetails ? productDetails.id : null),
         color: new FormControl(productDetails ? productDetails.color : null, Validators.required),
-        size: new FormControl(productDetails ? productDetails.size : null),
         price: new FormControl(productDetails ? productDetails.price : null, Validators.required),
         gender: new FormControl(productDetails ? productDetails.gender : null, Validators.required),
+        description: new FormControl(productDetails ?  productDetails.description : '', Validators.required),
         status: new FormControl(productDetails ? productDetails.status : false),
         productId: new FormControl(this.product ? this.product.id : ''),
+        stock: this.formBuilder.array(
+          productDetails?.stock ? this.createListStockForm(productDetails.stock) : [this.createProductDetailsStockForm()],
+          Validators.required
+        ),
+        indexArray: new FormControl(index !== null && index !== undefined ? index : null)
+      }
+    );
+  }
+
+  createListStockForm(stocks: Stock[]): FormGroup[] {
+    return stocks.map(s => this.createProductDetailsStockForm(s));
+  }
+
+
+  private createProductDetailsStockForm(stock?: Stock): FormGroup {
+    return new FormGroup({
+        id: new FormControl(stock?.id ? stock.id : null),
+        size: new FormControl({value: stock ? stock.size : null, disabled: stock?.id ? true : false}, Validators.required),
+        quantity: new FormControl({value: stock ? stock.quantity : null, disabled: stock?.id ? true : false}, Validators.required)
       }
     );
   }
@@ -238,11 +279,12 @@ export class NewProductComponent implements OnInit, OnDestroy {
           this.setErrorDialog(error);
           this.errorCallSaveCategory(idCategory);
         });
-    }else{
+    } else {
       this.updateFormCategories();
     }
 
   }
+
   updateFormCategories(): void {
     this.categoriesArrayFormProduct.clear();
     this.categoriesArrayForm.controls.forEach(form => {
@@ -259,7 +301,6 @@ export class NewProductComponent implements OnInit, OnDestroy {
     if (this.product) {
       const productRequest: ProductUpdateTO = {
         id: this.formProduct.value.id,
-        description: this.formProduct.value.description,
         model: this.formProduct.value.model,
         status: this.formProduct.value.status
       };
