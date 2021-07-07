@@ -132,8 +132,10 @@ export class ProductDetailComponent implements OnInit {
   }
 
   changeMax(index: number): void {
-    this.sizeMax = this.productDetails.stock[index - 1].quantity;
-    this.startValue = 1;
+    if (index > 0) {
+      this.sizeMax = this.productDetails.stock[index - 1].quantity;
+      this.startValue = 1;
+    }
   }
 
   addToCart(id: string): void {
