@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {OwlOptions} from 'ngx-owl-carousel-o';
 import {CartService} from '../../services/cart.service';
 import {Store} from '@ngrx/store';
@@ -8,7 +8,9 @@ import {ProductsService} from '../../../shared/services/products.service';
 import {Observable} from 'rxjs';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Product} from '../../../shared/models/product.model';
-import {ProductDetails} from '../../../shared/models/product-details.model';
+import {ProductDetails, Stock} from '../../../shared/models/product-details.model';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-product-detail',
@@ -23,6 +25,12 @@ export class ProductDetailComponent implements OnInit {
   productDetails: ProductDetails;
   // @ts-ignore
   product: Product;
+
+  @ViewChild('stock')
+  public readonly selectedStock!: any;
+
+  sizeMax = 1;
+  startValue = 1;
 
   avaliacao = 3.8;
   positionImage = 0;
@@ -100,6 +108,12 @@ export class ProductDetailComponent implements OnInit {
               const productJson = localStorage.getItem('product');
               if (productJson) {
                 this.product = JSON.parse(productJson);
+              } else {
+                this.productsService.getById(this.productDetails.productId)
+                  .pipe(take(1))
+                  .subscribe(p => {
+                    this.product = p;
+                  }, error => console.log(error));
               }
             },
             error => {
@@ -117,8 +131,15 @@ export class ProductDetailComponent implements OnInit {
     this.shipping = {dias: 4, valor: 27.50};
   }
 
+  changeMax(index: number): void {
+    if (index > 0) {
+      this.sizeMax = this.productDetails.stock[index - 1].quantity;
+      this.startValue = 1;
+    }
+  }
+
   addToCart(id: string): void {
-    const product = {
+    /*const product = {
       id: 1,
       img: 'assets/images/product.jpg',
       name: 'Camiseta NBL',
@@ -141,7 +162,7 @@ export class ProductDetailComponent implements OnInit {
       type: CartActionsType.ADD_ITEM_CART,
       payload: product
     });*/
-    // this.cartService.addToCart(product);
+    // this.cartService.addToCart(product);*/
 
   }
 
