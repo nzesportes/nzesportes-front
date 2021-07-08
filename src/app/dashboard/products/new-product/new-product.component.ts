@@ -123,8 +123,21 @@ export class NewProductComponent implements OnInit, OnDestroy {
     return this.formCategory.get('categories') as FormArray;
   }
 
+  verifyAllCategoriesIsChecked(form: any, i: number): boolean {
+    if (this.categoriesArrayForm.controls.length === 1) {
+      return false;
+    }
+    const checked = this.categoriesArrayForm.controls.filter(f => f.value.checked);
+    if (checked.length === 1) {
+      if (form.value.id === checked[0].value.id) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   getAllCategories(): void {
-    this.categoriesService.getAll(300, 0)
+    this.categoriesService.getAll(100, 0)
       .pipe(take(1))
       .subscribe(result => {
         this.categories = [];
@@ -276,7 +289,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
   }
 
   getAllBrands(): void {
-    this.brandsService.getAll(300, 0)
+    this.brandsService.getAll(100, 0)
       .pipe(take(1))
       .subscribe(result => {
         this.brands = result.content;
