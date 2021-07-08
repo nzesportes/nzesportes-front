@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AddressService} from '../../../../../shared/services/address.service';
 import {Address} from '../../../../../shared/models/address.model';
@@ -6,6 +6,9 @@ import {Customer} from '../../../../../shared/models/customer.model';
 import {TokenStorageService} from '../../../../../shared/services/token-storage.service';
 import {CustomerService} from '../../../../../shared/services/customer.service';
 import {CepService} from '../../../../../shared/services/cep.service';
+import {ErrorWarning} from '../../../../../shared/models/error-warning.model';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-address-form',
@@ -13,6 +16,8 @@ import {CepService} from '../../../../../shared/services/cep.service';
   styleUrls: ['./address-form.component.scss']
 })
 export class AddressFormComponent implements OnInit {
+  @ViewChild('error')
+  public readonly dialogError!: SwalComponent;
 
   // @ts-ignore
   newAddressForm: FormGroup;
@@ -28,7 +33,8 @@ export class AddressFormComponent implements OnInit {
     private addressService: AddressService,
     private tokerService: TokenStorageService,
     private customerService: CustomerService,
-    private cepService: CepService
+    private cepService: CepService,
+    private router: Router
   ) {
   }
 
@@ -74,12 +80,26 @@ export class AddressFormComponent implements OnInit {
     this.address.city = this.newAddressForm.get('city')?.value;
     this.address.district = this.newAddressForm.get('district')?.value;
     this.address.customerId = this.customer.id;
-    console.log(this.address);
     this.addressService.save(this.address)
       .subscribe(() => {
-        window.location.reload();
-      }, error => {
-        console.log(error);
+        this.router.navigateByUrl('/minha-conta/enderecos');
+      }, (error: ErrorWarning) => {
+        this.setErrorDialog(error);
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.save();
+          }
+        });
       });
+  }
+
+  redirect(): void {
+    this.router.navigateByUrl('/minha-conta/enderecos/novo');
+  }
+
+  setErrorDialog(error: ErrorWarning): void {
+    this.dialogError.confirmButtonText = error.action;
+    this.dialogError.title = error.title;
+    this.dialogError.text = error.message;
   }
 }

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CustomerService} from '../../../shared/services/customer.service';
 import {User} from '../../../shared/models/user.model';
@@ -11,6 +11,8 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
 import {cpf} from 'cpf-cnpj-validator';
 import {Observable} from 'rxjs';
 import {Gender} from '../../../shared/enums/gender';
+import {ErrorWarning} from '../../../shared/models/error-warning.model';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
   selector: 'app-create-account',
@@ -19,6 +21,9 @@ import {Gender} from '../../../shared/enums/gender';
 })
 
 export class CreateAccountComponent implements OnInit {
+
+  @ViewChild('error')
+  public readonly dialogError!: SwalComponent;
 
   // @ts-ignore
   createAccount: FormGroup;
@@ -168,18 +173,26 @@ export class CreateAccountComponent implements OnInit {
         this.customer.gender = this.createAccount.get('gender')?.value;
         this.customer.userId = response.id;
 
-
         this.customerService.create(this.customer)
           .pipe(take(1)).subscribe(() => {
           window.location.reload();
-        }, error => {
-          console.log(error);
+        }, (error: ErrorWarning) => {
+          this.setErrorDialog(error);
+          this.dialogError.fire().then(r => {
+            if (r.isConfirmed) {
+              this.save();
+            }
+          });
         });
-      }, error => {
-        console.log(error);
+      }, (error: ErrorWarning) => {
+        this.setErrorDialog(error);
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.save();
+          }
+        });
       });
     } else {
-
       this.customer.cpf = this.createAccount.get('cpf')?.value;
       this.customer.birthDate = this.createAccount.get('birthDate')?.value;
       this.customer.instagram = this.createAccount.get('instagram')?.value;
@@ -190,9 +203,24 @@ export class CreateAccountComponent implements OnInit {
       this.customerService.update(this.customer)
         .subscribe(() => {
           window.location.reload();
-        }, error => {
-          console.log(error);
+        }, (error: ErrorWarning) => {
+          this.setErrorDialog(error);
+          this.dialogError.fire().then(r => {
+            if (r.isConfirmed) {
+              this.save();
+            }
+          });
         });
     }
+  }
+
+  redirect(): void {
+    this.router.navigateByUrl('/criar-conta');
+  }
+
+  setErrorDialog(error: ErrorWarning): void {
+    this.dialogError.confirmButtonText = error.action;
+    this.dialogError.title = error.title;
+    this.dialogError.text = error.message;
   }
 }

@@ -6,6 +6,7 @@ import {AddressFormComponent} from './address-form/address-form.component';
 import {AddressListComponent} from './address-list/address-list.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgxMaskModule} from 'ngx-mask';
+import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 
 
 @NgModule({
@@ -13,12 +14,13 @@ import {NgxMaskModule} from 'ngx-mask';
     AddressFormComponent,
     AddressListComponent
   ],
-  imports: [
-    CommonModule,
-    MyAddressesRoutingModule,
-    NgxMaskModule.forRoot(),
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        MyAddressesRoutingModule,
+        NgxMaskModule.forRoot(),
+        ReactiveFormsModule,
+        SweetAlert2Module
+    ]
 })
 export class MyAddressesModule {
 }
