@@ -33,6 +33,8 @@ export class NewProductComponent implements OnInit, OnDestroy {
   public categories!: Category[];
   hasError!: boolean;
 
+  addQuantity = '';
+
   constructor(
     private formBuilder: FormBuilder,
     private brandsService: BrandsService,
@@ -157,6 +159,20 @@ export class NewProductComponent implements OnInit, OnDestroy {
     };
   }
 
+  CustomizeCssError(field: any, actualQuantity: string): any {
+    return {
+      'is-invalid': field?.touched && field?.value === null
+        || field?.value === 0
+        || this.convertToPositiveNumber(field.value) > this.convertToNumber(actualQuantity)
+    };
+  }
+
+  isValidUpdateStock(field: any, actualQuantity: string): boolean {
+    return field?.value !== null
+      && field?.value !== 0
+      && this.convertToPositiveNumber(field.value) < this.convertToNumber(actualQuantity);
+  }
+
   get productDetails(): FormArray {
     return this.formProduct.get('productDetails') as FormArray;
   }
@@ -243,8 +259,10 @@ export class NewProductComponent implements OnInit, OnDestroy {
   private createProductDetailsStockForm(stock?: Stock): FormGroup {
     return new FormGroup({
         id: new FormControl(stock?.id ? stock.id : null),
-        size: new FormControl({value: stock ? stock.size : null, disabled: stock?.id ? true : false}, Validators.required),
-        quantity: new FormControl({value: stock ? stock.quantity : null, disabled: stock?.id ? true : false}, Validators.required)
+        size: new FormControl(stock ? stock.size : null, Validators.required),
+        quantity: new FormControl(stock ? stock.quantity : null, Validators.required),
+        updateStock: new FormControl(),
+        quantityAdd: new FormControl(null)
       }
     );
   }
@@ -358,6 +376,35 @@ export class NewProductComponent implements OnInit, OnDestroy {
     this.formProduct.reset();
     this.formProductDetail.reset();
     this.formCategory.reset();
+  }
+
+  updateStock(stock: Stock, pDetailId: string, quantity: string, index: number): void {
+    const updateStock = {
+      id: stock.id,
+      productDetailId: pDetailId,
+      quantityToAdd: Number(quantity)
+    };
+    this.productService.updateStock(updateStock)
+      .pipe(take(1))
+      .subscribe(r => {
+        this.productDetailsStock.at(index).get('quantity')?.setValue(r.quantity);
+        this.productDetailsStock.at(index).get('updateStock')?.setValue(null);
+      }, error => {
+        this.setErrorDialog(error);
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.updateStock(stock, pDetailId, quantity, index);
+          }
+        });
+      });
+  }
+
+  convertToNumber(n: string): number {
+    return Number(n);
+  }
+
+  convertToPositiveNumber(n: string): number {
+    return Number(n) * -1;
   }
 
 
