@@ -3,7 +3,8 @@ export enum TypeCategorie {
   masculino = 'masculino',
   feminino = 'feminino',
   tenis = 'tenis',
-  acessorios = 'acessorios'
+  acessorios = 'acessorios',
+  roupas = 'roupas'
 }
 
 export const TypeCategorieList = [
@@ -11,5 +12,7 @@ export const TypeCategorieList = [
   TypeCategorie.masculino,
   TypeCategorie.feminino,
   TypeCategorie.tenis,
-  TypeCategorie.acessorios
+  TypeCategorie.acessorios,
+  TypeCategorie.roupas
+
 ];

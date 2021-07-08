@@ -10,6 +10,7 @@ import {ProductsService} from '../../../shared/services/products.service';
 import {Product} from '../../../shared/models/product.model';
 import {ProductPage} from '../../../shared/models/pagination-model/product-page.model';
 import {PaginationService} from '../../../shared/services/pagination.service';
+import {Category} from '../../../shared/models/category.model';
 
 @Component({
   selector: 'app-products-list',
@@ -24,6 +25,9 @@ export class ProductsListComponent implements OnInit {
   products: Product[] = [];
   content: ProductPage | undefined;
   hasError!: boolean;
+  categories: Category[] = [];
+
+  public formFilter: FormGroup = new FormGroup({});
 
   constructor(
     private formBuilder: FormBuilder,
@@ -39,11 +43,11 @@ export class ProductsListComponent implements OnInit {
     this.paginationService.initPagination();
     this.createForm();
     this.verifyHasBrandsCategories();
-    this.getAllProduct(10, this.paginationService.page);
+    this.getAllProduct(10, this.paginationService.page, '', '', '');
   }
 
-  getAllProduct(size: number, page: number): void {
-    this.productsService.getAll(size, page)
+  getAllProduct(size: number, page: number, category?: string, status?: string, name?: string): void {
+    this.productsService.getAll(size, page, category, status, name)
       .pipe(take(1))
       .subscribe(r => {
         this.products = r.content;
@@ -61,8 +65,10 @@ export class ProductsListComponent implements OnInit {
   }
 
   private createForm(): void {
-    this.formSearch = this.formBuilder.group({
-      search: new FormControl(null)
+    this.formFilter = this.formBuilder.group({
+      name: new FormControl(),
+      status: new FormControl(),
+      category: new FormControl(),
     });
   }
 
@@ -78,6 +84,7 @@ export class ProductsListComponent implements OnInit {
           this.dialogWarn.text = 'Para acessar a página de produto é necessário ter cadastrado ao menos uma categoria e marca!';
           this.dialogWarn.fire();
         }
+        this.categories = categories.content;
       }, () => {
         this.hasError = true;
       });
@@ -85,6 +92,14 @@ export class ProductsListComponent implements OnInit {
 
   redirectTo(): void {
     this.router.navigateByUrl('/painel/categorias');
+  }
+
+  onChangeFilter(): void {
+    this.paginationService.initPagination();
+    const status = this.formFilter.get('status')?.value;
+    const category = this.formFilter.get('category')?.value;
+    const name = this.formFilter.get('name')?.value;
+    this.getAllProduct(10, 0, category, status, name);
   }
 
 }
