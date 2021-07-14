@@ -31,6 +31,8 @@ import {NgxImageZoomModule} from 'ngx-image-zoom';
 import { ProductListingComponent } from './template/product-listing/product-listing.component';
 import { FiltersComponent } from './template/components/filters/filters.component';
 import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
+import { OrderReviewComponent } from './template/order-review/order-review.component';
+import {MyAddressesModule} from './template/account-details/my-addresses/my-addresses.module';
 
 @NgModule({
   declarations: [
@@ -55,19 +57,21 @@ import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
     ForgotPasswordComponent,
     ProductDetailComponent,
     ProductListingComponent,
-    FiltersComponent
+    FiltersComponent,
+    OrderReviewComponent
   ],
-    imports: [
-        CommonModule,
-        StoreRoutingModule,
-        AccountDetailsModule,
-        CarouselModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NgxMaskModule.forRoot(),
-        NgxImageZoomModule,
-        SweetAlert2Module
-    ],
+  imports: [
+    CommonModule,
+    StoreRoutingModule,
+    AccountDetailsModule,
+    CarouselModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxMaskModule.forRoot(),
+    NgxImageZoomModule,
+    SweetAlert2Module,
+    MyAddressesModule
+  ],
   providers: [
     AuthGuard
   ]

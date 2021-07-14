@@ -8,6 +8,7 @@ import {AuthVerifyLogin} from '../shared/guards/auth-not-logged-guard';
 import {AuthGuard} from '../shared/guards/auth-guard';
 import {ProductDetailComponent} from './template/product-detail/product-detail.component';
 import {ProductListingComponent} from './template/product-listing/product-listing.component';
+import {OrderReviewComponent} from './template/order-review/order-review.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,10 @@ const routes: Routes = [
       {
         path: 'search',
         component: ProductListingComponent
+      },
+      {
+        path: 'finalizar-compra',
+        component: OrderReviewComponent
       },
       {
         path: 'minha-conta',

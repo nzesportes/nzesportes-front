@@ -10,10 +10,13 @@ import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 
 
 @NgModule({
-  declarations: [
-    AddressFormComponent,
-    AddressListComponent
-  ],
+    declarations: [
+        AddressFormComponent,
+        AddressListComponent
+    ],
+    exports: [
+        AddressListComponent
+    ],
     imports: [
         CommonModule,
         MyAddressesRoutingModule,
