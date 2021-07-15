@@ -14,7 +14,7 @@
       <div class="form-group col-lg-3 col-sm-12 mb-3 mb-lg-0">
         <label for="categorie">Tipo de Categoria</label>
         <select class="form-control" id="categorie" formControlName="type" (change)="onChangeFilter()">
-          <option ></option>
+          <option></option>
           <option value="{{i}}" *ngFor="let i of typeCategorieList">{{i | titlecase}}</option>
         </select>
       </div>

@@ -13,13 +13,15 @@
       <button type="button" class="btn btn-secondary w-100" routerLink="/painel/produtos">Cancelar</button>
     </div>
     <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
-      <button type="button" class="btn btn-primary w-100" [disabled]="formProduct.invalid"  (click)="save()">Salvar</button>
+      <button type="button" class="btn btn-primary w-100" [disabled]="formProduct.invalid" (click)="save()">Salvar
+      </button>
     </div>
   </div>
   <div class="alert alert-danger" role="alert" *ngIf="hasError">
-    Não foi possível carregar algumas informações. Por favor, <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+    Não foi possível carregar algumas informações. Por favor,
+    <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
   </div>
-  <div class="row mt-3"  *ngIf="!hasError">
+  <div class="row mt-3" *ngIf="!hasError">
     <div class="col-lg-8 mb-3">
       <div class="card mb-3">
         <div class="card-body">
@@ -122,8 +124,9 @@
               <table class="table table-hover">
                 <thead>
                 <tr>
-                  <th scope="col" style="width: 50%">Nome</th>
-                  <th scope="col" style="width: 50%">Preço</th>
+                  <th scope="col" style="width: 30%">Cor</th>
+                  <th scope="col" style="width: 30%">Sexo</th>
+                  <th scope="col" style="width: 30%">Preço</th>
                   <th scope="col" style="width: 10%">Ações</th>
                 </tr>
                 </thead>
@@ -131,12 +134,15 @@
                 <tr class="row-table" formArrayName="productDetails"
                     *ngFor="let productDetail of productDetails.controls; let i = index">
                   <td>{{productDetail.value.color | titlecase}}</td>
-                  <td>{{productDetail.value.price}}</td>
+                  <td>{{productDetail.value.gender}}</td>
+
+                  <td>{{productDetail.value.price | currency:'BRL':true:'1.2-2'}}</td>
                   <td>
                     <i class="fas fa-edit actions-button text-primary" data-toggle="modal"
                        data-target="#modalProductDetail"
                        (click)="initDetailForm(productDetail.value, i)"></i>
-                    <i class="fas fa-trash actions-button text-danger" [swal]="swalProductDetailRemove"></i>
+                    <!-- cannot delete product detail-->
+                    <i class="fas fa-trash actions-button text-danger" *ngIf="!productDetail.value.id" [swal]="swalProductDetailRemove"></i>
                     <swal
                       [swalOptions]="{ confirmButtonText: 'Sim', cancelButtonText: 'Cancelar' }"
                       [showCancelButton]="true"
@@ -154,7 +160,7 @@
       </div>
     </div>
     <div class="col-lg-4 mb-3">
-      <div class="card mb-3"  *ngIf="product?.id">
+      <div class="card mb-3" *ngIf="product?.id">
         <div class="card-body">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="isShowOnStore" formControlName="status">
@@ -177,8 +183,9 @@
                         class="list-group-item d-flex justify-content-between list-group-item-action"
                 >
                   {{category.value.name | titlecase}}
-                  <div class="form-check" [formGroupName]="i">
-                    <input class="form-check-input" type="checkbox" value="" id="categoria" formControlName="checked" (change)="setCategorie(category.value.id)">
+                  <div class="form-check" [formGroupName]="i" *ngIf="verifyAllCategoriesIsChecked(category, i)">
+                    <input class="form-check-input" type="checkbox"  value="" id="categoria" formControlName="checked"
+                           (change)="setCategorie(category.value.id)">
                   </div>
                 </button>
               </div>
@@ -222,9 +229,9 @@
               <select class="form-control" id="color"
                       formControlName="color"
                       [ngClass]="cssError(validateFieldsFormProductDetail.color)">
-                <option value="1">Azul</option>
-                <option value="2">Vermelho</option>
-                <option value="3">Preto</option>
+                <option value="azul">Azul</option>
+                <option value="vermelho">Vermelho</option>
+                <option value="preto">Preto</option>
               </select>
               <div id="field-color" class="invalid-feedback">
                 Por favor, insira a cor.
@@ -276,35 +283,86 @@
               Adicionar outro tamanho
             </button>
           </div>
-          <div class="form-row" formArrayName="stock" *ngFor="let stockForm of productDetailsStock.controls; let i = index">
-            <div class="form-group col-lg-5 col-sm-12 mb-3 mb-lg-0" [formGroupName]="i">
-              <label for="categorieName">Tamanho {{i}}</label>
-              <input type="text" class="form-control" id="size" formControlName="size" placeholder="ex: P "
-                     [ngClass]="cssError(stockForm.get('size'))">
+          <div formArrayName="stock" *ngFor="let stockForm of productDetailsStock.controls; let i = index">
+            <div class="form-row">
+              <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0" [formGroupName]="i">
+                <label for="categorieName">Tamanho {{i}}</label>
+                <input
+                  type="text" class="form-control" id="size" formControlName="size" placeholder="ex: P "
+                  [readOnly]="stockForm.value.id"
+                  [ngClass]="cssError(stockForm.get('size'))">
 
-              <div id="field-size" class="invalid-feedback">
-                Por favor, insira o tamanho.
+                <div id="field-size" class="invalid-feedback">
+                  Por favor, insira o tamanho.
+                </div>
               </div>
-            </div>
-            <div class="form-group col-lg-5 col-sm-12 mb-3 mb-lg-0" [formGroupName]="i">
-              <label for="categorieName">Quantidade</label>
-              <input type="number" class="form-control" id="categorieName" formControlName="quantity" min="0" placeholder="0"
+              <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0" [formGroupName]="i">
+                <label for="categorieName">Quantidade</label>
+                <input type="number" class="form-control" id="categorieName" formControlName="quantity" min="0"
+                       [readOnly]="stockForm.value.id"
+                       placeholder="0"
                        [ngClass]="cssError(stockForm.get('quantity'))">
 
-              <div id="field-quantity" class="invalid-feedback">
-                Por favor, insira a quantidade.
+                <div id="field-quantity" class="invalid-feedback">
+                  Por favor, insira a quantidade.
+                </div>
+              </div>
+              <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0 mt-lg-4 pt-lg-2 " *ngIf="!stockForm.value.id"
+                   [formGroupName]="i">
+                <button
+                  type="button"
+                  class="btn btn-danger w-100"
+                  (click)="removeProductDetailsStock(i)"
+                  [disabled]="productDetailsStock.controls.length === 1">
+                  x
+                </button>
+              </div>
+
+              <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0 mt-lg-4 pt-lg-2 " *ngIf="stockForm.value.id"
+                   [formGroupName]="i">
+                <button
+                  type="button"
+                  role="button"
+                  class="btn btn-outline-primary w-100"
+                  (click)="stockForm?.value?.updateStock === null ? stockForm.get('updateStock')?.setValue(true) : stockForm.get('updateStock')?.setValue(null)"
+                >
+                  Atualizar
+                </button>
               </div>
             </div>
+              <div class="form-row" *ngIf="stockForm.value.updateStock === true">
+                <div class="form-group col-lg-8 col-sm-12 mb-3 mb-lg-0"  [formGroupName]="i">
+                  <label for="categorieAdd">Quantidade a ser adicionada</label>
+                  <input type="number"
+                         formControlName="quantityAdd"
+                         class="form-control"
+                         [ngClass]="CustomizeCssError(stockForm.get('quantityAdd'), stockForm.value.quantity)"
+                         id="categorieAdd"
+                         placeholder="0">
 
-            <div class="form-group col-lg-2 col-sm-12 mb-3 mb-lg-0 mt-lg-4 pt-lg-2 " *ngIf="!stockForm.value.id" [formGroupName]="i">
-              <button
-                type="button"
-                class="btn btn-danger w-100"
-                (click)="removeProductDetailsStock(i)"
-                [disabled]="productDetailsStock.controls.length === 1">
-                x
-              </button>
-            </div>
+                  <div id="field-categorieAdd" class="invalid-feedback" *ngIf="stockForm.value.quantityAdd === null">
+                    Por favor, insira a quantidade a ser adicionada.
+                  </div>
+                  <div id="field-categorieAdd-zero" class="invalid-feedback" *ngIf="stockForm.value.quantityAdd === 0">
+                    A quantidade a ser adicionada não pode ser igual a 0.
+                  </div>
+                  <div id="field-categorieAdd-invalid"
+                       *ngIf="convertToPositiveNumber(stockForm.value.quantityAdd) > convertToNumber(stockForm.value.quantity)"
+                       class="invalid-feedback">
+                    A quantidade a ser removida ({{stockForm.value.quantityAdd}}) não pode ser maior que a quantidade atual
+                    ({{stockForm.value.quantity}})
+                  </div>
+                </div>
+                <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0 mt-lg-4 pt-lg-2 ">
+                  <button
+                    type="submit"
+                    class="btn btn-primary w-100"
+                    (click)="updateStock(stockForm.value, formProductDetail.value.id, stockForm.value.quantityAdd, i)"
+                    [disabled]="!isValidUpdateStock(stockForm.get('quantityAdd'), stockForm.value.quantity)">
+                    Enviar
+                  </button>
+                </div>
+              </div>
           </div>
 
           <div class="form-check">
@@ -339,7 +397,6 @@
 </swal>
 
 <swal
-  (confirm)="save()"
   #error
   [title]="''"
   [text]="''"
