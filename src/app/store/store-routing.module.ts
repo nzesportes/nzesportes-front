@@ -9,6 +9,7 @@ import {AuthGuard} from '../shared/guards/auth-guard';
 import {ProductDetailComponent} from './template/product-detail/product-detail.component';
 import {ProductListingComponent} from './template/product-listing/product-listing.component';
 import {OrderReviewComponent} from './template/order-review/order-review.component';
+import {FirstAccessComponent} from './template/first-access/first-access.component';
 
 const routes: Routes = [
   {
@@ -43,6 +44,10 @@ const routes: Routes = [
       {
         path: 'finalizar-compra',
         component: OrderReviewComponent
+      },
+      {
+        path: 'first-access/:id',
+        component: FirstAccessComponent
       },
       {
         path: 'minha-conta',

@@ -1,36 +1,41 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from '../../../../shared/services/auth.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import validator from 'cpf-cnpj-validator';
-import {ChangePasswordTO} from '../../../../shared/models/change-password-TO.model';
+import {ChangePasswordTO} from '../../../shared/models/change-password-TO.model';
 import {take} from 'rxjs/operators';
+import {AuthService} from '../../../shared/services/auth.service';
 import {Observable} from 'rxjs';
+import {ActivatedRoute, Params} from '@angular/router';
 
 @Component({
-  selector: 'app-change-password',
-  templateUrl: './change-password.component.html',
-  styleUrls: ['./change-password.component.scss']
+  selector: 'app-first-access',
+  templateUrl: './first-access.component.html',
+  styleUrls: ['./first-access.component.scss']
 })
-export class ChangePasswordComponent implements OnInit {
+export class FirstAccessComponent implements OnInit {
 
   // @ts-ignore
-  formChangePassword: FormGroup;
+  formFirstAccess: FormGroup;
   // @ts-ignore
   changePasswordTO: ChangePasswordTO;
+  id = '';
 
   constructor(
+    private formBuilder: FormBuilder,
     private authService: AuthService,
-    private formBuilder: FormBuilder
+    private activatedRoute: ActivatedRoute
   ) {
   }
 
   ngOnInit(): void {
+    const params: Observable<Params> = this.activatedRoute.params;
+    params.subscribe(urlParams => {
+      this.id = urlParams.id;
+    });
     this.createForm();
   }
 
   createForm(): void {
-    this.formChangePassword = this.formBuilder.group({
-        currentPassword: ['', [Validators.required, Validators.minLength(8)]],
+    this.formFirstAccess = this.formBuilder.group({
         newPassword: ['', [Validators.required, Validators.minLength(8)]],
         repeatPassword: ['', Validators.required]
       },
@@ -40,7 +45,7 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   get validateFields(): any {
-    return this.formChangePassword.controls;
+    return this.formFirstAccess.controls;
   }
 
   private checkPasswords(controlName: string, matchingControlName: string): Validators {
@@ -63,8 +68,8 @@ export class ChangePasswordComponent implements OnInit {
   }
 
   changePassword(): void {
-    this.changePasswordTO = this.formChangePassword.value;
-    this.authService.changePassword(this.changePasswordTO)
+    this.changePasswordTO = this.formFirstAccess.value;
+    this.authService.firstAccess(this.id, this.changePasswordTO, 'recovery')
       .pipe(take(1))
       .subscribe(() => {
         window.location.reload();

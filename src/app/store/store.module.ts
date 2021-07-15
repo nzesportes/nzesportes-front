@@ -33,6 +33,7 @@ import { FiltersComponent } from './template/components/filters/filters.componen
 import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 import { OrderReviewComponent } from './template/order-review/order-review.component';
 import {MyAddressesModule} from './template/account-details/my-addresses/my-addresses.module';
+import { FirstAccessComponent } from './template/first-access/first-access.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import {MyAddressesModule} from './template/account-details/my-addresses/my-addr
     ProductDetailComponent,
     ProductListingComponent,
     FiltersComponent,
-    OrderReviewComponent
+    OrderReviewComponent,
+    FirstAccessComponent
   ],
   imports: [
     CommonModule,
