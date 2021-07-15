@@ -1,0 +1,58 @@
+<div class="container p-container">
+  <form class="row m-0 p-0">
+    <div *ngIf="!isLogged" class="col-12 col-lg-8">
+      <div class="container-login">
+        <app-login></app-login>
+      </div>
+    </div>
+    <div *ngIf="isLogged" class="col-12 col-lg-8">
+      <h1 class="page-title ml-3 mb-3 mb-lg-4">Endereços</h1>
+      <div class="row p-0 m-0">
+        <div class="col-12 col-md-6 mb-4" *ngFor="let address of addresses">
+          <div class="card container-card">
+            <div class="card-body">
+              <div class="ml-3">
+                <input class="form-check-input" type="radio" name="address-radio" id="address{{ address.id }}"
+                       [value]="address.id">
+                <label class="form-check-label" for="address{{ address.id }}"><h5
+                  class="card-title">{{ address.street }}, {{ address.number }}</h5></label>
+              </div>
+              <p class="card-text m-1">{{ address.complement }}</p>
+              <p class="card-text m-1">{{ address.district }} - {{ address.city }} - {{ address.state }}</p>
+              <p class="card-text m-1">{{ address.cep }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 pb-4 text-center">
+        <a class="btn btn-primary btn-add-address" routerLink="/minha-conta/enderecos/novo">ADICIONAR ENDEREÇO</a>
+      </div>
+    </div>
+    <div class="col-12 col-lg-4 pr-3 pl-3">
+      <div class="my-order">
+        <div class="your-order pt-2 pb-2">
+          <h3>Seu Pedido</h3>
+        </div>
+        <div>
+          <div class="row m-0 p-0 header-order">
+            <div class="col-8 p-0 pr-2 mb-2">Pedido</div>
+            <div class="col-4 p-0">Total</div>
+          </div>
+          <div class="row m-0 p-0">
+            <div class="col-8 p-0 pr-2 mb-1">Produto 1</div>
+            <div class="col-4 p-0">R$ 200,00</div>
+            <div class="col-8 p-0 pr-2 mb-1">Produto 2</div>
+            <div class="col-4 p-0">R$ 300,00</div>
+          </div>
+          <div class="row m-0 p-0 total-order">
+            <div class="col-8 p-0 pr-2 mb-1">Valor Total</div>
+            <div class="col-4 p-0">R$ 500,00</div>
+          </div>
+        </div>
+        <div class="footer-order pt-2 pb-2">
+          <button class="btn btn-finish-shopping mt-3" [disabled]="!isLogged">Ir para o pagamento</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../../../../shared/services/auth.service';
+import {AuthenticationRequest} from '../../../../shared/models/authentication-request.model';
 
 @Component({
   selector: 'app-forgot-password',
@@ -10,9 +12,14 @@ export class ForgotPasswordComponent implements OnInit {
 
   // @ts-ignore
   forgotPasswordForm: FormGroup;
+  authenticationRequest: AuthenticationRequest = {
+    username: '',
+    password: ''
+  };
 
   constructor(
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
@@ -32,6 +39,14 @@ export class ForgotPasswordComponent implements OnInit {
 
   get validateFields(): any {
     return this.forgotPasswordForm.controls;
+  }
+
+  forgotMyPassword(): void {
+    this.authenticationRequest.username = this.forgotPasswordForm?.get('email')?.value;
+    this.authService.createFlow(this.authenticationRequest, 'recovery')
+      .subscribe(response => {
+        console.log(response);
+      });
   }
 
 }

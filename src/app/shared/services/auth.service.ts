@@ -33,4 +33,12 @@ export class AuthService {
   changePassword(dto: ChangePasswordTO): Observable<any> {
     return this.http.put<any>(`${this.apiURL}/change-password`, dto);
   }
+
+  createFlow(authenticationRequest: AuthenticationRequest, flow: string): Observable<any> {
+    return this.http.post<any>(`${this.apiURL}/${flow}`, authenticationRequest);
+  }
+
+  firstAccess(id: string, dto: ChangePasswordTO, flow: string): Observable<any> {
+    return this.http.put<any>(`${this.apiURL}/${flow}/${id}`, dto);
+  }
 }
