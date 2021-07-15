@@ -4,7 +4,7 @@ import {ChangePasswordTO} from '../../../shared/models/change-password-TO.model'
 import {take} from 'rxjs/operators';
 import {AuthService} from '../../../shared/services/auth.service';
 import {Observable} from 'rxjs';
-import {ActivatedRoute, Params} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 
 @Component({
   selector: 'app-first-access',
@@ -22,7 +22,8 @@ export class FirstAccessComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
   }
 
@@ -72,7 +73,7 @@ export class FirstAccessComponent implements OnInit {
     this.authService.firstAccess(this.id, this.changePasswordTO, 'recovery')
       .pipe(take(1))
       .subscribe(() => {
-        window.location.reload();
+        this.router.navigate(['']);
       }, error => {
         console.log(error);
       });
