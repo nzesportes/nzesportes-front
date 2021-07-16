@@ -46,7 +46,7 @@ const routes: Routes = [
         component: OrderReviewComponent
       },
       {
-        path: 'first-access/:id',
+        path: 'auth/:flow/:id',
         component: FirstAccessComponent
       },
       {
