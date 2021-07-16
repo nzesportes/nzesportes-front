@@ -18,6 +18,7 @@ export class FirstAccessComponent implements OnInit {
   // @ts-ignore
   changePasswordTO: ChangePasswordTO;
   id = '';
+  flow = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -31,6 +32,7 @@ export class FirstAccessComponent implements OnInit {
     const params: Observable<Params> = this.activatedRoute.params;
     params.subscribe(urlParams => {
       this.id = urlParams.id;
+      this.flow = urlParams.flow;
     });
     this.createForm();
   }
@@ -70,7 +72,7 @@ export class FirstAccessComponent implements OnInit {
 
   changePassword(): void {
     this.changePasswordTO = this.formFirstAccess.value;
-    this.authService.firstAccess(this.id, this.changePasswordTO, 'recovery')
+    this.authService.firstAccess(this.id, this.changePasswordTO, this.flow)
       .pipe(take(1))
       .subscribe(() => {
         this.router.navigate(['']);

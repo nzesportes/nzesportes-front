@@ -9,6 +9,8 @@ import {Brand} from '../../../shared/models/brand.model';
 import {User} from '../../../shared/models/user.model';
 import {ErrorWarning} from '../../../shared/models/error-warning.model';
 import {Customer} from '../../../shared/models/customer.model';
+import {AuthService} from '../../../shared/services/auth.service';
+import {AuthenticationRequest} from '../../../shared/models/authentication-request.model';
 
 @Component({
   selector: 'app-users-new',
@@ -25,10 +27,12 @@ export class UsersNewComponent implements OnInit {
   roles = Role;
   public user!: User;
   hasError!: boolean;
+  authenticationRequest!: AuthenticationRequest;
 
   constructor(
     private formBuilder: FormBuilder,
     private userService: UserService,
+    private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
   ) {
@@ -71,6 +75,7 @@ export class UsersNewComponent implements OnInit {
   }
 
   save(): void {
+    this.authenticationRequest = this.formUser.value;
     const request = this.user ?
       this.userService.update(this.formUser.value) :
       this.userService.save(this.formUser.value);
@@ -79,6 +84,11 @@ export class UsersNewComponent implements OnInit {
       .subscribe(() => {
         this.dialogSuccess.title = 'Usuário salvo com com sucesso!';
         this.dialogSuccess.fire();
+        if (!this.user) {
+          this.authService.createFlow(this.authenticationRequest, 'first-access')
+            .pipe(take(1))
+            .subscribe(response => console.log(response));
+        }
       }, error => {
         this.setErrorDialog(error);
         this.dialogError.fire().then(r => {
