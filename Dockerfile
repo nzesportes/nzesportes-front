@@ -1,4 +1,4 @@
-FROM node
+FROM node:latest as nzfront
 WORKDIR /app
 
 COPY package.json /app 
