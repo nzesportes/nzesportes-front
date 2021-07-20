@@ -1,18 +1,16 @@
-FROM node:latest as nzfront
-WORKDIR /app
 
-COPY package.json /app 
-RUN npm install
-
+### STAGE 1: Build ###
+FROM node:12.7-alpine AS build
+WORKDIR /usr/src/app
+COPY package.json package-lock.json ./
+RUN npm i --verbose
 COPY . .
-RUN npm run build
+RUN ["npm", "run", "build"]
 
-FROM nginx:alpine as nzserver
-VOLUME /var/cache/nginx
-COPY --from=nzfront /app/dist/nzesportes-front /usr/share/nginx/html
-COPY ./config/nginx.conf /etc/nginx/conf.d/default.conf
+### STAGE 2: Run ###
+FROM nginx:1.17.1-alpine
+COPY nginx.conf /etc/nginx/nginx.conf
+COPY --from=build /usr/src/app/dist/nzesportes-front /usr/share/nginx/html
 
 # docker build -t nz-angular .
 # docker run -p 80:80 nz-angular
-# OU SOMENTE:
-# docker-compose -f "docker-compose.yml" up -d --build
