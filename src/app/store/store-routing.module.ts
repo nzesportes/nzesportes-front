@@ -47,7 +47,8 @@ const routes: Routes = [
       },
       {
         path: 'auth/:flow/:id',
-        component: FirstAccessComponent
+        component: FirstAccessComponent,
+        canActivate: [AuthVerifyLogin]
       },
       {
         path: 'minha-conta',
