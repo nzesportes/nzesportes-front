@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../../../shared/services/auth.service';
 import {AuthenticationRequest} from '../../../../shared/models/authentication-request.model';
+import {Router} from '@angular/router';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
+import {ErrorWarning} from '../../../../shared/models/error-warning.model';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-forgot-password',
@@ -9,6 +13,11 @@ import {AuthenticationRequest} from '../../../../shared/models/authentication-re
   styleUrls: ['./forgot-password.component.scss']
 })
 export class ForgotPasswordComponent implements OnInit {
+
+  @ViewChild('success')
+  public readonly dialogSuccess!: SwalComponent;
+  @ViewChild('error')
+  public readonly dialogError!: SwalComponent;
 
   // @ts-ignore
   forgotPasswordForm: FormGroup;
@@ -19,8 +28,10 @@ export class ForgotPasswordComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
-  ) { }
+    private authService: AuthService,
+    private router: Router
+  ) {
+  }
 
   ngOnInit(): void {
     this.createForm();
@@ -33,10 +44,6 @@ export class ForgotPasswordComponent implements OnInit {
     });
   }
 
-  save(): void {
-    console.log(this.forgotPasswordForm.value);
-  }
-
   get validateFields(): any {
     return this.forgotPasswordForm.controls;
   }
@@ -44,9 +51,29 @@ export class ForgotPasswordComponent implements OnInit {
   forgotMyPassword(): void {
     this.authenticationRequest.username = this.forgotPasswordForm?.get('email')?.value;
     this.authService.createFlow(this.authenticationRequest, 'recovery')
-      .subscribe(response => {
-        console.log(response);
+      .pipe(take(1))
+      .subscribe(() => {
+        this.dialogSuccess.title = 'E-mail enviado com sucesso!';
+        this.dialogSuccess.fire();
+      }, (error: ErrorWarning) => {
+        this.setErrorDialog(error);
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.forgotMyPassword();
+          }
+        });
       });
   }
 
+  redirect(): void {
+    this.router.navigateByUrl('/');
+  }
+
+  setErrorDialog(error: ErrorWarning): void {
+    this.dialogError.confirmButtonText = error.action;
+    this.dialogError.title = error.title;
+    this.dialogError.text = error.message;
+  }
+
 }
+
