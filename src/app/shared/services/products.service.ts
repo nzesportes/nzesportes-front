@@ -43,14 +43,12 @@ export class ProductsService {
   }
 
   getAll(size: number, page: number,  category?: string, status?: string, name?: string): Observable<ProductPage> {
-    const params = new HttpParams()
-      .set('async', 'true')
-      .set('page', page.toString())
-      .set('size', size.toString())
-      .set('status', status === 'true' ? 'true' : status === 'false' ? 'false' : '')
-      .set('category', category ? category : '')
-      .set('name', name ? name : '');
-    return this.http.get<ProductPage>(this.api, {params});
+    const urlCategory = category ? '&category=' + category : '';
+    const urlStatus = status ? '&status=' + status : '';
+    const urlName = name ? '&name=' + name : '';
+    return this.http.get<ProductPage>(
+      this.api  + '?async=true&page=' + page.toString() + '&size=' + size.toString()
+      + urlCategory + urlStatus + urlName);
   }
 
   getByCategoryId(idCategory: string, size: number, page: number): Observable<ProductPage> {
