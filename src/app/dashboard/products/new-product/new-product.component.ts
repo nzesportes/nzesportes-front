@@ -341,6 +341,13 @@ export class NewProductComponent implements OnInit, OnDestroy {
       };
       request = this.productService.update(productRequest);
     } else {
+      if (this.categoriesArrayForm.controls.length === 1){
+        this.categoriesArrayForm.controls.forEach(form => {
+            this.categoriesArrayFormProduct.push(
+              this.setArrayCategorieProduct(form.value)
+            );
+        });
+      }
       request = this.productService.create(this.formProduct.value);
     }
     request
