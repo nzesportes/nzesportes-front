@@ -2,8 +2,6 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {OwlOptions} from 'ngx-owl-carousel-o';
 import {CartService} from '../../services/cart.service';
 import {Store} from '@ngrx/store';
-import {CartState, CartStateReducer} from '../../redux/cart/cart.state';
-import {AddItemCart, CartActionsType} from '../../redux/cart/cart.actions';
 import {ProductsService} from '../../../shared/services/products.service';
 import {Observable} from 'rxjs';
 import {ActivatedRoute, Params} from '@angular/router';
@@ -93,7 +91,6 @@ export class ProductDetailComponent implements OnInit {
     private cartService: CartService,
     private productsService: ProductsService,
     private activatedRoute: ActivatedRoute,
-    private store: Store<CartState>
   ) {
   }
 

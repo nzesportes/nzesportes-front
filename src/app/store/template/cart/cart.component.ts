@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CartService} from '../../services/cart.service';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {Store} from '@ngrx/store';
 
 @Component({
@@ -27,7 +27,7 @@ export class CartComponent implements OnInit {
     private cartService: CartService,
     private store: Store<any>
   ) {
-    this.testes$ = this.store.select('cart');
+    this.testes$ = of([]);
   }
 
   ngOnInit(): void {

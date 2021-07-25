@@ -1,35 +1,34 @@
-import {ItemCart} from '../../models/item-cart';
-import {Action} from '@ngrx/store';
+import { Update } from '@ngrx/entity';
+import { createAction, props } from '@ngrx/store';
+import {Product} from '../../../shared/models/product.model';
 
-export enum CartActionsType {
-  ADD_ITEM_CART = '[Item] Add Item',
-  REMOVE_ITEM_CART = '[Item] Remove Item',
-  DECREASE_ITEM_CART = '[Item] Decrease Item',
-  INCREASE_ITEM_CART = '[Item] Increase item',
-  CLEAR_CART = '[Cart] Clear cart'
-}
 
-export class AddItemCart {
-  readonly type = CartActionsType.ADD_ITEM_CART;
-  constructor(public payload: any) {}
-}
+export const requestLoadProducts = createAction(
+  '[Product/API] Request Load Products'
+);
 
-export class RemoveItemCart {
-  readonly type = CartActionsType.REMOVE_ITEM_CART;
-  constructor(public payload: ItemCart) {}
-}
+export const loadProducts = createAction(
+  '[Product/API] Load Products',
+  props<{ products: Product[] }>()
+);
 
-export class DecreaseItemCart {
-  readonly type = CartActionsType.DECREASE_ITEM_CART;
-  constructor(public payload: ItemCart) {}
-}
+export const addProduct = createAction(
+  '[Product/API] Add Product',
+  props<{ product: Product }>()
+);
 
-export class IncreaseItemCart {
-  readonly type = CartActionsType.INCREASE_ITEM_CART;
-  constructor(public payload: ItemCart) {}
-}
+export const updateProduct = createAction(
+  '[Product/API] Update Product',
+  props<{ product: Update<Product> }>()
+);
 
-export class ClearCart {
-  readonly type = CartActionsType.CLEAR_CART;
-  constructor(public payload: ItemCart) {}
-}
+export const deleteProduct = createAction(
+  '[Product/API] Delete Product',
+  props<{ id: string }>()
+);
+
+export const searchProduct = createAction(
+  '[Product/API] Search Products',
+  props<{ searchQuery: string }>()
+);
+
