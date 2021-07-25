@@ -2,19 +2,20 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import {Product} from '../../../shared/models/product.model';
 import {createReducer, on} from '@ngrx/store';
 import * as ProductActions from './cart.actions';
+import {ItemCart} from '../../models/item-cart';
 
 export const productsFeatureKey = 'products';
 
-export interface ProductState extends EntityState<Product> {
+export interface ProductState extends EntityState<ItemCart> {
   isLoading: boolean;
   error: string | null;
 }
 
-export const adapter: EntityAdapter<Product> = createEntityAdapter<Product>();
+export const adapter: EntityAdapter<ItemCart> = createEntityAdapter<ItemCart>();
 
 export const initialState: ProductState = adapter.getInitialState({
   isLoading: true,
-  error: null
+  error: null,
 });
 
 export const reducer = createReducer(

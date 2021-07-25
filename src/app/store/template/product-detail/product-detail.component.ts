@@ -7,8 +7,8 @@ import {Observable} from 'rxjs';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Product} from '../../../shared/models/product.model';
 import {ProductDetails, Stock} from '../../../shared/models/product-details.model';
-import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 import {take} from 'rxjs/operators';
+import * as fromStore from '../../redux/cart/cart.reducer';
 
 @Component({
   selector: 'app-product-detail',
@@ -91,6 +91,7 @@ export class ProductDetailComponent implements OnInit {
     private cartService: CartService,
     private productsService: ProductsService,
     private activatedRoute: ActivatedRoute,
+    private store: Store<fromStore.ProductState>
   ) {
   }
 
@@ -135,32 +136,9 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  addToCart(id: string): void {
-    /*const product = {
-      id: 1,
-      img: 'assets/images/product.jpg',
-      name: 'Camiseta NBL',
-      price: 129.00,
-      qtde: 3
-    };
-
-    this.store.dispatch(new AddItemCart(product));
-
-    const product1 = {
-      id: 2,
-      img: 'assets/images/product.jpg',
-      name: 'Camiseta NBL',
-      price: 129.00,
-      qtde: 3
-    };
-
-    this.store.dispatch(new AddItemCart(product1));
-    /*this.store.dispatch({
-      type: CartActionsType.ADD_ITEM_CART,
-      payload: product
-    });*/
-    // this.cartService.addToCart(product);*/
-
+  addToCart(productDetail: ProductDetails, stockIndex: number): void {
+    this.cartService.addToCart(this.product, productDetail, this.startValue,  this.productDetails.stock[stockIndex - 1]);
+    // this.store.dispatch(fromActions.addProduct({ product: itemCart }));
   }
 
 }

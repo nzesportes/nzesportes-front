@@ -1,6 +1,6 @@
 import { Update } from '@ngrx/entity';
 import { createAction, props } from '@ngrx/store';
-import {Product} from '../../../shared/models/product.model';
+import {ItemCart} from '../../models/item-cart';
 
 
 export const requestLoadProducts = createAction(
@@ -9,17 +9,17 @@ export const requestLoadProducts = createAction(
 
 export const loadProducts = createAction(
   '[Product/API] Load Products',
-  props<{ products: Product[] }>()
+  props<{ products: ItemCart[] }>()
 );
 
 export const addProduct = createAction(
   '[Product/API] Add Product',
-  props<{ product: Product }>()
+  props<{ product: ItemCart }>()
 );
 
 export const updateProduct = createAction(
   '[Product/API] Update Product',
-  props<{ product: Update<Product> }>()
+  props<{ product: Update<ItemCart> }>()
 );
 
 export const deleteProduct = createAction(

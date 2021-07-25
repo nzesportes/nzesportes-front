@@ -13,28 +13,28 @@
         <div class="col-2 title-header">Total</div>
         <div class="col-1 title-header"></div>
 
-        <div class="row w-100 m-0 listing-body align-items-center" *ngFor="let item of (testes$ | async)">
+        <div class="row w-100 m-0 listing-body align-items-center" *ngFor="let item of products$ | async">
           <div class="col-12 col-xl-5">
             <a class="items-description">
               <img class="mr-3" src="assets/images/cart-preview.jpg">
-              Nome do Produto
+              {{item.model}} {{item.size}}
             </a>
           </div>
           <div class="col-6 col-xl-2 pt-3 pb-3"><span
-            class="title-items">Preço </span>R$ {{ item.price | number:'.2' }}</div>
+            class="title-items">Preço </span>R$ {{ item.productDetails.price | number:'.2' }}</div>
           <div class="col-6 col-xl-2 pt-3 pb-3">
             <div class="input-group quantity ml-auto ml-xl-0">
               <div class="input-group-prepend">
-                <button type="button" class="btn btn-controls-cart" (click)="minusItem(item.id)">-</button>
+                <button type="button" class="btn btn-controls-cart">-</button>
               </div>
-              <input type="number" class="form-control input-qtde" [min]="1" [value]="item.qtde">
+              <input type="number" class="form-control input-qtde" [min]="1" [value]="item.quantity">
               <div class="input-group-append">
-                <button type="button" class="btn btn-controls-cart" (click)="plusItem(item.id)">+</button>
+                <button type="button" class="btn btn-controls-cart">+</button>
               </div>
             </div>
           </div>
           <div class="col-9 col-xl-2 pt-3 pb-3"><span
-            class="title-items">Total </span>R$ {{ item.price * item.qtde | number:'.2'  }}</div>
+            class="title-items">Total </span>R$ {{ item.total | number:'.2'  }}</div>
           <div class="col-3 col-xl-1 pt-3 pb-3 text-right text-xl-center">
             <div class="items-remove"><i class="fas fa-trash-alt"></i></div>
           </div>
@@ -53,7 +53,7 @@
       <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-3 text-xl-right text-center">
         <div class="items-actions-cart">
           <h3 class="mt-3 mb-4 pr-2 pl-2 total-price text-left">Valor Total: <span
-            class="float-right">R$ {{ calculateTotal() | number: '.2' }}</span></h3>
+            class="float-right">R$ {{ 10000 | number: '.2' }}</span></h3>
         </div>
         <div class="items-actions-cart text-xl-right text-center">
           <button routerLink="/finalizar-compra" class="btn btn-finish-shopping w-100" >Finalizar Compra</button>

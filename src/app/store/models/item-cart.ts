@@ -1,7 +1,11 @@
+import {ProductDetails, Stock} from '../../shared/models/product-details.model';
+
 export interface ItemCart {
-  id: number;
-  img: string;
-  name: string;
-  price: number;
+  id: string;
+  productDetails: ProductDetails;
+  productId: string;
+  model: string;
+  stock: Stock;
   quantity: number;
+  total: number;
 }

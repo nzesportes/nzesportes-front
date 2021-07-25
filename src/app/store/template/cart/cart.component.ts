@@ -3,6 +3,12 @@ import {CartService} from '../../services/cart.service';
 import {Observable, of} from 'rxjs';
 import {Store} from '@ngrx/store';
 
+
+import * as fromActions from '../../redux/cart/cart.actions';
+import * as fromStore from '../../redux/cart/cart.reducer';
+import * as fromSelector from '../../redux/cart/cart.selectors';
+import {ItemCart} from '../../models/item-cart';
+
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
@@ -11,7 +17,6 @@ import {Store} from '@ngrx/store';
 export class CartComponent implements OnInit {
 
   emptyCart = false;
-  testes$: Observable<any>;
 
   items = [
     {
@@ -23,19 +28,24 @@ export class CartComponent implements OnInit {
     }
   ];
 
+  isLoading$!: Observable<boolean>;
+  error$!: Observable<string | null>;
+  products$!: Observable<ItemCart[]>;
+
   constructor(
     private cartService: CartService,
-    private store: Store<any>
+    private store: Store<fromStore.ProductState>
   ) {
-    this.testes$ = of([]);
   }
 
   ngOnInit(): void {
-    this.getItemsCart();
-  }
-
-  getItemsCart(): any {
-    return this.cartService.getProductsCart();
+    this.store.dispatch(fromActions.requestLoadProducts());
+    this.products$ = this.store.select(fromSelector.products);
+    this.isLoading$ = this.store.select(fromSelector.isLoading);
+    this.error$ = this.store.select(fromSelector.error);
+    this.store.select(fromSelector.products).subscribe(r => {
+      console.log(r);
+    })
   }
 
   plusItem(id: number): void {
@@ -46,7 +56,7 @@ export class CartComponent implements OnInit {
     this.cartService.minusItem(id);
   }
 
-  calculateTotal(): number {
-    return this.cartService.getTotalPrice();
-  }
+  // calculateTotal(): number {
+  //   return this.cartService.getTotalPrice();
+  // }
 }

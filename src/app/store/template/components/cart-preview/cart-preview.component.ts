@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {CartService} from '../../../services/cart.service';
 import {Store} from '@ngrx/store';
 import {Observable, of} from 'rxjs';
+import {ItemCart} from '../../../models/item-cart';
 
 @Component({
   selector: 'app-cart-preview',
@@ -10,15 +11,7 @@ import {Observable, of} from 'rxjs';
 })
 export class CartPreviewComponent implements OnInit {
 
-  items = [
-    {
-      id: 0,
-      img: '',
-      name: '',
-      price: 0.00,
-      qtde: 0
-    }
-  ];
+  items: ItemCart[] = [];
 
   teste$: Observable<any>;
 
@@ -33,17 +26,17 @@ export class CartPreviewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getItemsCart();
+    // this.getItemsCart();
   }
 
-  getItemsCart(): void {
-    this.items = this.cartService.getProductsCart();
-    this.getTotal();
-  }
-
-  getTotal(): void {
-    this.qtdeTotal = this.cartService.getTotalItems();
-    this.priceTotal = this.cartService.getTotalPrice();
-  }
+  // getItemsCart(): void {
+  //   this.items = this.cartService.getProductsCart();
+  //   this.getTotal();
+  // }
+  //
+  // getTotal(): void {
+  //   this.qtdeTotal = this.cartService.getTotalItems();
+  //   this.priceTotal = this.cartService.getTotalPrice();
+  // }
 
 }
