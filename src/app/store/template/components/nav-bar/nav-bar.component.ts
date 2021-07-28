@@ -18,7 +18,7 @@ export class NavBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getTotalItemsCart();
+    // this.getTotalItemsCart();
 
     this.navbarService.sidebarState.subscribe(response => {
       this.isSidebarOpened = response;
@@ -30,8 +30,8 @@ export class NavBarComponent implements OnInit {
   }
 
 
-  getTotalItemsCart(): number {
-    return this.cartService.getTotalItems();
-  }
+  // getTotalItemsCart(): number {
+  //   return this.cartService.getTotalItems();
+  // }
 
 }

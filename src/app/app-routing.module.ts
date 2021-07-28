@@ -5,7 +5,7 @@ import {AuthDashGuard} from './shared/guards/auth-dash-guard';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./store/store.module').then(m => m.StoreModule)
+    loadChildren: () => import('./store/store-nz.module').then(m => m.StoreNzModule)
   },
   {
     path: '',
