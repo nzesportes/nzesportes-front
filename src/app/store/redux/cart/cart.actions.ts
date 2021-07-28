@@ -4,12 +4,17 @@ import {ItemCart} from '../../models/item-cart';
 
 
 export const requestLoadProducts = createAction(
-  '[Product/API] Request Load Products'
+  '[Product/API] Request Load Products',
+);
+
+export const updateTotalBalance = createAction(
+  '[Product/API] update Total Balance',
+  props<{ total: number }>()
 );
 
 export const loadProducts = createAction(
   '[Product/API] Load Products',
-  props<{ products: ItemCart[] }>()
+  props<{ products: ItemCart[], total: number }>()
 );
 
 export const addProduct = createAction(

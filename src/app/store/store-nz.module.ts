@@ -65,7 +65,7 @@ import * as fromProduct from './redux/cart/cart.reducer';
     ProductListingComponent,
     FiltersComponent,
     OrderReviewComponent,
-    FirstAccessComponent
+    FirstAccessComponent,
   ],
   imports: [
     CommonModule,

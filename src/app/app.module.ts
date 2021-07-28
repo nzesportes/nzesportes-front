@@ -44,9 +44,10 @@ import {EffectsModule} from '@ngrx/effects';
     AuthVerifyLogin,
     AuthDashGuard
   ],
-  exports: [
-    StoreModule
-  ],
+    exports: [
+        StoreModule,
+        LoadingScreenComponent
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

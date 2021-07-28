@@ -1,5 +1,4 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import {Product} from '../../../shared/models/product.model';
 import {createReducer, on} from '@ngrx/store';
 import * as ProductActions from './cart.actions';
 import {ItemCart} from '../../models/item-cart';
@@ -9,6 +8,7 @@ export const productsFeatureKey = 'products';
 export interface ProductState extends EntityState<ItemCart> {
   isLoading: boolean;
   error: string | null;
+  total: number;
 }
 
 export const adapter: EntityAdapter<ItemCart> = createEntityAdapter<ItemCart>();
@@ -16,6 +16,7 @@ export const adapter: EntityAdapter<ItemCart> = createEntityAdapter<ItemCart>();
 export const initialState: ProductState = adapter.getInitialState({
   isLoading: true,
   error: null,
+  total: 0
 });
 
 export const reducer = createReducer(
@@ -30,15 +31,23 @@ export const reducer = createReducer(
     (state, action) => adapter.removeOne(action.id, state)
   ),
   on(ProductActions.loadProducts,
-    (state, action) => adapter.setAll(action.products, {
+    (state, action) =>  adapter.setAll(action.products, {
       ...state,
-      isLoading: false
+      isLoading: false,
+      total: action.total
     })
   ),
   on(ProductActions.requestLoadProducts,
     (state, action) => adapter.setAll([], {
       ...state,
       isLoading: true
+    })
+  ),
+  on(ProductActions.updateTotalBalance,
+    (state, action) => adapter.setAll([], {
+      ...state,
+      isLoading: true,
+      total: action.total
     })
   )
 );
@@ -52,3 +61,6 @@ export const {
 
 export const selectIsLoading = (state: ProductState) => state.isLoading;
 export const selectError = (state: ProductState) => state.error;
+export const selectTotalBalance = (state: ProductState) => state.total;
+
+

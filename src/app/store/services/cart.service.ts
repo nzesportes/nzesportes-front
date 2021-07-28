@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ItemCart} from '../models/item-cart';
-import {ProductDetails, Stock} from '../../shared/models/product-details.model';
-import {Product} from '../../shared/models/product.model';
+import {Store} from '@ngrx/store';
+import * as fromStore from '../redux/cart/cart.reducer';
+import * as fromCartActions from '../redux/cart/cart.actions';
 
 @Injectable({
   providedIn: 'root'
@@ -12,13 +13,14 @@ export class CartService {
   cart: any;
 
 
-  constructor() {
+  constructor(
+    private store: Store<fromStore.ProductState>
+  ) {
   }
 
 
   getProductsCart(): ItemCart[] {
     this.cart = localStorage.getItem('cart');
-
     if (this.cart) {
       this.items = JSON.parse(this.cart);
       return this.items as ItemCart[];
@@ -26,103 +28,55 @@ export class CartService {
     return [];
   }
 
-  addToCart(product: Product, productDetail: ProductDetails, quantity: number, stockIndex: Stock): void {
-    // @ts-ignore
-
-    let i = 0;
+  addToCart(itemCart: ItemCart): void {
     this.items = this.getProductsCart();
-    console.log(this.items);
     // verificar tamanho do carrinho
     if (this.items.length === 0) {
-      this.pushItemCart(product, productDetail, stockIndex);
+      this.pushItemCart(itemCart);
     }else{
-      // percorre o carrinho caso for maior que 1
-      for (i; i < this.items.length; i++){
-        // se já tem o product id no carrinho
-        if (product.id === this.items[i].productId){
-          // verifica se tem o productDetail
-          if (this.items[i].productDetails.id === productDetail.id) {
-            // verifica se já tem aquele item de stock no carrinho
-            if (stockIndex.id === this.items[i].stock.id){
-              const sumQuantity =  quantity + this.items[i].quantity;
-              this.items[i].quantity = sumQuantity > stockIndex.quantity ? stockIndex.quantity : sumQuantity;
-              this.items[i].total = this.items[i].quantity * productDetail.price;
-              break;
-            } else {
-              this.pushItemCart(product, productDetail, stockIndex);
-              break;
-            }
-          } else {
-            this.pushItemCart(product, productDetail, stockIndex);
-            break;
-          }
-        }else{
-          this.pushItemCart(product, productDetail, stockIndex);
-          break;
-        }
+      // verifica se tem o productDetail
+      const hasProductDetail =
+        this.items.find(cart => cart.productDetails.id === itemCart.productDetails.id && itemCart.stock.id === cart.stock.id) as ItemCart;
+      if (hasProductDetail) {
+        // verifica se já tem aquele item de stock no carrinho
+        const index  = this.items.indexOf(hasProductDetail);
+        const sumQuantity =  itemCart.quantity + this.items[index].quantity;
+        this.items[index].quantity = sumQuantity > itemCart.stock.quantity ? itemCart.stock.quantity : sumQuantity;
+        this.items[index].total = this.items[index].quantity * itemCart.productDetails.price;
+      }else {
+        this.pushItemCart(itemCart);
       }
-
     }
+    localStorage.setItem('cart', JSON.stringify(this.items));
+    this.updateLoadProducts();
+  }
+  addQuantityCart(idCart: string, quantity: number): void {
+    this.items = this.getProductsCart();
+    const hasProductDetail =
+      this.items.find(cart => idCart === cart.id) as ItemCart;
+    if (hasProductDetail) {
+      const index = this.items.indexOf(hasProductDetail);
+      this.items[index].quantity = this.items[index].quantity + quantity;
+      this.items[index].total = this.items[index].quantity * this.items[index].productDetails.price;
+      localStorage.setItem('cart', JSON.stringify(this.items));
+      this.updateLoadProducts();
+    }
+  }
+  updateLoadProducts(): void {
+    this.store.dispatch(
+      fromCartActions.requestLoadProducts()
+    );
+  }
+
+
+  pushItemCart(itemCart: ItemCart): void {
+    this.items.push(itemCart);
     localStorage.setItem('cart', JSON.stringify(this.items));
   }
 
-  pushItemCart(product: Product, productDetail: ProductDetails, stockProduct: Stock): void {
-    const itemCart = {
-      id: productDetail.id,
-      productDetails: productDetail,
-      productId: product.id,
-      model: product.model,
-      quantity: 1,
-      stock: stockProduct,
-      total: productDetail.price
-    };
-    this.items.push(itemCart);
+  removeItemCart(id: string): void {
+    this.items = this.items.filter( i => i.id !== id);
+    localStorage.setItem('cart', JSON.stringify(this.items));
+    this.updateLoadProducts();
   }
-
-  removeItemCart(id: number): void {
-  }
-
-  clearCart(): void {
-
-  }
-
-  refreshCart(): void {
-
-  }
-
-  minusItem(id: number): void {
-    // this.items.forEach(item => {
-    //   if (item.id === id) {
-    //     item.qtde--;
-    //   }
-    // });
-    // localStorage.setItem('cart', JSON.stringify(this.items));
-  }
-
-  plusItem(id: number): void {
-    // this.items.forEach(item => {
-    //   if (item.id === id) {
-    //     item.qtde++;
-    //   }
-    // });
-    // localStorage.setItem('cart', JSON.stringify(this.items));
-  }
-
-
-  getTotalItems(): void {
-    // let total = 0;
-    // this.items.map(item => {
-    //   total += item.qtde;
-    // });
-    // return total;
-  }
-
-  getTotalPrice(): void {
-    // let total = 0;
-    // this.items.map(item => {
-    //   total += (item.qtde * item.price);
-    // });
-    // return total;
-  }
-
 }

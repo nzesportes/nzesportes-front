@@ -137,7 +137,17 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addToCart(productDetail: ProductDetails, stockIndex: number): void {
-    this.cartService.addToCart(this.product, productDetail, this.startValue,  this.productDetails.stock[stockIndex - 1]);
+    const stockCart = this.productDetails.stock[stockIndex - 1];
+    const itemCart = {
+      id: stockCart.id,
+      productDetails: productDetail,
+      productId: this.product.id,
+      model: this.product.model,
+      quantity: this.startValue,
+      stock:  stockCart,
+      total: productDetail.price * this.startValue
+    };
+    this.cartService.addToCart(itemCart);
     // this.store.dispatch(fromActions.addProduct({ product: itemCart }));
   }
 

@@ -1,64 +1,69 @@
 <div class="container p-container">
-  <div class="empty-cart text-center" *ngIf="emptyCart">
-    <h3>Você não tem itens no carrinho</h3>
-    <p>Quando você escolher produtos, eles aparecerão aqui.</p>
-    <a href="#">Explorar produtos <i class="fas fa-arrow-right"></i></a>
-  </div>
-  <div class="w-100 cart-view" *ngIf="!emptyCart">
-    <div class="cart-listing">
-      <div class="row w-100 m-0 listing-header">
-        <div class="col-12 col-xl-5">Todos Produtos</div>
-        <div class="col-2 title-header">Preço</div>
-        <div class="col-2 title-header">Quantidade</div>
-        <div class="col-2 title-header">Total</div>
-        <div class="col-1 title-header"></div>
+  <div  *ngIf="loading; else productList"></div>
+  <ng-template #productList>
+    <div class="empty-cart text-center" *ngIf="emptyCart">
+      <h3>Você não tem itens no carrinho</h3>
+      <p>Quando você escolher produtos, eles aparecerão aqui.</p>
+      <a href="#">Explorar produtos <i class="fas fa-arrow-right"></i></a>
+    </div>
+    <div class="w-100 cart-view" *ngIf="!emptyCart">
+      <div class="cart-listing">
+        <div class="row w-100 m-0 listing-header">
+          <div class="col-12 col-xl-5">Todos Produtos</div>
+          <div class="col-2 title-header">Preço</div>
+          <div class="col-2 title-header">Quantidade</div>
+          <div class="col-2 title-header">Total</div>
+          <div class="col-1 title-header"></div>
 
-        <div class="row w-100 m-0 listing-body align-items-center" *ngFor="let item of products$ | async">
-          <div class="col-12 col-xl-5">
-            <a class="items-description">
-              <img class="mr-3" src="assets/images/cart-preview.jpg">
-              {{item.model}} {{item.size}}
-            </a>
-          </div>
-          <div class="col-6 col-xl-2 pt-3 pb-3"><span
-            class="title-items">Preço </span>R$ {{ item.productDetails.price | number:'.2' }}</div>
-          <div class="col-6 col-xl-2 pt-3 pb-3">
-            <div class="input-group quantity ml-auto ml-xl-0">
-              <div class="input-group-prepend">
-                <button type="button" class="btn btn-controls-cart">-</button>
-              </div>
-              <input type="number" class="form-control input-qtde" [min]="1" [value]="item.quantity">
-              <div class="input-group-append">
-                <button type="button" class="btn btn-controls-cart">+</button>
+          <div class="row w-100 m-0 listing-body align-items-center" *ngFor="let item of products$ | async">
+            <div class="col-12 col-xl-5">
+              <a class="items-description">
+                <img class="mr-3" src="assets/images/cart-preview.jpg">
+                {{item.model}} {{item.stock.size}}
+              </a>
+            </div>
+            <div class="col-6 col-xl-2 pt-3 pb-3"><span
+              class="title-items">Preço </span>R$ {{ item.productDetails.price | number:'.2' }}</div>
+            <div class="col-6 col-xl-2 pt-3 pb-3">
+              <div class="input-group quantity ml-auto ml-xl-0">
+                <div class="input-group-prepend">
+                  <button type="button" class="btn btn-controls-cart" [disabled]="inputQuantity?.value === (1).toString()" (click)="addQuantityCart(item.id, -1)">-</button>
+                </div>
+                <input type="number" class="form-control input-qtde" readonly #inputQuantity  [min]="1" [value]="item.quantity">
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-controls-cart"   [disabled]="item.stock.quantity.toString() === inputQuantity?.value" (click)="addQuantityCart(item.id, 1)">+</button>
+                </div>
               </div>
             </div>
+            <div class="col-9 col-xl-2 pt-3 pb-3"><span
+              class="title-items">Total </span>R$ {{ item.total | number:'.2'  }}</div>
+            <div class="col-3 col-xl-1 pt-3 pb-3 text-right text-xl-center">
+              <div class="items-remove" (click)="removeItemCart(item.id)"><i class="fas fa-trash-alt"></i></div>
+            </div>
           </div>
-          <div class="col-9 col-xl-2 pt-3 pb-3"><span
-            class="title-items">Total </span>R$ {{ item.total | number:'.2'  }}</div>
-          <div class="col-3 col-xl-1 pt-3 pb-3 text-right text-xl-center">
-            <div class="items-remove"><i class="fas fa-trash-alt"></i></div>
+        </div>
+      </div>
+      <div class="row w-100 m-0 actions-cart pt-5" *ngIf="!emptyCart">
+        <div class="col-12 col-md-6 col-lg-8 col-xl-9 p-3">
+          <div class="form-group items-actions-cart text-xl-left text-center">
+            <input type="text" class="form-control promocode" placeholder="Código Promocional">
+          </div>
+          <div class="items-actions-cart text-xl-left text-center">
+            <button class="btn btn-continue-shopping w-100">Continuar Comprando</button>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-3 text-xl-right text-center">
+          <div class="items-actions-cart">
+            <h3 class="mt-3 mb-4 pr-2 pl-2 total-price text-left">Valor Total: <span
+              class="float-right">R$ {{ total$ | async | number: '.2' }}</span></h3>
+          </div>
+          <div class="items-actions-cart text-xl-right text-center">
+            <button routerLink="/finalizar-compra" class="btn btn-finish-shopping w-100" >Finalizar Compra</button>
           </div>
         </div>
       </div>
     </div>
-    <div class="row w-100 m-0 actions-cart pt-5" *ngIf="!emptyCart">
-      <div class="col-12 col-md-6 col-lg-8 col-xl-9 p-3">
-        <div class="form-group items-actions-cart text-xl-left text-center">
-          <input type="text" class="form-control promocode" placeholder="Código Promocional">
-        </div>
-        <div class="items-actions-cart text-xl-left text-center">
-          <button class="btn btn-continue-shopping w-100">Continuar Comprando</button>
-        </div>
-      </div>
-      <div class="col-12 col-md-6 col-lg-4 col-xl-3 p-3 text-xl-right text-center">
-        <div class="items-actions-cart">
-          <h3 class="mt-3 mb-4 pr-2 pl-2 total-price text-left">Valor Total: <span
-            class="float-right">R$ {{ 10000 | number: '.2' }}</span></h3>
-        </div>
-        <div class="items-actions-cart text-xl-right text-center">
-          <button routerLink="/finalizar-compra" class="btn btn-finish-shopping w-100" >Finalizar Compra</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  </ng-template>
 
+
+</div>

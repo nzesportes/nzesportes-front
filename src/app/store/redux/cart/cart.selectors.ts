@@ -6,4 +6,6 @@ const productsSelector = createFeatureSelector<fromStore.ProductState>(fromStore
 
 export const isLoading = createSelector(productsSelector, fromStore.selectIsLoading);
 export const products = createSelector(productsSelector, fromStore.selectAll);
+export const total = createSelector(productsSelector, fromStore.selectTotalBalance);
+
 export const error = createSelector(productsSelector, fromStore.selectError);
