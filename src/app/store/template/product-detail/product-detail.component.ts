@@ -159,7 +159,6 @@ export class ProductDetailComponent implements OnInit {
     if (cartItem) {
       const sumQuantity = cartItem.quantity + 1;
       if (sumQuantity > stockCart.quantity) {
-        console.log(this.noStock)
         this.noStock = true;
       }else {
         this.noStock = false;
