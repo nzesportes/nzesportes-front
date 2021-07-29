@@ -9,6 +9,7 @@ import {Product} from '../../../shared/models/product.model';
 import {ProductDetails, Stock} from '../../../shared/models/product-details.model';
 import {take} from 'rxjs/operators';
 import * as fromStore from '../../redux/cart/cart.reducer';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-product-detail',
@@ -58,7 +59,6 @@ export class ProductDetailComponent implements OnInit {
     }
   ];
 
-
   customOptions: OwlOptions = {
     loop: true,
     margin: 0,
@@ -87,15 +87,20 @@ export class ProductDetailComponent implements OnInit {
     nav: true
   };
 
+  public formStock: FormGroup = new FormGroup({});
+  noStock = false;
+
   constructor(
     private cartService: CartService,
     private productsService: ProductsService,
     private activatedRoute: ActivatedRoute,
-    private store: Store<fromStore.ProductState>
+    private store: Store<fromStore.ProductState>,
+    private formBuilder: FormBuilder
   ) {
   }
 
   ngOnInit(): void {
+    this.createForm();
     const params: Observable<Params> = this.activatedRoute.params;
     params.subscribe(urlParams => {
       this.id = urlParams.url;
@@ -121,6 +126,20 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
+  private createForm(): void {
+    this.formStock = this.formBuilder.group({
+      stocksize: new FormControl(null, Validators.required),
+    });
+  }
+  get validateFields(): any {
+    return this.formStock.controls;
+  }
+
+  cssError(field: any): any {
+    return {
+      'is-invalid': field.invalid && field.touched
+    };
+  }
   changeImage(index: number): void {
     this.positionImage = index;
   }
@@ -130,14 +149,26 @@ export class ProductDetailComponent implements OnInit {
   }
 
   changeMax(index: number): void {
-    if (index > 0) {
-      this.sizeMax = this.productDetails.stock[index - 1].quantity;
+      this.sizeMax = this.productDetails.stock[index].quantity;
       this.startValue = 1;
-    }
   }
 
   addToCart(productDetail: ProductDetails, stockIndex: number): void {
-    const stockCart = this.productDetails.stock[stockIndex - 1];
+    const stockCart = this.productDetails.stock[stockIndex];
+    const cartItem = this.cartService.getProductsCart().find(item => item.id === stockCart.id);
+    if (cartItem) {
+      const sumQuantity = cartItem.quantity + 1;
+      if (sumQuantity > stockCart.quantity) {
+        this.noStock = true;
+      }else {
+        this.noStock = false;
+        this.sendToCart(productDetail, stockCart);
+      }
+    }else{
+      this.sendToCart(productDetail, stockCart);
+    }
+  }
+  sendToCart(productDetail: ProductDetails, stockCart: Stock): void {
     const itemCart = {
       id: stockCart.id,
       productDetails: productDetail,
@@ -148,7 +179,6 @@ export class ProductDetailComponent implements OnInit {
       total: productDetail.price * this.startValue
     };
     this.cartService.addToCart(itemCart);
-    // this.store.dispatch(fromActions.addProduct({ product: itemCart }));
   }
 
 }
