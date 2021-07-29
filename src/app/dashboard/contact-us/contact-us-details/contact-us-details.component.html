@@ -1,0 +1,35 @@
+<div class="row mt-3">
+  <div class="col-12 mb-3">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Fale Conosco</h5>
+        <hr>
+        <div class="form-row">
+          <div class="form-group col-12 mb-3">
+            <label for="fullname">Nome Completo</label>
+            <input type="text" class="form-control" id="fullname" formControlName="name" [value]="contact?.fullName" disabled>
+          </div>
+          <div class="form-group col-12 mb-3">
+            <label for="email">E-mail</label>
+            <input type="text" class="form-control" id="email" formControlName="name" [value]="contact?.email" disabled>
+          </div>
+          <div class="form-group col-12 mb-3">
+            <label for="instagram">Instagram</label>
+            <input type="text" class="form-control" id="instagram" formControlName="name" [value]="contact?.instagram" disabled>
+          </div>
+          <div class="form-group col-12 mb-3">
+            <label for="phone">Telefone</label>
+            <input type="text" class="form-control" id="phone" formControlName="name" [value]="contact?.phone" disabled>
+          </div>
+          <div class="form-group col-12 mb-3">
+            <label for="message">Mensagem</label>
+            <textarea class="form-control field-message" id="message" formControlName="name" disabled>{{ contact?.message }}</textarea>
+          </div>
+          <div class="d-flex justify-content-end col-12">
+            <button type="button" class="btn btn-primary col-lg-3 col-sm-12" (click)="markRead()">{{ contact?.read ? 'Marcar como não lido' : 'Marcar como lido' }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
