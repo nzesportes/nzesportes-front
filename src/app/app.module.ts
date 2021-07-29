@@ -14,9 +14,9 @@ import {AuthVerifyLogin} from './shared/guards/auth-not-logged-guard';
 import {AuthService} from './shared/services/auth.service';
 import {AuthDashGuard} from './shared/guards/auth-dash-guard';
 import {StoreModule} from '@ngrx/store';
-import {cartReducer} from './store/redux/cart/cart.reducer';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
+import {EffectsModule} from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -31,7 +31,7 @@ import {environment} from '../environments/environment';
     HttpClientModule,
     SweetAlert2Module.forRoot(),
     StoreModule.forRoot({}),
-    StoreModule.forFeature('cart', cartReducer),
+    EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({maxAge: 25, logOnly: environment.production})
   ],
   providers: [
@@ -44,9 +44,10 @@ import {environment} from '../environments/environment';
     AuthVerifyLogin,
     AuthDashGuard
   ],
-  exports: [
-    StoreModule
-  ],
+    exports: [
+        StoreModule,
+        LoadingScreenComponent
+    ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

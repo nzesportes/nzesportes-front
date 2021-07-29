@@ -1,23 +1,27 @@
-<div class="cart-preview-content text-left">
-  <!-- começa itens -->
-  <div class="row m-0 pl-2 pr-2 pt-3 pb-3 row-items" *ngFor="let item of (teste$ | async).items">
-    <a class="item-cart-preview-close"><i class="fas fa-times"></i></a>
-    <div class="col-auto p-0">
-      <img class="image-cart-preview" [src]="item.img">
-    </div>
-    <div class="col-auto p-0 pl-3">
-      <a class="title-cart-preview" href="#">{{ item.name }}</a>
-      <p class="m-0">
-        <span>Quantidade: {{ item.qtde }}</span><br>
-        <span>Total: {{ item.qtde * item.price | number:'.2' }}</span>
-      </p>
+<div  *ngIf="isLoading$ | async; else productList"></div>
+<ng-template #productList>
+  <div class="cart-preview-content text-left">
+    <!-- começa itens -->
+    <div class="row m-0 pl-2 pr-2 pt-3 pb-3 row-items" *ngFor="let item of products$ | async">
+      <a class="item-cart-preview-close" (click)="removeItemCart(item.id)"><i class="fas fa-times"></i></a>
+      <div class="col-auto p-0">
+        <img class="image-cart-preview" [src]="''">
+      </div>
+      <div class="col-auto p-0 pl-3">
+        <a class="title-cart-preview" href="#">{{ item.model }} {{item.stock.size}}</a>
+        <p class="m-0">
+          <span>Quantidade: {{ item.quantity }}</span><br>
+          <span>Total: {{ item.total | number:'.2' }}</span>
+        </p>
+      </div>
     </div>
   </div>
-</div>
-<div class="cart-preview-total p-3">
-  <p>Número de itens: <span>{{ qtdeTotal }}</span></p>
-  <p>Total: <span>R$ {{ priceTotal | number:'.2' }}</span></p>
-</div>
-<div routerLink="/carrinho" class="view-cart pr-3 pl-3 pt-4 pb-4">
-  <a>VER CARRINHO <i class="fas fa-arrow-right"></i></a>
-</div>
+  <div class="cart-preview-total p-3">
+    <p>Número de itens: <span>{{ (products$ | async)?.length }}</span></p>
+    <p>Total: <span>R$ {{ total$ | async | number:'.2' }}</span></p>
+  </div>
+  <div routerLink="/carrinho" class="view-cart pr-3 pl-3 pt-4 pb-4">
+    <a>VER CARRINHO <i class="fas fa-arrow-right"></i></a>
+  </div>
+</ng-template>
+

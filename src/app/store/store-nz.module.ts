@@ -34,6 +34,11 @@ import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 import { OrderReviewComponent } from './template/order-review/order-review.component';
 import {MyAddressesModule} from './template/account-details/my-addresses/my-addresses.module';
 import { FirstAccessComponent } from './template/first-access/first-access.component';
+import {StoreModule} from '@ngrx/store';
+import {EffectsModule} from '@ngrx/effects';
+
+import { CartEffect } from './redux/cart/cart.effect';
+import * as fromProduct from './redux/cart/cart.reducer';
 
 @NgModule({
   declarations: [
@@ -60,7 +65,7 @@ import { FirstAccessComponent } from './template/first-access/first-access.compo
     ProductListingComponent,
     FiltersComponent,
     OrderReviewComponent,
-    FirstAccessComponent
+    FirstAccessComponent,
   ],
   imports: [
     CommonModule,
@@ -72,11 +77,14 @@ import { FirstAccessComponent } from './template/first-access/first-access.compo
     NgxMaskModule.forRoot(),
     NgxImageZoomModule,
     SweetAlert2Module,
-    MyAddressesModule
+    MyAddressesModule,
+
+    StoreModule.forFeature(fromProduct.productsFeatureKey, fromProduct.reducer),
+    EffectsModule.forFeature([CartEffect]),
   ],
   providers: [
     AuthGuard
   ]
 })
-export class StoreModule {
+export class StoreNzModule {
 }

@@ -2,15 +2,13 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {OwlOptions} from 'ngx-owl-carousel-o';
 import {CartService} from '../../services/cart.service';
 import {Store} from '@ngrx/store';
-import {CartState, CartStateReducer} from '../../redux/cart/cart.state';
-import {AddItemCart, CartActionsType} from '../../redux/cart/cart.actions';
 import {ProductsService} from '../../../shared/services/products.service';
 import {Observable} from 'rxjs';
 import {ActivatedRoute, Params} from '@angular/router';
 import {Product} from '../../../shared/models/product.model';
 import {ProductDetails, Stock} from '../../../shared/models/product-details.model';
-import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 import {take} from 'rxjs/operators';
+import * as fromStore from '../../redux/cart/cart.reducer';
 
 @Component({
   selector: 'app-product-detail',
@@ -93,7 +91,7 @@ export class ProductDetailComponent implements OnInit {
     private cartService: CartService,
     private productsService: ProductsService,
     private activatedRoute: ActivatedRoute,
-    private store: Store<CartState>
+    private store: Store<fromStore.ProductState>
   ) {
   }
 
@@ -138,32 +136,19 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
-  addToCart(id: string): void {
-    /*const product = {
-      id: 1,
-      img: 'assets/images/product.jpg',
-      name: 'Camiseta NBL',
-      price: 129.00,
-      qtde: 3
+  addToCart(productDetail: ProductDetails, stockIndex: number): void {
+    const stockCart = this.productDetails.stock[stockIndex - 1];
+    const itemCart = {
+      id: stockCart.id,
+      productDetails: productDetail,
+      productId: this.product.id,
+      model: this.product.model,
+      quantity: this.startValue,
+      stock:  stockCart,
+      total: productDetail.price * this.startValue
     };
-
-    this.store.dispatch(new AddItemCart(product));
-
-    const product1 = {
-      id: 2,
-      img: 'assets/images/product.jpg',
-      name: 'Camiseta NBL',
-      price: 129.00,
-      qtde: 3
-    };
-
-    this.store.dispatch(new AddItemCart(product1));
-    /*this.store.dispatch({
-      type: CartActionsType.ADD_ITEM_CART,
-      payload: product
-    });*/
-    // this.cartService.addToCart(product);*/
-
+    this.cartService.addToCart(itemCart);
+    // this.store.dispatch(fromActions.addProduct({ product: itemCart }));
   }
 
 }

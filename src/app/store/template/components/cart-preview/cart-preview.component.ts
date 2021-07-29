@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {CartService} from '../../../services/cart.service';
 import {Store} from '@ngrx/store';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
+import {ItemCart} from '../../../models/item-cart';
+import * as fromActions from '../../../redux/cart/cart.actions';
+import * as fromSelector from '../../../redux/cart/cart.selectors';
 
 @Component({
   selector: 'app-cart-preview',
@@ -10,40 +13,26 @@ import {Observable} from 'rxjs';
 })
 export class CartPreviewComponent implements OnInit {
 
-  items = [
-    {
-      id: 0,
-      img: '',
-      name: '',
-      price: 0.00,
-      qtde: 0
-    }
-  ];
+  items: ItemCart[] = [];
 
-  teste$: Observable<any>;
-
-  qtdeTotal = 0;
-  priceTotal = 0.00;
+  products$!: Observable<ItemCart[]>;
+  total$!: Observable<number>;
+  isLoading$!: Observable<boolean>;
 
   constructor(
     private cartService: CartService,
     private store: Store<any>
   ) {
-    this.teste$ = this.store.select('cart');
   }
 
   ngOnInit(): void {
-    this.getItemsCart();
+    this.store.dispatch(fromActions.requestLoadProducts());
+    this.products$ = this.store.select(fromSelector.products);
+    this.total$ = this.store.select(fromSelector.total);
+    this.isLoading$ = this.store.select(fromSelector.isLoading);
   }
-
-  getItemsCart(): void {
-    this.items = this.cartService.getProductsCart();
-    this.getTotal();
-  }
-
-  getTotal(): void {
-    this.qtdeTotal = this.cartService.getTotalItems();
-    this.priceTotal = this.cartService.getTotalPrice();
+  removeItemCart(id: string): void {
+    this.cartService.removeItemCart(id);
   }
 
 }
