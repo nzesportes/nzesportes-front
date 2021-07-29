@@ -46,6 +46,12 @@
             Gerenciar Usuários
           </a>
         </li>
+        <li>
+          <a routerLink="fale-conosco" class="nav-link text-white" routerLinkActive="active">
+            <svg class="bi me-2" width="16" height="16"></svg>
+            Fale Conosco
+          </a>
+        </li>
       </ul>
     </div>
   </div>
@@ -83,6 +89,9 @@
           </li>
           <li class="nav-item" routerLink="usuarios" routerLinkActive="active" *ngIf="isAdmin">
             <a class="nav-link">Gerenciar Usuários</a>
+          </li>
+          <li class="nav-item " routerLink="fale-conosco" routerLinkActive="active">
+            <a class="nav-link">Fale Conosco</a>
           </li>
           <li class="nav-item" routerLink="usuarios" routerLinkActive="active">
             <a class="nav-link"> Sair  <i class="fas fa-sign-out-alt"></i></a>
