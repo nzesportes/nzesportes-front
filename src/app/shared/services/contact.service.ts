@@ -1,8 +1,9 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {Observable} from 'rxjs';
 import {Contact} from '../models/contact.model';
+import {ContactPage} from '../models/pagination-model/contact-page.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,12 @@ export class ContactService {
 
   getById(id: string): Observable<Contact> {
     return this.http.get<Contact>(`${this.apiURL}/${id}`);
+  }
+
+  getAll(page: number, size: number, read?: boolean): Observable<ContactPage> {
+    const urlRead = read ? '&read=' + read : '';
+    return this.http.get<ContactPage>(this.apiURL + '?async=true&page=' + page.toString() + '&size=' + size.toString()
+      + urlRead);
   }
 
   updateRead(id: string): Observable<any> {
