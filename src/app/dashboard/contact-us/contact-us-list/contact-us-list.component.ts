@@ -18,20 +18,19 @@ export class ContactUsListComponent implements OnInit {
 
   constructor(
     private contactService: ContactService,
-    private paginationService: PaginationService
+    public paginationService: PaginationService
   ) {
   }
 
   ngOnInit(): void {
     this.paginationService.initPagination();
-    this.getAllContactUs(this.paginationService.page, 10);
+    this.getAllContactUs(10, this.paginationService.page);
   }
 
   getAllContactUs(size: number, page: number, read?: boolean): void {
     this.contactService.getAll(size, page, read)
       .pipe(take(1))
       .subscribe(response => {
-          console.log(response);
           this.contacts = response.content;
           this.content = response;
           this.paginationService.getPageRange(this.content.totalElements);
@@ -39,5 +38,10 @@ export class ContactUsListComponent implements OnInit {
           this.hasError = true;
         }
       );
+  }
+
+  updateIndex(index: number): void {
+    this.getAllContactUs(10, index);
+    this.paginationService.page = index;
   }
 }
