@@ -53,6 +53,7 @@ export class ForgotPasswordComponent implements OnInit {
     this.authService.createFlow(this.authenticationRequest, 'recovery')
       .pipe(take(1))
       .subscribe(() => {
+        this.forgotPasswordForm.reset();
         this.dialogSuccess.title = 'E-mail enviado com sucesso!';
         this.dialogSuccess.fire();
       }, (error: ErrorWarning) => {

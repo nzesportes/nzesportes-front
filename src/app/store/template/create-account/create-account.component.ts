@@ -22,6 +22,8 @@ import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 
 export class CreateAccountComponent implements OnInit {
 
+  @ViewChild('success')
+  public readonly dialogSuccess!: SwalComponent;
   @ViewChild('error')
   public readonly dialogError!: SwalComponent;
 
@@ -175,6 +177,8 @@ export class CreateAccountComponent implements OnInit {
 
         this.customerService.create(this.customer)
           .pipe(take(1)).subscribe(() => {
+          this.dialogSuccess.title = 'Conta criada com sucesso!';
+          this.dialogSuccess.fire();
           window.location.reload();
         }, (error: ErrorWarning) => {
           this.setErrorDialog(error);
@@ -202,7 +206,8 @@ export class CreateAccountComponent implements OnInit {
       this.customer.gender = this.createAccount.get('gender')?.value;
       this.customerService.update(this.customer)
         .subscribe(() => {
-          window.location.reload();
+          this.dialogSuccess.title = 'Conta editada com sucesso!';
+          this.dialogSuccess.fire();
         }, (error: ErrorWarning) => {
           this.setErrorDialog(error);
           this.dialogError.fire().then(r => {
@@ -215,7 +220,7 @@ export class CreateAccountComponent implements OnInit {
   }
 
   redirect(): void {
-    this.router.navigateByUrl('/criar-conta');
+    this.router.navigateByUrl('/');
   }
 
   setErrorDialog(error: ErrorWarning): void {
