@@ -17,7 +17,7 @@ export class SendRequestComponent implements OnInit {
     const responseType =  'code';
     const scope = environment.ME_REQUEST_SCOPE;
     const state = environment.ME_STATE;
-    this.url = `${url}/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}%2F&response_type=${responseType}&scope=${scope}&state=${state}`;
+    this.url = `${url}/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}&state=${state}`;
   }
 
 }
