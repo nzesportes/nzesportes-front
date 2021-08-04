@@ -39,6 +39,10 @@ const routes: Routes = [
         path: 'fale-conosco',
         loadChildren: () => import('./contact-us/contact-us.module').then(m => m.ContactUsModule)
       },
+      {
+        path: 'melhor-envio',
+        loadChildren: () => import('./better-send/better-send.module').then(m => m.BetterSendModule)
+      },
       { path: '', redirectTo: 'produtos', pathMatch: 'full' },
     ]
   }
