@@ -23,7 +23,7 @@ const routes: Routes = [
       {
         path: 'criar-conta',
         component: CreateAccountComponent,
-        // canActivate: [AuthVerifyLogin]
+        canActivate: [AuthVerifyLogin]
       },
       {
         path: 'editar-conta/:id',
