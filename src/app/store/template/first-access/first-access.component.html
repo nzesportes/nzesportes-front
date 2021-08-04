@@ -29,3 +29,21 @@
   </div>
 </div>
 
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirect()"
+  #success
+  [title]="''"
+  icon="success">
+</swal>
+
+<swal
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>
