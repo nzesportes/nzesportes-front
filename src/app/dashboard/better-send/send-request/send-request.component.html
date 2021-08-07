@@ -1,7 +1,24 @@
-<div class="card m-3 ">
+<div class="card m-3 " *ngIf="betterSend">
   <div class="card-body w-100">
     <h5 class="card-title">Melhor envio</h5>
-    <p class="card-text">Habilite a integração do melhor envio a nossa plataforma.</p>
-    <a  [href]="url" target="_blank" class="btn btn-primary">Habilitar</a>
+
+    <div class="alert "
+         [ngClass]="{
+        'alert-success': betterSend.status === status.VALID,
+        'alert-warning': betterSend.status === status.EXPIRED,
+        'alert-danger': betterSend.status === status.INVALID,
+        'alert-info': betterSend.status === status.UNCREATED
+
+      }" role="alert">
+      {{message}}
+    </div>
+
+    <a
+      [href]="url"
+      target="_blank"
+      class="btn btn-primary"
+      *ngIf="betterSend.status !== status.VALID">
+      {{textButton}}
+    </a>
   </div>
 </div>
