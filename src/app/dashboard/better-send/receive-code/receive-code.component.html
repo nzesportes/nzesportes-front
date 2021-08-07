@@ -1,0 +1,17 @@
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirect()"
+  #success
+  [title]="''"
+  icon="success">
+</swal>
+
+<swal
+  #error
+  [title]="'Ops, ocorreu um error'"
+  [text]="'Não foi possível habilitar a integração com o melhor envio, contate os desenvolvedores!'"
+  [confirmButtonText]="'tentar novamente'"
+  [cancelButtonText]="'cancelar'"
+  [showCancelButton]="true"
+  icon="error">
+</swal>
