@@ -6,6 +6,9 @@ import {Product, ProductUpdateTO} from '../models/product.model';
 import {ProductPage} from '../models/pagination-model/product-page.model';
 import {ProductDetails, ProductDetailUpdateTO, Stock} from '../models/product-details.model';
 import {UpdateStock} from '../models/update-stock.model';
+import {ProductDetailsPage} from '../models/pagination-model/product-details-page.model';
+import {Gender} from '../enums/gender';
+import {Order} from '../enums/order.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -42,12 +45,12 @@ export class ProductsService {
     return this.http.post<ProductDetails>(this.api + 'details', productDetailTO, {params});
   }
 
-  getAll(size: number, page: number,  category?: string, status?: string, name?: string): Observable<ProductPage> {
+  getAll(size: number, page: number, category?: string, status?: string, name?: string): Observable<ProductPage> {
     const urlCategory = category ? '&category=' + category : '';
     const urlStatus = status ? '&status=' + status : '';
     const urlName = name ? '&name=' + name : '';
     return this.http.get<ProductPage>(
-      this.api  + '?async=true&page=' + page.toString() + '&size=' + size.toString()
+      this.api + '?async=true&page=' + page.toString() + '&size=' + size.toString()
       + urlCategory + urlStatus + urlName);
   }
 
@@ -85,5 +88,16 @@ export class ProductsService {
     const params = new HttpParams()
       .set('async', 'true');
     return this.http.put<Stock>(this.api + 'details/stock', updateStock, {params});
+  }
+
+  getAllDetails(size: number, page: number, gender?: Gender, category?: string, productSize?: string, color?: string, brand?: string, order?: Order): Observable<ProductDetailsPage> {
+    const urlGender = gender ? '&gender=' + gender : '';
+    const urlCategory = category ? '&category=' + category : '';
+    const urlProductSize = productSize ? '&productSize=' + productSize : '';
+    const urlColor = color ? '&color=' + color : '';
+    const urlBrand = brand ? '&brand=' + brand : '';
+    const urlOrder = order ? '&order=' + order : '';
+    return this.http.get<ProductDetailsPage>(this.api + 'details?page=' + page.toString() + '&size=' + size.toString()
+      + urlGender + urlCategory + urlProductSize + urlColor + urlBrand + urlColor);
   }
 }

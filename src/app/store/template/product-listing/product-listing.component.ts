@@ -1,4 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ProductsService} from '../../../shared/services/products.service';
+import {ProductDetails} from '../../../shared/models/product-details.model';
+import {take} from 'rxjs/operators';
+import {Order} from '../../../shared/enums/order.enum';
+import {Router} from '@angular/router';
+import {PaginationService} from '../../../shared/services/pagination.service';
+import {ProductDetailsPage} from '../../../shared/models/pagination-model/product-details-page.model';
+import {Gender} from '../../../shared/enums/gender';
 
 @Component({
   selector: 'app-product-listing',
@@ -7,80 +15,48 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductListingComponent implements OnInit {
 
-  dynamicSlides = [
-    {
-      id: 1,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 1',
-      title: 'Camiseta Preta',
-      url: 'camiseta-preta',
-      promotion: true,
-      new: false
-    },
-    {
-      id: 2,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 2',
-      title: 'Bermuda NBA',
-      url: 'bermuda-nba',
-      promotion: false,
-      new: false
-    },
-    {
-      id: 3,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 3',
-      title: 'Agasalho Rosa',
-      url: 'agasalho-rosa',
-      promotion: false,
-      new: false
-    },
-    {
-      id: 4,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 4',
-      title: 'Tênis Jordan',
-      url: 'tenis-jordan',
-      promotion: true,
-      new: true
-    },
-    {
-      id: 5,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 5',
-      title: 'Side 5',
-      promotion: false,
-      new: false
-    },
-    {
-      id: 6,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 6',
-      title: 'Side 6',
-      promotion: false,
-      new: false
-    },
-    {
-      id: 7,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 7',
-      title: 'Side 7',
-      promotion: false,
-      new: false
-    },
-    {
-      id: 8,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 8',
-      title: 'Side 8',
-      promotion: false,
-      new: false
-    }
-  ];
+  productsDetails: ProductDetails[] = [];
+  content: ProductDetailsPage | undefined;
+  hasError!: boolean;
 
-  constructor() { }
-
-  ngOnInit(): void {
+  constructor(
+    public paginationService: PaginationService,
+    private productsService: ProductsService,
+    private router: Router
+  ) {
   }
 
+  ngOnInit(): void {
+    this.paginationService.initPagination();
+    this.getAllDetails(10, this.paginationService.page, undefined, '', '', '', '', undefined);
+  }
+
+  getAllDetails(size: number, page: number, gender?: Gender, category?: string,
+                productSize?: string, color?: string, brand?: string, order?: Order): void {
+    this.productsService.getAllDetails(size, page, gender, category, productSize, color, brand, order)
+      .pipe(take(1))
+      .subscribe(response => {
+          this.productsDetails = response.content;
+          this.content = response;
+          this.paginationService.getPageRange(this.content.totalElements);
+        }, () => {
+          this.hasError = true;
+        }
+      );
+  }
+
+
+  goToProductDetails(idProductDetails: string, id: string): void {
+    this.productsService.getById(id)
+      .pipe(take(1))
+      .subscribe(product => {
+        localStorage.setItem('product', JSON.stringify(product));
+      });
+    this.router.navigateByUrl('/produtos/' + idProductDetails);
+  }
+
+  updateIndex(index: number): void {
+    this.getAllDetails(10, index);
+    this.paginationService.page = index;
+  }
 }

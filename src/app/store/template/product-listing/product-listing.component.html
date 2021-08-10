@@ -5,32 +5,41 @@
 
   <div class="row m-0">
     <!--produto começa aqui-->
-    <div class="col-12 col-sm-6 col-md-4 col-xl-3 p-0" *ngFor="let slide of dynamicSlides">
-      <div class="m-3 ml-md-3 mr-md-3 product0">
+    <div class="col-12 col-sm-6 col-md-4 col-xl-3 p-0" *ngFor="let productDetails of productsDetails">
+      <div class="m-3 ml-md-3 mr-md-3 product" (click)="goToProductDetails(productDetails.id, productDetails.productId)" routerLink="/produtos/{{ productDetails.id }}">
         <div class="product-content">
           <div class="product-image">
-            <div class="badge-product" *ngIf="slide.new"><span>Novo</span></div>
-            <div class="badge-product badge-sale" [class.second-sale]="slide.promotion && slide.new" *ngIf="slide.promotion"><span>35%</span></div>
+            <div class="badge-product" *ngIf="false"><span>Novo</span></div>
+            <div class="badge-product badge-sale" [class.second-sale]="false && false" *ngIf="false"><span>35%</span></div>
             <!--<a class="product-favorite"><i class="far fa-heart"></i></a>-->
             <img src="assets/images/product.jpg" class="w-100">
             <a class="image-overlay"></a>
           </div>
           <div class="product-detail pt-2">
-            <a href="#" class="product-description">Jersey NBA Golden</a>
-            <p class="product-categories mb-0"><a href="#">Marca</a>, <a href="#">Modelo</a></p>
-            <span><del *ngIf="slide.promotion">R$ 150,00</del> R$ 123,00</span>
+            <a href="#" class="product-description">{{ productDetails.productId }}</a>
+            <p class="product-categories mb-0"><a href="#">{{ productDetails.color }}</a>, <a href="#">{{ productDetails.gender }}</a></p>
+            <span><del *ngIf="false">R$ 150,00</del> R$ {{ productDetails.price }}</span>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <nav class="mt-4" aria-label="Page navigation">
+  <nav class="mt-4" aria-label="Page navigation" *ngIf="content && productsDetails.length > 0">
     <ul class="pagination justify-content-end">
-      <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
-      <li class="page-item active"><a class="page-link" href="#">1</a></li>
-      <li class="page-item"><a class="page-link" href="#">2</a></li>
-      <li class="page-item"><a class="page-link" href="#">3</a></li>
-      <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
+      <li class="page-item"  [ngClass]="{'disabled': this.paginationService.page === 0}">
+        <a class="page-link" (click)="updateIndex(this.paginationService.page-1)">
+          <i class="fas fa-angle-left"></i>
+        </a>
+      </li>
+      <li class="page-item active" [ngClass]="{'active': i == this.paginationService.page }"
+          *ngFor="let i of this.paginationService.getRange(); let in = index">
+        <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
+      </li>
+      <li class="page-item" [ngClass]="{'disabled': (this.paginationService.page  + 1) === this.paginationService.pages }">
+        <a class="page-link" (click)="updateIndex(this.paginationService.page + 1)">
+          <i class="fas fa-angle-right"></i>
+        </a>
+      </li>
     </ul>
   </nav>
 </div>
