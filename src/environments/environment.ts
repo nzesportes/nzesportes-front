@@ -6,7 +6,15 @@ export const environment = {
   production: false,
   NZESPORTES_API: 'http://localhost:8080/',
   TOKEN_HASH_KEY: 'TOKEN_HASH_KEY',
-  USER_HASH_KEY: 'USER_HASH_KEY'
+  USER_HASH_KEY: 'USER_HASH_KEY',
+  ME_CLIENT_ID: '',
+  ME_CLIENT_SECRET: '',
+  ME_SANDBOX: '',
+  ME_TOKEN: '',
+  ME_REDIRECT_URI: '',
+  ME_REQUEST_SCOPE: '',
+  ME_STATE: '',
+  ME_URL: ''
 };
 
 /*

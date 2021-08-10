@@ -12,6 +12,7 @@ import {CategoriesModule} from './categories/categories.module';
 import {UsersModule} from './users/users.module';
 import {BrandsModule} from './brands/brands.module';
 import {AccountModule} from './account/account.module';
+import {BetterSendModule} from './better-send/better-send.module';
 
 
 @NgModule({
@@ -27,6 +28,7 @@ import {AccountModule} from './account/account.module';
     UsersModule,
     BrandsModule,
     AccountModule,
+    BetterSendModule,
     // angular modules
     DashboardRoutingModule,
     CommonModule,
