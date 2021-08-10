@@ -10,6 +10,8 @@ import {ProductDetails, Stock} from '../../../shared/models/product-details.mode
 import {take} from 'rxjs/operators';
 import * as fromStore from '../../redux/cart/cart.reducer';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {Shipping} from '../../../shared/models/shipping.model';
+import {BetterSendService} from '../../../shared/services/better-send.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -69,7 +71,7 @@ export class ProductDetailComponent implements OnInit {
     pullDrag: false,
     dots: false,
     navSpeed: 700,
-    navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
+    navText: ['<i class=fas fa-chevron-left></i>', '<i class=fas fa-chevron-right></i>'],
     responsive: {
       0: {
         items: 3
@@ -95,7 +97,8 @@ export class ProductDetailComponent implements OnInit {
     private productsService: ProductsService,
     private activatedRoute: ActivatedRoute,
     private store: Store<fromStore.ProductState>,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private betterSendService: BetterSendService
   ) {
   }
 
@@ -146,6 +149,7 @@ export class ProductDetailComponent implements OnInit {
 
   calculate(): void {
     this.shipping = {dias: 4, valor: 27.50};
+    this.calculateShipping();
   }
 
   changeMax(index: number): void {
@@ -154,20 +158,37 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addToCart(productDetail: ProductDetails, stockIndex: number): void {
-    const stockCart = this.productDetails.stock[stockIndex];
-    const cartItem = this.cartService.getProductsCart().find(item => item.id === stockCart.id);
-    if (cartItem) {
-      const sumQuantity = cartItem.quantity + 1;
-      if (sumQuantity > stockCart.quantity) {
-        this.noStock = true;
-      }else {
-        this.noStock = false;
+    if (this.formStock.valid){
+      const stockCart = this.productDetails.stock[stockIndex];
+      const cartItem = this.cartService.getProductsCart().find(item => item.id === stockCart.id);
+      if (cartItem) {
+        const sumQuantity = cartItem.quantity + 1;
+        if (sumQuantity > stockCart.quantity) {
+          this.noStock = true;
+        }else {
+          this.noStock = false;
+          this.sendToCart(productDetail, stockCart);
+        }
+      }else{
         this.sendToCart(productDetail, stockCart);
       }
-    }else{
-      this.sendToCart(productDetail, stockCart);
+    }else {
+        this.verifyValidation(this.formStock);
     }
+
   }
+
+  verifyValidation(formGroup: FormGroup): void {
+    Object.keys(formGroup.controls).forEach((item, i) => {
+      const controle = formGroup.get(item);
+      // @ts-ignore
+      controle.markAllAsTouched();
+      if (controle instanceof FormGroup) {
+        this.verifyValidation(controle);
+      }
+    });
+  }
+
   sendToCart(productDetail: ProductDetails, stockCart: Stock): void {
     const itemCart = {
       id: stockCart.id,
@@ -179,6 +200,35 @@ export class ProductDetailComponent implements OnInit {
       total: productDetail.price * this.startValue
     };
     this.cartService.addToCart(itemCart);
+  }
+
+  calculateShipping(): void {
+    const shipping: Shipping = {
+      from: {
+        postal_code: '96020360'
+      },
+      to: {
+        postal_code: '01018020'
+      },
+      products: [
+        {
+          id: this.product.id,
+          width: 11,
+          height: 17,
+          length: 11,
+          weight: 0.3,
+          insurance_value: 10.1,
+          quantity: 1
+        }
+      ]
+    };
+    this.betterSendService.calculateShipping(shipping)
+      .pipe(take(1))
+      .subscribe(r => {
+        console.log(r);
+      }, error =>  {
+        console.log(error);
+      });
   }
 
 }
