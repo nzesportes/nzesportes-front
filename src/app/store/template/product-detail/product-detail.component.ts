@@ -12,6 +12,7 @@ import * as fromStore from '../../redux/cart/cart.reducer';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Shipping} from '../../../shared/models/shipping.model';
 import {BetterSendService} from '../../../shared/services/better-send.service';
+import {ShippingResult} from '../../../shared/models/shipping-result.model';
 
 @Component({
   selector: 'app-product-detail',
@@ -36,7 +37,9 @@ export class ProductDetailComponent implements OnInit {
   avaliacao = 3.8;
   positionImage = 0;
 
-  shipping: any;
+  shippingResult: ShippingResult[] = [];
+  notShipResult = false;
+  errorShipResult = false;
 
   dynamicSlides = [
     {
@@ -90,6 +93,8 @@ export class ProductDetailComponent implements OnInit {
   };
 
   public formStock: FormGroup = new FormGroup({});
+  public formShipping: FormGroup = new FormGroup({});
+
   noStock = false;
 
   constructor(
@@ -133,6 +138,13 @@ export class ProductDetailComponent implements OnInit {
     this.formStock = this.formBuilder.group({
       stocksize: new FormControl(null, Validators.required),
     });
+
+    this.formShipping = this.formBuilder.group({
+      shipping: new FormControl(null, Validators.compose([
+        Validators.required,
+        Validators.pattern('^[0-9]{8}$')
+      ])),
+    });
   }
   get validateFields(): any {
     return this.formStock.controls;
@@ -145,11 +157,6 @@ export class ProductDetailComponent implements OnInit {
   }
   changeImage(index: number): void {
     this.positionImage = index;
-  }
-
-  calculate(): void {
-    this.shipping = {dias: 4, valor: 27.50};
-    this.calculateShipping();
   }
 
   changeMax(index: number): void {
@@ -203,32 +210,46 @@ export class ProductDetailComponent implements OnInit {
   }
 
   calculateShipping(): void {
-    const shipping: Shipping = {
-      from: {
-        postal_code: '96020360'
-      },
-      to: {
-        postal_code: '01018020'
-      },
-      products: [
-        {
-          id: this.product.id,
-          width: 11,
-          height: 17,
-          length: 11,
-          weight: 0.3,
-          insurance_value: 10.1,
-          quantity: 1
-        }
-      ]
-    };
-    this.betterSendService.calculateShipping(shipping)
-      .pipe(take(1))
-      .subscribe(r => {
-        console.log(r);
-      }, error =>  {
-        console.log(error);
-      });
+    if (this.formShipping.valid){
+      // @ts-ignore
+      const cep = this.formShipping.get('shipping').value;
+      const shipping: Shipping = {
+        from: {
+          postal_code: '02078030'
+        },
+        to: {
+          postal_code: cep
+        },
+        products: [
+          {
+            id: this.product.id,
+            width: 11,
+            height: 17,
+            length: 11,
+            weight: 0.3,
+            insurance_value: 10.1,
+            quantity: 1
+          }
+        ]
+      };
+      this.betterSendService.calculateShipping(shipping)
+        .pipe(take(1))
+        .subscribe(r => {
+          console.log(r);
+          this.shippingResult = r.filter(ship => !ship.error);
+          if (this.shippingResult.length === 0 ) {
+            this.notShipResult = true;
+          }else {
+            this.notShipResult = false;
+          }
+          this.errorShipResult = false;
+        }, () =>  {
+          this.errorShipResult = true;
+        });
+    } else {
+      this.verifyValidation(this.formShipping);
+    }
+
   }
 
 }

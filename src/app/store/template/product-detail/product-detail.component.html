@@ -74,18 +74,35 @@
             class="fas fa-chevron-right"></i></button>
         </div>
       </form>
-      <form class="pt-3">
+      <form class="pt-3" [formGroup]="formShipping">
         <h3 class="title-details">Calcular Frete</h3>
         <div class="row p-0 m-0">
           <div class="input-group mb-3 col-12 col-lg-6 cep p-0 m-0">
-            <input type="text" class="form-control" mask="00000-000" [showMaskTyped]="true">
+            <input type="text" id="inputShipping" class="form-control" [ngClass]="cssError(formShipping.get('shipping'))" mask="00000-000" formControlName="shipping" [showMaskTyped]="true">
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" (click)="calculate()">Calcular</button>
+              <button class="btn btn-outline-secondary" type="button" (click)="calculateShipping()">Calcular</button>
+            </div>
+            <div id="field-inputShipping" *ngIf="formShipping.get('shipping')?.hasError('required')" class="invalid-feedback">
+              <small>Por favor, insira o CEP.</small>
+            </div>
+            <div id="field-inputShippingValid" *ngIf="formShipping.get('shipping')?.hasError('pattern')" class="invalid-feedback">
+              <small>Por favor, insira um cep válido.</small>
             </div>
           </div>
         </div>
-        <div class="col-12 p-0 m-0" *ngIf="shipping">
-          Até {{ shipping?.dias }} dias úteis - R$ {{ shipping?.valor }}
+        <div class="row p-0 m-0" *ngFor="let result of shippingResult">
+          <div class="img-shipping">
+            <img [src]="result.company.picture">
+          </div>
+          <div class="m-1">
+            até {{ result.delivery_range.max }} dias úteis - R$ {{ result?.price }} ({{result.name}})
+          </div>
+        </div>
+        <div class="alert alert-warning" role="alert" *ngIf="notShipResult">
+          Não foi possível realizar o cálculo de frete para este CEP.
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="errorShipResult">
+          Ops, ocorreu um erro! Não foi possível fazer a busca.
         </div>
       </form>
 

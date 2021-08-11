@@ -222,6 +222,12 @@ h2 del {
 .page-link:first-child, .page-link:last-child {
   border-radius: 100%;
 }
+.img-shipping {
+  img{
+    max-width: 80px;
+
+  }
+}
 
 @media (min-width: 576px) {
 

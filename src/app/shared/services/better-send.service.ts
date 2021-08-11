@@ -26,7 +26,7 @@ export class BetterSendService {
     return this.http.get<BetterSendTokenStatus>(this.apiURL + `validation?async=true`);
   }
 
-  calculateShipping(body: Shipping): Observable<ShippingResult>{
-    return this.http.post<ShippingResult>(this.apiURL + `calculate?async=true`, body);
+  calculateShipping(body: Shipping): Observable<ShippingResult[]>{
+    return this.http.post<ShippingResult[]>(this.apiURL + `calculate?async=true`, body);
   }
 }

@@ -55,5 +55,6 @@ export interface ShippingResult {
   packages: Package[];
   additional_services: AdditionalServices;
   company: Company;
+  error?: string;
 }
 
