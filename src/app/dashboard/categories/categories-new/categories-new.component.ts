@@ -206,25 +206,6 @@ export class CategoriesNewComponent implements OnInit {
       });
   }
 
-  getAllProducts(): void {
-    this.productsService.getAll(300, 0)
-      .pipe(take(1))
-      .subscribe(r => {
-        // @ts-ignore
-        this.filteredProducts = r.content.filter(p => {
-          const hasCategory = p.category.find(c => c.name === this.categorie.name);
-          if (!hasCategory) {
-            return p;
-          }
-        });
-        this.productFilterFormArray.clear();
-        this.filteredProducts
-          .forEach(p => this.productFilterFormArray.push(this.createProductFilterForm(false, p)));
-      }, () => {
-        this.hasError = true;
-      });
-  }
-
 
   updateIndex(index: number): void {
     this.getProductsByCategory(10, index);
