@@ -76,7 +76,12 @@
 }
 
 input.radiosInput {
-  visibility: hidden;
+  // visibility: hidden;
+}
+
+label.form-check-label {
+  width: calc(100% - 20px);
+  cursor: pointer;
 }
 
 @media (min-width: 576px) {

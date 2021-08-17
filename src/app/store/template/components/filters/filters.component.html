@@ -1,5 +1,5 @@
 <ul class="ml-md-3 mr-md-3 pt-1 pb-1 filters mb-md-2 m-0 p-0">
-  <form class="row">
+  <form class="row" [formGroup]="formFilters">
     <div class="col-xl-10 col-md-9 p-0 nav">
       <li class="nav-item">
         <a class="nav-link" (click)="changeStateItemMenu(gender)">Gênero<i class="fas fa-angle-down ml-1"></i></a>
@@ -7,14 +7,15 @@
           <ul class="items-submenu">
             <li>
               <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="genderOption" id="genderMale" value="M">
+                <input class="form-check-input radiosInput" type="radio" name="genderOption" (change)="teste()"
+                       formControlName="gender" id="genderMale" value="M">
                 <label class="form-check-label" for="genderMale">Masculino</label>
               </a>
             </li>
             <li>
               <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="genderOption" id="genderFemale"
-                       value="F">
+                <input class="form-check-input radiosInput" type="radio" name="genderOption" (change)="teste()"
+                       formControlName="gender" id="genderFemale" value="F">
                 <label class="form-check-label" for="genderFemale">Feminino</label>
               </a>
             </li>

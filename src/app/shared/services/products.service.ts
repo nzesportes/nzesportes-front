@@ -91,13 +91,13 @@ export class ProductsService {
   }
 
   getAllDetails(size: number, page: number, gender?: Gender, category?: string, productSize?: string, color?: string, brand?: string, order?: Order): Observable<ProductDetailsPage> {
-    const urlGender = gender ? '&gender=' + gender : '';
+    const urlGender = gender ? '&gender=' + gender.toString() : '';
     const urlCategory = category ? '&category=' + category : '';
     const urlProductSize = productSize ? '&productSize=' + productSize : '';
     const urlColor = color ? '&color=' + color : '';
     const urlBrand = brand ? '&brand=' + brand : '';
-    const urlOrder = order ? '&order=' + order : '';
+    const urlOrder = order ? '&order=' + order.toString() : '';
     return this.http.get<ProductDetailsPage>(this.api + 'details?page=' + page.toString() + '&size=' + size.toString()
-      + urlGender + urlCategory + urlProductSize + urlColor + urlBrand + urlColor);
+      + urlGender + urlCategory + urlProductSize + urlColor + urlBrand + urlColor + urlOrder);
   }
 }

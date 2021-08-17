@@ -1,4 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-filters',
@@ -7,9 +8,24 @@ import {Component, HostListener, OnInit} from '@angular/core';
 })
 export class FiltersComponent implements OnInit {
 
-  constructor() { }
+  formFilters!: FormGroup;
+
+  constructor(
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
+    this.createForm();
+  }
+
+  createForm(): void {
+    this.formFilters = this.formBuilder.group({
+      gender: ['']
+    });
+  }
+
+  teste(): void {
+
   }
 
   changeStateItemMenu(itemMenu: HTMLElement): void {

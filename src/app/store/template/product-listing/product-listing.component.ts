@@ -28,7 +28,7 @@ export class ProductListingComponent implements OnInit {
 
   ngOnInit(): void {
     this.paginationService.initPagination();
-    this.getAllDetails(10, this.paginationService.page, undefined, '', '', '', '', undefined);
+    this.getAllDetails(10, this.paginationService.page, undefined, '', '', '', '', Order.ASC);
   }
 
   getAllDetails(size: number, page: number, gender?: Gender, category?: string,
@@ -38,7 +38,9 @@ export class ProductListingComponent implements OnInit {
       .subscribe(response => {
           this.productsDetails = response.content;
           this.content = response;
+          console.log(response.content);
           this.paginationService.getPageRange(this.content.totalElements);
+
         }, () => {
           this.hasError = true;
         }
@@ -56,7 +58,7 @@ export class ProductListingComponent implements OnInit {
   }
 
   updateIndex(index: number): void {
-    this.getAllDetails(10, index);
+    this.getAllDetails(10, index, undefined, '', '', '', '', Order.ASC);
     this.paginationService.page = index;
   }
 }
