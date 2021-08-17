@@ -47,12 +47,10 @@ export class CategoriesNewComponent implements OnInit {
     private productsService: ProductsService,
     public paginationService: PaginationService
   ) {
-    this.createFormCategorieList();
   }
 
   ngOnInit(): void {
     this.createForm();
-    this.createFormProducts();
     if (this.router.url.includes('categorias/categoria')) {
       this.route.params.pipe(
         map(p => p.id)
@@ -61,7 +59,6 @@ export class CategoriesNewComponent implements OnInit {
           .pipe(take(1))
           .subscribe(c => {
             this.categorie = c;
-            this.getProductsByCategory(10, 0);
             this.createForm();
           }, () => {
             this.hasError = true;
@@ -70,38 +67,15 @@ export class CategoriesNewComponent implements OnInit {
     }
   }
 
-  removeTypeCategorie(i: number): void {
-    this.type.removeAt(i);
-  }
-
-  removeProduct(id: string): void {
-    this.productsService.updateCategories(this.categorie.id, id)
-      .pipe(
-        take(1)
-      )
-      .subscribe(() => {
-        this.page = 0;
-        this.getProductsByCategory(10, this.page);
-      }, () => {
-        this.hasError = true;
-      });
-  }
-
   private createForm(): void {
     this.formCategorie = this.formBuilder.group({
       id: new FormControl(this.categorie?.id ? this.categorie.id : null),
       name: new FormControl(this.categorie?.name ? this.categorie.name : '', Validators.required),
       status: new FormControl(this.categorie?.status ? this.categorie.status : false),
-      type: this.formBuilder.array(this.categorie?.type ? this.categorie.type : [], Validators.required)
     });
   }
 
-  private createFormCategorieList(): void {
-    this.formCategorieList = this.formBuilder.group({
-      typelist: this.formBuilder.array([])
-    });
-    this.initTypeList();
-  }
+
 
   loadCategorieOnList(): void {
     this.typeList.clear();
@@ -111,11 +85,6 @@ export class CategoriesNewComponent implements OnInit {
     });
   }
 
-  initTypeList(): void {
-    this.typeCategorieList.forEach(t => {
-      this.typeList.push(this.createTypeListForm(false, t));
-    });
-  }
 
   get typeList(): FormArray {
     return this.formCategorieList.get('typelist') as FormArray;
@@ -193,91 +162,8 @@ export class CategoriesNewComponent implements OnInit {
         });
       });
   }
-
-  getProductsByCategory(size: number, page: number): void {
-    this.productsService.getByCategoryId(this.categorie.id, size, page)
-      .pipe(take(1))
-      .subscribe(products => {
-        this.products = products.content;
-        this.content = products;
-        this.paginationService.getPageRange(this.content.totalElements);
-      }, () => {
-        this.hasError = true;
-      });
-  }
-
-  getAllProducts(): void {
-    this.productsService.getAll(300, 0)
-      .pipe(take(1))
-      .subscribe(r => {
-        // @ts-ignore
-        this.filteredProducts = r.content.filter(p => {
-          const hasCategory = p.category.find(c => c.name === this.categorie.name);
-          if (!hasCategory) {
-            return p;
-          }
-        });
-        this.productFilterFormArray.clear();
-        this.filteredProducts
-          .forEach(p => this.productFilterFormArray.push(this.createProductFilterForm(false, p)));
-      }, () => {
-        this.hasError = true;
-      });
-  }
-
-
-  updateIndex(index: number): void {
-    this.getProductsByCategory(10, index);
-    this.paginationService.page = index;
-  }
-
-  filterProductsList(): AbstractControl[] {
-    if (!this.searchProduct) {
-      return this.productFilterFormArray.controls;
-    }
-    return this.productFilterFormArray
-      .controls.filter(p => p.value.model.toLowerCase().includes(this.searchProduct));
-  }
-
-  private createFormProducts(): void {
-    this.formProductFilter = this.formBuilder.group({
-        products: this.formBuilder.array([]),
-      }
-    );
-  }
-
-  private createProductFilterForm(checked: boolean, product: Product): FormGroup {
-    return new FormGroup({
-        checked: new FormControl(checked),
-        id: new FormControl(product.id, Validators.required),
-        model: new FormControl(product.model, Validators.required),
-      }
-    );
-  }
-
   get productFilterFormArray(): FormArray {
     return this.formProductFilter.get('products') as FormArray;
-  }
-
-  addProductsCategory(): void {
-    const requests: Observable<Product>[] = [];
-    this.productFilterFormArray.controls.forEach(form => {
-      if (form.value.checked) {
-        requests.push(
-          this.productsService.updateCategories(this.categorie.id, form.value.id)
-        );
-      }
-    });
-    zip(
-      ...requests
-    ).pipe(take(1))
-      .subscribe(() => {
-        this.page = 0;
-        this.getProductsByCategory(10, this.page);
-      }, () => {
-        this.hasError = true;
-      });
-
   }
 
 }
