@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ProductsService} from '../../../shared/services/products.service';
 import {ProductDetails} from '../../../shared/models/product-details.model';
 import {take} from 'rxjs/operators';
@@ -7,17 +7,19 @@ import {Router} from '@angular/router';
 import {PaginationService} from '../../../shared/services/pagination.service';
 import {ProductDetailsPage} from '../../../shared/models/pagination-model/product-details-page.model';
 import {Gender} from '../../../shared/enums/gender';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-product-listing',
   templateUrl: './product-listing.component.html',
   styleUrls: ['./product-listing.component.scss']
 })
-export class ProductListingComponent implements OnInit {
+export class ProductListingComponent implements OnInit, OnDestroy {
 
   productsDetails: ProductDetails[] = [];
   content: ProductDetailsPage | undefined;
   hasError!: boolean;
+  subscription!: Subscription;
 
   constructor(
     public paginationService: PaginationService,
@@ -27,8 +29,17 @@ export class ProductListingComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.subscription = this.productsService.detailsFiltersState$.subscribe(filter => {
+      this.paginationService.initPagination();
+      this.getAllDetails(10, this.paginationService.page, filter.gender as Gender, filter.category, filter.size,
+        filter.color, filter.brand, filter.classBy as Order);
+    });
     this.paginationService.initPagination();
     this.getAllDetails(10, this.paginationService.page, undefined, '', '', '', '', Order.ASC);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   getAllDetails(size: number, page: number, gender?: Gender, category?: string,

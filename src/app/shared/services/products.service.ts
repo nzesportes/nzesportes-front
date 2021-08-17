@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {Product, ProductUpdateTO} from '../models/product.model';
 import {ProductPage} from '../models/pagination-model/product-page.model';
 import {ProductDetails, ProductDetailUpdateTO, Stock} from '../models/product-details.model';
@@ -9,12 +9,22 @@ import {UpdateStock} from '../models/update-stock.model';
 import {ProductDetailsPage} from '../models/pagination-model/product-details-page.model';
 import {Gender} from '../enums/gender';
 import {Order} from '../enums/order.enum';
+import {DetailsFiltersRequest} from '../../store/models/details-filters-request';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
   api: string = environment.NZESPORTES_API + 'products/';
+  // tslint:disable-next-line:variable-name
+  private _detailsFiltersState = new BehaviorSubject<DetailsFiltersRequest>({
+    gender: '',
+    category: '',
+    size: '',
+    color: '',
+    brand: '',
+    classBy: ''
+  });
 
   constructor(
     private http: HttpClient
@@ -99,5 +109,25 @@ export class ProductsService {
     const urlOrder = order ? '&order=' + order.toString() : '';
     return this.http.get<ProductDetailsPage>(this.api + 'details?page=' + page.toString() + '&size=' + size.toString()
       + urlGender + urlCategory + urlProductSize + urlColor + urlBrand + urlColor + urlOrder);
+  }
+
+  setDetailsFiltersState(gender?: string, category?: string, size?: string, color?: string, brand?: string, classBy?: string): void {
+    const filter: DetailsFiltersRequest = this._detailsFiltersState.getValue();
+    filter.gender = gender ? gender : '';
+    filter.category = category ? category : '';
+    filter.size = size ? size : '';
+    filter.color = color ? color : '';
+    filter.brand = brand ? brand : '';
+    filter.classBy = classBy ? classBy : '';
+
+    this._detailsFiltersState.next(filter);
+  }
+
+  get detailsFiltersState(): DetailsFiltersRequest {
+    return this._detailsFiltersState.getValue();
+  }
+
+  get detailsFiltersState$(): Observable<DetailsFiltersRequest> {
+    return this._detailsFiltersState;
   }
 }
