@@ -1,4 +1,4 @@
-import {AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {AfterContentInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {TypeCategorie, TypeCategorieList} from '../../../shared/enums/type-categorie';
 import {Category} from '../../../shared/models/category.model';
 import {CategoryPage} from '../../../shared/models/pagination-model/category-page.model';
@@ -6,7 +6,6 @@ import {CategoriesService} from '../../../shared/services/categories.service';
 import {take} from 'rxjs/operators';
 import {PaginationService} from '../../../shared/services/pagination.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Product} from '../../../shared/models/product.model';
 
 @Component({
   selector: 'app-categories-list',
@@ -52,8 +51,8 @@ export class CategoriesListComponent implements OnInit, AfterContentInit {
   }
 
 
-  getAllCategories(size: number, page: number, status?: string, type?: string, name?: string): void {
-    this.categorieService.getAll(size, page, status, type, name)
+  getAllCategories(size: number, page: number, status?: string, name?: string): void {
+    this.categorieService.getAll(size, page, status, name)
       .pipe(take(1))
       .subscribe(r => {
         this.categories = r.content;
@@ -77,8 +76,8 @@ export class CategoriesListComponent implements OnInit, AfterContentInit {
   onChangeFilter(): void {
     this.page = 0;
     const status = this.formFilter.get('status')?.value;
-    const type = this.formFilter.get('type')?.value;
     const name = this.formFilter.get('name')?.value;
-    this.getAllCategories(10, 0, status, type, name);
+    console.log(name);
+    this.getAllCategories(10, 0, status, name);
   }
 }
