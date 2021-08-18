@@ -268,7 +268,7 @@
       </button>
     </span>
     <span *ngIf="this.formFilters?.get('category')?.value" class="remove-filter">
-      {{ this.formFilters?.get('category')?.value }}
+      Categoria: {{ this.formFilters?.get('category')?.value }}
       <button class="btn btn-remove-filter" (click)="removeFilter('category')">
         <i class="fas fa-times"></i>
       </button>
@@ -280,17 +280,17 @@
       </button>
     </span>
     <span *ngIf="this.formFilters?.get('color')?.value" class="remove-filter">
-      {{ this.formFilters?.get('color')?.value }}
+      Cor: {{ this.formFilters?.get('color')?.value }}
       <button class="btn btn-remove-filter" (click)="removeFilter('color')">
         <i class="fas fa-times"></i>
       </button>
     </span>
     <span *ngIf="this.formFilters?.get('brand')?.value" class="remove-filter">
-      {{ this.formFilters?.get('brand')?.value }}
+      Marca: {{ this.formFilters?.get('brand')?.value }}
       <button class="btn btn-remove-filter" (click)="removeFilter('brand')">
         <i class="fas fa-times"></i>
       </button>
     </span>
-    <span *ngIf="verifyFilters" (click)="removeAll()">Remover todos</span>
+    <span *ngIf="verifyFilters" (click)="removeAll()" class="remove-all-filters">Remover todos</span>
   </div>
 </div>
