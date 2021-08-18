@@ -16,6 +16,10 @@ const routes: Routes = [
         loadChildren: () => import('./categories/categories.module').then(m => m.CategoriesModule)
       },
       {
+        path: 'sub-categorias',
+        loadChildren: () => import('./sub-categories/sub-categories.module').then(m => m.SubCategoriesModule)
+      },
+      {
         path: 'marcas',
         loadChildren: () => import('./brands/brands.module').then(m => m.BrandsModule)
       },

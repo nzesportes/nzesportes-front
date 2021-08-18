@@ -68,14 +68,12 @@ export class NewProductComponent implements OnInit, OnDestroy {
     this.createFormCategorie();
     this.initDetailForm();
     this.getAllBrands();
-    this.getAllCategories();
   }
 
   private createForm(): void {
     this.formProduct = this.formBuilder.group({
       id: new FormControl(this.product?.id ? this.product.id : null),
       model: new FormControl(this.product?.model ? this.product.model : '', Validators.required),
-      category: this.formBuilder.array(this.product?.category ? this.product.category : []),
       productDetails: this.formBuilder.array(this.product?.productDetails ? this.product.productDetails : [], Validators.required),
       status: new FormControl(this.product?.status ? this.product.status : false),
       brand: this.formBuilder.group({
@@ -90,20 +88,6 @@ export class NewProductComponent implements OnInit, OnDestroy {
         categories: this.formBuilder.array([]),
       }
     );
-  }
-
-  private createFormArrayCategorie(categorie: Category): FormGroup {
-    let hasChecked;
-    if (this.product) {
-      hasChecked = this.product.category.find(c => c.id === categorie.id);
-    }
-    return new FormGroup({
-      id: new FormControl(categorie?.id ? categorie.id : null),
-      name: new FormControl(categorie?.name ? categorie.name : '', Validators.required),
-      status: new FormControl(categorie?.status ? categorie.status : false),
-      type: this.formBuilder.array(categorie?.type ? categorie.type : [], Validators.required),
-      checked: new FormControl(hasChecked ? true : false)
-    });
   }
 
   private setArrayCategorieProduct(categorie: Category): FormGroup {
@@ -134,19 +118,6 @@ export class NewProductComponent implements OnInit, OnDestroy {
       }
     }
     return true;
-  }
-
-  getAllCategories(): void {
-    this.categoriesService.getAll(100, 0)
-      .pipe(take(1))
-      .subscribe(result => {
-        this.categories = [];
-        this.categories = result.content;
-        this.categoriesArrayForm.clear();
-        this.categories.forEach(c => this.categoriesArrayForm.push(this.createFormArrayCategorie(c)));
-      }, () => {
-        this.hasError = true;
-      });
   }
 
   initDetailForm(productDetail?: ProductDetails, index?: number): void {
@@ -302,24 +273,6 @@ export class NewProductComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('/painel/produtos');
   }
 
-  setCategorie(idCategory: string): void {
-    if (this.product) {
-      this.productService.updateCategories(idCategory, this.product.id)
-        .pipe(
-          take(1)
-        )
-        .subscribe(() => {
-          this.updateFormCategories();
-        }, error => {
-          this.setErrorDialog(error);
-          this.errorCallSaveCategory(idCategory);
-        });
-    } else {
-      this.updateFormCategories();
-    }
-
-  }
-
   updateFormCategories(): void {
     this.categoriesArrayFormProduct.clear();
     this.categoriesArrayForm.controls.forEach(form => {
@@ -374,14 +327,6 @@ export class NewProductComponent implements OnInit, OnDestroy {
     this.dialogError.fire().then(r => {
       if (r.isConfirmed) {
         this.addProductDetails(productDetail);
-      }
-    });
-  }
-
-  errorCallSaveCategory(idCategory: string): void {
-    this.dialogError.fire().then(r => {
-      if (r.isConfirmed) {
-        this.setCategorie(idCategory);
       }
     });
   }

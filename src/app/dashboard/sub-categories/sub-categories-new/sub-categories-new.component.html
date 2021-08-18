@@ -1,14 +1,15 @@
-<form [formGroup]="formCategorie">
+<form [formGroup]="formSubCategory">
 
   <div class="row mt-3">
     <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a routerLink="/painel/categorias">Categorias</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Nova Categoria</li>
+          <li class="breadcrumb-item"><a routerLink="/painel/sub-categorias">Subcategorias</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Nova Subcategoria</li>
         </ol>
       </nav>
     </div>
+
     <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
       <button type="button" class="btn btn-secondary w-100">Cancelar</button>
     </div>
@@ -16,7 +17,7 @@
       <button
         type="button"
         class="btn btn-primary w-100"
-        [disabled]="formCategorie.invalid"
+        [disabled]="formSubCategory.invalid"
         (click)="save()">
         Salvar
       </button>
@@ -32,27 +33,68 @@
       <div class="col-12 mb-3">
         <div class="card">
           <div class="card-body">
-            <h5 class="card-title">Informações da Categoria</h5>
+            <h5 class="card-title">Informações da Subcategoria</h5>
             <hr>
             <div class="form-row">
-              <div class="form-group col-12 mb-3">
+              <div class="form-group col-6 mb-3">
                 <label for="categorieName">Nome da Categoria</label>
                 <input type="text" class="form-control" formControlName="name" id="categorieName"
                        aria-describedby="emailHelp"
-                       placeholder="ex: Camiseta Chicago Bulls"
+                       placeholder="Comisetas"
                        [ngClass]="{ 'is-invalid': validateFields.name.errors && validateFields.name.touched }">
                 <div id="field-name" class="invalid-feedback" *ngIf="validateFields.name?.errors?.required">
-                  Por favor, insira o nome da categoria.
+                  Por favor, insira o nome da subcategoria.
                 </div>
               </div>
-
+              <div class="form-group col-6 mb-3">
+                <label for="gender">Sexo</label>
+                <select class="form-control" id="gender" formControlName="gender"
+                        [ngClass]="{ 'is-invalid': validateFields.gender.errors && validateFields.gender.touched }">
+                  <option value="BOTH">AMBOS</option>
+                  <option value="MALE">MASCULINO</option>
+                  <option value="FEMALE">FEMININO</option>
+                </select>
+                <div id="fileld-gender" class="invalid-feedback" *ngIf="validateFields.name?.errors?.required">
+                  Por favor, insira o sexo da subcategoria.
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="card mb-3" *ngIf="categorie?.id">
+
+    <form [formGroup]="formCategoryList">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Categorias</h5>
+          <hr>
+          <div class="overflow-auto" style="height: 300px">
+            <div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="categories.length === 0">
+              Essa subcategoria não possui nenhuma categoria. Por favor, adicione a uma categoria
+            </div>
+            <div class="list-group">
+              <button formArrayName="categories"
+                      *ngFor="let category of categoriesArrayForm.controls; let i = index"
+                      type="button"
+                      class="list-group-item d-flex justify-content-between list-group-item-action"
+              >
+                {{category.value.name | titlecase}}
+              <div class="form-check" [formGroupName]="i">
+                <input class="form-check-input" type="checkbox"  value="" id="categoria" formControlName="checked"
+                       (change)="setCategorie()">
+              </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+
+    <div class="card mb-3" *ngIf="subCategory?.id">
       <div class="card-body">
         <div class="form-check">
           <input class="form-check-input" type="checkbox" value="" id="isShowOnStore" formControlName="status">
@@ -63,9 +105,9 @@
       </div>
     </div>
 
-    <div class="card mb-3" *ngIf="categorie?.id">
+    <div class="card mb-3" *ngIf="subCategory?.id">
       <div class="card-body">
-        <h5 class="card-title">Excluir categoria</h5>
+        <h5 class="card-title">Excluir Subcategoria</h5>
         <hr>
         Ao exclui-lá ela será apagada definitivamente e não aparecerá mais em sua loja.
         <div class="d-flex justify-content-end">
@@ -85,10 +127,7 @@
       </div>
     </div>
   </div>
-
-
 </form>
-
 
 <swal
   [swalOptions]="{ confirmButtonText: 'ok'}"
@@ -101,7 +140,6 @@
   #error
   [title]="''"
   [text]="''"
-  [confirmButtonText]="''"
   [cancelButtonText]="'cancelar'"
   (cancel)="redirect()"
   [showCancelButton]="true"

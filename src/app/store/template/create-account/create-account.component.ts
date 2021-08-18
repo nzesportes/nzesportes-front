@@ -46,7 +46,7 @@ export class CreateAccountComponent implements OnInit {
     name: '',
     lastName: '',
     phone: '',
-    gender: Gender.M,
+    gender: Gender.MALE,
     userId: ''
   };
 
