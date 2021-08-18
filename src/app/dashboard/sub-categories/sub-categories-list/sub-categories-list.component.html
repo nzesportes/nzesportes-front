@@ -54,7 +54,8 @@
     <table class="table table-hover">
       <thead>
       <tr>
-        <th scope="col" style="width: 30%">Nome</th>
+        <th scope="col" style="width: 40%">Nome</th>
+        <th scope="col" style="width: 30%">Sexo</th>
         <th scope="col" style="width: 20%">No site</th>
         <th scope="col" style="width: 10%">Ações</th>
       </tr>
@@ -62,6 +63,7 @@
       <tbody>
       <tr class="row-table" *ngFor="let c of categories; let i = index" routerLink="sub-categoria/{{c.id}}">
         <td>{{c.name}}</td>
+        <td>{{mapGender.get(c.gender)}}</td>
         <td [ngClass]="{
         'text-success': c.status,
         'text-secondary': !c.status

@@ -7,6 +7,8 @@ export interface SubCategory {
   gender: Gender;
   status: boolean;
   categories: Category[];
+  categoriesToAdd: string[];
+  categoriesToRemove: string[];
 }
 
 

@@ -37,7 +37,7 @@ export class SubCategoriesService {
   update(subCategory: SubCategory): Observable<SubCategory> {
     const params = new HttpParams()
       .set('async', 'true');
-    return this.http.put<SubCategory>(this.api + subCategory.id, subCategory, {params});
+    return this.http.put<SubCategory>(this.api, subCategory, {params});
   }
 
   getById(id: string): Observable<SubCategory> {

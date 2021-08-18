@@ -6,6 +6,7 @@ import {CategoriesService} from '../../../shared/services/categories.service';
 import {take} from 'rxjs/operators';
 import {PaginationService} from '../../../shared/services/pagination.service';
 import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {mapGender} from '../../../shared/enums/gender';
 
 @Component({
   selector: 'app-categories-list',
@@ -20,8 +21,6 @@ export class CategoriesListComponent implements OnInit, AfterContentInit {
   content: CategoryPage | undefined;
   hasError!: boolean;
   public formFilter: FormGroup = new FormGroup({});
-
-  public formProductFilter: FormGroup = new FormGroup({});
 
   constructor(
     private categorieService: CategoriesService,

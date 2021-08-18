@@ -5,7 +5,7 @@ import {SubCategory} from '../../../shared/models/sub-category.model';
 import {take} from 'rxjs/operators';
 import {PaginationService} from '../../../shared/services/pagination.service';
 import {SubCategoryPage} from '../../../shared/models/pagination-model/sub-category-page.model';
-import {Gender} from '../../../shared/enums/gender';
+import {Gender, mapGender} from '../../../shared/enums/gender';
 
 @Component({
   selector: 'app-sub-categories-list',
@@ -18,6 +18,9 @@ export class SubCategoriesListComponent implements OnInit, AfterContentInit {
   page = 0;
   content: SubCategoryPage | undefined;
   hasError!: boolean;
+
+  mapGender = mapGender;
+
   public formFilter: FormGroup = new FormGroup({});
   constructor(
     private subCategoriesService: SubCategoriesService,

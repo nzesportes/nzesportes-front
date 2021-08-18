@@ -1,4 +1,4 @@
-<form [formGroup]="formCategorie">
+<form [formGroup]="formSubCategory">
 
   <div class="row mt-3">
     <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
@@ -17,7 +17,7 @@
       <button
         type="button"
         class="btn btn-primary w-100"
-        [disabled]="formCategorie.invalid"
+        [disabled]="formSubCategory.invalid"
         (click)="save()">
         Salvar
       </button>
@@ -64,6 +64,36 @@
       </div>
     </div>
 
+
+    <form [formGroup]="formCategoryList">
+      <div class="card mb-3">
+        <div class="card-body">
+          <h5 class="card-title">Categorias</h5>
+          <hr>
+          <div class="overflow-auto" style="height: 300px">
+            <div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="categories.length === 0">
+              Essa subcategoria não possui nenhuma categoria. Por favor, adicione a uma categoria
+            </div>
+            <div class="list-group">
+              <button formArrayName="categories"
+                      *ngFor="let category of categoriesArrayForm.controls; let i = index"
+                      type="button"
+                      class="list-group-item d-flex justify-content-between list-group-item-action"
+              >
+                {{category.value.name | titlecase}}
+              <div class="form-check" [formGroupName]="i">
+                <input class="form-check-input" type="checkbox"  value="" id="categoria" formControlName="checked"
+                       (change)="setCategorie()">
+              </div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+
     <div class="card mb-3" *ngIf="subCategory?.id">
       <div class="card-body">
         <div class="form-check">
@@ -97,10 +127,7 @@
       </div>
     </div>
   </div>
-
-
 </form>
-
 
 <swal
   [swalOptions]="{ confirmButtonText: 'ok'}"
