@@ -84,6 +84,31 @@ label.form-check-label {
   cursor: pointer;
 }
 
+.container-remove-filters {
+  display: flex;
+  margin: 0 16px 8px;
+  gap: 10px;
+}
+
+.remove-filter {
+  border: 1px solid #e9ecef;
+  background-color: #f5f6f6;
+  font-size: 14px;
+  padding: 2px 10px;
+}
+
+.btn-remove-filter {
+  padding: 5px;
+  position: relative;
+}
+
+.btn-remove-filter i {
+  font-size: 10px;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+}
+
 @media (min-width: 576px) {
 
 }
