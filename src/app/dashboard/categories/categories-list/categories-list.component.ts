@@ -5,7 +5,7 @@ import {CategoryPage} from '../../../shared/models/pagination-model/category-pag
 import {CategoriesService} from '../../../shared/services/categories.service';
 import {take} from 'rxjs/operators';
 import {PaginationService} from '../../../shared/services/pagination.service';
-import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-categories-list',

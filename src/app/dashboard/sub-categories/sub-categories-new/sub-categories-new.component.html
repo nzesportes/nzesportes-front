@@ -1,1 +1,120 @@
-<p>sub-categories-new works!</p>
+<form [formGroup]="formCategorie">
+
+  <div class="row mt-3">
+    <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/painel/sub-categorias">Subcategorias</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Nova Subcategoria</li>
+        </ol>
+      </nav>
+    </div>
+
+    <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
+      <button type="button" class="btn btn-secondary w-100">Cancelar</button>
+    </div>
+    <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
+      <button
+        type="button"
+        class="btn btn-primary w-100"
+        [disabled]="formCategorie.invalid"
+        (click)="save()">
+        Salvar
+      </button>
+    </div>
+  </div>
+  <div class="alert alert-danger" role="alert" *ngIf="hasError">
+    Não foi possível carregar algumas informações. Por favor,
+    <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+  </div>
+
+  <div *ngIf="!hasError">
+    <div class="row mt-3">
+      <div class="col-12 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Informações da Subcategoria</h5>
+            <hr>
+            <div class="form-row">
+              <div class="form-group col-6 mb-3">
+                <label for="categorieName">Nome da Categoria</label>
+                <input type="text" class="form-control" formControlName="name" id="categorieName"
+                       aria-describedby="emailHelp"
+                       placeholder="Comisetas"
+                       [ngClass]="{ 'is-invalid': validateFields.name.errors && validateFields.name.touched }">
+                <div id="field-name" class="invalid-feedback" *ngIf="validateFields.name?.errors?.required">
+                  Por favor, insira o nome da subcategoria.
+                </div>
+              </div>
+              <div class="form-group col-6 mb-3">
+                <label for="gender">Sexo</label>
+                <select class="form-control" id="gender" formControlName="gender"
+                        [ngClass]="{ 'is-invalid': validateFields.gender.errors && validateFields.gender.touched }">
+                  <option value="BOTH">AMBOS</option>
+                  <option value="MALE">MASCULINO</option>
+                  <option value="FEMALE">FEMININO</option>
+                </select>
+                <div id="fileld-gender" class="invalid-feedback" *ngIf="validateFields.name?.errors?.required">
+                  Por favor, insira o sexo da subcategoria.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-3" *ngIf="subCategory?.id">
+      <div class="card-body">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="isShowOnStore" formControlName="status">
+          <label class="form-check-label" for="isShowOnStore">
+            Disponível na loja
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="card mb-3" *ngIf="subCategory?.id">
+      <div class="card-body">
+        <h5 class="card-title">Excluir Subcategoria</h5>
+        <hr>
+        Ao exclui-lá ela será apagada definitivamente e não aparecerá mais em sua loja.
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-danger col-lg-2 col-sm-12" (click)="delete()">Excluir</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Promoções</h5>
+        <hr>
+        <div class="card-link">
+          <i class="fas fa-ticket-alt p-1" style="color: cornflowerblue"></i><a href="#">Criar cupom de desconto</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</form>
+
+
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirect()"
+  #success
+  [title]="''"
+  icon="success">
+</swal>
+<swal
+  #error
+  [title]="''"
+  [text]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>

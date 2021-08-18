@@ -25,25 +25,15 @@ export class CategoriesNewComponent implements OnInit {
 
   public formCategorie: FormGroup = new FormGroup({});
   public formCategorieList: FormGroup = new FormGroup({});
-  public formProductFilter: FormGroup = new FormGroup({});
   public categorie!: Category;
   public typeCategorieList = TypeCategorieList;
   hasError!: boolean;
-
-  public products!: Product[];
-  content: ProductPage | undefined;
-  filteredProducts: Product[] = [];
-  page = 0;
-
-
-  searchProduct = '';
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
     private categorieService: CategoriesService,
     private route: ActivatedRoute,
-    private productsService: ProductsService,
     public paginationService: PaginationService
   ) {
   }
@@ -71,42 +61,6 @@ export class CategoriesNewComponent implements OnInit {
       id: new FormControl(this.categorie?.id ? this.categorie.id : null),
       name: new FormControl(this.categorie?.name ? this.categorie.name : '', Validators.required),
       status: new FormControl(this.categorie?.status ? this.categorie.status : false),
-    });
-  }
-
-
-
-  loadCategorieOnList(): void {
-    this.typeList.clear();
-    this.typeCategorieList.forEach(t => {
-      const hasType = this.type.controls.find(t1 => t1.value === t);
-      this.typeList.push(this.createTypeListForm(hasType ? true : false, t));
-    });
-  }
-
-
-  get typeList(): FormArray {
-    return this.formCategorieList.get('typelist') as FormArray;
-  }
-
-  private createTypeListForm(checked: boolean, typeCategorie: TypeCategorie): FormGroup {
-    return new FormGroup({
-        checked: new FormControl(checked),
-        type: new FormControl(typeCategorie, Validators.required),
-      }
-    );
-  }
-
-  get type(): FormArray {
-    return this.formCategorie.get('type') as FormArray;
-  }
-
-  addTypeListCategorie(): void {
-    this.type.clear();
-    this.typeList.controls.forEach(t => {
-      if (t.value.checked) {
-        this.type.push(this.formBuilder.control(t.value.type));
-      }
     });
   }
 
