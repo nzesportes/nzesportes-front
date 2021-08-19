@@ -17,7 +17,7 @@
       <button
         type="button"
         class="btn btn-primary w-100"
-        [disabled]="formSubCategory.invalid"
+        [disabled]="formSubCategory.invalid || categories.length === 0"
         (click)="save()">
         Salvar
       </button>
@@ -72,7 +72,8 @@
           <hr>
           <div class="overflow-auto" style="height: 300px">
             <div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="categories.length === 0">
-              Essa subcategoria não possui nenhuma categoria. Por favor, adicione a uma categoria
+              Você precisa adicionar uma Categoria antes de cadastrar uma subcategoria.
+              <div class="alert-link" routerLink="/painel/categorias">Clique aqui para adicionar.</div>
             </div>
             <div class="list-group">
               <button formArrayName="categories"

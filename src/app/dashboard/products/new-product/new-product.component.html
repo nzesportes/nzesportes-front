@@ -219,8 +219,8 @@
               <select class="form-control" id="genrer"
                       formControlName="gender"
                       [ngClass]="cssError(validateFieldsFormProductDetail.gender)">
-                <option value="M">Masculino</option>
-                <option value="F">Feminino</option>
+                <option value="MALE">Masculino</option>
+                <option value="FEMALE">Feminino</option>
               </select>
               <div id="field-genrer" class="invalid-feedback">
                 Por favor, insira o sexo.
@@ -255,6 +255,28 @@
               </div>
             </div>
           </div>
+          <form [formGroup]="formCategoryList" *ngIf="categoriesArrayForm.controls.length > 0">
+            <div class="card mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Subcategorias</h5>
+                <hr>
+                <div class="overflow-auto" style="height: 200px">
+                  <div class="list-group" >
+                    <button formArrayName="categories"
+                            *ngFor="let category of categoriesArrayForm.controls; let i = index"
+                            type="button"
+                            class="list-group-item d-flex justify-content-between list-group-item-action"
+                    >
+                      {{category.value.name | titlecase}}
+                      <div class="form-check" [formGroupName]="i">
+                        <input class="form-check-input" type="checkbox"  value="" id="categoria" formControlName="checked">
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
           <div class="form-row">
             <button type="button" class="btn btn-primary w-100" (click)="addStock()">
               Adicionar outro tamanho

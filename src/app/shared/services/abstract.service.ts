@@ -18,7 +18,8 @@ export abstract class AbstractService {
     } as ErrorWarning;
     if (error.error.message) {
       errorModel.title = error.error.error;
-      errorModel.message = mapErrorResponse.get(error.error.message) as string;
+      // errorModel.message = mapErrorResponse.get(error.error.message) as string;
+      errorModel.message = error.error.message;
       errorModel.action = 'tentar novamente';
     } else {
       errorModel.title = 'Ops, ocorreu um erro';

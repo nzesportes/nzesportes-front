@@ -9,6 +9,7 @@ export interface SubCategory {
   categories: Category[];
   categoriesToAdd: string[];
   categoriesToRemove: string[];
+  hasLoop?: boolean;
 }
 
 

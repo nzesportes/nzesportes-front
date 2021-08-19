@@ -124,7 +124,6 @@ export class NzStoreComponent implements OnInit {
                 brand: p.brand,
                 sale: pd.sale,
                 gender: pd.gender,
-                niche: pd.niche,
                 status: pd.status
               };
 
