@@ -7,14 +7,14 @@
           <ul class="items-submenu">
             <li>
               <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="gender" (change)="teste()"
+                <input class="form-check-input radiosInput" type="radio" name="gender" (change)="selectFilter()"
                        formControlName="gender" id="genderMale" value="M">
                 <label class="form-check-label" for="genderMale">Masculino</label>
               </a>
             </li>
             <li>
               <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="gender" (change)="teste()"
+                <input class="form-check-input radiosInput" type="radio" name="gender" (change)="selectFilter()"
                        formControlName="gender" id="genderFemale" value="F">
                 <label class="form-check-label" for="genderFemale">Feminino</label>
               </a>
@@ -29,7 +29,7 @@
             <li>
               <a class="item-submenu">
                 <input class="form-check-input radiosInput" type="radio" name="category" id="categoryRun"
-                       (change)="teste()"
+                       (change)="selectFilter()"
                        formControlName="category" value="corrida">
                 <label class="form-check-label" for="categoryRun">Corrida</label>
               </a>
@@ -37,7 +37,7 @@
             <li>
               <a class="item-submenu">
                 <input class="form-check-input radiosInput" type="radio" name="category" id="categoryShoes"
-                       (change)="teste()"
+                       (change)="selectFilter()"
                        formControlName="category" value="tenis">
                 <label class="form-check-label" for="categoryShoes">Tênis</label>
               </a>
@@ -45,7 +45,7 @@
             <li>
               <a class="item-submenu">
                 <input class="form-check-input radiosInput" type="radio" name="category" id="categoryBasket"
-                       (change)="teste()"
+                       (change)="selectFilter()"
                        formControlName="category" value="basquete">
                 <label class="form-check-label" for="categoryBasket">Basquete</label>
               </a>
@@ -53,7 +53,7 @@
             <li>
               <a class="item-submenu">
                 <input class="form-check-input radiosInput" type="radio" name="category" id="categoryFootball"
-                       (change)="teste()"
+                       (change)="selectFilter()"
                        formControlName="category" value="football">
                 <label class="form-check-label" for="categoryFootball">Futebol Americano</label>
               </a>
@@ -61,7 +61,7 @@
             <li>
               <a class="item-submenu">
                 <input class="form-check-input radiosInput" type="radio" name="category" id="categoryRugby"
-                       (change)="teste()"
+                       (change)="selectFilter()"
                        formControlName="category" value="rugby">
                 <label class="form-check-label" for="categoryRugby">Rugby</label>
               </a>
@@ -69,7 +69,7 @@
             <li>
               <a class="item-submenu">
                 <input class="form-check-input radiosInput" type="radio" name="category" id="categorySoccer"
-                       (change)="teste()"
+                       (change)="selectFilter()"
                        formControlName="category" value="soccer">
                 <label class="form-check-label" for="categorySoccer">Futebol</label>
               </a>
@@ -83,42 +83,42 @@
           <ul class="items-submenu p-2 row">
             <li class="col-4 mb-2 pr-2 pl-2">
               <a class="item-submenu size">
-                <input class="form-check-input radiosInput" type="radio" name="size" id="size34" (change)="teste()"
+                <input class="form-check-input radiosInput" type="radio" name="size" id="size34" (change)="selectFilter()"
                        formControlName="size" value="34">
                 <label class="form-check-label" for="size34">34</label>
               </a>
             </li>
             <li class="col-4 mb-2 pr-2 pl-2">
               <a class="item-submenu size">
-                <input class="form-check-input radiosInput" type="radio" name="size" id="size36" (change)="teste()"
+                <input class="form-check-input radiosInput" type="radio" name="size" id="size36" (change)="selectFilter()"
                        formControlName="size" value="36">
                 <label class="form-check-label" for="size36">36</label>
               </a>
             </li>
             <li class="col-4 mb-2 pr-2 pl-2">
               <a class="item-submenu size">
-                <input class="form-check-input radiosInput" type="radio" name="size" id="size38" (change)="teste()"
+                <input class="form-check-input radiosInput" type="radio" name="size" id="size38" (change)="selectFilter()"
                        formControlName="size" value="38">
                 <label class="form-check-label" for="size38">38</label>
               </a>
             </li>
             <li class="col-4 mb-2 pr-2 pl-2">
               <a class="item-submenu size">
-                <input class="form-check-input radiosInput" type="radio" name="size" id="size40" (change)="teste()"
+                <input class="form-check-input radiosInput" type="radio" name="size" id="size40" (change)="selectFilter()"
                        formControlName="size" value="40">
                 <label class="form-check-label" for="size40">40</label>
               </a>
             </li>
             <li class="col-4 mb-2 pr-2 pl-2">
               <a class="item-submenu size">
-                <input class="form-check-input radiosInput" type="radio" name="size" id="size42" (change)="teste()"
+                <input class="form-check-input radiosInput" type="radio" name="size" id="size42" (change)="selectFilter()"
                        formControlName="size" value="42">
                 <label class="form-check-label" for="size42">42</label>
               </a>
             </li>
             <li class="col-4 mb-2 pr-2 pl-2">
               <a class="item-submenu size">
-                <input class="form-check-input radiosInput" type="radio" name="size" id="size44" (change)="teste()"
+                <input class="form-check-input radiosInput" type="radio" name="size" id="size44" (change)="selectFilter()"
                        formControlName="size" value="44">
                 <label class="form-check-label" for="size44">44</label>
               </a>
@@ -132,35 +132,35 @@
           <ul class="items-submenu">
             <li>
               <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="color" id="colorBlue" (change)="teste()"
+                <input class="form-check-input radiosInput" type="radio" name="color" id="colorBlue" (change)="selectFilter()"
                        formControlName="color" value="azul">
                 <label class="form-check-label" for="colorBlue">Azul</label>
               </a>
             </li>
             <li>
               <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="color" id="colorRed" (change)="teste()"
+                <input class="form-check-input radiosInput" type="radio" name="color" id="colorRed" (change)="selectFilter()"
                        formControlName="color" value="vermelho">
                 <label class="form-check-label" for="colorRed">Vermelho</label>
               </a>
             </li>
             <li>
               <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="color" id="colorBlack" (change)="teste()"
+                <input class="form-check-input radiosInput" type="radio" name="color" id="colorBlack" (change)="selectFilter()"
                        formControlName="color" value="preto">
                 <label class="form-check-label" for="colorBlack">Preto</label>
               </a>
             </li>
             <li>
               <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="color" id="colorPink" (change)="teste()"
+                <input class="form-check-input radiosInput" type="radio" name="color" id="colorPink" (change)="selectFilter()"
                        formControlName="color" value="Rosa">
                 <label class="form-check-label" for="colorPink">Rosa</label>
               </a>
             </li>
             <li>
               <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="color" id="colorGreen" (change)="teste()"
+                <input class="form-check-input radiosInput" type="radio" name="color" id="colorGreen" (change)="selectFilter()"
                        formControlName="color" value="Verde">
                 <label class="form-check-label" for="colorGreen">Verde</label>
               </a>
@@ -175,7 +175,7 @@
             <li>
               <a class="item-submenu">
                 <input class="form-check-input radiosInput" type="radio" name="brand" id="brandAdidas"
-                       (change)="teste()"
+                       (change)="selectFilter()"
                        formControlName="brand" value="adidas">
                 <label class="form-check-label" for="brandAdidas">Adidas</label>
               </a>
@@ -183,14 +183,14 @@
             <li>
               <a class="item-submenu">
                 <input class="form-check-input radiosInput" type="radio" name="brand" id="brandJordan"
-                       (change)="teste()"
+                       (change)="selectFilter()"
                        formControlName="brand" value="Jordan">
                 <label class="form-check-label" for="brandJordan">Jordan</label>
               </a>
             </li>
             <li>
               <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="brand" id="brandNike" (change)="teste()"
+                <input class="form-check-input radiosInput" type="radio" name="brand" id="brandNike" (change)="selectFilter()"
                        formControlName="brand" value="Nike">
                 <label class="form-check-label" for="brandNike">Nike</label>
               </a>
@@ -208,7 +208,7 @@
             <li>
               <a class="item-submenu">
                 <input class="form-check-input radiosInput" type="radio" name="classBy" id="classByCrescent"
-                       (change)="teste()"
+                       (change)="selectFilter()"
                        formControlName="classBy" value="ASC">
                 <label class="form-check-label" for="classByCrescent">Crescente</label>
               </a>
@@ -216,7 +216,7 @@
             <li>
               <a class="item-submenu">
                 <input class="form-check-input radiosInput" type="radio" name="classBy" id="classByDecreasing"
-                       (change)="teste()"
+                       (change)="selectFilter()"
                        formControlName="classBy" value="DESC">
                 <label class="form-check-label" for="classByDecreasing">Decrescente</label>
               </a>
@@ -224,7 +224,7 @@
             <li>
               <a class="item-submenu">
                 <input class="form-check-input radiosInput" type="radio" name="classBy" id="classByMostRelevant"
-                       (change)="teste()"
+                       (change)="selectFilter()"
                        formControlName="classBy" value="mostRelevant">
                 <label class="form-check-label" for="classByMostRelevant">Mais relevantes</label>
               </a>
@@ -232,7 +232,7 @@
             <li>
               <a class="item-submenu">
                 <input class="form-check-input radiosInput" type="radio" name="classBy" id="classByLowestPrice"
-                       (change)="teste()"
+                       (change)="selectFilter()"
                        formControlName="classBy" value="lowestPrice">
                 <label class="form-check-label" for="classByLowestPrice">Menor Preço</label>
               </a>
@@ -240,7 +240,7 @@
             <li>
               <a class="item-submenu">
                 <input class="form-check-input radiosInput" type="radio" name="classBy" id="classByBiggestPrice"
-                       (change)="teste()"
+                       (change)="selectFilter()"
                        formControlName="classBy" value="biggestPrice">
                 <label class="form-check-label" for="classByBiggestPrice">Maior Preço</label>
               </a>
@@ -248,7 +248,7 @@
             <li>
               <a class="item-submenu">
                 <input class="form-check-input radiosInput" type="radio" name="classBy" id="classByBiggestDiscount"
-                       (change)="teste()"
+                       (change)="selectFilter()"
                        formControlName="classBy" value="biggestDiscount">
                 <label class="form-check-label" for="classByBiggestDiscount">Maior Desconto</label>
               </a>

@@ -1,7 +1,7 @@
 <div class="container-fluid container-product-listing">
 
   <div id="button-filters">Filtros<button class="btn" data-toggle="modal" data-target="#filters-modal"><i class="fas fa-filter"></i></button></div>
-  <app-filters id="filters-component"></app-filters>
+  <app-filters *ngIf="!isMobile" id="filters-component"></app-filters>
 
   <div class="row m-0">
     <!--produto começa aqui-->
@@ -31,7 +31,7 @@
           <i class="fas fa-angle-left"></i>
         </a>
       </li>
-      <li class="page-item active" [ngClass]="{'active': i == this.paginationService.page }"
+      <li class="page-item active" [ngClass]="{ 'active': i == this.paginationService.page }"
           *ngFor="let i of this.paginationService.getRange(); let in = index">
         <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
       </li>
@@ -55,8 +55,8 @@
           <span aria-hidden="true"><i class="fas fa-times"></i></span>
         </button>
       </div>
-      <div class="modal-body p-0">
-        <app-filters></app-filters>
+      <div class="modal-body">
+        <app-filters *ngIf="isMobile"></app-filters>
       </div>
       <button type="button" class="btn btn-primary btn-filter">Filtrar</button>
 

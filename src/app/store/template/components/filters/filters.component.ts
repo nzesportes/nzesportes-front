@@ -1,22 +1,24 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ProductsService} from '../../../../shared/services/products.service';
 import {Gender} from '../../../../shared/enums/gender';
 import {Order} from '../../../../shared/enums/order.enum';
+import {FiltersService} from '../../../services/filters.service';
 
 @Component({
   selector: 'app-filters',
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.scss']
 })
-export class FiltersComponent implements OnInit {
+export class FiltersComponent implements OnInit, OnDestroy {
 
   formFilters!: FormGroup;
   verifyFilters = false;
 
   constructor(
     private formBuilder: FormBuilder,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private filterService: FiltersService
   ) {
   }
 
@@ -25,14 +27,18 @@ export class FiltersComponent implements OnInit {
     this.verifyFilters = this._verifyFilters();
   }
 
+  ngOnDestroy(): void {
+    this.filterService.setFilter(this.formFilters.value);
+  }
+
   createForm(): void {
     this.formFilters = this.formBuilder.group({
-      gender: [''],
-      category: [''],
-      size: [''],
-      color: [''],
-      brand: [''],
-      classBy: ['']
+      gender: [this.filterService.filter?.gender ? this.filterService.filter.gender : ''],
+      category: [this.filterService.filter?.category ? this.filterService.filter.category : ''],
+      size: [this.filterService.filter?.size ? this.filterService.filter.size : ''],
+      color: [this.filterService.filter?.color ? this.filterService.filter.color : ''],
+      brand: [this.filterService.filter?.brand ? this.filterService.filter.brand : ''],
+      classBy: [this.filterService.filter?.classBy ? this.filterService.filter.classBy : '']
     });
   }
 
@@ -47,7 +53,7 @@ export class FiltersComponent implements OnInit {
     );
   }
 
-  teste(): void {
+  selectFilter(): void {
     this.sendDetailsFilters();
     this.verifyFilters = this._verifyFilters();
   }

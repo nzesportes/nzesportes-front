@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import {ProductsService} from '../../../shared/services/products.service';
 import {ProductDetails} from '../../../shared/models/product-details.model';
 import {take} from 'rxjs/operators';
@@ -20,6 +20,7 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   content: ProductDetailsPage | undefined;
   hasError!: boolean;
   subscription!: Subscription;
+  isMobile = false;
 
   constructor(
     public paginationService: PaginationService,
@@ -36,10 +37,25 @@ export class ProductListingComponent implements OnInit, OnDestroy {
     });
     this.paginationService.initPagination();
     this.getAllDetails(10, this.paginationService.page, undefined, '', '', '', '', Order.ASC);
+
+    this.isMobile = this.verifyWindowWidth();
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any): void {
+    if (event.target.innerWidth < 768) {
+      this.isMobile = true;
+      return;
+    }
+    this.isMobile = false;
+  }
+
+  verifyWindowWidth(): boolean {
+    return window.innerWidth < 768 ? true : false;
   }
 
   getAllDetails(size: number, page: number, gender?: Gender, category?: string,
@@ -49,9 +65,7 @@ export class ProductListingComponent implements OnInit, OnDestroy {
       .subscribe(response => {
           this.productsDetails = response.content;
           this.content = response;
-          console.log(response.content);
           this.paginationService.getPageRange(this.content.totalElements);
-
         }, () => {
           this.hasError = true;
         }
