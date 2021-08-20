@@ -65,7 +65,7 @@ export class ProductListingComponent implements OnInit, OnDestroy {
     this.productsService.getAllDetails(size, page, name, gender,  category, productSize, color, brand, order)
       .pipe(take(1))
       .subscribe(response => {
-        console.log(response);
+          console.log(response);
           this.productsDetails = response.content;
           this.content = response;
           this.paginationService.getPageRange(this.content.totalElements);

@@ -101,7 +101,13 @@ export class ProductsService {
     return this.http.put<Stock>(this.api + 'details/stock', updateStock, {params});
   }
 
-  getAllDetails(size: number, page: number, name?: string, gender?: Gender, category?: string, productSize?: string, color?: string, brand?: string, order?: Order): Observable<ProductDetailsPage> {
+  getAllDetails(
+    size: number,
+    page: number,
+    name?: string,
+    gender?: Gender,
+    category?: string,
+    productSize?: string, color?: string, brand?: string, order?: Order): Observable<ProductDetailsPage> {
     const urlGender = gender ? '&gender=' + gender.toString() : '';
     const urlCategory = category ? '&category=' + category : '';
     const urlProductSize = productSize ? '&productSize=' + productSize : '';
@@ -114,7 +120,10 @@ export class ProductsService {
       + urlGender + urlCategory + urlProductSize + urlColor + urlBrand + urlOrder);
   }
 
-  setDetailsFiltersState(name?: string, gender?: string, category?: string, size?: string, color?: string, brand?: string, classBy?: string): void {
+  setDetailsFiltersState(
+    name?: string,
+    gender?: string,
+    category?: string, size?: string, color?: string, brand?: string, classBy?: string): void {
     const filter: DetailsFiltersRequest = this._detailsFiltersState.getValue();
     filter.name = name ? name : '';
     filter.gender = gender ? gender : '';
