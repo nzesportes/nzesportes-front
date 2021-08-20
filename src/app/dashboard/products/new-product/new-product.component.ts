@@ -7,7 +7,6 @@ import {ProductDetails, Stock} from '../../../shared/models/product-details.mode
 import {BrandsService} from '../../../shared/services/brands.service';
 import {map, take} from 'rxjs/operators';
 import {Brand} from '../../../shared/models/brand.model';
-import {Category} from '../../../shared/models/category.model';
 import {ProductsService} from '../../../shared/services/products.service';
 import {ErrorWarning} from '../../../shared/models/error-warning.model';
 import {SubCategoriesService} from '../../../shared/services/sub-categories.service';
@@ -57,6 +56,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
           .pipe(take(1))
           .subscribe(p => {
             this.product = p;
+            console.log(this.product);
             this.initAllForms();
           }, () => {
             this.hasError = true;
@@ -90,11 +90,12 @@ export class NewProductComponent implements OnInit, OnDestroy {
     this.categoriesArrayForm.clear();
     console.log(this.formCategoryList.value);
     this.formProductDetail = this.createProductDetailsForm(productDetail, index);
-    console.log(this.subCategoies);
+    console.log(productDetail);
     if (this.product) {
+      const result = productDetail ? productDetail.subCategories.map(sub => sub.id) as string[] : [];
       this.subCategoies.forEach(c  => {
-       const result = productDetail?.subCategories.filter(sub => sub.id === c.id);
-       if (result){
+       if (result.includes(c.id)){
+         console.log('entrou');
          this.categoriesArrayForm.push(this.createFormArrayCategorieUpdate(c, true));
        }else{
          this.categoriesArrayForm.push(this.createFormArrayCategorieUpdate(c, false));
@@ -217,7 +218,6 @@ export class NewProductComponent implements OnInit, OnDestroy {
         id: new FormControl(productDetails ? productDetails.id : null),
         color: new FormControl(productDetails ? productDetails.color : null, Validators.required),
         price: new FormControl(productDetails ? productDetails.price : null, Validators.required),
-        gender: new FormControl(productDetails ? productDetails.gender : null, Validators.required),
         description: new FormControl(productDetails ? productDetails.description : '', Validators.required),
         status: new FormControl(productDetails ? productDetails.status : false),
         productId: new FormControl(this.product ? this.product.id : ''),
@@ -376,14 +376,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
     if (detailsSubCategory) {
       hasChecked = detailsSubCategory.find(c => c.id === subCategory.id);
     }
-    return new FormGroup({
-      id: new FormControl(subCategory?.id ? subCategory.id : null),
-      name: new FormControl(subCategory?.name ? subCategory.name : '', Validators.required),
-      status: new FormControl(subCategory?.status ? subCategory.status : false),
-      gender: new FormControl(subCategory?.gender ? subCategory.gender : false),
-      categories: this.formBuilder.array(subCategory?.categories ? subCategory.categories : []),
-      checked: new FormControl(hasChecked ? true : false)
-    });
+    return this.createFormArrayCategorieUpdate(subCategory, hasChecked ? true : false);
   }
   private createFormArrayCategorieUpdate(subCategory: SubCategory, hasChecked: boolean): FormGroup {
     return new FormGroup({
