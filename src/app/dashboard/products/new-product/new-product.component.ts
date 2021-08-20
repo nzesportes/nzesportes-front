@@ -57,7 +57,6 @@ export class NewProductComponent implements OnInit, OnDestroy {
           .pipe(take(1))
           .subscribe(p => {
             this.product = p;
-            console.log(this.product);
             this.initAllForms();
           }, () => {
             this.hasError = true;
@@ -89,14 +88,11 @@ export class NewProductComponent implements OnInit, OnDestroy {
 
   initDetailForm(productDetail?: ProductDetails, index?: number): void {
     this.categoriesArrayForm.clear();
-    console.log(this.formCategoryList.value);
     this.formProductDetail = this.createProductDetailsForm(productDetail, index);
-    console.log(productDetail);
     if (this.product) {
       const result = productDetail ? productDetail.subCategories.map(sub => sub.id) as string[] : [];
       this.subCategoies.forEach(c  => {
        if (result.includes(c.id)){
-         console.log('entrou');
          this.categoriesArrayForm.push(this.createFormArrayCategorieUpdate(c, true));
        }else{
          this.categoriesArrayForm.push(this.createFormArrayCategorieUpdate(c, false));
@@ -197,7 +193,6 @@ export class NewProductComponent implements OnInit, OnDestroy {
         productDetails.subCategories = this.categoriesArrayForm.controls.filter(c => c.value.checked);
         this.productDetails.insert(0, this.createProductDetailsForm(productDetails, indexArray));
       }
-      console.log(this.formProduct.value);
     }
   }
 
