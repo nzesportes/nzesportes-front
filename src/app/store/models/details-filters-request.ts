@@ -5,6 +5,7 @@ export interface DetailsFiltersRequest {
   gender: Gender | string;
   category: string;
   size: string;
+  name: string;
   color: string;
   brand: string;
   classBy: Order | string;

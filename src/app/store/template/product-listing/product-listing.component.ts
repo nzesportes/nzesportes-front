@@ -8,6 +8,7 @@ import {PaginationService} from '../../../shared/services/pagination.service';
 import {ProductDetailsPage} from '../../../shared/models/pagination-model/product-details-page.model';
 import {Gender} from '../../../shared/enums/gender';
 import {Subscription} from 'rxjs';
+import {FiltersService} from '../../services/filters.service';
 
 @Component({
   selector: 'app-product-listing',
@@ -25,18 +26,19 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   constructor(
     public paginationService: PaginationService,
     private productsService: ProductsService,
-    private router: Router
+    private router: Router,
+    private filterService: FiltersService
   ) {
   }
 
   ngOnInit(): void {
     this.subscription = this.productsService.detailsFiltersState$.subscribe(filter => {
       this.paginationService.initPagination();
-      this.getAllDetails(10, this.paginationService.page, filter.gender as Gender, filter.category, filter.size,
+      this.getAllDetails(10, this.paginationService.page, filter.name, filter.gender as Gender, filter.category, filter.size,
         filter.color, filter.brand, filter.classBy as Order);
     });
     this.paginationService.initPagination();
-    this.getAllDetails(10, this.paginationService.page, undefined, '', '', '', '', Order.ASC);
+    this.getAllDetails(10, this.paginationService.page, this.filterService.filter.name, undefined, '', '', '', '', Order.ASC);
 
     this.isMobile = this.verifyWindowWidth();
   }
@@ -58,11 +60,12 @@ export class ProductListingComponent implements OnInit, OnDestroy {
     return window.innerWidth < 768 ? true : false;
   }
 
-  getAllDetails(size: number, page: number, gender?: Gender, category?: string,
+  getAllDetails(size: number, page: number, name?: string, gender?: Gender, category?: string,
                 productSize?: string, color?: string, brand?: string, order?: Order): void {
-    this.productsService.getAllDetails(size, page, gender, category, productSize, color, brand, order)
+    this.productsService.getAllDetails(size, page, name, gender,  category, productSize, color, brand, order)
       .pipe(take(1))
       .subscribe(response => {
+        console.log(response);
           this.productsDetails = response.content;
           this.content = response;
           this.paginationService.getPageRange(this.content.totalElements);
@@ -83,7 +86,16 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   }
 
   updateIndex(index: number): void {
-    this.getAllDetails(10, index, undefined, '', '', '', '', Order.ASC);
+    this.getAllDetails(
+      10,
+      index,
+      this.filterService.filter.name,
+      this.filterService.filter.gender,
+      this.filterService.filter.category,
+      this.filterService.filter.size,
+      this.filterService.filter.color,
+      Order.ASC
+    );
     this.paginationService.page = index;
   }
 }

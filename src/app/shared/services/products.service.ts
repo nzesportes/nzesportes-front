@@ -18,6 +18,7 @@ export class ProductsService {
   api: string = environment.NZESPORTES_API + 'products/';
   // tslint:disable-next-line:variable-name
   private _detailsFiltersState = new BehaviorSubject<DetailsFiltersRequest>({
+    name: '',
     gender: '',
     category: '',
     size: '',
@@ -100,19 +101,22 @@ export class ProductsService {
     return this.http.put<Stock>(this.api + 'details/stock', updateStock, {params});
   }
 
-  getAllDetails(size: number, page: number, gender?: Gender, category?: string, productSize?: string, color?: string, brand?: string, order?: Order): Observable<ProductDetailsPage> {
+  getAllDetails(size: number, page: number, name?: string, gender?: Gender, category?: string, productSize?: string, color?: string, brand?: string, order?: Order): Observable<ProductDetailsPage> {
     const urlGender = gender ? '&gender=' + gender.toString() : '';
     const urlCategory = category ? '&category=' + category : '';
     const urlProductSize = productSize ? '&productSize=' + productSize : '';
     const urlColor = color ? '&color=' + color : '';
     const urlBrand = brand ? '&brand=' + brand : '';
     const urlOrder = order ? '&order=' + order.toString() : '';
-    return this.http.get<ProductDetailsPage>(this.api + 'details?page=' + page.toString() + '&size=' + size.toString()
+    const urlName = name ? '&name=' + name.toString() : '';
+
+    return this.http.get<ProductDetailsPage>(this.api + 'details?page=' + page.toString() + '&size=' + size.toString() + urlName +
       + urlGender + urlCategory + urlProductSize + urlColor + urlBrand + urlOrder);
   }
 
-  setDetailsFiltersState(gender?: string, category?: string, size?: string, color?: string, brand?: string, classBy?: string): void {
+  setDetailsFiltersState(name?: string, gender?: string, category?: string, size?: string, color?: string, brand?: string, classBy?: string): void {
     const filter: DetailsFiltersRequest = this._detailsFiltersState.getValue();
+    filter.name = name ? name : '';
     filter.gender = gender ? gender : '';
     filter.category = category ? category : '';
     filter.size = size ? size : '';
