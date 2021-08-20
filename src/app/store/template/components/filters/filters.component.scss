@@ -75,6 +75,47 @@
   margin-bottom: 0;
 }
 
+input.radiosInput {
+  visibility: hidden;
+}
+
+label.form-check-label {
+  width: calc(100% - 20px);
+  cursor: pointer;
+}
+
+.container-remove-filters {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0 16px 8px;
+  gap: 10px;
+}
+
+.remove-filter {
+  border: 1px solid #e9ecef;
+  background-color: #e8e8e8;
+  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: 40px;
+}
+
+.btn-remove-filter {
+  padding: 5px;
+  position: relative;
+}
+
+.btn-remove-filter i {
+  font-size: 10px;
+  position: absolute;
+  top: 0;
+  left: 3px;
+}
+
+.remove-all-filters {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 @media (min-width: 576px) {
 
 }
