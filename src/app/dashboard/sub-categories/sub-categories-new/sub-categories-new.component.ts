@@ -144,7 +144,7 @@ export class SubCategoriesNewComponent implements OnInit {
       .subscribe(r => {
         this.categories = r.content;
         this.createFormCategories();
-        this.categoriesFromSubCategoies.clear();
+        this.categoriesArrayForm.clear();
         this.categories.forEach(c => this.categoriesArrayForm.push(this.createFormArrayCategorie(c)));
 
       }, () => {

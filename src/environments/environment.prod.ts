@@ -9,5 +9,6 @@ export const environment = {
     ME_TOKEN: 'undefined',
     ME_REDIRECT_URI: 'undefined',
     ME_REQUEST_SCOPE: 'undefined',
-    ME_STATE: 'undefined'
+    ME_STATE: 'undefined',
+    ME_URL: 'undefined'
 };
