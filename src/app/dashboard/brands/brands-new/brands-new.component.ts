@@ -31,6 +31,7 @@ export class BrandsNewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.hasError = false;
     this.createForm();
     if (this.router.url.includes('marcas/marca')) {
       this.route.params.pipe(

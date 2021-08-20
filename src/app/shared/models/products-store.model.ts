@@ -15,6 +15,5 @@ export interface ProductsStore {
   brand: Brand;
   sale: Sale;
   gender: Gender;
-  niche: string;
   status: string;
 }

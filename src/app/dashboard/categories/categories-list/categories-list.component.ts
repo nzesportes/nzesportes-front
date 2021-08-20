@@ -31,6 +31,7 @@ export class CategoriesListComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit(): void {
+    this.hasError = false;
     this.createForm();
 
   }
@@ -76,7 +77,6 @@ export class CategoriesListComponent implements OnInit, AfterContentInit {
     this.page = 0;
     const status = this.formFilter.get('status')?.value;
     const name = this.formFilter.get('name')?.value;
-    console.log(name);
     this.getAllCategories(10, 0, status, name);
   }
 }

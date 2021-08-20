@@ -22,6 +22,7 @@ export class BrandsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.hasError = false;
     this.paginationService.initPagination();
     this.getAllBrands(10, this.paginationService.page);
   }

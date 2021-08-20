@@ -40,6 +40,7 @@ export class ProductsListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.hasError = false;
     this.paginationService.initPagination();
     this.createForm();
     this.verifyHasBrandsCategories();

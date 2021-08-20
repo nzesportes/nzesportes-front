@@ -50,7 +50,6 @@ export class ComingUpComponent implements OnInit {
                 brand: p.brand,
                 sale: pd.sale,
                 gender: pd.gender,
-                niche: pd.niche,
                 status: pd.status
               };
               result.push(productStore);
