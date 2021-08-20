@@ -24,6 +24,7 @@ export class SendRequestComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.hasError = false;
     const url = environment.ME_URL;
     const clientId = environment.ME_CLIENT_ID;
     const redirectUri = environment.ME_REDIRECT_URI;

@@ -31,6 +31,7 @@ export class CategoriesListComponent implements OnInit, AfterContentInit {
   }
 
   ngOnInit(): void {
+    this.hasError = false;
     this.createForm();
 
   }

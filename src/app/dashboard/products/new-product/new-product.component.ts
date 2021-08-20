@@ -46,6 +46,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.hasError = false;
     this.createFormCategories();
     this.initAllForms();
     if (this.router.url.includes('produtos/produto')) {

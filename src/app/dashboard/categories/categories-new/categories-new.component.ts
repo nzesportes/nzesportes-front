@@ -7,10 +7,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {CategoriesService} from '../../../shared/services/categories.service';
 import {map, take} from 'rxjs/operators';
 import {ErrorWarning} from '../../../shared/models/error-warning.model';
-import {ProductsService} from '../../../shared/services/products.service';
-import {Product} from '../../../shared/models/product.model';
 import {PaginationService} from '../../../shared/services/pagination.service';
-import {ProductPage} from '../../../shared/models/pagination-model/product-page.model';
 
 @Component({
   selector: 'app-categories-new',
@@ -39,6 +36,7 @@ export class CategoriesNewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.hasError = false;
     this.createForm();
     if (this.router.url.includes('categorias/categoria')) {
       this.route.params.pipe(

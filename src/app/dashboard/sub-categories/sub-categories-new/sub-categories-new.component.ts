@@ -9,7 +9,6 @@ import {SubCategoriesService} from '../../../shared/services/sub-categories.serv
 import {ErrorWarning} from '../../../shared/models/error-warning.model';
 import {CategoriesService} from '../../../shared/services/categories.service';
 import {Category} from '../../../shared/models/category.model';
-import {Gender} from '../../../shared/enums/gender';
 
 @Component({
   selector: 'app-sub-categories-new',
@@ -40,6 +39,7 @@ export class SubCategoriesNewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.hasError = false;
     this.createForm();
     this.createFormCategories();
     if (this.router.url.includes('sub-categorias/sub-categoria')) {
@@ -49,15 +49,16 @@ export class SubCategoriesNewComponent implements OnInit {
         this.subCategoriesService.getById(id)
           .pipe(take(1))
           .subscribe(c => {
-            console.log(c);
             this.subCategory = c;
             this.createForm();
+            this.getCategories();
           }, () => {
             this.hasError = true;
           });
       });
+    }else{
+      this.getCategories();
     }
-    this.getCategories();
   }
   private createForm(): void {
     this.formSubCategory = this.formBuilder.group({
@@ -143,6 +144,7 @@ export class SubCategoriesNewComponent implements OnInit {
       .subscribe(r => {
         this.categories = r.content;
         this.createFormCategories();
+        this.categoriesFromSubCategoies.clear();
         this.categories.forEach(c => this.categoriesArrayForm.push(this.createFormArrayCategorie(c)));
 
       }, () => {
