@@ -11,13 +11,13 @@
     </div>
 
     <div class="nav-column-right text-right float-left">
-      <form class="search-header">
-        <input class="form-control" type="search" placeholder="PESQUISAR..." aria-label="Search">
-        <button><i class="fas fa-search"></i></button>
-      </form>
+      <div class="search-header">
+        <input class="form-control" type="search" [(ngModel)]="search"  placeholder="PESQUISAR..." aria-label="Search">
+        <button (click)="searchProducts()"><i class="fas fa-search"></i></button>
+      </div>
       <div class="nav-cart">
         <a class="nav-cart-button">
-          <span><i>{{ getTotalItemsCart() }}</i></span>
+<!--          <span><i>{{ getTotalItemsCart() }}</i></span>-->
           <i class="fas fa-shopping-cart"></i>
         </a>
         <div class="cart-preview">

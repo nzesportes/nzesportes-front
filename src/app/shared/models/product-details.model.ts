@@ -1,6 +1,7 @@
 import {Brand} from './brand.model';
 import {Gender} from '../enums/gender';
 import {Sale} from './sale.model';
+import {SubCategory} from './sub-category.model';
 
 export interface ProductDetails {
   id: string;
@@ -11,11 +12,13 @@ export interface ProductDetails {
   brand: Brand;
   sale: Sale;
   gender: Gender;
-  niche: string;
   status: string;
   stock: Stock[];
   productId: string;
   stockToAdd: any[];
+  subCategories: SubCategory[];
+  subCategoriesToAdd: string[];
+  subCategoriesToRemove: string[];
 }
 
 export interface ProductDetailUpdateTO {
@@ -27,11 +30,13 @@ export interface ProductDetailUpdateTO {
   brand: Brand;
   sale: Sale;
   gender: Gender;
-  niche: string;
   status: string;
   stock: Stock[];
   productId: string;
   stockToAdd: any[];
+  subCategories: SubCategory[];
+  subCategoriesToAdd: string[];
+  subCategoriesToRemove: string[];
 }
 
 export interface Stock {

@@ -1,10 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ChangePasswordTO} from '../../../shared/models/change-password-TO.model';
 import {take} from 'rxjs/operators';
 import {AuthService} from '../../../shared/services/auth.service';
 import {Observable} from 'rxjs';
 import {ActivatedRoute, Params, Router} from '@angular/router';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
+import {ErrorWarning} from '../../../shared/models/error-warning.model';
 
 @Component({
   selector: 'app-first-access',
@@ -12,6 +14,11 @@ import {ActivatedRoute, Params, Router} from '@angular/router';
   styleUrls: ['./first-access.component.scss']
 })
 export class FirstAccessComponent implements OnInit {
+
+  @ViewChild('success')
+  public readonly dialogSuccess!: SwalComponent;
+  @ViewChild('error')
+  public readonly dialogError!: SwalComponent;
 
   // @ts-ignore
   formFirstAccess: FormGroup;
@@ -75,9 +82,26 @@ export class FirstAccessComponent implements OnInit {
     this.authService.firstAccess(this.id, this.changePasswordTO, this.flow)
       .pipe(take(1))
       .subscribe(() => {
-        this.router.navigate(['']);
-      }, error => {
-        console.log(error);
+        this.formFirstAccess.reset();
+        this.dialogSuccess.title = 'Senha criada com sucesso!';
+        this.dialogSuccess.fire();
+      }, (error: ErrorWarning) => {
+        this.setErrorDialog(error);
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.changePassword();
+          }
+        });
       });
+  }
+
+  redirect(): void {
+    this.router.navigateByUrl('/');
+  }
+
+  setErrorDialog(error: ErrorWarning): void {
+    this.dialogError.confirmButtonText = error.action;
+    this.dialogError.title = error.title;
+    this.dialogError.text = error.message;
   }
 }

@@ -1,10 +1,13 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {AuthService} from '../../../../shared/services/auth.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import validator from 'cpf-cnpj-validator';
 import {ChangePasswordTO} from '../../../../shared/models/change-password-TO.model';
 import {take} from 'rxjs/operators';
 import {Observable} from 'rxjs';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
+import {ErrorWarning} from '../../../../shared/models/error-warning.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-change-password',
@@ -13,6 +16,11 @@ import {Observable} from 'rxjs';
 })
 export class ChangePasswordComponent implements OnInit {
 
+  @ViewChild('success')
+  public readonly dialogSuccess!: SwalComponent;
+  @ViewChild('error')
+  public readonly dialogError!: SwalComponent;
+
   // @ts-ignore
   formChangePassword: FormGroup;
   // @ts-ignore
@@ -20,7 +28,8 @@ export class ChangePasswordComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) {
   }
 
@@ -67,9 +76,26 @@ export class ChangePasswordComponent implements OnInit {
     this.authService.changePassword(this.changePasswordTO)
       .pipe(take(1))
       .subscribe(() => {
-        window.location.reload();
-      }, error => {
-        console.log(error);
+        this.formChangePassword.reset();
+        this.dialogSuccess.title = 'Senha trocada com sucesso!';
+        this.dialogSuccess.fire();
+      }, (error: ErrorWarning) => {
+      this.setErrorDialog(error);
+      this.dialogError.fire().then(r => {
+        if (r.isConfirmed) {
+          this.changePassword();
+        }
       });
+    });
+  }
+
+  redirect(): void {
+    this.router.navigateByUrl('/');
+  }
+
+  setErrorDialog(error: ErrorWarning): void {
+    this.dialogError.confirmButtonText = error.action;
+    this.dialogError.title = error.title;
+    this.dialogError.text = error.message;
   }
 }

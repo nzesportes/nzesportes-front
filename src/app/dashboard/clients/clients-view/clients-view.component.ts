@@ -19,12 +19,13 @@ export class ClientsViewComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private customerService: CustomerService,
-    private userService: UserService
   ) { }
 
   ngOnInit(): void {
+    this.hasError = false;
     this.route.params.pipe(
-      map(p => p.id)
+      map(p => p.id),
+      take(1)
     ).subscribe(id => {
       this.customerService.getById(id)
         .pipe(take(1))

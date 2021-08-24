@@ -14,6 +14,8 @@ import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 })
 export class ContactUsComponent implements OnInit {
 
+  @ViewChild('success')
+  public readonly dialogSuccess!: SwalComponent;
   @ViewChild('error')
   public readonly dialogError!: SwalComponent;
 
@@ -50,6 +52,8 @@ export class ContactUsComponent implements OnInit {
       .pipe(take(1))
       .subscribe(() => {
         this.formContact.reset();
+        this.dialogSuccess.title = 'Formulário enviado com sucesso!';
+        this.dialogSuccess.fire();
       }, (error: ErrorWarning) => {
         this.setErrorDialog(error);
         this.dialogError.fire().then(r => {

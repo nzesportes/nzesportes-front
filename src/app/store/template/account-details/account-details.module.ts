@@ -9,6 +9,7 @@ import { MyFavoritesComponent } from './my-favorites/my-favorites.component';
 import {MyAddressesModule} from './my-addresses/my-addresses.module';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 
 
 @NgModule({
@@ -19,10 +20,11 @@ import {ReactiveFormsModule} from '@angular/forms';
     MyFavoritesComponent,
     ChangePasswordComponent
   ],
-  imports: [
-    CommonModule,
-    AccountDetailsRoutingModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        AccountDetailsRoutingModule,
+        ReactiveFormsModule,
+        SweetAlert2Module
+    ]
 })
 export class AccountDetailsModule { }

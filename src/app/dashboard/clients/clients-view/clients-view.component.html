@@ -3,7 +3,7 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/painel/clientes">Clientes</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{customer.name | titlecase}} {{customer.lastName | titlecase}}</li>
+        <li class="breadcrumb-item active" aria-current="page" *ngIf="!hasError">{{customer?.name | titlecase}} {{customer?.lastName | titlecase}}</li>
       </ol>
     </nav>
   </div>
@@ -25,38 +25,40 @@
         <div class="form-row mb-lg-3">
           <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
             <h6 for="name" class="">Nome</h6>
-            <div id="name"> {{customer.name | titlecase}} {{customer.lastName | titlecase}}</div>
+            <div id="name"> {{customer?.name | titlecase}} {{customer?.lastName | titlecase}}</div>
           </div>
-          <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
-            <h6 for="email">Email</h6>
-            <div id="email"> apreencher@gmail.com</div>
-          </div>
+
           <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
             <h6 for="cpf">CPF</h6>
-            <div id="cpf">{{customer.cpf}}</div>
+            <div id="cpf">{{customer?.cpf}}</div>
+          </div>
+
+          <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+            <h6 for="email">EMAIL</h6>
+            <div id="email">A definir</div>
           </div>
         </div>
 
         <div class="form-row mb-lg-3">
           <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
             <h6 for="number">Telefone</h6>
-            <div id="number">{{customer.phone}}</div>
+            <div id="number">{{customer?.phone}}</div>
           </div>
           <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
             <h6 for="sexo">Sexo</h6>
-            <div id="sexo">{{customer.gender.toLowerCase() === 'm' ? 'Masculino' : 'Feminino' }}</div>
+            <div id="sexo">{{customer ? customer.gender.toLowerCase() === 'm' ? 'Masculino' : 'Feminino' : '' }}</div>
 
           </div>
           <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
             <h6 for="dateNasc">Data de Nascimento</h6>
-            <div id="dateNasc">{{customer.birthDate}}</div>
+            <div id="dateNasc">{{customer?.birthDate}}</div>
           </div>
         </div>
 
         <div class="form-row mb-lg-3">
           <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
             <h6 for="instagram">Instagram</h6>
-            <div id="instagram">{{customer.instagram}}</div>
+            <div id="instagram">{{customer?.instagram}}</div>
           </div>
 
         </div>
@@ -65,61 +67,61 @@
   </div>
 </div>
 
-<div class="row mt-3" *ngIf="!hasError">
-  <div class="col-12 mb-3">
-    <div class="card mb-3">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-lg-9 col-sm-12">
-            <h5 class="card-title">Endereço</h5>
-          </div>
-          <div class="col-lg-3 col-sm-12 ">
-            <button type="button" class="btn btn-primary w-100"> Adicionar outro endereço</button>
-          </div>
-        </div>
+<!--<div class="row mt-3" *ngIf="!hasError">-->
+<!--  <div class="col-12 mb-3">-->
+<!--    <div class="card mb-3">-->
+<!--      <div class="card-body">-->
+<!--        <div class="row">-->
+<!--          <div class="col-lg-9 col-sm-12">-->
+<!--            <h5 class="card-title">Endereço</h5>-->
+<!--          </div>-->
+<!--          <div class="col-lg-3 col-sm-12 ">-->
+<!--            <button type="button" class="btn btn-primary w-100"> Adicionar outro endereço</button>-->
+<!--          </div>-->
+<!--        </div>-->
 
-        <hr>
-        <div class="card mb-3">
-          <div class="card-body">
-            <div class="form-row mb-lg-3">
-              <div class="form-group col-lg-3 col-sm-12 mb-3 mb-lg-0">
-                <label for="cep">CEP</label>
-                <input type="text" class="form-control" id="cep" placeholder="00000-000">
-              </div>
-              <div class="form-group col-lg-9 col-sm-12 mb-3 mb-lg-0">
-                <label for="address">Endereço</label>
-                <input type="text" class="form-control" id="address" placeholder="Avenida Paulista">
-              </div>
-            </div>
-            <div class="form-row mb-lg-3">
-              <div class="form-group col-lg-3 col-sm-12 mb-3 mb-lg-0">
-                <label for="numerAddress">Número</label>
-                <input type="text" class="form-control" id="numerAddress" placeholder="177">
-              </div>
-              <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
-                <label for="bairro">Bairro</label>
-                <input type="text" class="form-control" id="bairro" placeholder="Tatupé">
-              </div>
-              <div class="form-group col-lg-5 col-sm-12 mb-3 mb-lg-0">
-                <label for="complement">Complemento</label>
-                <input type="text" class="form-control" id="complement" placeholder="Perto da marginal">
-              </div>
-            </div>
-            <div class="form-row mb-lg-3">
-              <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
-                <label for="state">Estado</label>
-                <input type="text" class="form-control" id="state" placeholder="São Paulo">
-              </div>
-              <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
-                <label for="city">Cidade</label>
-                <input type="text" class="form-control" id="city" placeholder="Suzano">
-              </div>
-            </div>
-          </div>
-        </div>
+<!--        <hr>-->
+<!--        <div class="card mb-3">-->
+<!--          <div class="card-body">-->
+<!--            <div class="form-row mb-lg-3">-->
+<!--              <div class="form-group col-lg-3 col-sm-12 mb-3 mb-lg-0">-->
+<!--                <label for="cep">CEP</label>-->
+<!--                <input type="text" class="form-control" id="cep" placeholder="00000-000">-->
+<!--              </div>-->
+<!--              <div class="form-group col-lg-9 col-sm-12 mb-3 mb-lg-0">-->
+<!--                <label for="address">Endereço</label>-->
+<!--                <input type="text" class="form-control" id="address" placeholder="Avenida Paulista">-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="form-row mb-lg-3">-->
+<!--              <div class="form-group col-lg-3 col-sm-12 mb-3 mb-lg-0">-->
+<!--                <label for="numerAddress">Número</label>-->
+<!--                <input type="text" class="form-control" id="numerAddress" placeholder="177">-->
+<!--              </div>-->
+<!--              <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">-->
+<!--                <label for="bairro">Bairro</label>-->
+<!--                <input type="text" class="form-control" id="bairro" placeholder="Tatupé">-->
+<!--              </div>-->
+<!--              <div class="form-group col-lg-5 col-sm-12 mb-3 mb-lg-0">-->
+<!--                <label for="complement">Complemento</label>-->
+<!--                <input type="text" class="form-control" id="complement" placeholder="Perto da marginal">-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <div class="form-row mb-lg-3">-->
+<!--              <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">-->
+<!--                <label for="state">Estado</label>-->
+<!--                <input type="text" class="form-control" id="state" placeholder="São Paulo">-->
+<!--              </div>-->
+<!--              <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">-->
+<!--                <label for="city">Cidade</label>-->
+<!--                <input type="text" class="form-control" id="city" placeholder="Suzano">-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
 
-      </div>
-    </div>
-  </div>
-</div>
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 

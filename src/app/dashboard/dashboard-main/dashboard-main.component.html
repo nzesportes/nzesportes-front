@@ -17,6 +17,12 @@
           </a>
         </li>
         <li class="nav-item">
+          <a  routerLink="sub-categorias" class="nav-link text-white" routerLinkActive="active">
+            <svg class="bi me-2" width="16" height="16"></svg>
+            Subcategorias
+          </a>
+        </li>
+        <li class="nav-item">
           <a  routerLink="marcas" class="nav-link text-white" routerLinkActive="active">
             <svg class="bi me-2" width="16" height="16"></svg>
             Marcas
@@ -46,6 +52,18 @@
             Gerenciar Usuários
           </a>
         </li>
+        <li>
+          <a routerLink="fale-conosco" class="nav-link text-white" routerLinkActive="active">
+            <svg class="bi me-2" width="16" height="16"></svg>
+            Fale Conosco
+          </a>
+        </li>
+        <li>
+          <a routerLink="melhor-envio" class="nav-link text-white" routerLinkActive="active">
+            <svg class="bi me-2" width="16" height="16"></svg>
+            Melhor envio
+          </a>
+        </li>
       </ul>
     </div>
   </div>
@@ -72,6 +90,9 @@
           <li class="nav-item " routerLink="categorias" routerLinkActive="active">
             <a class="nav-link">Categorias</a>
           </li>
+          <li class="nav-item " routerLink="sub-categorias" routerLinkActive="active">
+            <a class="nav-link">Subcategorias</a>
+          </li>
           <li class="nav-item " routerLink="marcas" routerLinkActive="active">
             <a class="nav-link">Marcas</a>
           </li>
@@ -84,7 +105,13 @@
           <li class="nav-item" routerLink="usuarios" routerLinkActive="active" *ngIf="isAdmin">
             <a class="nav-link">Gerenciar Usuários</a>
           </li>
-          <li class="nav-item" routerLink="usuarios" routerLinkActive="active">
+          <li class="nav-item " routerLink="fale-conosco" routerLinkActive="active">
+            <a class="nav-link">Fale Conosco</a>
+          </li>
+          <li class="nav-item " routerLink="melhor-envio" routerLinkActive="active">
+            <a class="nav-link">Melhor envio</a>
+          </li>
+          <li class="nav-item" (click)="logout()" routerLinkActive="active">
             <a class="nav-link"> Sair  <i class="fas fa-sign-out-alt"></i></a>
           </li>
           <li class="nav-item dropdown">

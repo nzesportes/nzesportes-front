@@ -48,36 +48,61 @@
           </li>
         </ul>
         <h3 class="title-details" for="inputSize">Escolher Tamanho</h3>
-        <div class="row m-0 container-size-qtde">
-          <div class="form-group col-9 p-0 pr-2">
-            <select id="inputSize" class="form-control" #stock (change)="changeMax(stock.selectedIndex)">
-              <option selected>Tamanho...</option>
-              <option *ngFor="let stock of productDetails?.stock" [value]="stock">{{ stock.size }}</option>
-            </select>
-            <small *ngIf="stock.selectedIndex > 0">{{ sizeMax }} unidades em estoque.</small>
+        <form [formGroup]="formStock">
+          <div class="row m-0 container-size-qtde">
+              <div class="form-group col-12 p-0 pr-2">
+                <select id="inputSize" class="form-control" [ngClass]="cssError(formStock.get('stocksize'))" formControlName="stocksize" #stock (change)="changeMax(stock.selectedIndex)">
+                  <option [selected]="i === 0" *ngFor="let stock of productDetails?.stock; let i = index" [value]="stock">{{ stock.size }}</option>
+                </select>
+                <div id="field-inputSize" *ngIf="formStock.get('stocksize')?.hasError('required')" class="invalid-feedback">
+                  <small>Por favor, insira o tamanho.</small>
+                </div>
+                <small class="mb-1" *ngIf="stock.value">{{ sizeMax }} unidades em estoque.</small>
+                <p></p>
+                <small *ngIf="noStock">Carrinho já possui {{sizeMax}} deste item. Limitado a  {{sizeMax}} item por compra.</small>
+<!---->
+              </div>
+<!--            <div class="form-group col-3 p-0">-->
+<!--              <input type="number" class="form-control" [min]="1" [max]="sizeMax" [(ngModel)]="startValue" [ngModelOptions]="{ standalone: true }">-->
+<!--            </div>-->
           </div>
-          <div class="form-group col-3 p-0">
-            <input type="number" class="form-control" [min]="1" [max]="sizeMax" [(ngModel)]="startValue" [ngModelOptions]="{ standalone: true }">
-          </div>
-        </div>
+        </form>
+
         <div class="mt-3 text-center text-lg-left">
           <button type="button" class="btn btn-primary btn-add-cart"
-          (click)="addToCart('10')">Adicionar ao carrinho<i
+          (click)="addToCart(productDetails, stock.selectedIndex)">Adicionar ao carrinho<i
             class="fas fa-chevron-right"></i></button>
         </div>
       </form>
-      <form class="pt-3">
+      <form class="pt-3" [formGroup]="formShipping">
         <h3 class="title-details">Calcular Frete</h3>
         <div class="row p-0 m-0">
           <div class="input-group mb-3 col-12 col-lg-6 cep p-0 m-0">
-            <input type="text" class="form-control" mask="00000-000" [showMaskTyped]="true">
+            <input type="text" id="inputShipping" class="form-control" [ngClass]="cssError(formShipping.get('shipping'))" mask="00000-000" formControlName="shipping" [showMaskTyped]="true">
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" (click)="calculate()">Calcular</button>
+              <button class="btn btn-outline-secondary" type="button" (click)="calculateShipping()">Calcular</button>
+            </div>
+            <div id="field-inputShipping" *ngIf="formShipping.get('shipping')?.hasError('required')" class="invalid-feedback">
+              <small>Por favor, insira o CEP.</small>
+            </div>
+            <div id="field-inputShippingValid" *ngIf="formShipping.get('shipping')?.hasError('pattern')" class="invalid-feedback">
+              <small>Por favor, insira um cep válido.</small>
             </div>
           </div>
         </div>
-        <div class="col-12 p-0 m-0" *ngIf="shipping">
-          Até {{ shipping?.dias }} dias úteis - R$ {{ shipping?.valor }}
+        <div class="row p-0 m-0" *ngFor="let result of shippingResult">
+          <div class="img-shipping">
+            <img [src]="result.company.picture">
+          </div>
+          <div class="m-1">
+            até {{ result.delivery_range.max }} dias úteis - R$ {{ result?.price }} ({{result.name}})
+          </div>
+        </div>
+        <div class="alert alert-warning" role="alert" *ngIf="notShipResult">
+          Não foi possível realizar o cálculo de frete para este CEP.
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="errorShipResult">
+          Ops, ocorreu um erro! Não foi possível fazer a busca.
         </div>
       </form>
 
