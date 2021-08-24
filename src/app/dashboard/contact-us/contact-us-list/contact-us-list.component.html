@@ -1,0 +1,46 @@
+<div class="d-flex justify-content-between m-3">
+  <div>
+    <h3>Fale Conosco</h3>
+  </div>
+
+</div>
+
+<div class="card mb-3 mr-3 ml-3">
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th scope="col" style="width: 30%">Nome Completo</th>
+        <th scope="col" style="width: 55%">Mensagem</th>
+        <th scope="col" style="width: 15%">Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr scope="row" class="row-table" *ngFor="let contact of contacts" routerLink="{{ contact.id }}">
+        <th>{{ contact.fullName }}</th>
+        <td>
+          <div>
+            {{ contact.message | slice:0:60 }}...
+          </div>
+        </td>
+        <td>{{ contact.read ? 'Lido' : ' Não Lido ' }}</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<nav aria-label="Page navigation example" *ngIf="content && contacts.length > 0">
+  <ul class="pagination justify-content-end mr-3 ml-3">
+    <li class="page-item" [ngClass]="{'disabled': this.paginationService.page === 0}">
+      <a class="page-link" tabindex="-1" aria-disabled="true" (click)="updateIndex(this.paginationService.page-1)">Previous</a>
+    </li>
+    <li class="page-item" [ngClass]="{'active': i == this.paginationService.page }"
+        *ngFor="let i of this.paginationService.getRange(); let in = index">
+      <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
+    </li>
+    <li class="page-item" [ngClass]="{'disabled': (this.paginationService.page  + 1) === this.paginationService.pages }">
+      <a class="page-link" (click)="updateIndex(this.paginationService.page + 1)">Next</a>
+    </li>
+  </ul>
+</nav>

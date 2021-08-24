@@ -2,6 +2,10 @@
 
  <!-- Sidebar -->
   <div class="bg-light border-right sidebar-wrapper" [class.active]="isSidebarOpened">
+    <form class="search-header">
+      <input class="form-control" type="search" placeholder="PESQUISAR..." aria-label="Search">
+      <button><i class="fas fa-search"></i></button>
+    </form>
     <app-menu-items></app-menu-items>
   </div>
   <!-- /#sidebar-wrapper -->
@@ -26,3 +30,5 @@
 
 <!-- </div> -->
 
+<!-- Modal esqueci minha senha -->
+<app-forgot-password></app-forgot-password>

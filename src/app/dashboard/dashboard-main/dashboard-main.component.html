@@ -5,7 +5,7 @@
     <div class="list-group list-group-flush">
       <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-          <a  routerLink="produtos" class="nav-link text-white" routerLinkActive="active">
+          <a  (click)="verifyHasBrandsCategories()" routerLink="produtos" class="nav-link text-white" routerLinkActive="active">
             <svg class="bi me-2" width="16" height="16"></svg>
             Produtos
           </a>
@@ -14,6 +14,18 @@
           <a  routerLink="categorias" class="nav-link text-white" routerLinkActive="active">
             <svg class="bi me-2" width="16" height="16"></svg>
             Categorias
+          </a>
+        </li>
+        <li class="nav-item">
+          <a  routerLink="sub-categorias" class="nav-link text-white" routerLinkActive="active">
+            <svg class="bi me-2" width="16" height="16"></svg>
+            Subcategorias
+          </a>
+        </li>
+        <li class="nav-item">
+          <a  routerLink="marcas" class="nav-link text-white" routerLinkActive="active">
+            <svg class="bi me-2" width="16" height="16"></svg>
+            Marcas
           </a>
         </li>
         <li class="nav-item">
@@ -34,10 +46,22 @@
             Clientes
           </a>
         </li>
-        <li>
+        <li *ngIf="isAdmin">
           <a routerLink="usuarios" routerLinkActive="active" class="nav-link text-white">
             <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"/></svg>
             Gerenciar Usuários
+          </a>
+        </li>
+        <li>
+          <a routerLink="fale-conosco" class="nav-link text-white" routerLinkActive="active">
+            <svg class="bi me-2" width="16" height="16"></svg>
+            Fale Conosco
+          </a>
+        </li>
+        <li>
+          <a routerLink="melhor-envio" class="nav-link text-white" routerLinkActive="active">
+            <svg class="bi me-2" width="16" height="16"></svg>
+            Melhor envio
           </a>
         </li>
       </ul>
@@ -48,23 +72,47 @@
   <div id="page-content-wrapper">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">
       <button class="btn btn-dark" id="menu-toggle"> <span class="navbar-toggler-icon"></span></button>
+      <div class="menu_right">
+        <button class="btn btn-dark button-profile" routerLink="conta" routerLinkActive="active-button-profile"> Perfil  <i class="fas fa-user-circle"></i></button>
+        <button class="btn btn-dark" (click)="logout()"> Sair  <i class="fas fa-sign-out-alt"></i></button>
+      </div>
+
+
       <div id="title_mobile_nav" class="text-white">Nzesportes </div>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto mt-2 mt-lg-0" id="menu_navbar_top">
-          <li class="nav-item " routerLink="produtos" routerLinkActive="active">
+          <li class="nav-item "  (click)="verifyHasBrandsCategories()" routerLink="produtos" routerLinkActive="active">
             <a class="nav-link">Produtos</a>
           </li>
           <li class="nav-item " routerLink="categorias" routerLinkActive="active">
             <a class="nav-link">Categorias</a>
           </li>
+          <li class="nav-item " routerLink="sub-categorias" routerLinkActive="active">
+            <a class="nav-link">Subcategorias</a>
+          </li>
+          <li class="nav-item " routerLink="marcas" routerLinkActive="active">
+            <a class="nav-link">Marcas</a>
+          </li>
+          <li class="nav-item " routerLink="categorias" routerLinkActive="active">
+            <a class="nav-link">Promoções</a>
+          </li>
           <li class="nav-item " routerLink="clientes" routerLinkActive="active">
             <a class="nav-link">Clientes</a>
           </li>
-          <li class="nav-item" routerLink="usuarios" routerLinkActive="active">
+          <li class="nav-item" routerLink="usuarios" routerLinkActive="active" *ngIf="isAdmin">
             <a class="nav-link">Gerenciar Usuários</a>
+          </li>
+          <li class="nav-item " routerLink="fale-conosco" routerLinkActive="active">
+            <a class="nav-link">Fale Conosco</a>
+          </li>
+          <li class="nav-item " routerLink="melhor-envio" routerLinkActive="active">
+            <a class="nav-link">Melhor envio</a>
+          </li>
+          <li class="nav-item" (click)="logout()" routerLinkActive="active">
+            <a class="nav-link"> Sair  <i class="fas fa-sign-out-alt"></i></a>
           </li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -87,3 +135,10 @@
   <!-- /#page-content-wrapper -->
 </div>
 <!-- /#wrapper -->
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  #warn
+  [title]="''"
+  [text]="''"
+  icon="warning">
+</swal>

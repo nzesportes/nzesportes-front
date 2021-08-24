@@ -4,6 +4,7 @@ import {ProductsRoutingModule} from './products-routing.module';
 import {ProductsListComponent} from './products-list/products-list.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NewProductComponent} from './new-product/new-product.component';
+import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 
 
 @NgModule({
@@ -11,12 +12,13 @@ import {NewProductComponent} from './new-product/new-product.component';
     ProductsListComponent,
     NewProductComponent
   ],
-  imports: [
-    CommonModule,
-    ProductsRoutingModule,
-    ReactiveFormsModule,
-    FormsModule,
-    ReactiveFormsModule
-  ]
+    imports: [
+        CommonModule,
+        ProductsRoutingModule,
+        ReactiveFormsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SweetAlert2Module
+    ]
 })
 export class ProductsModule { }

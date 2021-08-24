@@ -1,0 +1,128 @@
+.p-container {
+  padding: 100px 0 80px;
+}
+
+.page-title {
+  font-weight: 700;
+  font-size: 22px;
+  color: #2b2828;
+  margin-bottom: 22px;
+  text-transform: uppercase;
+}
+
+.container-card {
+  border-radius: 0;
+  text-transform: uppercase;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.container-card h5 {
+  font-size: 16px;
+}
+
+.container-card p {
+  font-size: 14px;
+  color: #B4B4B4;
+}
+
+.btn-add-address {
+  width: 100%;
+  border-radius: 0;
+  background-color: #F37135;
+  border: #F37135;
+  font-size: 14px;
+  margin-top: 10px;
+  font-weight: 500;
+  padding: 10px 6px;
+  text-transform: uppercase;
+  max-width: 380px;
+}
+
+.btn-add-address:hover {
+  opacity: 0.8;
+}
+
+.card-body {
+  min-height: 180px;
+}
+
+.my-order {
+  background-color: #2b2828;
+  color: #ededed;
+  font-size: 16px;
+  padding: 20px 30px;
+}
+
+.header-order {
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.your-order {
+  border-bottom: 1px solid #fff;
+  margin-bottom: 16px;
+}
+
+.your-order h3 {
+  font-size: 22px;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.footer-order {
+  margin-top: 16px;
+  border-top: 1px solid #fff;
+}
+
+.total-order {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.btn-finish-shopping {
+  position: relative;
+  width: 100%;
+  display: inline-block;
+  font-weight: 500;
+  padding: 12px 24px;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  -webkit-border-radius: 60px;
+  -moz-border-radius: 60px;
+  -ms-border-radius: 60px;
+  border-radius: 60px;
+  line-height: 25px;
+  -webkit-transition: all 0.4s ease;
+  -moz-transition: all 0.4s ease;
+  transition: all 0.4s ease;
+  background-color: #F37135;
+  color: #fff;
+}
+
+.container-login {
+  max-width: 320px;
+}
+
+@media (min-width: 576px) {
+
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .container-card {
+    max-width: none;
+  }
+}
+

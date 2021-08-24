@@ -1,1 +1,81 @@
-<p>clients-list works!</p>
+<div class="d-flex justify-content-between m-3">
+  <div>
+    <h3>Clientes</h3>
+  </div>
+  <div>
+<!--    <button type="button" class="btn btn-primary" routerLink="nova-marca"> + Nova marca</button>-->
+  </div>
+
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
+      <label for="name">Pesquisar</label>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" id="name" placeholder="Camiseta Leblon James"
+               aria-label="Camiseta Leblon James"
+               aria-describedby="basic-addon2" #search>
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" (click)="onChangeFilter(search.value)"><i class="fas fa-search"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="customers.length === 0 && !hasError">
+  Não encontramos nenhum cliente cadastrado em sua loja.
+</div>
+<div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
+  Não foi possível carregar algumas informações. Por favor, <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+</div>
+<div class="card mb-3 mr-3 ml-3" *ngIf="customers.length > 0">
+  <div class="table-responsive">
+
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th scope="col" style="width: 30%">Nome</th>
+        <th scope="col" style="width: 20%">CPF</th>
+        <th scope="col" style="width: 15%">Telefone</th>
+        <th scope="col" style="width: 15%">instagram</th>
+
+        <th scope="col" style="width: 10%">Ações</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr scope="row" class="row-table" *ngFor="let c of customers">
+        <td>{{c.name}} {{c.lastName}}</td>
+        <td>{{c.cpf}}</td>
+        <td>
+          <a
+            href="https://www.instagram.com/{{c.instagram.replace('@', '')}}"
+            class="badge badge-info"
+            target="_blank"
+          > {{c.instagram}}</a>
+        </td>
+        <td>{{c.phone}}</td>
+        <td ><i class="fas fa-eye text-primary" routerLink="view/{{c.id}}"></i></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<nav aria-label="Page navigation example" *ngIf="content && customers.length > 0">
+  <ul class="pagination justify-content-end mr-3 ml-3">
+    <li class="page-item" [ngClass]="{'disabled': this.paginationService.page === 0}">
+      <a class="page-link" tabindex="-1" aria-disabled="true" (click)="updateIndex(this.paginationService.page-1)">Previous</a>
+    </li>
+    <li class="page-item" [ngClass]="{'active': i == this.paginationService.page }"
+        *ngFor="let i of this.paginationService.getRange(); let in = index"
+    >
+      <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
+    </li>
+    <li class="page-item" [ngClass]="{'disabled': (this.paginationService.page  + 1) === this.paginationService.pages }">
+      <a class="page-link" (click)="updateIndex(this.paginationService.page + 1)">Next</a>
+    </li>
+  </ul>
+</nav>

@@ -1,0 +1,78 @@
+<div class="row mt-3">
+  <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/painel/usuarios">Gerenciar usuários</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Novo usuário</li>
+      </ol>
+    </nav>
+  </div>
+  <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0" routerLink="/painel/usuarios">
+    <button type="button" class="btn btn-secondary w-100">Cancelar</button>
+  </div>
+  <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
+    <button type="button" class="btn btn-primary w-100"
+            [disabled]="formUser.invalid"
+            (click)="save()">Salvar</button>
+  </div>
+</div>
+
+<div class="alert alert-danger" role="alert" *ngIf="hasError">
+  Não foi possível carregar algumas informações. Por favor, <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+</div>
+<form [formGroup]="formUser" *ngIf="!hasError">
+  <div class="row mt-3">
+    <div class="col-12 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Informações do usuário</h5>
+          <hr>
+          <div class="form-row mb-lg-3">
+            <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
+              <label for="username">E-mail (usuário)</label>
+              <input type="text" class="form-control" formControlName="username" id="username" aria-describedby="emailHelp"
+                     placeholder="victor.hugo@gmail.com"
+                     [ngClass]="cssError(validateFieldsFormUser.username)">
+              <div id="field-email" class="invalid-feedback">
+                <span *ngIf="validateFieldsFormUser.username?.errors?.required">Por favor, insira o e-mail.</span>
+                <span *ngIf="validateFieldsFormUser.username?.errors?.email">Por favor, insira um e-mail válido</span>
+              </div>
+            </div>
+            <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
+              <label for="color">Permissão</label>
+              <select class="form-control" id="color"
+                      formControlName="role"
+                      [ngClass]="cssError(validateFieldsFormUser.role)">
+                <option value="{{roles.ROLE_ADMIN}}">Administrador</option>
+                <option value="{{roles.ROLE_MODERATOR}}">Moderador</option>
+              </select>
+              <div id="field-color" class="invalid-feedback">
+                Por favor, insira a permissão.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<swal
+  #success
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirectToUsersPage()"
+  [title]="''"
+  icon="success">
+</swal>
+
+<swal
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirectToUsersPage()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>

@@ -1,6 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 // @ts-ignore
 import * as $ from 'jquery';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
+import {BrandsService} from '../../shared/services/brands.service';
+import {CategoriesService} from '../../shared/services/categories.service';
+import {zip} from 'rxjs';
+import {take} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {TokenStorageService} from '../../shared/services/token-storage.service';
+import {Role} from '../../shared/enums/role.enum';
 
 @Component({
   selector: 'app-dashboard-main',
@@ -8,20 +16,33 @@ import * as $ from 'jquery';
   styleUrls: ['./dashboard-main.component.scss']
 })
 export class DashboardMainComponent implements OnInit {
+  @ViewChild('warn')
+  public readonly dialogWarn!: SwalComponent;
 
-  sideBarOpen = true;
+  isAdmin = false;
 
-  constructor() {
+  constructor(
+    private brandsService: BrandsService,
+    private categoriesService: CategoriesService,
+    private tokenStorageService: TokenStorageService,
+    private router: Router,
+  ) {
   }
 
   ngOnInit(): void {
     // Toggle Click Function
     // tslint:disable-next-line:only-arrow-functions typedef
-    $('#menu-toggle').click( function(e: { preventDefault: () => void; }) {
+    $('#menu-toggle').click(function(e: { preventDefault: () => void; }) {
       e.preventDefault();
       $('#wrapper').toggleClass('toggled');
     });
+
+    const isAdmin = this.tokenStorageService.getSessionUser().roles.find(r => r === Role.ROLE_ADMIN);
+    if (isAdmin) {
+      this.isAdmin = true;
+    }
   }
+
   isMobile(): boolean {
     console.log(window.innerWidth);
     const windowWidth = window.innerWidth;
@@ -29,6 +50,28 @@ export class DashboardMainComponent implements OnInit {
     return userAgent.includes('iphone') || userAgent.includes('android') || windowWidth < 768;
   }
 
+  verifyHasBrandsCategories(): void {
+    zip(
+      this.brandsService.getAll(1, 0),
+      this.categoriesService.getAll(1, 0)
+    )
+      .pipe(take(1))
+      .subscribe(([brands, categories]) => {
+        if (brands.content.length === 0 || categories.content.length === 0) {
+          this.dialogWarn.title = 'Ops, ocorreu um problema';
+          this.dialogWarn.text = 'Para acessar a página de produto é necessário ter cadastrado ao menos uma categoria e marca!';
+          this.dialogWarn.fire();
+        } else {
+          this.router.navigateByUrl('/painel/produtos');
+        }
+      }, () => {
 
+      });
+  }
+
+  logout(): void {
+    this.tokenStorageService.signOut();
+    window.location.reload();
+  }
 
 }

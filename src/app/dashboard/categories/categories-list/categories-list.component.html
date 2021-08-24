@@ -7,59 +7,56 @@
   </div>
 
 </div>
-<div class="container-fluid">
-  <div class="row">
-    <div class="form-group col-lg-3 col-sm-12 mb-3 mb-lg-0">
-      <label for="categorie">Tipo de Categoria</label>
-      <select class="form-control" id="categorie">
-        <option value="1">Acessórios</option>
-        <option value="2">NZesportes</option>
-      </select>
-    </div>
-    <div class="form-group col-lg-3 col-sm-12 mb-3 mb-lg-0">
-      <label for="filter">Filtrar</label>
-      <select class="form-control" id="filter">
-        <option value="1">Ativo</option>
-        <option value="2">Inativo</option>
-      </select>
-    </div>
-    <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
-      <label for="name">Pesquisa</label>
-      <div class="input-group mb-3">
-        <input type="text" class="form-control" id="name" placeholder="Shorts" aria-label="Shorts"
-               aria-describedby="basic-addon2">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+<form [formGroup]="formFilter">
+  <div class="container-fluid">
+
+    <div class="row">
+      <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+        <label for="filter">Disponível na loja</label>
+        <select class="form-control" id="filter" formControlName="status" (change)="onChangeFilter()">
+          <option ></option>
+          <option value="true">Ativo</option>
+          <option value="false">Inativo</option>
+        </select>
+      </div>
+      <div class="form-group col-lg-8 col-sm-12 mb-3 mb-lg-0">
+        <label for="name">Pesquisar</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="name" placeholder="Shorts" aria-label="Shorts"
+                 aria-describedby="basic-addon2" formControlName="name">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" (click)="onChangeFilter()"><i class="fas fa-search"></i></button>
+          </div>
         </div>
       </div>
     </div>
   </div>
+</form>
+<div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="categories.length === 0 && !hasError">
+  Não encontramos nenhuma categoria.
 </div>
-
-<div class="card mb-3 mr-3 ml-3" >
+<div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
+  Não foi possível carregar algumas informações. Por favor,
+  <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+</div>
+<div class="card mb-3 mr-3 ml-3" *ngIf="categories.length > 0">
   <div class="table-responsive ">
 
     <table class="table table-hover">
       <thead>
       <tr>
-        <th scope="col">Código</th>
-        <th scope="col">Nome</th>
-        <th scope="col">Tipo</th>
-        <th scope="col">No site</th>
-        <th scope="col">Produtos</th>
-        <th scope="col">Ações</th>
+        <th scope="col" style="width: 30%">Nome</th>
+        <th scope="col" style="width: 20%">No site</th>
+        <th scope="col" style="width: 10%">Ações</th>
       </tr>
       </thead>
       <tbody>
-      <tr class="row-table" *ngFor="let i of [0,1,2,3,4,5,6,7,8,9,10]" routerLink="nova-categoria">
-        <th scope="row">{{i}}</th>
-        <td>Shorts</td>
-        <td>Acessórios</td>
+      <tr class="row-table" *ngFor="let c of categories; let i = index" routerLink="categoria/{{c.id}}">
+        <td>{{c.name}}</td>
         <td [ngClass]="{
-        'text-success': i % 2 === 0,
-        'text-secondary': i % 2 !== 0
-        }"><b>{{i % 2 === 0 ? 'Ativo' : 'Inativo'}}</b></td>
-        <td>{{i * 2}}</td>
+        'text-success': c.status,
+        'text-secondary': !c.status
+        }"><b>{{c.status ? 'Ativo' : 'Inativo'}}</b></td>
         <td><i class="fas fa-edit text-primary"></i></td>
       </tr>
       </tbody>
@@ -68,16 +65,19 @@
 </div>
 
 
-<nav aria-label="Page navigation example" >
-  <ul class="pagination justify-content-end  mr-3 ml-3">
-    <li class="page-item disabled">
-      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+<nav aria-label="Page navigation example" *ngIf="content && categories.length > 0">
+  <ul class="pagination justify-content-end mr-3 ml-3">
+    <li class="page-item" [ngClass]="{'disabled': paginationService.page === 0}">
+      <a class="page-link" tabindex="-1" aria-disabled="true"
+         (click)="updateIndex(paginationService.page-1)">Previous</a>
     </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#">Next</a>
+    <li class="page-item" [ngClass]="{'active': i == paginationService.page}"
+        *ngFor="let i of paginationService.getRange(); let in = index"
+    >
+      <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
+    </li>
+    <li class="page-item" [ngClass]="{'disabled': (paginationService.page + 1) === paginationService.pages }">
+      <a class="page-link" (click)="updateIndex(paginationService.page + 1)">Next</a>
     </li>
   </ul>
 </nav>

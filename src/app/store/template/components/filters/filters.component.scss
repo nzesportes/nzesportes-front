@@ -1,0 +1,167 @@
+.filters {
+  border-bottom: 1px solid #e5e5e5;
+  border-top: 1px solid #e5e5e5;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.nav-link {
+  position: relative;
+  color: #2b2828;
+  padding-right: 25px;
+}
+
+.nav-link i {
+  right: 15px;
+  top: calc(50% - 7px);
+  position: absolute;
+}
+
+.nav-link:hover {
+  color: #f37135;
+}
+
+.nav-item {
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+}
+
+.items-submenu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  line-height: 48px;
+}
+
+.item-submenu {
+  display: block;
+  color: #2b2828;
+  cursor: pointer;
+  text-decoration: none;
+  padding: 0 0 0 20px;
+}
+
+.item-submenu:hover {
+  background-color: #ebedee;
+  color: #f37135;
+}
+
+.nav-item .menu-opened.submenu {
+  display: block;
+}
+
+.nav-item .submenu {
+  display: none;
+}
+
+.nav-item {
+  border-top: 1px solid #ededed;
+  border-bottom: 1px solid #ededed;
+}
+
+.items-submenu li:last-child {
+  margin-bottom: 10px;
+}
+
+.size {
+  border: 1px solid #B4B4B4;
+  padding: 0;
+  text-align: center;
+  line-height: 36px;
+}
+
+.items-submenu .size:last-child {
+  margin-bottom: 0;
+}
+
+input.radiosInput {
+  visibility: hidden;
+}
+
+label.form-check-label {
+  width: calc(100% - 20px);
+  cursor: pointer;
+}
+
+.container-remove-filters {
+  display: flex;
+  flex-flow: row wrap;
+  margin: 0 16px 8px;
+  gap: 10px;
+}
+
+.remove-filter {
+  border: 1px solid #e9ecef;
+  background-color: #e8e8e8;
+  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: 40px;
+}
+
+.btn-remove-filter {
+  padding: 5px;
+  position: relative;
+}
+
+.btn-remove-filter i {
+  font-size: 10px;
+  position: absolute;
+  top: 0;
+  left: 3px;
+}
+
+.remove-all-filters {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (min-width: 576px) {
+
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .nav-item {
+    width: auto;
+    border: 0;
+  }
+
+  .nav-link i {
+    right: 10px;
+  }
+
+  .submenu {
+    display: none;
+    border: 1px solid #000;
+    position: absolute;
+    z-index: 1000;
+    top: 35px;
+    width: 300px;
+    background-color: #fff;
+    text-transform: none;
+    font-size: 16px;
+  }
+
+  .submenu.order-by {
+    right: 0;
+  }
+
+  .nav-item:hover .submenu {
+    display: block;
+  }
+
+  .nav-item:hover {
+    background-color: #ededed;
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+
+}

@@ -43,7 +43,24 @@ body {
 //    width: calc(100% - 30px);
 //  }
 //}
+
+.menu_right{
+  //visibility: hidden;
+  display: none;
+}
+.button-profile {
+  color: #b7b7b7;
+}
+.active-button-profile{
+  color: white;
+}
 @media (min-width: 768px) {
+  .menu_right{
+    position: absolute;
+    right: 0;
+    //visibility: visible;
+    display: block;
+  }
   #sidebar-wrapper {
     margin-left: 0;
   }

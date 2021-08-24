@@ -1,0 +1,39 @@
+<div class="container-fluid pbt-product pl-xl-5 pr-xl-5">
+  <div>
+    <h3 class="coming-up-title" data-mask="Lançamentos">Lançamentos</h3>
+  </div>
+  <div>
+    <ul class="coming-up-filter pl-0 text-left text-md-right">
+      <li class="current"><a href="#" data-filter="*">Todos <sup>8</sup></a></li>
+      <li><a href="#" data-filter=".nike">Nike <sup>1</sup></a></li>
+      <li><a href="#" data-filter=".adidas">Adidas <sup>1</sup></a></li>
+      <li><a href="#" data-filter=".men">Masculino <sup>1</sup></a></li>
+      <li><a href="#" data-filter=".women">Feminino <sup>1</sup></a></li>
+    </ul>
+  </div>
+
+  <div class="p-2">
+    <div class="row">
+      <!--produto começa aqui-->
+      <div class="col-12 col-md-6 col-xl-3 p-0" *ngFor="let product of productsStore">
+        <div class="m-3 ml-sm-auto mr-sm-auto ml-md-3 mr-md-3 product" (click)="goToProductDetails(product.idProductDetails, product.id)" routerLink="/produtos/{{ product.idProductDetails }}">
+          <div class="product-content">
+            <div class="product-image">
+              <div class="badge-product" *ngIf="true"><span>Novo</span></div>
+              <div class="badge-product badge-sale" [class.second-sale]="false && false" *ngIf="false"><span>35%</span></div>
+              <!--<a class="product-favorite"><i class="far fa-heart"></i></a>-->
+              <img src="../../../../../assets/images/product.jpg" class="w-100">
+              <a class="image-overlay"></a>
+            </div>
+            <div class="product-detail pt-2">
+              <a href="#" class="product-description">{{ product?.model }}</a>
+              <p class="product-categories mb-0"><a href="#">{{ product?.brand?.name | titlecase }}</a>, <a href="#">{{ product?.color }}</a></p>
+              <span><del *ngIf="false">R$ 150,00</del> R$ {{ product?.price }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,168 @@
+<div class="container">
+  <div class="row m-0 pt-5 pb-5">
+    <div class="col-12 col-lg-6 pt-5">
+      <div class="w-100 mb-3 zoomImage">
+        <lib-ngx-image-zoom
+          [thumbImage]="dynamicSlides[positionImage].thumb"
+          [fullImage]="dynamicSlides[positionImage].fullImage"
+          zoomMode="hover"
+          [magnification]="0.5"
+          [enableScrollZoom]="true"
+        ></lib-ngx-image-zoom>
+      </div>
+      <owl-carousel-o [options]="customOptions" class="owl-product-details">
+        <ng-container *ngFor="let slide of dynamicSlides; let i = index;">
+          <ng-template carouselSlide id="{slide.id}">
+            <!--produto começa aqui-->
+            <div class="carousel-images">
+              <img [src]="slide.thumb" (click)="changeImage(i)">
+            </div>
+          </ng-template>
+        </ng-container>
+      </owl-carousel-o>
+    </div>
+    <div class="col-12 col-lg-6 pt-5">
+      <form>
+        <p class="rating">
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star"></i>
+          <i class="fas fa-star-half-alt"></i>
+          <i class="far fa-star"></i>
+        </p>
+        <h1>{{ product?.model }}</h1>
+        <p class="categories"><a href="#">{{ product?.brand?.name | titlecase }}</a>, <a href="#">Modelo</a>, <a href="#">Tag</a></p>
+        <h2>R$ {{ productDetails?.price }}
+          <del *ngIf="false">R$ 150,00</del>
+        </h2>
+        <h3 class="title-details">Descrição</h3>
+        <p class="description-details">
+          {{ productDetails?.description }}
+        </p>
+        <h3 class="title-details">Escolher Modelo</h3>
+        <ul class="choose-model">
+          <li *ngFor="let model of product?.productDetails">
+            <a routerLink="/produtos/{{ model.id }}">
+              <img src="assets/images/product.jpg">
+            </a>
+          </li>
+        </ul>
+        <h3 class="title-details" for="inputSize">Escolher Tamanho</h3>
+        <form [formGroup]="formStock">
+          <div class="row m-0 container-size-qtde">
+              <div class="form-group col-12 p-0 pr-2">
+                <select id="inputSize" class="form-control" [ngClass]="cssError(formStock.get('stocksize'))" formControlName="stocksize" #stock (change)="changeMax(stock.selectedIndex)">
+                  <option [selected]="i === 0" *ngFor="let stock of productDetails?.stock; let i = index" [value]="stock">{{ stock.size }}</option>
+                </select>
+                <div id="field-inputSize" *ngIf="formStock.get('stocksize')?.hasError('required')" class="invalid-feedback">
+                  <small>Por favor, insira o tamanho.</small>
+                </div>
+                <small class="mb-1" *ngIf="stock.value">{{ sizeMax }} unidades em estoque.</small>
+                <p></p>
+                <small *ngIf="noStock">Carrinho já possui {{sizeMax}} deste item. Limitado a  {{sizeMax}} item por compra.</small>
+<!---->
+              </div>
+<!--            <div class="form-group col-3 p-0">-->
+<!--              <input type="number" class="form-control" [min]="1" [max]="sizeMax" [(ngModel)]="startValue" [ngModelOptions]="{ standalone: true }">-->
+<!--            </div>-->
+          </div>
+        </form>
+
+        <div class="mt-3 text-center text-lg-left">
+          <button type="button" class="btn btn-primary btn-add-cart"
+          (click)="addToCart(productDetails, stock.selectedIndex)">Adicionar ao carrinho<i
+            class="fas fa-chevron-right"></i></button>
+        </div>
+      </form>
+      <form class="pt-3" [formGroup]="formShipping">
+        <h3 class="title-details">Calcular Frete</h3>
+        <div class="row p-0 m-0">
+          <div class="input-group mb-3 col-12 col-lg-6 cep p-0 m-0">
+            <input type="text" id="inputShipping" class="form-control" [ngClass]="cssError(formShipping.get('shipping'))" mask="00000-000" formControlName="shipping" [showMaskTyped]="true">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" (click)="calculateShipping()">Calcular</button>
+            </div>
+            <div id="field-inputShipping" *ngIf="formShipping.get('shipping')?.hasError('required')" class="invalid-feedback">
+              <small>Por favor, insira o CEP.</small>
+            </div>
+            <div id="field-inputShippingValid" *ngIf="formShipping.get('shipping')?.hasError('pattern')" class="invalid-feedback">
+              <small>Por favor, insira um cep válido.</small>
+            </div>
+          </div>
+        </div>
+        <div class="row p-0 m-0" *ngFor="let result of shippingResult">
+          <div class="img-shipping">
+            <img [src]="result.company.picture">
+          </div>
+          <div class="m-1">
+            até {{ result.delivery_range.max }} dias úteis - R$ {{ result?.price }} ({{result.name}})
+          </div>
+        </div>
+        <div class="alert alert-warning" role="alert" *ngIf="notShipResult">
+          Não foi possível realizar o cálculo de frete para este CEP.
+        </div>
+        <div class="alert alert-danger" role="alert" *ngIf="errorShipResult">
+          Ops, ocorreu um erro! Não foi possível fazer a busca.
+        </div>
+      </form>
+
+    </div>
+    <div class="col-12 pt-5 container-review">
+      <h2>AVALIAÇÕES</h2>
+      <div>
+        <div class="review">
+          <h3>Lorem Ipsum</h3>
+          <p class="rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          </p>
+          <p class="rated-by">Por Rafael Peinado da Silva em 13 de novembro de 2021</p>
+        </div>
+        <div class="review">
+          <h3>Lorem Ipsum</h3>
+          <p class="rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+          </p>
+          <p class="rated-by">Por Rafael Peinado da Silva em 13 de novembro de 2021</p>
+        </div>
+        <div class="review">
+          <h3>Lorem Ipsum</h3>
+          <p class="rating">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+          </p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi hendrerit, augue et consectetur consectetur,
+            nunc dui egestas massa, vitae tincidunt purus elit et elit.
+          </p>
+          <p class="rated-by">Por Rafael Peinado da Silva em 13 de novembro de 2021</p>
+        </div>
+      </div>
+      <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-end">
+          <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
+          <li class="page-item active"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<div class="container-fluid p-0">
+  <h1 class="page-title mb-3 mb-lg-4">Endereços</h1>
+  <div class="row p-0 m-0">
+    <div class="col-12 col-md-6 mb-4" *ngFor="let address of addresses">
+      <div class="card container-card">
+        <div class="card-body">
+          <h5 class="card-title">{{ address.street }}, {{ address.number }}</h5>
+          <p class="card-text m-1">{{ address.complement }}</p>
+          <p class="card-text m-1">{{ address.district }} - {{ address.city }} - {{ address.state }}</p>
+          <p class="card-text m-1">{{ address.cep }}</p>
+        </div>
+        <div class="card-footer">
+          <button class="btn" (click)="removeAddress(address.id)"><i class="fas fa-trash-alt"></i></button>
+          <button class="btn"><i class="fas fa-edit"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-12 p-3 text-center">
+    <a class="btn btn-primary btn-add-address" routerLink="./novo">ADICIONAR ENDEREÇO</a>
+  </div>
+</div>
+
+<swal
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>

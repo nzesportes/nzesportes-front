@@ -9,6 +9,10 @@ import {DashboardMainComponent} from './dashboard-main/dashboard-main.component'
 import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 import {PromotionsModule} from './promotions/promotions.module';
 import {CategoriesModule} from './categories/categories.module';
+import {UsersModule} from './users/users.module';
+import {BrandsModule} from './brands/brands.module';
+import {AccountModule} from './account/account.module';
+import {BetterSendModule} from './better-send/better-send.module';
 
 
 @NgModule({
@@ -21,7 +25,11 @@ import {CategoriesModule} from './categories/categories.module';
     ProductsModule,
     PromotionsModule,
     CategoriesModule,
-    CommonModule,
+    UsersModule,
+    BrandsModule,
+    AccountModule,
+    BetterSendModule,
+    // angular modules
     DashboardRoutingModule,
     CommonModule,
     RouterModule,

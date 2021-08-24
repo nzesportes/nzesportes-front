@@ -1,0 +1,49 @@
+<div class="container p-container">
+  <div class="container-change">
+    <h1 class="page-title mb-3 mb-lg-4">{{ flow === 'recovery' ? 'Esqueci minha Senha' : 'Criar Primeiro Acesso' }}</h1>
+    <form class="row" [formGroup]="formFirstAccess" (ngSubmit)="changePassword()">
+      <div class="form-group col-12">
+        <label for="newPassword">Nova Senha</label>
+        <input type="password" class="form-control"
+               [ngClass]="{ 'is-invalid': validateFields.newPassword.errors && validateFields.newPassword.touched }"
+               id="newPassword" formControlName="newPassword">
+        <div id="field-newPassword" class="invalid-feedback">
+          <span *ngIf="validateFields.newPassword?.errors?.required">Por favor, insira uma senha.</span>
+          <span *ngIf="validateFields.newPassword?.errors?.minlength">Senha deve conter no mínimo 8 caracteres</span>
+        </div>
+      </div>
+      <div class="form-group col-12">
+        <label for="repeatPassword">Repetir Senha</label>
+        <input type="password" class="form-control"
+               [ngClass]="{ 'is-invalid': validateFields.repeatPassword.errors && validateFields.repeatPassword.touched }"
+               id="repeatPassword" formControlName="repeatPassword">
+        <div id="field-repeatPassword" class="invalid-feedback">
+          <span *ngIf="validateFields.repeatPassword?.errors?.required">Por favor, insira uma senha.</span>
+          <span *ngIf="validateFields.repeatPassword?.errors?.mustMatch">Senhas não coincidem.</span>
+        </div>
+      </div>
+      <div class="col-12 text-center mt-3">
+        <button type="submit" class="btn btn-primary btn-submit" [disabled]="!formFirstAccess.valid">{{ flow === 'recovery' ? 'Alterar' : 'Criar Senha' }}</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirect()"
+  #success
+  [title]="''"
+  icon="success">
+</swal>
+
+<swal
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>

@@ -1,0 +1,67 @@
+<form [formGroup]="formBrand">
+  <div class="row mt-3">
+    <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/painel/categorias">Marcas</a></li>
+          <li class="breadcrumb-item active" aria-current="page"> {{brand?.id ? 'Editar' : 'Nova Marca' }}</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
+      <button type="button" class="btn btn-secondary w-100" routerLink="/painel/marcas">Cancelar</button>
+    </div>
+    <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
+      <button
+        type="button"
+        class="btn btn-primary w-100"
+        [disabled]="formBrand.invalid"
+        (click)="save()">Salvar
+      </button>
+    </div>
+  </div>
+  <div class="alert alert-danger" role="alert" *ngIf="hasError">
+    Não foi possível carregar algumas informações. Por favor, <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+  </div>
+  <div class="row mt-3"  *ngIf="!hasError">
+    <div class="col-12 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Informações da Marca</h5>
+          <hr>
+          <div class="form-row">
+            <div class="form-group col-12 mb-3">
+              <label for="categorieName">Nome da Marca</label>
+              <input type="text" class="form-control" id="categorieName" formControlName="name" placeholder="ex: Adidas"
+                     [ngClass]="cssError(formBrand.get('name'))">
+              <div id="field-name" class="invalid-feedback">
+                Por favor, insira o nome de uma marca.
+              </div>
+            </div>
+          </div>
+          <div class="d-flex justify-content-end" *ngIf="brand?.id">
+            <button type="button" class="btn btn-danger col-lg-2 col-sm-12" (click)="delete()">Excluir</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirect()"
+  #success
+  [title]="''"
+  icon="success">
+</swal>
+
+<swal
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>

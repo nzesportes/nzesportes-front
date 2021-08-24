@@ -1,22 +1,27 @@
-<form>
+<form [formGroup]="formProduct">
 
   <div class="row mt-3">
     <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a routerLink="/painel/produtos">Produtos</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Novo Produto</li>
+          <li class="breadcrumb-item active" aria-current="page"> {{product?.id ? 'Editar' : 'Novo produto' }}</li>
         </ol>
       </nav>
     </div>
     <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
-      <button type="button" class="btn btn-secondary w-100">Cancelar</button>
+      <button type="button" class="btn btn-secondary w-100" routerLink="/painel/produtos">Cancelar</button>
     </div>
     <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
-      <button type="button" class="btn btn-primary w-100">Salvar</button>
+      <button type="button" class="btn btn-primary w-100" [disabled]="formProduct.invalid" (click)="save()">Salvar
+      </button>
     </div>
   </div>
-  <div class="row mt-3">
+  <div class="alert alert-danger" role="alert" *ngIf="hasError">
+    Não foi possível carregar algumas informações. Por favor,
+    <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+  </div>
+  <div class="row mt-3" *ngIf="!hasError">
     <div class="col-lg-8 mb-3">
       <div class="card mb-3">
         <div class="card-body">
@@ -31,54 +36,30 @@
       </div>
       <div class="card mb-3">
         <div class="card-body">
-          <h5 class="card-title">Informações do Produto</h5>
+          <h5 class="card-title">Informações Principais</h5>
           <hr>
           <div class="form-row">
-            <div class="form-group col-lg-8 col-sm-12 mb-3 mb-lg-0">
-              <label for="name">Nome do Produto</label>
-              <input type="text" class="form-control" id="name" aria-describedby="emailHelp"
-                     placeholder="Camiseta Chicago Bulls">
-              <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-            </div>
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
-              <label for="color">Cor</label>
-              <select class="form-control" id="color">
-                <option value="1">Azul</option>
-                <option value="2">Vermelho</option>
-                <option value="3">Preto</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
-              <label for="size">Tamanho</label>
-              <select class="form-control" id="size">
-                <option value="1">M</option>
-                <option value="2">P</option>
-              </select>
-            </div>
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
-              <label for="model">Modelo</label>
-              <select class="form-control" id="model">
-                <option value="1">New York Knicks</option>
-                <option value="2">Golden State Warriors</option>
-              </select>
-            </div>
-            <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
-              <label for="price">Preço</label>
-              <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <span class="input-group-text">R$</span>
-                </div>
-                <input type="text" id="price" class="form-control" aria-label="Amount (to the nearest dollar)">
+            <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
+              <label for="model">Modelo do Produto</label>
+              <input type="text" class="form-control" id="model" aria-describedby="emailHelp"
+                     placeholder="ex: Camiseta Chicago Bulls" formControlName="model"
+                     [ngClass]="cssError(validateFieldsFormProduct.model)">
+              <div id="field-model" class="invalid-feedback">
+                Por favor, insira o modelo.
               </div>
             </div>
           </div>
           <div class="form-row">
-            <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
-              <label for="description">Descrição</label>
-              <textarea class="form-control mb-3" id="description" rows="3"
-                        placeholder="Descreva seu produto"></textarea>
+            <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0" formGroupName="brand">
+              <label for="name">Marca</label>
+              <select class="form-control" id="name" (change)="setIdBrand()"
+                      formControlName="name"
+                      [ngClass]="cssError(validateFieldsFormBrand.name)">
+                <option value="{{b.name.toLowerCase()}}" *ngFor="let b of brands">{{b?.name | titlecase}}</option>
+              </select>
+              <div id="field-brand" class="invalid-feedback">
+                Por favor, insira a marca.
+              </div>
             </div>
           </div>
           <div class="form-row p-2">
@@ -116,40 +97,76 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="col-lg-4 mb-3">
+
       <div class="card mb-3">
         <div class="card-body">
+          <div class="row">
+            <div class="col-lg-9 col-sm-12">
+              <h5 class="card-title">Detalhes do produto</h5>
+            </div>
+            <div class="col-lg-3 col-sm-12 ">
+              <button
+                type="button"
+                class="btn btn-primary w-100"
+                (click)="initDetailForm()"
+                data-toggle="modal"
+                data-target="#modalProductDetail">
+                Adicionar
+              </button>
+            </div>
+          </div>
+          <hr>
+          <div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="productDetails.controls.length === 0">
+            Essa categoria não possui detalhe. Por favor, adicione um.
+          </div>
+          <div class="card mb-3" *ngIf="productDetails.controls.length > 0">
+            <div class="table-responsive">
+              <table class="table table-hover">
+                <thead>
+                <tr>
+                  <th scope="col" style="width: 30%">Cor</th>
+                  <th scope="col" style="width: 30%">Preço</th>
+                  <th scope="col" style="width: 10%">Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="row-table" formArrayName="productDetails"
+                    *ngFor="let productDetail of productDetails.controls; let i = index">
+                  <td>{{productDetail.value.color | titlecase}}</td>
+                  <td>{{productDetail.value.price | currency:'BRL':true:'1.2-2'}}</td>
+                  <td>
+                    <i class="fas fa-edit actions-button text-primary" data-toggle="modal"
+                       data-target="#modalProductDetail"
+                       (click)="initDetailForm(productDetail.value, i)"></i>
+                    <!-- cannot delete product detail-->
+                    <i class="fas fa-trash actions-button text-danger" *ngIf="!productDetail.value.id" [swal]="swalProductDetailRemove"></i>
+                    <swal
+                      [swalOptions]="{ confirmButtonText: 'Sim', cancelButtonText: 'Cancelar' }"
+                      [showCancelButton]="true"
+                      (confirm)="removeProductDetails(i)"
+                      #swalProductDetailRemove title="Tem certeza que deseja remover esse detalhe de produto?"
+                      icon="question">
+                    </swal>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 mb-3">
+      <div class="card mb-3" *ngIf="product?.id">
+        <div class="card-body">
           <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="isShowOnStore">
+            <input class="form-check-input" type="checkbox" value="" id="isShowOnStore" formControlName="status">
             <label class="form-check-label" for="isShowOnStore">
               Disponível na loja
             </label>
           </div>
         </div>
       </div>
-
-      <div class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title">Categorias</h5>
-          <hr>
-          <div class="overflow-auto" style="height: 300px">
-            <div class="list-group">
-              <button
-                *ngFor="let categoria of ['tenis', 'blusa', 'calca', 'camiseta', 'regata', 'short', 'toca', 'bermuda' ,'nzesportes']"
-                type="button"
-                class="list-group-item d-flex justify-content-between list-group-item-action"
-              >
-                {{categoria}}
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="categoria">
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div class="card mb-3">
         <div class="card-body">
           <h5 class="card-title">Promoções</h5>
@@ -166,3 +183,210 @@
 
 </form>
 
+<form [formGroup]="formProductDetail">
+  <div class="modal fade" id="modalProductDetail" tabindex="-1" aria-labelledby="modalProductDetailLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalProductDetailLabel">
+            Detalhe do produto
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-row">
+            <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
+              <label for="color">Cor</label>
+              <select class="form-control" id="color"
+                      formControlName="color"
+                      [ngClass]="cssError(validateFieldsFormProductDetail.color)">
+                <option value="azul">Azul</option>
+                <option value="vermelho">Vermelho</option>
+                <option value="preto">Preto</option>
+              </select>
+              <div id="field-color" class="invalid-feedback">
+                Por favor, insira a cor.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
+              <label for="price">Preço</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">R$</span>
+                </div>
+                <input type="text" id="price" class="form-control"
+                       formControlName="price"
+                       [ngClass]="cssError(validateFieldsFormProductDetail.price)">
+                <div id="field-price" class="invalid-feedback">
+                  Por favor, insira o preço.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
+              <label for="description">Descrição</label>
+              <textarea class="form-control mb-3" id="description" rows="3"
+                        placeholder="Descreva seu produto" formControlName="description"
+                        [ngClass]="cssError(validateFieldsFormProductDetail.description)">
+              </textarea>
+              <div id="field-description" class="invalid-feedback">
+                Por favor, insira o descrição.
+              </div>
+            </div>
+          </div>
+          <form [formGroup]="formCategoryList" *ngIf="categoriesArrayForm.controls.length > 0">
+            <div class="card mb-3">
+              <div class="card-body">
+                <h5 class="card-title">Subcategorias</h5>
+                <hr>
+                <div class="overflow-auto" style="height: 200px">
+                  <div class="list-group" >
+                    <button formArrayName="categories"
+                            *ngFor="let category of categoriesArrayForm.controls; let i = index"
+                            type="button"
+                            class="list-group-item d-flex justify-content-between list-group-item-action"
+                    >
+                      {{category.value.name | titlecase}}
+                      <div class="form-check" [formGroupName]="i">
+                        <input class="form-check-input" type="checkbox"  value="" id="categoria" formControlName="checked">
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+          <div class="form-row">
+            <button type="button" class="btn btn-primary w-100" (click)="addStock()">
+              Adicionar outro tamanho
+            </button>
+          </div>
+          <div formArrayName="stock" *ngFor="let stockForm of productDetailsStock.controls; let i = index">
+            <div class="form-row">
+              <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0" [formGroupName]="i">
+                <label for="categorieName">Tamanho {{i}}</label>
+                <input
+                  type="text" class="form-control" id="size" formControlName="size" placeholder="ex: P "
+                  [readOnly]="stockForm.value.id"
+                  [ngClass]="cssError(stockForm.get('size'))">
+
+                <div id="field-size" class="invalid-feedback">
+                  Por favor, insira o tamanho.
+                </div>
+              </div>
+              <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0" [formGroupName]="i">
+                <label for="categorieName">Quantidade</label>
+                <input type="number" class="form-control" id="categorieName" formControlName="quantity" min="0"
+                       [readOnly]="stockForm.value.id"
+                       placeholder="0"
+                       [ngClass]="cssError(stockForm.get('quantity'))">
+
+                <div id="field-quantity" class="invalid-feedback">
+                  Por favor, insira a quantidade.
+                </div>
+              </div>
+              <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0 mt-lg-4 pt-lg-2 " *ngIf="!stockForm.value.id"
+                   [formGroupName]="i">
+                <button
+                  type="button"
+                  class="btn btn-danger w-100"
+                  (click)="removeProductDetailsStock(i)"
+                  [disabled]="productDetailsStock.controls.length === 1">
+                  x
+                </button>
+              </div>
+
+              <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0 mt-lg-4 pt-lg-2 " *ngIf="stockForm.value.id"
+                   [formGroupName]="i">
+                <button
+                  type="button"
+                  role="button"
+                  class="btn btn-outline-primary w-100"
+                  (click)="stockForm?.value?.updateStock === null ? stockForm.get('updateStock')?.setValue(true) : stockForm.get('updateStock')?.setValue(null)"
+                >
+                  Atualizar
+                </button>
+              </div>
+            </div>
+              <div class="form-row" *ngIf="stockForm.value.updateStock === true">
+                <div class="form-group col-lg-8 col-sm-12 mb-3 mb-lg-0"  [formGroupName]="i">
+                  <label for="categorieAdd">Quantidade a ser adicionada</label>
+                  <input type="number"
+                         formControlName="quantityAdd"
+                         class="form-control"
+                         [ngClass]="CustomizeCssError(stockForm.get('quantityAdd'), stockForm.value.quantity)"
+                         id="categorieAdd"
+                         placeholder="0">
+
+                  <div id="field-categorieAdd" class="invalid-feedback" *ngIf="stockForm.value.quantityAdd === null">
+                    Por favor, insira a quantidade a ser adicionada.
+                  </div>
+                  <div id="field-categorieAdd-zero" class="invalid-feedback" *ngIf="stockForm.value.quantityAdd === 0">
+                    A quantidade a ser adicionada não pode ser igual a 0.
+                  </div>
+                  <div id="field-categorieAdd-invalid"
+                       *ngIf="convertToPositiveNumber(stockForm.value.quantityAdd) > convertToNumber(stockForm.value.quantity)"
+                       class="invalid-feedback">
+                    A quantidade a ser removida ({{stockForm.value.quantityAdd}}) não pode ser maior que a quantidade atual
+                    ({{stockForm.value.quantity}})
+                  </div>
+                </div>
+                <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0 mt-lg-4 pt-lg-2 ">
+                  <button
+                    type="submit"
+                    class="btn btn-primary w-100"
+                    (click)="updateStock(stockForm.value, formProductDetail.value.id, stockForm.value.quantityAdd, i)"
+                    [disabled]="!isValidUpdateStock(stockForm.get('quantityAdd'), stockForm.value.quantity)">
+                    Enviar
+                  </button>
+                </div>
+              </div>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="statusProductDetail" formControlName="status">
+            <label class="form-check-label" for="statusProductDetail">
+              Disponível na loja
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-dismiss="modal"
+            [disabled]="formProductDetail.invalid"
+            (click)="addProductDetails(formProductDetail.value, formProductDetail.value.indexArray)">
+            Salvar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirect()"
+  #success
+  [title]="''"
+  icon="success">
+</swal>
+
+<swal
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>
