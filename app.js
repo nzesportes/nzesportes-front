@@ -21,7 +21,7 @@ app.use(function (req, res, next) {
 });
 
 // HTTP listener
-const PORT = process.env.PORT || 3030;
+const PORT = process.env.PORT || 80;
 app.listen(PORT, function () {
   console.log('Nzesportes running on port ' + PORT);
 });
