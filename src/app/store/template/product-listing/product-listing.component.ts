@@ -62,10 +62,9 @@ export class ProductListingComponent implements OnInit, OnDestroy {
 
   getAllDetails(size: number, page: number, name?: string, gender?: Gender, category?: string,
                 productSize?: string, color?: string, brand?: string, order?: Order): void {
-    this.productsService.getAllDetails(size, page, name, gender,  category, productSize, color, brand, order)
+    this.productsService.getAllDetails(size, page, name, gender, category, productSize, color, brand, order)
       .pipe(take(1))
       .subscribe(response => {
-          console.log(response);
           this.productsDetails = response.content;
           this.content = response;
           this.paginationService.getPageRange(this.content.totalElements);
@@ -74,7 +73,6 @@ export class ProductListingComponent implements OnInit, OnDestroy {
         }
       );
   }
-
 
   goToProductDetails(idProductDetails: string, id: string): void {
     this.productsService.getById(id)

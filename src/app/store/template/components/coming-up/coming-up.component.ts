@@ -1,12 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductsService} from '../../../../shared/services/products.service';
-import {map, take} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
 import {Product} from '../../../../shared/models/product.model';
 import {ProductsStore} from '../../../../shared/models/products-store.model';
-import {Brand} from '../../../../shared/models/brand.model';
-import {Sale} from '../../../../shared/models/sale.model';
 import {Gender} from '../../../../shared/enums/gender';
 import {Router} from '@angular/router';
+import {ProductDetails} from '../../../../shared/models/product-details.model';
+import {Order} from '../../../../shared/enums/order.enum';
+import {ProductDetailsPage} from '../../../../shared/models/pagination-model/product-details-page.model';
+import {PaginationService} from '../../../../shared/services/pagination.service';
 
 @Component({
   selector: 'app-coming-up',
@@ -17,50 +19,39 @@ export class ComingUpComponent implements OnInit {
 
   // @ts-ignore
   products: Product[];
-// @ts-ignore
+  // @ts-ignore
   productsStore: ProductsStore[];
+  // @ts-ignore
+  auxProductsDetails: ProductDetails[];
+  productsDetails: ProductDetails[] = [];
+  content: ProductDetailsPage | undefined;
+  hasError!: boolean;
 
   constructor(
     private productsService: ProductsService,
+    private paginationService: PaginationService,
     private router: Router
   ) {
   }
 
   ngOnInit(): void {
-    this.getProduct();
+    this.paginationService.initPagination();
+    this.getAllDetails(8, this.paginationService.page);
   }
 
-  getProduct(): void {
-    this.productsService.getAll(8, 0)
-      .pipe(
-        take(1),
-        map(productsStore => {
-          const result: ProductsStore[] = [];
-          productsStore.content.forEach(p => {
-            p.productDetails.forEach(pd => {
-              const productStore = {
-                id: p.id,
-                // description: p.description,
-                model: p.model,
-
-                idProductDetails: pd.id,
-                color: pd.color,
-                size: pd.size,
-                price: pd.price,
-                brand: p.brand,
-                sale: pd.sale,
-                gender: pd.gender,
-                status: pd.status
-              };
-              result.push(productStore);
-            });
-          });
-          return result;
-        })
-      )
-      .subscribe(products => {
-        this.productsStore = products;
-      });
+  getAllDetails(size: number, page: number, name?: string, gender?: Gender, category?: string,
+                productSize?: string, color?: string, brand?: string, order?: Order): void {
+    this.productsService.getAllDetails(size, page, name, gender, category, productSize, color, brand, order)
+      .pipe(take(1))
+      .subscribe(response => {
+          this.productsDetails = response.content;
+          this.auxProductsDetails = response.content;
+          this.content = response;
+          this.paginationService.getPageRange(this.content.totalElements);
+        }, () => {
+          this.hasError = true;
+        }
+      );
   }
 
   goToProductDetails(idProductDetails: string, id: string): void {
@@ -70,5 +61,9 @@ export class ComingUpComponent implements OnInit {
         localStorage.setItem('product', JSON.stringify(product));
       });
     this.router.navigateByUrl('/produtos/' + idProductDetails);
+  }
+
+  filter(param?: string): void {
+    this.getAllDetails(8, 0, '', param === 'MALE' ? Gender.MALE : Gender.FEMALE);
   }
 }

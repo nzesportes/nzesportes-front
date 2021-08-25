@@ -44,6 +44,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
   sendDetailsFilters(): void {
     this.productsService.setDetailsFiltersState(
+      this.filterService.filter.name,
       this.formFilters?.get('gender')?.value as Gender,
       this.formFilters?.get('category')?.value,
       this.formFilters?.get('size')?.value,
