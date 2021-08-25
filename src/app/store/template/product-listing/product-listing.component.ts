@@ -92,6 +92,7 @@ export class ProductListingComponent implements OnInit, OnDestroy {
       this.filterService.filter.category,
       this.filterService.filter.size,
       this.filterService.filter.color,
+      this.filterService.filter.brand,
       Order.ASC
     );
     this.paginationService.page = index;
