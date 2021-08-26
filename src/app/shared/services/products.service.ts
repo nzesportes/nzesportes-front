@@ -116,13 +116,8 @@ export class ProductsService {
     const urlOrder = order ? '&order=' + order.toString() : '';
     const urlName = name ? '&name=' + name : '';
 
-    console.warn('URL', `${this.api}details?page=${page.toString()}&size=${size.toString() +
-    urlName + urlGender + urlCategory + urlProductSize + urlColor + urlBrand + urlOrder}`);
-
     return this.http.get<ProductDetailsPage>(`${this.api}details?page=${page.toString()}&size=${size.toString() +
     urlName + urlGender + urlCategory + urlProductSize + urlColor + urlBrand + urlOrder}`);
-    /*return this.http.get<ProductDetailsPage>(this.api + 'details?page=' + page.toString() + '&size=' + size.toString() + urlName +
-      + urlGender + urlCategory + urlProductSize + urlColor + urlBrand + urlOrder);*/
   }
 
   setDetailsFiltersState(
