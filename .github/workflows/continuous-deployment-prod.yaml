@@ -36,4 +36,4 @@ jobs:
             username: ${{ secrets.SSH_USERNAME_DEPLOY }}
             password: ${{ secrets.SSH_PASSWORD_DEPLOY }}
             port: ${{ secrets.SSH_PORT_DEPLOY }}
-            script: touch teste.txt
+            script: ${{ secrets.SSH_SCRIPT_DEPLOY }}
