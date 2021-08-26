@@ -33,7 +33,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
             host: ${{ secrets.SSH_HOST_DEPLOY }}
-            USERNAME: ${{ secrets.SSH_USERNAME_DEPLOY }}
-            PORT: ${{ secrets.SSH_PORT_DEPLOY }}
-            KEY: ${{ secrets.SSHKEY }}
+            username: ${{ secrets.SSH_USERNAME_DEPLOY }}
+            password: ${{ secrets.SSH_PASSWORD_DEPLOY }}
+            port: ${{ secrets.SSH_PORT_DEPLOY }}
             script: touch teste.txt
