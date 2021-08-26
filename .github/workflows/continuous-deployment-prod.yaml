@@ -28,3 +28,12 @@ jobs:
           username: ${{ secrets.FTP_USER }}
           password: ${{ secrets.FTP_PASSWORD }}
           server-dir: ${{ secrets.FTP_DIR }}
+
+      - name: Restart application deploy
+        uses: appleboy/ssh-action@master
+        with:
+            host: ${{ secrets.SSH_HOST_DEPLOY }}
+            USERNAME: ${{ secrets.SSH_USERNAME_DEPLOY }}
+            PORT: ${{ secrets.SSH_PORT_DEPLOY }}
+            KEY: ${{ secrets.SSHKEY }}
+            script: touch teste.txt
