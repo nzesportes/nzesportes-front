@@ -1,0 +1,39 @@
+on:
+  push:
+    branches:
+      - main
+name: 🚀 Deploy prod website on push
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 12
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: '14'
+
+      - name: 🔨 Build Project
+        run: |
+          npm install
+          npm run build
+
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: ${{ secrets.FTP_HOST }}
+          username: ${{ secrets.FTP_USER }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ secrets.FTP_DIR }}
+
+      - name: Restart application deploy
+        uses: appleboy/ssh-action@master
+        with:
+            host: ${{ secrets.SSH_HOST_DEPLOY }}
+            USERNAME: ${{ secrets.SSH_USERNAME_DEPLOY }}
+            PORT: ${{ secrets.SSH_PORT_DEPLOY }}
+            KEY: ${{ secrets.SSHKEY }}
+            script: touch teste.txt
