@@ -4,8 +4,11 @@
   </div>
   <div>
     <ul class="coming-up-filter pl-0 text-left text-md-right">
-      <li class="current filter-homepage"><a (click)="getAllDetails(8, 0)">Todos
-        <sup>{{ productsDetails?.length }}</sup></a></li>
+      <li class="filter-homepage" [ngClass]="true ? 'current' : ''">
+        <a (click)="getAllDetails(8, 0)">Todos
+          <sup>{{ productsDetails?.length }}</sup>
+        </a>
+      </li>
       <li class="filter-homepage">
         <a (click)="getAllDetails(8, 0, '', undefined, '', '', '', 'nike')">
           Nike <sup>1</sup>
