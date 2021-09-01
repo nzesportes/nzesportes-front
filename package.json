@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "node environment.js && node app.js",
-    "start:prod": "node environment.js && node app.js &",
+    "start:prod": "node app.js &",
     "preinstall": "node environment.js",
     "build": "ng build --prod",
     "test": "ng test",
