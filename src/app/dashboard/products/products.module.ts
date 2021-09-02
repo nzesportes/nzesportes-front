@@ -5,6 +5,7 @@ import {ProductsListComponent} from './products-list/products-list.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NewProductComponent} from './new-product/new-product.component';
 import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
+import {NgxMaskModule} from 'ngx-mask';
 
 
 @NgModule({

@@ -13,6 +13,7 @@ import {UsersModule} from './users/users.module';
 import {BrandsModule} from './brands/brands.module';
 import {AccountModule} from './account/account.module';
 import {BetterSendModule} from './better-send/better-send.module';
+import {NgxMaskModule} from 'ngx-mask';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import {BetterSendModule} from './better-send/better-send.module';
     FormsModule,
     ReactiveFormsModule,
     SweetAlert2Module.forChild(),
+    NgxMaskModule.forRoot(),
 
   ],
   providers: [
