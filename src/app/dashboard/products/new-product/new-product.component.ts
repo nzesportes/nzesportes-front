@@ -215,6 +215,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
         color: new FormControl(productDetails ? productDetails.color : null, Validators.required),
         price: new FormControl(productDetails ? productDetails.price : null, Validators.required),
         description: new FormControl(productDetails ? productDetails.description : '', Validators.required),
+        images: new FormControl(productDetails ? productDetails.images : '', Validators.required),
         status: new FormControl(productDetails ? productDetails.status : false),
         productId: new FormControl(this.product ? this.product.id : ''),
         subCategories: this.formBuilder.array(productDetails?.subCategories ? productDetails.subCategories : []),
