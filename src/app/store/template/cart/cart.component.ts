@@ -51,7 +51,7 @@ export class CartComponent implements OnInit, OnDestroy {
     this.total$ = this.store.select(fromSelector.total);
 
     this.error$ = this.store.select(fromSelector.error);
-    this.isLoading$.subscribe(
+    this.isLoadingSubscription$ = this.isLoading$.subscribe(
       (res) => this.callLoading(res),
       () => this.callLoading(false),
       () => this.callLoading(false)
