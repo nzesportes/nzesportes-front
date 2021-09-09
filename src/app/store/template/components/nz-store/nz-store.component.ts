@@ -105,39 +105,39 @@ export class NzStoreComponent implements OnInit {
 
 
   getProduct(): void {
-    this.productsService.getAll(8, 0)
-      .pipe(
-        take(1),
-        map(productsStore => {
-          const result: ProductsStore[] = [];
-          productsStore.content.forEach(p => {
-            p.productDetails.forEach(pd => {
-              const productStore = {
-                id: p.id,
-                // description: p.description,
-                model: p.model,
-
-                idProductDetails: pd.id,
-                color: pd.color,
-                size: pd.size,
-                price: pd.price,
-                brand: p.brand,
-                sale: pd.sale,
-                gender: pd.gender,
-                status: pd.status
-              };
-
-              result.push(productStore);
-            });
-          });
-          return result;
-        })
-      )
-      .subscribe(products => {
-        this.productsStore = products.filter(value => {
-          return value.brand.name === 'nz esportes';
-        });
-      });
+    // this.productsService.getAll(8, 0)
+    //   .pipe(
+    //     take(1),
+    //     map(productsStore => {
+    //       const result: ProductsStore[] = [];
+    //       productsStore.content.forEach(p => {
+    //         p.productDetails.forEach(pd => {
+    //           const productStore = {
+    //             id: p.id,
+    //             // description: p.description,
+    //             model: p.model,
+    //
+    //             idProductDetails: pd.id,
+    //             color: pd.color,
+    //             size: pd.size,
+    //             price: pd.price,
+    //             brand: p.brand,
+    //             sale: pd.sale,
+    //             gender: pd.gender,
+    //             status: pd.status
+    //           };
+    //
+    //           result.push(productStore);
+    //         });
+    //       });
+    //       return result;
+    //     })
+    //   )
+    //   .subscribe(products => {
+    //     this.productsStore = products.filter(value => {
+    //       return value.brand.name === 'nz esportes';
+    //     });
+    //   });
   }
 
 }

@@ -14,6 +14,11 @@ import {Shipping} from '../../../shared/models/shipping.model';
 import {BetterSendService} from '../../../shared/services/better-send.service';
 import {ShippingResult} from '../../../shared/models/shipping-result.model';
 
+export  interface ImageSlide {
+  id: number;
+  fullImage: string;
+  thumb: string;
+}
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
@@ -41,28 +46,7 @@ export class ProductDetailComponent implements OnInit {
   notShipResult = false;
   errorShipResult = false;
 
-  dynamicSlides = [
-    {
-      id: 1,
-      fullImage: 'assets/images/nike-preto.jpg',
-      thumb: 'assets/images/nike-preto-thumb.jpg'
-    },
-    {
-      id: 2,
-      fullImage: 'assets/images/nike-vermelho.jpg',
-      thumb: 'assets/images/nike-vermelho-thumb.jpg'
-    },
-    {
-      id: 3,
-      fullImage: 'assets/images/tenis-vermelho.jpg',
-      thumb: 'assets/images/tenis-vermelho-thumb.jpg'
-    },
-    {
-      id: 4,
-      fullImage: 'assets/images/vans-vinho.jpg',
-      thumb: 'assets/images/vans-vinho-thumb.jpg'
-    }
-  ];
+  dynamicSlides: ImageSlide[] = [];
 
   customOptions: OwlOptions = {
     loop: true,
@@ -116,6 +100,7 @@ export class ProductDetailComponent implements OnInit {
         this.productsService.getDetailById(this.id)
           .subscribe(response => {
               this.productDetails = response;
+              this.setImages();
               const productJson = localStorage.getItem('product');
               if (productJson) {
                 this.product = JSON.parse(productJson);
@@ -131,6 +116,17 @@ export class ProductDetailComponent implements OnInit {
               console.log(error);
             });
       }
+    });
+  }
+
+  setImages(): void {
+    this.dynamicSlides = [];
+    this.productDetails.images.split(';').forEach((image, i) => {
+      this.dynamicSlides.push({
+          id: i,
+          fullImage: image,
+          thumb: image
+        });
     });
   }
 

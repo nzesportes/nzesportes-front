@@ -16,9 +16,9 @@
           <div class="col-1 title-header"></div>
 
           <div class="row w-100 m-0 listing-body align-items-center" *ngFor="let item of products$ | async">
-            <div class="col-12 col-xl-5">
+            <div class="col-12 col-xl-5" routerLink="/produtos/{{item.productDetails.id}}">
               <a class="items-description">
-                <img class="mr-3" src="assets/images/cart-preview.jpg">
+                <img class="cart-image mr-3" src="{{item.productDetails.images.split(';')[0]}}">
                 {{item.model}} {{item.stock.size}}
               </a>
             </div>
