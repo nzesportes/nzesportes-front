@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row m-0 pt-5 pb-5">
     <div class="col-12 col-lg-6 pt-5">
-      <div class="w-100 mb-3 zoomImage">
+      <div class="w-100 mb-3 zoomImage" *ngIf="dynamicSlides.length > 0">
         <lib-ngx-image-zoom
           [thumbImage]="dynamicSlides[positionImage].thumb"
           [fullImage]="dynamicSlides[positionImage].fullImage"
@@ -43,7 +43,7 @@
         <ul class="choose-model">
           <li *ngFor="let model of product?.productDetails">
             <a routerLink="/produtos/{{ model.id }}">
-              <img src="assets/images/product.jpg">
+              <img src="{{model.images.split(';')[0]}}">
             </a>
           </li>
         </ul>

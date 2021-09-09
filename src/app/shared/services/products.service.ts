@@ -86,7 +86,9 @@ export class ProductsService {
   }
 
   getDetailById(uuid: string): Observable<ProductDetails> {
-    return this.http.get<ProductDetails>(`${this.api}details/${uuid}`);
+    const params = new HttpParams()
+      .set('async', 'true');
+    return this.http.get<ProductDetails>(`${this.api}details/${uuid}`, {params});
   }
 
   updateCategories(idCategory: string, idProduct: string): Observable<Product> {

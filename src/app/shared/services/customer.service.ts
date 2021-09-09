@@ -18,15 +18,21 @@ export class CustomerService {
   ) { }
 
   create(customer: Customer): Observable<Customer> {
-    return this.http.post<Customer>(`${this.apiURL}`, customer);
+    const params = new HttpParams()
+      .set('async', 'true');
+    return this.http.post<Customer>(`${this.apiURL}`, customer, {params});
   }
 
   getById(uuid: string): Observable<Customer> {
-    return this.http.get<Customer>(`${this.apiURL}/${uuid}`);
+    const params = new HttpParams()
+      .set('async', 'true');
+    return this.http.get<Customer>(`${this.apiURL}/${uuid}`, {params});
   }
 
   getByUserId(uuid: string): Observable<Customer> {
-    return this.http.get<Customer>(`${this.apiURL}/users/${uuid}`);
+    const params = new HttpParams()
+      .set('async', 'true');
+    return this.http.get<Customer>(`${this.apiURL}/users/${uuid}`, {params});
   }
 
   // TODO PAGEABLE
