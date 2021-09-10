@@ -16,6 +16,7 @@ export class AddressListComponent implements OnInit {
   public readonly dialogSuccess!: SwalComponent;
   @ViewChild('error')
   public readonly dialogError!: SwalComponent;
+  public hasError = false;
 
   // @ts-ignore
   addresses: Address[];
@@ -32,10 +33,18 @@ export class AddressListComponent implements OnInit {
 
   getByUser(): void {
     this.addressService.getByUser()
+      .pipe(take(1))
       .subscribe(response => {
         this.addresses = response;
-      }, error => {
-        console.log(error);
+        this.hasError = false;
+      }, (error: ErrorWarning) => {
+        this.hasError = true;
+        this.setErrorDialog(error);
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.getByUser();
+          }
+        });
       });
   }
 
@@ -46,7 +55,9 @@ export class AddressListComponent implements OnInit {
         this.addresses = this.addresses.filter(a => a.id !== id);
         this.dialogSuccess.title = 'Endereço removido com sucesso!';
         this.dialogSuccess.fire();
+        this.hasError = false;
       }, (error: ErrorWarning) => {
+        this.hasError = true;
         this.setErrorDialog(error);
         this.dialogError.fire().then(r => {
           if (r.isConfirmed) {
