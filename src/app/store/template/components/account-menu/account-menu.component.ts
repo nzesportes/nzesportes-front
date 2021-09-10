@@ -12,6 +12,7 @@ import {take} from 'rxjs/operators';
 export class AccountMenuComponent implements OnInit {
 
   customer: Customer | undefined;
+  public hasError = false;
 
   constructor(
     private tokenStorageService: TokenStorageService,
@@ -31,6 +32,9 @@ export class AccountMenuComponent implements OnInit {
     this.customerService.getByUserId(this.tokenStorageService.getSessionUser().id)
       .subscribe(response => {
         this.customer = response;
+        this.hasError = false;
+      }, error => {
+        this.hasError = true;
       });
   }
 
