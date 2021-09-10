@@ -22,6 +22,10 @@ const routes: Routes = [
         path: 'novo',
         component: AddressFormComponent
       },
+      {
+        path: 'novo/:id',
+        component: AddressFormComponent
+      },
       { path: '', redirectTo: '', pathMatch: 'full' }
     ]
   }

@@ -12,7 +12,8 @@ import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
   styleUrls: ['./address-list.component.scss']
 })
 export class AddressListComponent implements OnInit {
-
+  @ViewChild('success')
+  public readonly dialogSuccess!: SwalComponent;
   @ViewChild('error')
   public readonly dialogError!: SwalComponent;
 
@@ -43,6 +44,8 @@ export class AddressListComponent implements OnInit {
       .pipe(take(1))
       .subscribe(() => {
         this.addresses = this.addresses.filter(a => a.id !== id);
+        this.dialogSuccess.title = 'Endereço removido com sucesso!';
+        this.dialogSuccess.fire();
       }, (error: ErrorWarning) => {
         this.setErrorDialog(error);
         this.dialogError.fire().then(r => {
