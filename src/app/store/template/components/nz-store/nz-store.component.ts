@@ -4,6 +4,12 @@ import {map, take} from 'rxjs/operators';
 import {ProductsStore} from '../../../../shared/models/products-store.model';
 import {ProductsService} from '../../../../shared/services/products.service';
 import {Product} from '../../../../shared/models/product.model';
+import {Gender} from '../../../../shared/enums/gender';
+import {Order} from '../../../../shared/enums/order.enum';
+import {PaginationService} from '../../../../shared/services/pagination.service';
+import {ProductDetails} from '../../../../shared/models/product-details.model';
+import {ProductDetailsPage} from '../../../../shared/models/pagination-model/product-details-page.model';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -18,52 +24,9 @@ export class NzStoreComponent implements OnInit {
   // @ts-ignore
   productsStore: ProductsStore[];
 
-  dynamicSlides = [
-    {
-      id: 1,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 1',
-      title: 'Camiseta Preta',
-      url: 'camiseta-preta',
-      promotion: true,
-      new: false
-    },
-    {
-      id: 2,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 2',
-      title: 'Bermuda NBA',
-      url: 'bermuda-nba',
-      promotion: false,
-      new: false
-    },
-    {
-      id: 3,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 3',
-      title: 'Agasalho Rosa',
-      url: 'agasalho-rosa',
-      promotion: false,
-      new: false
-    },
-    {
-      id: 4,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 4',
-      title: 'Tênis Jordan',
-      url: 'tenis-jordan',
-      promotion: true,
-      new: true
-    },
-    {
-      id: 5,
-      src: 'assets/images/product.jpg',
-      alt: 'Side 5',
-      title: 'Side 5',
-      promotion: false,
-      new: false
-    }
-  ];
+  productsDetails: ProductDetails[] | undefined;
+  content: ProductDetailsPage | undefined;
+  hasError!: boolean;
 
   customOptions: OwlOptions = {
     loop: true,
@@ -95,49 +58,37 @@ export class NzStoreComponent implements OnInit {
 
 
   constructor(
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private paginationService: PaginationService,
+    private router: Router
   ) {
   }
 
   ngOnInit(): void {
-    this.getProduct();
+    this.paginationService.initPagination();
+    this.getAllDetails(8, this.paginationService.page, '', undefined, 'nz');
   }
 
-
-  getProduct(): void {
-    // this.productsService.getAll(8, 0)
-    //   .pipe(
-    //     take(1),
-    //     map(productsStore => {
-    //       const result: ProductsStore[] = [];
-    //       productsStore.content.forEach(p => {
-    //         p.productDetails.forEach(pd => {
-    //           const productStore = {
-    //             id: p.id,
-    //             // description: p.description,
-    //             model: p.model,
-    //
-    //             idProductDetails: pd.id,
-    //             color: pd.color,
-    //             size: pd.size,
-    //             price: pd.price,
-    //             brand: p.brand,
-    //             sale: pd.sale,
-    //             gender: pd.gender,
-    //             status: pd.status
-    //           };
-    //
-    //           result.push(productStore);
-    //         });
-    //       });
-    //       return result;
-    //     })
-    //   )
-    //   .subscribe(products => {
-    //     this.productsStore = products.filter(value => {
-    //       return value.brand.name === 'nz esportes';
-    //     });
-    //   });
+  getAllDetails(size: number, page: number, name?: string, gender?: Gender, category?: string,
+                productSize?: string, color?: string, brand?: string, order?: Order): void {
+    this.productsService.getAllDetails(size, page, name, gender, category, productSize, color, brand, order)
+      .pipe(take(1))
+      .subscribe(response => {
+          this.productsDetails = response.content;
+          this.content = response;
+          this.paginationService.getPageRange(this.content.totalElements);
+        }, () => {
+          this.hasError = true;
+        }
+      );
   }
 
+  goToProductDetails(idProductDetails: string, id: string): void {
+    this.productsService.getById(id)
+      .pipe(take(1))
+      .subscribe(product => {
+        localStorage.setItem('product', JSON.stringify(product));
+      });
+    this.router.navigateByUrl('/produtos/' + idProductDetails);
+  }
 }
