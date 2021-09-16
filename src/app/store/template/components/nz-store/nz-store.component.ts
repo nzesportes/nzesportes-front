@@ -8,6 +8,7 @@ import {PaginationService} from '../../../../shared/services/pagination.service'
 import {Router} from '@angular/router';
 import {ProductDetailsTOPage} from '../../../../shared/models/pagination-model/product-details-to-page.model';
 import {ProductDetailsTO} from '../../../../shared/models/product-details-to.model';
+import {FiltersService} from '../../../services/filters.service';
 
 
 @Component({
@@ -52,7 +53,8 @@ export class NzStoreComponent implements OnInit {
   constructor(
     private productsService: ProductsService,
     private paginationService: PaginationService,
-    private router: Router
+    private router: Router,
+    private filterService: FiltersService
   ) {
   }
 
@@ -82,5 +84,10 @@ export class NzStoreComponent implements OnInit {
         localStorage.setItem('product', JSON.stringify(product));
       });
     this.router.navigateByUrl('/produtos/' + idProductDetails);
+  }
+
+  goToProductListing(brand?: string, category?: string, gender?: Gender): void {
+    this.filterService.setSearch('', brand, category, gender);
+    this.router.navigateByUrl('/search');
   }
 }

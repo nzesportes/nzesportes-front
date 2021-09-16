@@ -21,7 +21,7 @@
               <div class="product-detail pt-2">
                 <a class="product-description">{{ productDetails?.product?.model }}</a>
                 <p class="product-categories mb-0">
-                  <a>{{ productDetails?.product?.brand?.name | titlecase }}</a>,
+                  <a (click)="goToProductListing(productDetails?.product?.brand?.name?.toLowerCase())">{{ productDetails?.product?.brand?.name | titlecase }}</a>,
                   <a>{{ productDetails?.color | titlecase }}</a></p>
                 <span><del *ngIf="false">R$ 150,00</del> R$ {{ productDetails?.price }}</span>
               </div>
