@@ -8,7 +8,9 @@ import {CustomerService} from '../../../../../shared/services/customer.service';
 import {CepService} from '../../../../../shared/services/cep.service';
 import {ErrorWarning} from '../../../../../shared/models/error-warning.model';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {Observable} from 'rxjs';
+import {take} from 'rxjs/operators';
 
 @Component({
   selector: 'app-address-form',
@@ -16,8 +18,11 @@ import {Router} from '@angular/router';
   styleUrls: ['./address-form.component.scss']
 })
 export class AddressFormComponent implements OnInit {
+  @ViewChild('success')
+  public readonly dialogSuccess!: SwalComponent;
   @ViewChild('error')
   public readonly dialogError!: SwalComponent;
+  public id: string | undefined;
 
   // @ts-ignore
   newAddressForm: FormGroup;
@@ -34,11 +39,24 @@ export class AddressFormComponent implements OnInit {
     private tokerService: TokenStorageService,
     private customerService: CustomerService,
     private cepService: CepService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {
   }
 
   ngOnInit(): void {
+    const params: Observable<Params> = this.activatedRoute.params;
+    params.subscribe(urlParams => {
+      this.id = urlParams.id;
+      if (this.id) {
+        this.addressService.getById(this.id)
+          .subscribe(response => {
+            this.address = response;
+            this.newAddressForm.patchValue(response);
+          });
+      }
+    });
+
     this.createForm();
     this.customerService.getByUserId(this.tokerService.getSessionUser().id)
       .subscribe(response => {
@@ -55,7 +73,7 @@ export class AddressFormComponent implements OnInit {
       street: [{value: '', disabled: true}, Validators.required],
       number: ['', Validators.required],
       complement: [''],
-      referencePoint: [''],
+      reference: [''],
       state: [{value: '', disabled: true}, Validators.required],
       city: [{value: '', disabled: true}, Validators.required],
       district: [{value: '', disabled: true}, Validators.required],
@@ -80,21 +98,41 @@ export class AddressFormComponent implements OnInit {
     this.address.city = this.newAddressForm.get('city')?.value;
     this.address.district = this.newAddressForm.get('district')?.value;
     this.address.customerId = this.customer.id;
-    this.addressService.save(this.address)
-      .subscribe(() => {
-        this.router.navigateByUrl('/minha-conta/enderecos');
-      }, (error: ErrorWarning) => {
-        this.setErrorDialog(error);
-        this.dialogError.fire().then(r => {
-          if (r.isConfirmed) {
-            this.save();
-          }
+    if (!this.id) {
+      this.addressService.save(this.address)
+        .pipe(take(1))
+        .subscribe(() => {
+          this.dialogSuccess.title = 'Endereço criado com sucesso!';
+          this.dialogSuccess.fire();
+        }, (error: ErrorWarning) => {
+          this.setErrorDialog(error);
+          this.dialogError.fire().then(r => {
+            if (r.isConfirmed) {
+              this.save();
+            }
+          });
         });
-      });
+    } else {
+      this.address.id = this.id;
+      console.warn(this.address);
+      this.addressService.update(this.address)
+        .pipe(take(1))
+        .subscribe(() => {
+          this.dialogSuccess.title = 'Endereço alterado com sucesso!';
+          this.dialogSuccess.fire();
+        }, (error: ErrorWarning) => {
+          this.setErrorDialog(error);
+          this.dialogError.fire().then(r => {
+            if (r.isConfirmed) {
+              this.save();
+            }
+          });
+        });
+    }
   }
 
   redirect(): void {
-    this.router.navigateByUrl('/minha-conta/enderecos/novo');
+    this.router.navigateByUrl('/minha-conta/enderecos');
   }
 
   setErrorDialog(error: ErrorWarning): void {

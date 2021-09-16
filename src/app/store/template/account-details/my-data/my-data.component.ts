@@ -14,6 +14,7 @@ export class MyDataComponent implements OnInit {
 
   authenticationResponse: AuthenticationResponse | undefined;
   customer: Customer | undefined;
+  public hasError = false;
 
   constructor(
     private tokenStorageService: TokenStorageService,
@@ -30,8 +31,10 @@ export class MyDataComponent implements OnInit {
       .pipe(take(1))
       .subscribe(response => {
         this.customer = response;
+        this.hasError = false;
       }, error => {
         console.log(error);
+        this.hasError = true;
       });
   }
 }
