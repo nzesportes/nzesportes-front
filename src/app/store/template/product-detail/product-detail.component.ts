@@ -4,7 +4,7 @@ import {CartService} from '../../services/cart.service';
 import {Store} from '@ngrx/store';
 import {ProductsService} from '../../../shared/services/products.service';
 import {Observable} from 'rxjs';
-import {ActivatedRoute, Params} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Product} from '../../../shared/models/product.model';
 import {ProductDetails, Stock} from '../../../shared/models/product-details.model';
 import {take} from 'rxjs/operators';
@@ -13,6 +13,8 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Shipping} from '../../../shared/models/shipping.model';
 import {BetterSendService} from '../../../shared/services/better-send.service';
 import {ShippingResult} from '../../../shared/models/shipping-result.model';
+import {FiltersService} from '../../services/filters.service';
+import {Gender} from '../../../shared/enums/gender';
 
 export  interface ImageSlide {
   id: number;
@@ -87,11 +89,14 @@ export class ProductDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private store: Store<fromStore.ProductState>,
     private formBuilder: FormBuilder,
-    private betterSendService: BetterSendService
+    private betterSendService: BetterSendService,
+    private router: Router,
+    private filterService: FiltersService
   ) {
   }
 
   ngOnInit(): void {
+    window.scrollTo(0, 0);
     this.createForm();
     const params: Observable<Params> = this.activatedRoute.params;
     params.subscribe(urlParams => {
@@ -245,7 +250,10 @@ export class ProductDetailComponent implements OnInit {
     } else {
       this.verifyValidation(this.formShipping);
     }
-
   }
 
+  goToProductListing(brand?: string, category?: string, gender?: Gender): void {
+    this.filterService.setSearch('', brand, category, gender);
+    this.router.navigateByUrl('/search');
+  }
 }

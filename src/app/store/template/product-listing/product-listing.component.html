@@ -5,7 +5,7 @@
 
   <div class="row m-0">
     <!--produto começa aqui-->
-    <div class="col-12 col-sm-6 col-md-4 col-xl-3 p-0" *ngFor="let productDetails of productsDetails">
+    <div class="col-12 col-sm-6 col-md-4 col-xl-3 p-0" *ngFor="let productDetails of productDetailsTO">
       <div class="m-3 ml-md-3 mr-md-3 product" (click)="goToProductDetails(productDetails.id, productDetails.productId)" routerLink="/produtos/{{ productDetails.id }}">
         <div class="product-content">
           <div class="product-image">
@@ -16,15 +16,18 @@
             <a class="image-overlay"></a>
           </div>
           <div class="product-detail pt-2">
-            <a href="#" class="product-description">{{ productDetails.productId }}</a>
-            <p class="product-categories mb-0"><a href="#">{{ productDetails.color }}</a>, <a href="#">{{ productDetails.gender }}</a></p>
-            <span><del *ngIf="false">R$ 150,00</del> R$ {{ productDetails.price }}</span>
+            <a href="#" class="product-description">{{ productDetails?.product?.model }}</a>
+            <p class="product-categories mb-0">
+              <a href="#">{{ productDetails?.product?.brand?.name | titlecase }}</a>,
+              <a href="#">{{ productDetails?.color | titlecase }}</a>,
+              <a href="#">Gênero</a></p>
+            <span><del *ngIf="false">R$ 150,00</del> R$ {{ productDetails?.price }}</span>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <nav class="mt-4" aria-label="Page navigation" *ngIf="content && productsDetails.length > 0">
+  <nav class="mt-4" aria-label="Page navigation" *ngIf="content && productDetailsTO.length > 0">
     <ul class="pagination justify-content-end">
       <li class="page-item"  [ngClass]="{'disabled': this.paginationService.page === 0}">
         <a class="page-link" (click)="updateIndex(this.paginationService.page-1)">
