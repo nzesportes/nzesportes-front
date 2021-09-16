@@ -17,7 +17,7 @@ import {FiltersService} from '../../../services/filters.service';
   styleUrls: ['./nz-store.component.scss']
 })
 export class NzStoreComponent implements OnInit {
-  productDetailsTO: ProductDetailsTO[] | undefined;
+  productDetailsTO!: ProductDetailsTO[];
   content: ProductDetailsTOPage | undefined;
   hasError!: boolean;
 
@@ -71,6 +71,7 @@ export class NzStoreComponent implements OnInit {
           this.productDetailsTO = response.content;
           this.content = response;
           this.paginationService.getPageRange(this.content.totalElements);
+          this.hasError = false;
         }, () => {
           this.hasError = true;
         }
@@ -82,6 +83,10 @@ export class NzStoreComponent implements OnInit {
       .pipe(take(1))
       .subscribe(product => {
         localStorage.setItem('product', JSON.stringify(product));
+        this.hasError = false;
+      }, error => {
+        console.log(error);
+        this.hasError = true;
       });
     this.router.navigateByUrl('/produtos/' + idProductDetails);
   }

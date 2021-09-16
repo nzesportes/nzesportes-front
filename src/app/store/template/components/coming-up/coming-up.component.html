@@ -2,7 +2,13 @@
   <div>
     <h3 class="coming-up-title" data-mask="Lançamentos">Lançamentos</h3>
   </div>
-  <div>
+  <div class="alert alert-danger mt-5" role="alert" *ngIf="hasError">
+    Ops! Não foi possível exibir os nossos lançamentos. Por favor, <span class="alert-link" (click)="ngOnInit()">tente novamente</span> mais tarde.
+  </div>
+  <div class="alert alert-warning mt-5" role="alert" *ngIf="productDetailsTO.length === 0 && !hasError">
+    Não existem produtos cadastrados.
+  </div>
+  <div *ngIf="productDetailsTO.length > 0 && !hasError">
     <ul class="coming-up-filter pl-0 text-left text-md-right">
       <li class="current filter-homepage">
         <a (click)="getAllDetails(8, 0)">Todos
@@ -32,7 +38,7 @@
     </ul>
   </div>
 
-  <div class="p-2">
+  <div class="p-2" *ngIf="productDetailsTO.length > 0 && !hasError">
     <div class="row">
       <!--produto começa aqui-->
       <div class="col-12 col-md-6 col-xl-3 p-0" *ngFor="let productDetails of productDetailsTO">
