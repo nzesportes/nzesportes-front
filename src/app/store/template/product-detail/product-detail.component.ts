@@ -13,12 +13,16 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Shipping} from '../../../shared/models/shipping.model';
 import {BetterSendService} from '../../../shared/services/better-send.service';
 import {ShippingResult} from '../../../shared/models/shipping-result.model';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
-export  interface ImageSlide {
+export interface ImageSlide {
   id: number;
   fullImage: string;
   thumb: string;
+  fullImageSafe: SafeResourceUrl;
+  thumbSafe: SafeResourceUrl;
 }
+
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
@@ -32,6 +36,8 @@ export class ProductDetailComponent implements OnInit {
   productDetails: ProductDetails;
   // @ts-ignore
   product: Product;
+
+  images: string[] | undefined;
 
   @ViewChild('stock')
   public readonly selectedStock!: any;
@@ -58,7 +64,7 @@ export class ProductDetailComponent implements OnInit {
     pullDrag: false,
     dots: false,
     navSpeed: 700,
-    navText: ['<i class=fas fa-chevron-left></i>', '<i class=fas fa-chevron-right></i>'],
+    navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
     responsive: {
       0: {
         items: 3
@@ -87,7 +93,8 @@ export class ProductDetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private store: Store<fromStore.ProductState>,
     private formBuilder: FormBuilder,
-    private betterSendService: BetterSendService
+    private betterSendService: BetterSendService,
+    private sanitizer: DomSanitizer
   ) {
   }
 
@@ -123,10 +130,12 @@ export class ProductDetailComponent implements OnInit {
     this.dynamicSlides = [];
     this.productDetails.images.split(';').forEach((image, i) => {
       this.dynamicSlides.push({
-          id: i,
-          fullImage: image,
-          thumb: image
-        });
+        id: i,
+        fullImage: image,
+        thumb: image,
+        fullImageSafe: this.sanitizer.bypassSecurityTrustResourceUrl(image),
+        thumbSafe: this.sanitizer.bypassSecurityTrustResourceUrl(image)
+      });
     });
   }
 
@@ -142,6 +151,7 @@ export class ProductDetailComponent implements OnInit {
       ])),
     });
   }
+
   get validateFields(): any {
     return this.formStock.controls;
   }
@@ -151,32 +161,33 @@ export class ProductDetailComponent implements OnInit {
       'is-invalid': field.invalid && field.touched
     };
   }
+
   changeImage(index: number): void {
     this.positionImage = index;
   }
 
   changeMax(index: number): void {
-      this.sizeMax = this.productDetails.stock[index].quantity;
-      this.startValue = 1;
+    this.sizeMax = this.productDetails.stock[index].quantity;
+    this.startValue = 1;
   }
 
   addToCart(productDetail: ProductDetails, stockIndex: number): void {
-    if (this.formStock.valid){
+    if (this.formStock.valid) {
       const stockCart = this.productDetails.stock[stockIndex];
       const cartItem = this.cartService.getProductsCart().find(item => item.id === stockCart.id);
       if (cartItem) {
         const sumQuantity = cartItem.quantity + 1;
         if (sumQuantity > stockCart.quantity) {
           this.noStock = true;
-        }else {
+        } else {
           this.noStock = false;
           this.sendToCart(productDetail, stockCart);
         }
-      }else{
+      } else {
         this.sendToCart(productDetail, stockCart);
       }
-    }else {
-        this.verifyValidation(this.formStock);
+    } else {
+      this.verifyValidation(this.formStock);
     }
 
   }
@@ -199,14 +210,14 @@ export class ProductDetailComponent implements OnInit {
       productId: this.product.id,
       model: this.product.model,
       quantity: this.startValue,
-      stock:  stockCart,
+      stock: stockCart,
       total: productDetail.price * this.startValue
     };
     this.cartService.addToCart(itemCart);
   }
 
   calculateShipping(): void {
-    if (this.formShipping.valid){
+    if (this.formShipping.valid) {
       // @ts-ignore
       const cep = this.formShipping.get('shipping').value;
       const shipping: Shipping = {
@@ -233,19 +244,24 @@ export class ProductDetailComponent implements OnInit {
         .subscribe(r => {
           console.log(r);
           this.shippingResult = r.filter(ship => !ship.error);
-          if (this.shippingResult.length === 0 ) {
+          if (this.shippingResult.length === 0) {
             this.notShipResult = true;
-          }else {
+          } else {
             this.notShipResult = false;
           }
           this.errorShipResult = false;
-        }, () =>  {
+        }, () => {
           this.errorShipResult = true;
         });
     } else {
       this.verifyValidation(this.formShipping);
     }
 
+  }
+
+  isMobile(): any {
+    const userAgent = window.navigator.userAgent.toLocaleLowerCase();
+    return userAgent.includes('iphone') || userAgent.includes('android');
   }
 
 }

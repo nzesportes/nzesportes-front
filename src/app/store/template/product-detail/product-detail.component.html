@@ -1,5 +1,7 @@
 <div class="container">
-  <div class="row m-0 pt-5 pb-5">
+  <div class="row m-0 pt-5 pb-5" itemtype="https://schema.org/Product" itemscope>
+    <meta itemprop="mpn" content="{{ productDetails?.productId }}" />
+    <meta itemprop="name" content="{{ productDetails?.id }}" />
     <div class="col-12 col-lg-6 pt-5">
       <div class="w-100 mb-3 zoomImage" *ngIf="dynamicSlides.length > 0">
         <lib-ngx-image-zoom
@@ -69,9 +71,12 @@
         </form>
 
         <div class="mt-3 text-center text-lg-left">
-          <button type="button" class="btn btn-primary btn-add-cart"
+          <button *ngIf="!noStock" type="button" class="btn btn-primary btn-add-cart"
           (click)="addToCart(productDetails, stock.selectedIndex)">Adicionar ao carrinho<i
             class="fas fa-chevron-right"></i></button>
+          <a *ngIf="noStock" type="button" class="btn btn-primary btn-add-cart" target="_blank"
+                  href="https://{{isMobile() ? 'api.whatsapp.com' : 'web.whatsapp.com'}}/send?phone=+5511992464452&text=Olá, gostaria de fazer um pedido!">Encomendar produto<i
+            class="fas fa-chevron-right"></i></a>
         </div>
       </form>
       <form class="pt-3" [formGroup]="formShipping">
@@ -163,6 +168,38 @@
           <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
         </ul>
       </nav>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div itemtype="https://schema.org/Product" itemscope>
+    <meta itemprop="mpn" content="{{ productDetails?.productId }}" />
+    <meta itemprop="name" content="{{ productDetails?.id }}" />
+    <link *ngFor="let image of dynamicSlides, let i = index" itemprop="image" [href]="image.fullImageSafe" />
+    <meta itemprop="description" content="{{ productDetails?.description }}" />
+    <div *ngIf="false" itemprop="offers" itemtype="https://schema.org/AggregateOffer" itemscope>
+      <meta itemprop="lowPrice" content="{{ productDetails?.price }}" />
+      <meta itemprop="highPrice" content="{{ productDetails?.price }}" />
+      <meta itemprop="offerCount" content="6" />
+      <meta itemprop="priceCurrency" content="BRL" />
+    </div>
+    <div itemprop="aggregateRating" itemtype="https://schema.org/AggregateRating" itemscope>
+      <meta itemprop="reviewCount" content="89" />
+      <meta itemprop="ratingValue" content="4.4" />
+    </div>
+    <div itemprop="review" itemtype="https://schema.org/Review" itemscope>
+      <div itemprop="author" itemtype="https://schema.org/Person" itemscope>
+        <meta itemprop="name" content="Fred Benson" />
+      </div>
+      <div itemprop="reviewRating" itemtype="https://schema.org/Rating" itemscope>
+        <meta itemprop="ratingValue" content="4" />
+        <meta itemprop="bestRating" content="5" />
+      </div>
+    </div>
+    <meta itemprop="sku" content="{{ productDetails?.id }}" />
+    <div itemprop="brand" itemtype="https://schema.org/Brand" itemscope>
+      <meta itemprop="name" content="{{ product?.brand?.name }}" />
     </div>
   </div>
 </div>
