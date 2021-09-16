@@ -40,7 +40,8 @@ export class ProductListingComponent implements OnInit, OnDestroy {
         filter.color, filter.brand, filter.classBy as Order);
     });
     this.paginationService.initPagination();
-    this.getAllDetails(10, this.paginationService.page, this.filterService.filter.name, undefined, '', '', '', this.filterService.filter.brand, Order.ASC);
+    this.getAllDetails(10, this.paginationService.page, this.filterService.filter.name, undefined,
+      '', '', '', this.filterService.filter.brand, Order.ASC);
 
     this.isMobile = this.verifyWindowWidth();
   }
@@ -67,9 +68,9 @@ export class ProductListingComponent implements OnInit, OnDestroy {
     this.productsService.getAllDetails(size, page, name, gender, category, productSize, color, brand, order)
       .pipe(take(1))
       .subscribe(response => {
-        this.productDetailsTO = response.content;
-        this.content = response;
-        this.paginationService.getPageRange(this.content.totalElements);
+          this.productDetailsTO = response.content;
+          this.content = response;
+          this.paginationService.getPageRange(this.content.totalElements);
         }, () => {
           this.hasError = true;
         }
