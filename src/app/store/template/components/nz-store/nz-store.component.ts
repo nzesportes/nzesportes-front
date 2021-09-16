@@ -1,15 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {OwlOptions} from 'ngx-owl-carousel-o';
 import {map, take} from 'rxjs/operators';
-import {ProductsStore} from '../../../../shared/models/products-store.model';
 import {ProductsService} from '../../../../shared/services/products.service';
-import {Product} from '../../../../shared/models/product.model';
 import {Gender} from '../../../../shared/enums/gender';
 import {Order} from '../../../../shared/enums/order.enum';
 import {PaginationService} from '../../../../shared/services/pagination.service';
-import {ProductDetails} from '../../../../shared/models/product-details.model';
-import {ProductDetailsPage} from '../../../../shared/models/pagination-model/product-details-page.model';
 import {Router} from '@angular/router';
+import {ProductDetailsTOPage} from '../../../../shared/models/pagination-model/product-details-to-page.model';
+import {ProductDetailsTO} from '../../../../shared/models/product-details-to.model';
+import {FiltersService} from '../../../services/filters.service';
 
 
 @Component({
@@ -18,14 +17,8 @@ import {Router} from '@angular/router';
   styleUrls: ['./nz-store.component.scss']
 })
 export class NzStoreComponent implements OnInit {
-
-  // @ts-ignore
-  products: Product[];
-  // @ts-ignore
-  productsStore: ProductsStore[];
-
-  productsDetails: ProductDetails[] | undefined;
-  content: ProductDetailsPage | undefined;
+  productDetailsTO: ProductDetailsTO[] | undefined;
+  content: ProductDetailsTOPage | undefined;
   hasError!: boolean;
 
   customOptions: OwlOptions = {
@@ -60,7 +53,8 @@ export class NzStoreComponent implements OnInit {
   constructor(
     private productsService: ProductsService,
     private paginationService: PaginationService,
-    private router: Router
+    private router: Router,
+    private filterService: FiltersService
   ) {
   }
 
@@ -74,7 +68,7 @@ export class NzStoreComponent implements OnInit {
     this.productsService.getAllDetails(size, page, name, gender, category, productSize, color, brand, order)
       .pipe(take(1))
       .subscribe(response => {
-          this.productsDetails = response.content;
+          this.productDetailsTO = response.content;
           this.content = response;
           this.paginationService.getPageRange(this.content.totalElements);
         }, () => {
@@ -90,5 +84,10 @@ export class NzStoreComponent implements OnInit {
         localStorage.setItem('product', JSON.stringify(product));
       });
     this.router.navigateByUrl('/produtos/' + idProductDetails);
+  }
+
+  goToProductListing(brand?: string, category?: string, gender?: Gender): void {
+    this.filterService.setSearch('', brand, category, gender);
+    this.router.navigateByUrl('/search');
   }
 }

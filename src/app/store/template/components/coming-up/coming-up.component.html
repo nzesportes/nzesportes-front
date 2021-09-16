@@ -35,10 +35,9 @@
   <div class="p-2">
     <div class="row">
       <!--produto começa aqui-->
-      <div class="col-12 col-md-6 col-xl-3 p-0" *ngFor="let productDetails of productsDetails">
+      <div class="col-12 col-md-6 col-xl-3 p-0" *ngFor="let productDetails of productDetailsTO">
         <div class="m-3 ml-sm-auto mr-sm-auto ml-md-3 mr-md-3 product"
-             (click)="goToProductDetails(productDetails.id, productDetails.productId)"
-             routerLink="/produtos/{{ productDetails.id }}">
+             (click)="goToProductDetails(productDetails.id, productDetails.product.id)">
           <div class="product-content">
             <div class="product-image">
               <div class="badge-product" *ngIf="true"><span>Novo</span></div>
@@ -49,9 +48,10 @@
               <a class="image-overlay"></a>
             </div>
             <div class="product-detail pt-2">
-              <a href="#" class="product-description">{{ productDetails?.id }}</a>
-              <p class="product-categories mb-0"><a href="#">{{ productDetails?.brand?.name | titlecase }}</a>, <a
-                href="#">{{ productDetails?.color }}</a></p>
+              <a (click)="goToProductDetails(productDetails.id, productDetails.product.id)" class="product-description">{{ productDetails?.product?.model }}</a>
+              <p class="product-categories mb-0">
+                <a (click)="goToProductListing(productDetails?.product?.brand?.name?.toLowerCase())">{{ productDetails?.product?.brand?.name | titlecase }}</a>,
+                <a>{{ productDetails?.color | titlecase }}</a></p>
               <span><del *ngIf="false">R$ 150,00</del> R$ {{ productDetails?.price }}</span>
             </div>
           </div>

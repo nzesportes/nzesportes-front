@@ -5,22 +5,25 @@
 
   <div class="p-2">
     <owl-carousel-o [options]="customOptions" class="owl-nz-store">
-      <ng-container *ngFor="let productDetails of productsDetails">
+      <ng-container *ngFor="let productDetails of productDetailsTO">
         <ng-template carouselSlide id="{slide.id}">
           <!--produto começa aqui-->
-          <div class="product" routerLink="produtos/{{ productDetails.id }}">
+          <div class="product" (click)="goToProductDetails(productDetails.id, productDetails.product.id)">
             <div class="product-content">
               <div class="product-image">
                 <div class="badge-product" *ngIf="true"><span>Novo</span></div>
-                <div class="badge-product badge-sale" [class.second-sale]="true && true" *ngIf="true"><span>35%</span></div>
+                <div class="badge-product badge-sale" [class.second-sale]="true && true" *ngIf="true"><span>35%</span>
+                </div>
                 <!--<a class="product-favorite"><i class="far fa-heart"></i></a>-->
-                <img src="../../../../../assets/images/product.jpg" class="w-100">
+                <img src="{{productDetails.images.split(';')[0]}}" class="w-100">
                 <a class="image-overlay"></a>
               </div>
               <div class="product-detail pt-2">
-                <a href="#" class="product-description">{{ productDetails.id }}</a>
-                <p class="product-categories mb-0"><a href="#">Marca</a>, <a href="#">Modelo</a></p>
-                <span><del *ngIf="false">R$ 150,00</del> R$ {{ productDetails.price }}</span>
+                <a class="product-description">{{ productDetails?.product?.model }}</a>
+                <p class="product-categories mb-0">
+                  <a (click)="goToProductListing(productDetails?.product?.brand?.name?.toLowerCase())">{{ productDetails?.product?.brand?.name | titlecase }}</a>,
+                  <a>{{ productDetails?.color | titlecase }}</a></p>
+                <span><del *ngIf="false">R$ 150,00</del> R$ {{ productDetails?.price }}</span>
               </div>
             </div>
           </div>
