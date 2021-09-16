@@ -3,7 +3,14 @@
     <h3 class="nz-store-title" data-mask="NZ Store">NZ Store</h3>
   </div>
 
-  <div class="p-2">
+  <div class="alert alert-danger mt-5" role="alert" *ngIf="hasError">
+    Ops! Não foi possível exibir nossos produtos. Por favor, <span class="alert-link" (click)="ngOnInit()">tente novamente</span> mais tarde.
+  </div>
+  <div class="alert alert-warning mt-5" role="alert" *ngIf="productDetailsTO.length === 0 && !hasError">
+    Não existem produtos cadastrados.
+  </div>
+
+  <div class="p-2" *ngIf="productDetailsTO.length > 0 && !hasError">
     <owl-carousel-o [options]="customOptions" class="owl-nz-store">
       <ng-container *ngFor="let productDetails of productDetailsTO">
         <ng-template carouselSlide id="{slide.id}">

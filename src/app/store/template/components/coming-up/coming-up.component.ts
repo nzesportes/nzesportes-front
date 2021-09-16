@@ -44,6 +44,7 @@ export class ComingUpComponent implements OnInit {
           this.auxProductsDetailsTO = response.content;
           this.content = response;
           this.paginationService.getPageRange(this.content.totalElements);
+          this.hasError = false;
         }, () => {
           this.hasError = true;
         }
@@ -55,6 +56,10 @@ export class ComingUpComponent implements OnInit {
       .pipe(take(1))
       .subscribe(product => {
         localStorage.setItem('product', JSON.stringify(product));
+        this.hasError = false;
+      }, error => {
+        console.log(error);
+        this.hasError = true;
       });
     this.router.navigateByUrl('/produtos/' + idProductDetails);
   }
