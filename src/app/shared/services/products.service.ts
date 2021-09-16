@@ -10,6 +10,7 @@ import {ProductDetailsPage} from '../models/pagination-model/product-details-pag
 import {Gender} from '../enums/gender';
 import {Order} from '../enums/order.enum';
 import {DetailsFiltersRequest} from '../../store/models/details-filters-request';
+import {ProductDetailsTOPage} from '../models/pagination-model/product-details-to-page.model';
 
 @Injectable({
   providedIn: 'root'
@@ -109,7 +110,7 @@ export class ProductsService {
     name?: string,
     gender?: Gender,
     category?: string,
-    productSize?: string, color?: string, brand?: string, order?: Order): Observable<ProductDetailsPage> {
+    productSize?: string, color?: string, brand?: string, order?: Order): Observable<ProductDetailsTOPage> {
     const urlGender = gender ? '&gender=' + gender.toString() : '';
     const urlCategory = category ? '&category=' + category : '';
     const urlProductSize = productSize ? '&productSize=' + productSize : '';
@@ -118,8 +119,10 @@ export class ProductsService {
     const urlOrder = order ? '&order=' + order.toString() : '';
     const urlName = name ? '&name=' + name : '';
 
-    return this.http.get<ProductDetailsPage>(`${this.api}details?page=${page.toString()}&size=${size.toString() +
-    urlName + urlGender + urlCategory + urlProductSize + urlColor + urlBrand + urlOrder}`);
+    const url = `page=${page.toString()}&size=${size.toString() +
+    urlName + urlGender + urlCategory + urlProductSize + urlColor + urlBrand + urlOrder}`;
+
+    return this.http.get<ProductDetailsTOPage>(`${this.api}details?${url}`);
   }
 
   setDetailsFiltersState(
