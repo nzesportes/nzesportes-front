@@ -21,6 +21,15 @@ jobs:
           npm install
           npm run build
 
+      - name: Restart application deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST_DEPLOY }}
+          username: ${{ secrets.SSH_USERNAME_DEPLOY }}
+          password: ${{ secrets.SSH_PASSWORD_DEPLOY }}
+          port: ${{ secrets.SSH_PORT_DEPLOY }}
+          script: ${{ secrets.SSH_SCRIPT_DEPLOY_REMOVE_FILES }}
+
       - name: 📂 Sync files
         uses: SamKirkland/FTP-Deploy-Action@4.0.0
         with:
