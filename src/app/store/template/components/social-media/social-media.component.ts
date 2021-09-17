@@ -12,4 +12,10 @@ export class SocialMediaComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
+  isMobile(): any {
+    const userAgent = window.navigator.userAgent.toLocaleLowerCase();
+    return userAgent.includes('iphone') || userAgent.includes('android');
+  }
+
 }
