@@ -120,6 +120,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
         this.paginationService.getPageRange(this.content.totalElements);
         this.hasError = false;
       }, error => {
+        this.hasError = true;
         console.log(error);
       });
   }

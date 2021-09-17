@@ -2,10 +2,10 @@
 
  <!-- Sidebar -->
   <div class="bg-light border-right sidebar-wrapper" [class.active]="isSidebarOpened">
-    <form class="search-header">
-      <input class="form-control" type="search" placeholder="PESQUISAR..." aria-label="Search">
-      <button><i class="fas fa-search"></i></button>
-    </form>
+    <div class="search-header">
+      <input class="form-control" type="search" [(ngModel)]="search" placeholder="PESQUISAR..." (keyup.enter)="searchProducts()" aria-label="Search">
+      <button (click)="searchProducts()"><i class="fas fa-search"></i></button>
+    </div>
     <app-menu-items></app-menu-items>
   </div>
   <!-- /#sidebar-wrapper -->

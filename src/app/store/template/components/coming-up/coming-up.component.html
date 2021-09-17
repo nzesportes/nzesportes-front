@@ -7,8 +7,7 @@
       <li class="filter-homepage" [ngClass]="selectedFilter === 'todos' ? 'current' : ''">
         <a (click)="getAllDetails(8, 0)">
           <input class="form-check-input radiosInput" type="radio" name="filter" id="filterTodos"
-                  (click)="filterSelected('todos')"
-                 formControlName="brand" value="adidas">
+                  (click)="filterSelected('todos')" value="adidas">
           <label class="form-check-label" for="filterTodos">Todos </label>
           <sup> {{ productDetailsTO?.length }}</sup>
         </a>
@@ -16,8 +15,7 @@
       <li class="filter-homepage" [ngClass]="selectedFilter === 'nike' ? 'current' : ''">
         <a (click)="getAllDetails(8, 0, '', undefined, '', '', '', 'nike')">
           <input class="form-check-input radiosInput" type="radio" name="filter" id="filterNike"
-                 (click)="filterSelected('nike')"
-                 formControlName="brand" value="adidas">
+                 (click)="filterSelected('nike')" value="adidas">
           <label class="form-check-label" for="filterNike">Nike </label>
           <sup> {{ productDetailsTO?.length }}</sup>
         </a>
@@ -25,8 +23,7 @@
       <li class="filter-homepage" [ngClass]="selectedFilter === 'adidas' ? 'current' : ''">
         <a (click)="getAllDetails(8, 0, '', undefined, '', '', '', 'adidas')">
           <input class="form-check-input radiosInput" type="radio" name="filter" id="filterAdidas"
-                 (click)="filterSelected('adidas')"
-                 formControlName="brand" value="adidas">
+                 (click)="filterSelected('adidas')" value="adidas">
           <label class="form-check-label" for="filterAdidas">Adidas </label>
           <sup> {{ productDetailsTO?.length }}</sup>
         </a>
@@ -34,8 +31,7 @@
       <li class="filter-homepage" [ngClass]="selectedFilter === 'male' ? 'current' : ''">
         <a (click)="filter('MALE')">
           <input class="form-check-input radiosInput" type="radio" name="filter" id="filterMale"
-                 (click)="filterSelected('male')"
-                 formControlName="brand" value="adidas">
+                 (click)="filterSelected('male')" value="adidas">
           <label class="form-check-label" for="filterMale">Masculino </label>
           <sup> {{ productDetailsTO?.length }}</sup>
         </a>
@@ -43,8 +39,7 @@
       <li class="filter-homepage" [ngClass]="selectedFilter === 'female' ? 'current' : ''">
         <a (click)="filter('FEMALE')">
           <input class="form-check-input radiosInput" type="radio" name="filter" id="filterFemale"
-                 (click)="filterSelected('female')"
-                 formControlName="brand" value="adidas">
+                 (click)="filterSelected('female')" value="adidas">
           <label class="form-check-label" for="filterFemale">Feminino </label>
           <sup> {{ productDetailsTO?.length }}</sup>
         </a>
