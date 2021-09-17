@@ -172,27 +172,12 @@
         <a class="nav-link" (click)="changeStateItemMenu(brand)">Marca<i class="fas fa-angle-down ml-1"></i></a>
         <div class="submenu" #brand>
           <ul class="items-submenu">
-            <li>
+            <li *ngFor="let brand of brands">
               <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="brand" id="brandAdidas"
+                <input class="form-check-input radiosInput" type="radio" name="brand" id="brand{{ brand.name | titlecase }}"
                        (change)="selectFilter()"
-                       formControlName="brand" value="adidas">
-                <label class="form-check-label" for="brandAdidas">Adidas</label>
-              </a>
-            </li>
-            <li>
-              <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="brand" id="brandJordan"
-                       (change)="selectFilter()"
-                       formControlName="brand" value="jordan">
-                <label class="form-check-label" for="brandJordan">Jordan</label>
-              </a>
-            </li>
-            <li>
-              <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="brand" id="brandNike" (change)="selectFilter()"
-                       formControlName="brand" value="Nike">
-                <label class="form-check-label" for="brandNike">Nike</label>
+                       formControlName="brand" value="{{ brand.name | lowercase }}">
+                <label class="form-check-label" for="brand{{ brand.name | titlecase }}">{{ brand.name | titlecase }}</label>
               </a>
             </li>
           </ul>
