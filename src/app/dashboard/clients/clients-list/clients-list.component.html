@@ -56,7 +56,7 @@
           > {{c.instagram}}</a>
         </td>
         <td>
-          <a href="https://{{isMobile() ? 'api.whatsapp.com' : 'web.whatsapp.com'}}/send?phone=+55{{ c.phone }}&text=Olá,{{ c.name }}"
+          <a href="https://{{isMobile() ? 'api.whatsapp.com' : 'web.whatsapp.com'}}/send?phone=+55{{ c.phone }}&text=Olá, {{ c.name }}"
              class="badge badge-info"
              target="_blank">
             {{c.phone}}
