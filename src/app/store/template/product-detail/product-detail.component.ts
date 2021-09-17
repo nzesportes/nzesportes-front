@@ -265,6 +265,11 @@ export class ProductDetailComponent implements OnInit {
     }
   }
 
+  isMobile(): any {
+    const userAgent = window.navigator.userAgent.toLocaleLowerCase();
+    return userAgent.includes('iphone') || userAgent.includes('android');
+  }
+
   goToProductListing(brand?: string, category?: string, gender?: Gender): void {
     this.filterService.setSearch('', brand, category, gender);
     this.router.navigateByUrl('/search');
