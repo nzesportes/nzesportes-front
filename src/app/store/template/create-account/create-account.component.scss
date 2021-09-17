@@ -45,7 +45,7 @@ legend, label, h1 {
 }
 
 .btn-submit {
-  width: 100%;
+  width: calc(100% - 50px);
   border-radius: 0;
   background-color: #F37135;
   border: #F37135;

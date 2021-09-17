@@ -19,7 +19,7 @@ export class ComingUpComponent implements OnInit {
   productDetailsTO: ProductDetailsTO[] = [];
   auxProductsDetailsTO: ProductDetailsTO[] = [];
   productsDetails: ProductDetails[] = [];
-  content: ProductDetailsTOPage | undefined;
+  content!: ProductDetailsTOPage;
   hasError!: boolean;
   selectedFilter = 'todos';
 

@@ -4,11 +4,11 @@
   </div>
   <app-filters *ngIf="!isMobile" id="filters-component"></app-filters>
 
-  <div class="alert alert-danger" role="alert" *ngIf="hasError">
+  <div class="alert alert-danger m-3 ml-md-3 mr-md-3" role="alert" *ngIf="hasError">
     Ops! Não foi possível exibir os produtos. Por favor, <span class="alert-link"
                                                                (click)="ngOnInit()">tente novamente</span> mais tarde.
   </div>
-  <div class="alert alert-warning" role="alert" *ngIf="productDetailsTO.length === 0 && !hasError">
+  <div class="alert alert-warning m-3 ml-md-3 mr-md-3" role="alert" *ngIf="productDetailsTO.length === 0 && !hasError">
     Não foram encontrados produtos.
   </div>
 
