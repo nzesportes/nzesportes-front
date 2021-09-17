@@ -46,4 +46,8 @@ export class ClientsListComponent implements OnInit {
       });
   }
 
+  isMobile(): any {
+    const userAgent = window.navigator.userAgent.toLocaleLowerCase();
+    return userAgent.includes('iphone') || userAgent.includes('android');
+  }
 }
