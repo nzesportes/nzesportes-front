@@ -2,40 +2,61 @@
   <div>
     <h3 class="coming-up-title" data-mask="Lançamentos">Lançamentos</h3>
   </div>
+  <div>
+    <ul class="coming-up-filter pl-0 text-left text-md-right">
+      <li class="filter-homepage" [ngClass]="selectedFilter === 'todos' ? 'current' : ''">
+        <a (click)="getAllDetails(8, 0)">
+          <input class="form-check-input radiosInput" type="radio" name="filter" id="filterTodos"
+                  (click)="filterSelected('todos')"
+                 formControlName="brand" value="adidas">
+          <label class="form-check-label" for="filterTodos">Todos </label>
+          <sup> {{ productDetailsTO?.length }}</sup>
+        </a>
+      </li>
+      <li class="filter-homepage" [ngClass]="selectedFilter === 'nike' ? 'current' : ''">
+        <a (click)="getAllDetails(8, 0, '', undefined, '', '', '', 'nike')">
+          <input class="form-check-input radiosInput" type="radio" name="filter" id="filterNike"
+                 (click)="filterSelected('nike')"
+                 formControlName="brand" value="adidas">
+          <label class="form-check-label" for="filterNike">Nike </label>
+          <sup> {{ productDetailsTO?.length }}</sup>
+        </a>
+      </li>
+      <li class="filter-homepage" [ngClass]="selectedFilter === 'adidas' ? 'current' : ''">
+        <a (click)="getAllDetails(8, 0, '', undefined, '', '', '', 'adidas')">
+          <input class="form-check-input radiosInput" type="radio" name="filter" id="filterAdidas"
+                 (click)="filterSelected('adidas')"
+                 formControlName="brand" value="adidas">
+          <label class="form-check-label" for="filterAdidas">Adidas </label>
+          <sup> {{ productDetailsTO?.length }}</sup>
+        </a>
+      </li>
+      <li class="filter-homepage" [ngClass]="selectedFilter === 'male' ? 'current' : ''">
+        <a (click)="filter('MALE')">
+          <input class="form-check-input radiosInput" type="radio" name="filter" id="filterMale"
+                 (click)="filterSelected('male')"
+                 formControlName="brand" value="adidas">
+          <label class="form-check-label" for="filterMale">Masculino </label>
+          <sup> {{ productDetailsTO?.length }}</sup>
+        </a>
+      </li>
+      <li class="filter-homepage" [ngClass]="selectedFilter === 'female' ? 'current' : ''">
+        <a (click)="filter('FEMALE')">
+          <input class="form-check-input radiosInput" type="radio" name="filter" id="filterFemale"
+                 (click)="filterSelected('female')"
+                 formControlName="brand" value="adidas">
+          <label class="form-check-label" for="filterFemale">Feminino </label>
+          <sup> {{ productDetailsTO?.length }}</sup>
+        </a>
+      </li>
+    </ul>
+  </div>
+
   <div class="alert alert-danger mt-5" role="alert" *ngIf="hasError">
     Ops! Não foi possível exibir os nossos lançamentos. Por favor, <span class="alert-link" (click)="ngOnInit()">tente novamente</span> mais tarde.
   </div>
   <div class="alert alert-warning mt-5" role="alert" *ngIf="productDetailsTO.length === 0 && !hasError">
-    Não existem produtos cadastrados.
-  </div>
-  <div *ngIf="productDetailsTO.length > 0 && !hasError">
-    <ul class="coming-up-filter pl-0 text-left text-md-right">
-      <li class="current filter-homepage">
-        <a (click)="getAllDetails(8, 0)">Todos
-          <sup>{{ productsDetails?.length }}</sup>
-        </a>
-      </li>
-      <li class="filter-homepage">
-        <a (click)="getAllDetails(8, 0, '', undefined, '', '', '', 'nike')">
-          Nike <sup>1</sup>
-        </a>
-      </li>
-      <li class="filter-homepage">
-        <a (click)="getAllDetails(8, 0, '', undefined, '', '', '', 'adidas')">
-          Adidas <sup>1</sup>
-        </a>
-      </li>
-      <li class="filter-homepage">
-        <a (click)="filter('MALE')">
-          Masculino <sup>1</sup>
-        </a>
-      </li>
-      <li class="filter-homepage">
-        <a (click)="filter('FEMALE')">
-          Feminino <sup>1</sup>
-        </a>
-      </li>
-    </ul>
+    Não foram encontrados produtos.
   </div>
 
   <div class="p-2" *ngIf="productDetailsTO.length > 0 && !hasError">

@@ -1,13 +1,13 @@
 <div class="container-fluid pbt-product pl-xl-5 pr-xl-5">
   <div>
-    <h3 class="nz-store-title" data-mask="NZ Store">NZ Store</h3>
+    <h3 class="nz-store-title" data-mask="Vitrine NZ">Vitrine NZ</h3>
   </div>
 
   <div class="alert alert-danger mt-5" role="alert" *ngIf="hasError">
     Ops! Não foi possível exibir nossos produtos. Por favor, <span class="alert-link" (click)="ngOnInit()">tente novamente</span> mais tarde.
   </div>
   <div class="alert alert-warning mt-5" role="alert" *ngIf="productDetailsTO.length === 0 && !hasError">
-    Não existem produtos cadastrados.
+    Não foram encontrados produtos.
   </div>
 
   <div class="p-2" *ngIf="productDetailsTO.length > 0 && !hasError">
