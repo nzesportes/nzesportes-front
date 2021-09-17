@@ -147,6 +147,7 @@
 
 .product-categories a:hover {
   color: #F37135;
+  cursor: pointer;
 }
 
 .product-detail span {
@@ -166,6 +167,10 @@
 
 .product-detail {
   position: relative;
+}
+
+.product-detail a:hover {
+  cursor: pointer;
 }
 
 .badge-product {

@@ -1,7 +1,12 @@
 <div class="container">
-  <div class="row m-0 pt-5 pb-5" itemtype="https://schema.org/Product" itemscope>
-    <meta itemprop="mpn" content="{{ productDetails?.productId }}" />
-    <meta itemprop="name" content="{{ productDetails?.id }}" />
+  <div class="alert alert-danger m-0 mt-3 mb-3" role="alert" *ngIf="hasError">
+    Ops! Não foi possível exibir o produto selecionado. Por favor, <span class="alert-link" (click)="ngOnInit()">tente novamente</span> mais tarde.
+  </div>
+  <div class="alert alert-warning m-0 mt-3 mb-3" role="alert" *ngIf="!productDetails && !hasError">
+    Não há produto para ser exibido.
+  </div>
+
+  <div class="row m-0 pt-5 pb-5" *ngIf="productDetails && !hasError">
     <div class="col-12 col-lg-6 pt-5">
       <div class="w-100 mb-3 zoomImage" *ngIf="dynamicSlides.length > 0">
         <lib-ngx-image-zoom
@@ -33,7 +38,10 @@
           <i class="far fa-star"></i>
         </p>
         <h1>{{ product?.model }}</h1>
-        <p class="categories"><a href="#">{{ product?.brand?.name | titlecase }}</a>, <a href="#">Modelo</a>, <a href="#">Tag</a></p>
+        <p class="categories">
+          <a (click)="goToProductListing(product?.brand?.name?.toLowerCase())">{{ product?.brand?.name | titlecase }}</a>,
+          <a (click)="goToProductListing('', '')">Categoria</a>,
+          <a (click)="goToProductListing('', '', undefined)">Gênero</a></p>
         <h2>R$ {{ productDetails?.price }}
           <del *ngIf="false">R$ 150,00</del>
         </h2>

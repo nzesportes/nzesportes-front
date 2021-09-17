@@ -1,7 +1,7 @@
 <form [formGroup]="formLogin">
   <div class="form-group input-login">
     <input type="email" class="form-control" formControlName="email" placeholder="E-mail"
-           [ngClass]="{ 'is-invalid': validateFields.email.errors && validateFields.email.touched }">
+           [ngClass]="{ 'is-invalid': validateFields.email.errors && validateFields.email.touched }" (keyup.enter)="singIn()">
     <i class="fas fa-user icon-input"></i>
     <div class="invalid-feedback text-errors">
       <span *ngIf="validateFields.email?.errors?.required">Por favor, insira seu e-mail.</span>
@@ -10,7 +10,7 @@
   </div>
   <div class="form-group input-login">
     <input type="password" #pwd class="form-control password" formControlName="password" placeholder="Senha"
-           [ngClass]="{ 'is-invalid': validateFields.password.errors && validateFields.password.touched }">
+           [ngClass]="{ 'is-invalid': validateFields.password.errors && validateFields.password.touched }" (keyup.enter)="singIn()">
     <i class="fas fa-lock icon-input"></i>
     <button type="button" class="btn btn-input" (click)="changePassword(pwd)">
       <i [class]="pwd.type == 'password' ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>

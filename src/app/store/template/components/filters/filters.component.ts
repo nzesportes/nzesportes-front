@@ -4,6 +4,11 @@ import {ProductsService} from '../../../../shared/services/products.service';
 import {Gender} from '../../../../shared/enums/gender';
 import {Order} from '../../../../shared/enums/order.enum';
 import {FiltersService} from '../../../services/filters.service';
+import {BrandsService} from '../../../../shared/services/brands.service';
+import {take} from 'rxjs/operators';
+import {Brand} from '../../../../shared/models/brand.model';
+import {BrandPage} from '../../../../shared/models/pagination-model/brand-page.model';
+import {PaginationService} from '../../../../shared/services/pagination.service';
 
 @Component({
   selector: 'app-filters',
@@ -14,17 +19,23 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
   formFilters!: FormGroup;
   verifyFilters = false;
+  brands: Brand[] = [];
+  content!: BrandPage;
+  hasError = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private productsService: ProductsService,
-    private filterService: FiltersService
+    private filterService: FiltersService,
+    private brandsService: BrandsService,
+    private paginationService: PaginationService
   ) {
   }
 
   ngOnInit(): void {
     this.createForm();
     this.verifyFilters = this._verifyFilters();
+    this.getBrands();
   }
 
   ngOnDestroy(): void {
@@ -98,5 +109,19 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this.formFilters.get('brand')?.setValue('');
     this.sendDetailsFilters();
     this.verifyFilters = this._verifyFilters();
+  }
+
+  getBrands(): void {
+    this.brandsService.getAll(10, 0)
+      .pipe(take(1))
+      .subscribe(response => {
+        this.brands = response.content;
+        this.content = response;
+        this.paginationService.getPageRange(this.content.totalElements);
+        this.hasError = false;
+      }, error => {
+        this.hasError = true;
+        console.log(error);
+      });
   }
 }

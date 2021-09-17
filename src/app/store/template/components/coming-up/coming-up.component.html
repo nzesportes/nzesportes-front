@@ -4,41 +4,62 @@
   </div>
   <div>
     <ul class="coming-up-filter pl-0 text-left text-md-right">
-      <li class="current filter-homepage">
-        <a (click)="getAllDetails(8, 0)">Todos
-          <sup>{{ productsDetails?.length }}</sup>
+      <li class="filter-homepage" [ngClass]="selectedFilter === 'todos' ? 'current' : ''">
+        <a (click)="getAllDetails(8, 0)">
+          <input class="form-check-input radiosInput" type="radio" name="filter" id="filterTodos"
+                  (click)="filterSelected('todos')" value="adidas">
+          <label class="form-check-label" for="filterTodos">Todos </label>
+          <sup> {{ productDetailsTO?.length }}</sup>
         </a>
       </li>
-      <li class="filter-homepage">
+      <li class="filter-homepage" [ngClass]="selectedFilter === 'nike' ? 'current' : ''">
         <a (click)="getAllDetails(8, 0, '', undefined, '', '', '', 'nike')">
-          Nike <sup>1</sup>
+          <input class="form-check-input radiosInput" type="radio" name="filter" id="filterNike"
+                 (click)="filterSelected('nike')" value="adidas">
+          <label class="form-check-label" for="filterNike">Nike </label>
+          <sup> {{ productDetailsTO?.length }}</sup>
         </a>
       </li>
-      <li class="filter-homepage">
+      <li class="filter-homepage" [ngClass]="selectedFilter === 'adidas' ? 'current' : ''">
         <a (click)="getAllDetails(8, 0, '', undefined, '', '', '', 'adidas')">
-          Adidas <sup>1</sup>
+          <input class="form-check-input radiosInput" type="radio" name="filter" id="filterAdidas"
+                 (click)="filterSelected('adidas')" value="adidas">
+          <label class="form-check-label" for="filterAdidas">Adidas </label>
+          <sup> {{ productDetailsTO?.length }}</sup>
         </a>
       </li>
-      <li class="filter-homepage">
+      <li class="filter-homepage" [ngClass]="selectedFilter === 'male' ? 'current' : ''">
         <a (click)="filter('MALE')">
-          Masculino <sup>1</sup>
+          <input class="form-check-input radiosInput" type="radio" name="filter" id="filterMale"
+                 (click)="filterSelected('male')" value="adidas">
+          <label class="form-check-label" for="filterMale">Masculino </label>
+          <sup> {{ productDetailsTO?.length }}</sup>
         </a>
       </li>
-      <li class="filter-homepage">
+      <li class="filter-homepage" [ngClass]="selectedFilter === 'female' ? 'current' : ''">
         <a (click)="filter('FEMALE')">
-          Feminino <sup>1</sup>
+          <input class="form-check-input radiosInput" type="radio" name="filter" id="filterFemale"
+                 (click)="filterSelected('female')" value="adidas">
+          <label class="form-check-label" for="filterFemale">Feminino </label>
+          <sup> {{ productDetailsTO?.length }}</sup>
         </a>
       </li>
     </ul>
   </div>
 
-  <div class="p-2">
+  <div class="alert alert-danger mt-5" role="alert" *ngIf="hasError">
+    Ops! Não foi possível exibir os nossos lançamentos. Por favor, <span class="alert-link" (click)="ngOnInit()">tente novamente</span> mais tarde.
+  </div>
+  <div class="alert alert-warning mt-5" role="alert" *ngIf="productDetailsTO.length === 0 && !hasError">
+    Não foram encontrados produtos.
+  </div>
+
+  <div class="p-2" *ngIf="productDetailsTO.length > 0 && !hasError">
     <div class="row">
       <!--produto começa aqui-->
-      <div class="col-12 col-md-6 col-xl-3 p-0" *ngFor="let productDetails of productsDetails">
+      <div class="col-12 col-md-6 col-xl-3 p-0" *ngFor="let productDetails of productDetailsTO">
         <div class="m-3 ml-sm-auto mr-sm-auto ml-md-3 mr-md-3 product"
-             (click)="goToProductDetails(productDetails.id, productDetails.productId)"
-             routerLink="/produtos/{{ productDetails.id }}">
+             (click)="goToProductDetails(productDetails.id, productDetails.product.id)">
           <div class="product-content">
             <div class="product-image">
               <div class="badge-product" *ngIf="true"><span>Novo</span></div>
@@ -49,9 +70,10 @@
               <a class="image-overlay"></a>
             </div>
             <div class="product-detail pt-2">
-              <a href="#" class="product-description">{{ productDetails?.id }}</a>
-              <p class="product-categories mb-0"><a href="#">{{ productDetails?.brand?.name | titlecase }}</a>, <a
-                href="#">{{ productDetails?.color }}</a></p>
+              <a (click)="goToProductDetails(productDetails.id, productDetails.product.id)" class="product-description">{{ productDetails?.product?.model }}</a>
+              <p class="product-categories mb-0">
+                <a (click)="goToProductListing(productDetails?.product?.brand?.name?.toLowerCase())">{{ productDetails?.product?.brand?.name | titlecase }}</a>,
+                <a>{{ productDetails?.color | titlecase }}</a></p>
               <span><del *ngIf="false">R$ 150,00</del> R$ {{ productDetails?.price }}</span>
             </div>
           </div>

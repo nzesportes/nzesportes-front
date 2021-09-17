@@ -9,6 +9,8 @@ import {ProductDetailsPage} from '../../../shared/models/pagination-model/produc
 import {Gender} from '../../../shared/enums/gender';
 import {Subscription} from 'rxjs';
 import {FiltersService} from '../../services/filters.service';
+import {ProductDetailsTO} from '../../../shared/models/product-details-to.model';
+import {ProductDetailsTOPage} from '../../../shared/models/pagination-model/product-details-to-page.model';
 
 @Component({
   selector: 'app-product-listing',
@@ -17,8 +19,8 @@ import {FiltersService} from '../../services/filters.service';
 })
 export class ProductListingComponent implements OnInit, OnDestroy {
 
-  productsDetails: ProductDetails[] = [];
-  content: ProductDetailsPage | undefined;
+  productDetailsTO: ProductDetailsTO[] = [];
+  content: ProductDetailsTOPage | undefined;
   hasError!: boolean;
   subscription!: Subscription;
   isMobile = false;
@@ -36,9 +38,14 @@ export class ProductListingComponent implements OnInit, OnDestroy {
       this.paginationService.initPagination();
       this.getAllDetails(10, this.paginationService.page, filter.name, filter.gender as Gender, filter.category, filter.size,
         filter.color, filter.brand, filter.classBy as Order);
+      this.hasError = false;
+    }, error => {
+      console.log(error);
+      this.hasError = true;
     });
     this.paginationService.initPagination();
-    this.getAllDetails(10, this.paginationService.page, this.filterService.filter.name, undefined, '', '', '', '', Order.ASC);
+    this.getAllDetails(10, this.paginationService.page, this.filterService.filter.name, undefined,
+      '', '', '', this.filterService.filter.brand, Order.ASC);
 
     this.isMobile = this.verifyWindowWidth();
   }
@@ -65,9 +72,10 @@ export class ProductListingComponent implements OnInit, OnDestroy {
     this.productsService.getAllDetails(size, page, name, gender, category, productSize, color, brand, order)
       .pipe(take(1))
       .subscribe(response => {
-          this.productsDetails = response.content;
+          this.productDetailsTO = response.content;
           this.content = response;
           this.paginationService.getPageRange(this.content.totalElements);
+          this.hasError = false;
         }, () => {
           this.hasError = true;
         }
@@ -79,6 +87,10 @@ export class ProductListingComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(product => {
         localStorage.setItem('product', JSON.stringify(product));
+        this.hasError = false;
+      }, error => {
+        console.log(error);
+        this.hasError = true;
       });
     this.router.navigateByUrl('/produtos/' + idProductDetails);
   }

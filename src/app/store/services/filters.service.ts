@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {Gender} from '../../shared/enums/gender';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ export class FiltersService {
   constructor() {
     if (!this._filter) {
       this.setFilter({
+        name: '',
         gender: '',
         category: '',
         size: '',
@@ -29,13 +31,14 @@ export class FiltersService {
     return this._filter;
   }
 
-  setSearch(search: string): void {
-    this.filter ? this._filter.name = search : this.setFilter({
-      gender: search,
-      category: '',
+  setSearch(search?: string, brand?: string, category?: string, gender?: Gender): void {
+    this.setFilter({
+      name: search ? search : '',
+      gender: gender ? gender : undefined,
+      category: category ? category : '',
       size: '',
       color: '',
-      brand: '',
+      brand: brand ? brand : '',
       classBy: ''
     });
   }

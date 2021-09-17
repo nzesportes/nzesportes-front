@@ -4,7 +4,7 @@ import {CartService} from '../../services/cart.service';
 import {Store} from '@ngrx/store';
 import {ProductsService} from '../../../shared/services/products.service';
 import {Observable} from 'rxjs';
-import {ActivatedRoute, Params} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Product} from '../../../shared/models/product.model';
 import {ProductDetails, Stock} from '../../../shared/models/product-details.model';
 import {take} from 'rxjs/operators';
@@ -14,6 +14,8 @@ import {Shipping} from '../../../shared/models/shipping.model';
 import {BetterSendService} from '../../../shared/services/better-send.service';
 import {ShippingResult} from '../../../shared/models/shipping-result.model';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
+import {FiltersService} from '../../services/filters.service';
+import {Gender} from '../../../shared/enums/gender';
 
 export interface ImageSlide {
   id: number;
@@ -51,6 +53,7 @@ export class ProductDetailComponent implements OnInit {
   shippingResult: ShippingResult[] = [];
   notShipResult = false;
   errorShipResult = false;
+  public hasError = false;
 
   dynamicSlides: ImageSlide[] = [];
 
@@ -94,18 +97,23 @@ export class ProductDetailComponent implements OnInit {
     private store: Store<fromStore.ProductState>,
     private formBuilder: FormBuilder,
     private betterSendService: BetterSendService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private router: Router,
+    private filterService: FiltersService
   ) {
   }
 
   ngOnInit(): void {
+    window.scrollTo(0, 0);
     this.createForm();
     const params: Observable<Params> = this.activatedRoute.params;
     params.subscribe(urlParams => {
       this.id = urlParams.url;
+      this.hasError = false;
       if (this.id) {
         this.productsService.getDetailById(this.id)
           .subscribe(response => {
+              this.hasError = false;
               this.productDetails = response;
               this.setImages();
               const productJson = localStorage.getItem('product');
@@ -116,13 +124,21 @@ export class ProductDetailComponent implements OnInit {
                   .pipe(take(1))
                   .subscribe(p => {
                     this.product = p;
-                  }, error => console.log(error));
+                    this.hasError = false;
+                  }, error => {
+                    console.log(error);
+                    this.hasError = true;
+                  });
               }
             },
             error => {
               console.log(error);
+              this.hasError = true;
             });
       }
+    }, error => {
+      console.log(error);
+      this.hasError = true;
     });
   }
 
@@ -243,6 +259,7 @@ export class ProductDetailComponent implements OnInit {
         .pipe(take(1))
         .subscribe(r => {
           console.log(r);
+          this.hasError = false;
           this.shippingResult = r.filter(ship => !ship.error);
           if (this.shippingResult.length === 0) {
             this.notShipResult = true;
@@ -252,11 +269,11 @@ export class ProductDetailComponent implements OnInit {
           this.errorShipResult = false;
         }, () => {
           this.errorShipResult = true;
+          this.hasError = true;
         });
     } else {
       this.verifyValidation(this.formShipping);
     }
-
   }
 
   isMobile(): any {
@@ -264,4 +281,8 @@ export class ProductDetailComponent implements OnInit {
     return userAgent.includes('iphone') || userAgent.includes('android');
   }
 
+  goToProductListing(brand?: string, category?: string, gender?: Gender): void {
+    this.filterService.setSearch('', brand, category, gender);
+    this.router.navigateByUrl('/search');
+  }
 }

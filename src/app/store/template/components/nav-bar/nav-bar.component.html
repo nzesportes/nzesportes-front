@@ -12,7 +12,7 @@
 
     <div class="nav-column-right text-right float-left">
       <div class="search-header">
-        <input class="form-control" type="search" [(ngModel)]="search"  placeholder="PESQUISAR..." aria-label="Search">
+        <input class="form-control" type="search" [(ngModel)]="search" placeholder="PESQUISAR..." (keyup.enter)="searchProducts()" aria-label="Search">
         <button (click)="searchProducts()"><i class="fas fa-search"></i></button>
       </div>
       <div class="nav-cart">
