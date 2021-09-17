@@ -9,6 +9,8 @@ import {take} from 'rxjs/operators';
 import {Brand} from '../../../../shared/models/brand.model';
 import {BrandPage} from '../../../../shared/models/pagination-model/brand-page.model';
 import {PaginationService} from '../../../../shared/services/pagination.service';
+import {Category} from '../../../../shared/models/category.model';
+import {CategoriesService} from '../../../../shared/services/categories.service';
 
 @Component({
   selector: 'app-filters',
@@ -20,6 +22,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
   formFilters!: FormGroup;
   verifyFilters = false;
   brands: Brand[] = [];
+  categories: Category[] = [];
   content!: BrandPage;
   hasError = false;
 
@@ -28,7 +31,8 @@ export class FiltersComponent implements OnInit, OnDestroy {
     private productsService: ProductsService,
     private filterService: FiltersService,
     private brandsService: BrandsService,
-    private paginationService: PaginationService
+    private paginationService: PaginationService,
+    private categoriesService: CategoriesService
   ) {
   }
 
@@ -36,6 +40,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this.createForm();
     this.verifyFilters = this._verifyFilters();
     this.getBrands();
+    this.getCategories();
   }
 
   ngOnDestroy(): void {
@@ -112,12 +117,24 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   getBrands(): void {
-    this.brandsService.getAll(10, 0)
+    this.brandsService.getAll(10000, 0)
       .pipe(take(1))
       .subscribe(response => {
         this.brands = response.content;
-        this.content = response;
-        this.paginationService.getPageRange(this.content.totalElements);
+        /*this.content = response;
+        this.paginationService.getPageRange(this.content.totalElements);*/
+        this.hasError = false;
+      }, error => {
+        this.hasError = true;
+        console.log(error);
+      });
+  }
+
+  getCategories(): void {
+    this.categoriesService.getAll(10000, 0)
+      .pipe(take(1))
+      .subscribe(response => {
+        this.categories = response.content;
         this.hasError = false;
       }, error => {
         this.hasError = true;

@@ -26,52 +26,12 @@
         <a class="nav-link" (click)="changeStateItemMenu(category)">Categoria<i class="fas fa-angle-down ml-1"></i></a>
         <div class="submenu" #category>
           <ul class="items-submenu">
-            <li>
+            <li *ngFor="let category of categories">
               <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="category" id="categoryRun"
+                <input class="form-check-input radiosInput" type="radio" name="category" id="category{{ category.name | titlecase }}"
                        (change)="selectFilter()"
-                       formControlName="category" value="corrida">
-                <label class="form-check-label" for="categoryRun">Corrida</label>
-              </a>
-            </li>
-            <li>
-              <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="category" id="categoryShoes"
-                       (change)="selectFilter()"
-                       formControlName="category" value="tenis">
-                <label class="form-check-label" for="categoryShoes">Tênis</label>
-              </a>
-            </li>
-            <li>
-              <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="category" id="categoryBasket"
-                       (change)="selectFilter()"
-                       formControlName="category" value="basquete">
-                <label class="form-check-label" for="categoryBasket">Basquete</label>
-              </a>
-            </li>
-            <li>
-              <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="category" id="categoryFootball"
-                       (change)="selectFilter()"
-                       formControlName="category" value="football">
-                <label class="form-check-label" for="categoryFootball">Futebol Americano</label>
-              </a>
-            </li>
-            <li>
-              <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="category" id="categoryRugby"
-                       (change)="selectFilter()"
-                       formControlName="category" value="rugby">
-                <label class="form-check-label" for="categoryRugby">Rugby</label>
-              </a>
-            </li>
-            <li>
-              <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="category" id="categorySoccer"
-                       (change)="selectFilter()"
-                       formControlName="category" value="soccer">
-                <label class="form-check-label" for="categorySoccer">Futebol</label>
+                       formControlName="category" value="{{ category.name | lowercase }}">
+                <label class="form-check-label" for="category{{ category.name | titlecase }}">{{ category.name | titlecase }}</label>
               </a>
             </li>
           </ul>
