@@ -17,7 +17,7 @@ import {FiltersService} from '../../../services/filters.service';
   styleUrls: ['./nz-store.component.scss']
 })
 export class NzStoreComponent implements OnInit {
-  productDetailsTO!: ProductDetailsTO[];
+  productDetailsTO: ProductDetailsTO[] = [];
   content: ProductDetailsTOPage | undefined;
   hasError!: boolean;
 

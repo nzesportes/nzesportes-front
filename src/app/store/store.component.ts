@@ -1,5 +1,7 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {NavBarService} from './services/nav-bar.service';
+import {FiltersService} from './services/filters.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-store',
@@ -9,10 +11,14 @@ import {NavBarService} from './services/nav-bar.service';
 export class StoreComponent implements OnInit {
 
   isSidebarOpened = false;
+  search = '';
 
   constructor(
-    private navbarService: NavBarService
-  ) { }
+    private navbarService: NavBarService,
+    private filterService: FiltersService,
+    private router: Router
+  ) {
+  }
 
   ngOnInit(): void {
     this.navbarService.sidebarState.subscribe(response => {
@@ -31,5 +37,10 @@ export class StoreComponent implements OnInit {
     if (this.isSidebarOpened) {
       this.navbarService.sidebarState.next(false);
     }
+  }
+
+  searchProducts(): void {
+    this.filterService.setSearch(this.search);
+    this.router.navigateByUrl('/search');
   }
 }
