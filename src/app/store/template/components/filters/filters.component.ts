@@ -26,6 +26,79 @@ export class FiltersComponent implements OnInit, OnDestroy {
   content!: BrandPage;
   hasError = false;
 
+  colors = [
+    {
+      color: '#000000',
+      border: '#000000',
+      name: 'preto'
+    },
+    {
+      color: '#ffffff',
+      border: '#000000',
+      name: 'branco'
+    },
+    {
+      color: '#808080',
+      border: '#808080',
+      name: 'cinza'
+    },
+    {
+      color: '#0000cc',
+      border: '#0000cc',
+      name: 'azul'
+    },
+    {
+      color: '#ff0000',
+      border: '#ff0000',
+      name: 'vermelho'
+    },
+    {
+      color: '#33cc00',
+      border: '#33cc00',
+      name: 'verde'
+    },
+    {
+      color: '#fff200',
+      border: '#fff200',
+      name: 'amarelo'
+    },
+    {
+      color: '#ff9900',
+      border: '#ff9900',
+      name: 'laranja'
+    },
+    {
+      color: '#ff66cc',
+      border: '#ff66cc',
+      name: 'rosa'
+    },
+    {
+      color: '#deb887',
+      border: '#deb887',
+      name: 'bege'
+    },
+    {
+      color: '#996600',
+      border: '#996600',
+      name: 'marrom'
+    },
+    {
+      color: '#9933cc',
+      border: '#9933cc',
+      name: 'roxo'
+    },
+    {
+      color: '#a30000',
+      border: '#a30000',
+      name: 'borgonha'
+    },
+    {
+      color: '#00ffcc',
+      border: '#00ffcc',
+      name: 'turquesa'
+    }
+  ];
+
   constructor(
     private formBuilder: FormBuilder,
     private productsService: ProductsService,
