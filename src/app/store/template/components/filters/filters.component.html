@@ -89,40 +89,12 @@
       <li class="nav-item">
         <a class="nav-link" (click)="changeStateItemMenu(color)">Cor<i class="fas fa-angle-down ml-1"></i></a>
         <div class="submenu" #color>
-          <ul class="items-submenu">
-            <li>
-              <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="color" id="colorBlue" (change)="selectFilter()"
-                       formControlName="color" value="azul">
-                <label class="form-check-label" for="colorBlue">Azul</label>
-              </a>
-            </li>
-            <li>
-              <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="color" id="colorRed" (change)="selectFilter()"
-                       formControlName="color" value="vermelho">
-                <label class="form-check-label" for="colorRed">Vermelho</label>
-              </a>
-            </li>
-            <li>
-              <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="color" id="colorBlack" (change)="selectFilter()"
-                       formControlName="color" value="preto">
-                <label class="form-check-label" for="colorBlack">Preto</label>
-              </a>
-            </li>
-            <li>
-              <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="color" id="colorPink" (change)="selectFilter()"
-                       formControlName="color" value="Rosa">
-                <label class="form-check-label" for="colorPink">Rosa</label>
-              </a>
-            </li>
-            <li>
-              <a class="item-submenu">
-                <input class="form-check-input radiosInput" type="radio" name="color" id="colorGreen" (change)="selectFilter()"
-                       formControlName="color" value="Verde">
-                <label class="form-check-label" for="colorGreen">Verde</label>
+          <ul class="items-submenu p-2 row">
+            <li class="col-3 mb-2 pr-3 pl-3" *ngFor="let c of colors">
+              <a class="item-submenu color" [style]="'background-color: ' + c.color + '; border: 1px solid ' + c.border + ';'">
+                <input class="form-check-input radiosInput" type="radio" name="color" id="color{{ c.name | titlecase }}" (change)="selectFilter()"
+                       formControlName="color" value="{{ c.name }}">
+                <label class="form-check-label" [style]="'color: ' + c.color + ';'" for="color{{ c.name | titlecase }}">ooo</label>
               </a>
             </li>
           </ul>
