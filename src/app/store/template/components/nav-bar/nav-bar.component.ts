@@ -13,6 +13,7 @@ export class NavBarComponent implements OnInit {
 
   isSidebarOpened = false;
   search = '';
+
   constructor(
     private navbarService: NavBarService,
     private cartService: CartService,

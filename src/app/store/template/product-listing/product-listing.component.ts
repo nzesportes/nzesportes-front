@@ -38,10 +38,14 @@ export class ProductListingComponent implements OnInit, OnDestroy {
       this.paginationService.initPagination();
       this.getAllDetails(10, this.paginationService.page, filter.name, filter.gender as Gender, filter.category, filter.size,
         filter.color, filter.brand, filter.classBy as Order);
+      this.hasError = false;
+    }, error => {
+      console.log(error);
+      this.hasError = true;
     });
     this.paginationService.initPagination();
     this.getAllDetails(10, this.paginationService.page, this.filterService.filter.name, undefined,
-      '', '', '', this.filterService.filter.brand, Order.ASC);
+      this.filterService.filter.category, '', '', this.filterService.filter.brand, Order.ASC);
 
     this.isMobile = this.verifyWindowWidth();
   }
@@ -71,6 +75,7 @@ export class ProductListingComponent implements OnInit, OnDestroy {
           this.productDetailsTO = response.content;
           this.content = response;
           this.paginationService.getPageRange(this.content.totalElements);
+          this.hasError = false;
         }, () => {
           this.hasError = true;
         }
@@ -82,6 +87,10 @@ export class ProductListingComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(product => {
         localStorage.setItem('product', JSON.stringify(product));
+        this.hasError = false;
+      }, error => {
+        console.log(error);
+        this.hasError = true;
       });
     this.router.navigateByUrl('/produtos/' + idProductDetails);
   }

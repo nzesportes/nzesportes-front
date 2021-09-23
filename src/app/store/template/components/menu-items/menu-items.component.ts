@@ -1,4 +1,7 @@
 import {Component, ElementRef, OnInit} from '@angular/core';
+import {Gender} from '../../../../shared/enums/gender';
+import {Router} from '@angular/router';
+import {FiltersService} from '../../../services/filters.service';
 
 @Component({
   selector: 'app-menu-items',
@@ -7,7 +10,10 @@ import {Component, ElementRef, OnInit} from '@angular/core';
 })
 export class MenuItemsComponent implements OnInit {
 
-  constructor() {
+  constructor(
+    private router: Router,
+    private filterService: FiltersService
+  ) {
   }
 
   ngOnInit(): void {
@@ -20,6 +26,11 @@ export class MenuItemsComponent implements OnInit {
     } else if (itemMenu.className === 'mega-menu menu-opened') {
       itemMenu.className = 'mega-menu';
     }
+  }
+
+  goToProductListing(brand?: string, category?: string, gender?: Gender): void {
+    this.filterService.setSearch('', brand, category, gender);
+    this.router.navigateByUrl('/search');
   }
 
 }

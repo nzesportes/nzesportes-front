@@ -19,8 +19,9 @@ export class ComingUpComponent implements OnInit {
   productDetailsTO: ProductDetailsTO[] = [];
   auxProductsDetailsTO: ProductDetailsTO[] = [];
   productsDetails: ProductDetails[] = [];
-  content: ProductDetailsTOPage | undefined;
+  content!: ProductDetailsTOPage;
   hasError!: boolean;
+  selectedFilter = 'todos';
 
   constructor(
     private productsService: ProductsService,
@@ -33,6 +34,7 @@ export class ComingUpComponent implements OnInit {
   ngOnInit(): void {
     this.paginationService.initPagination();
     this.getAllDetails(8, this.paginationService.page);
+    this.selectedFilter = 'todos';
   }
 
   getAllDetails(size: number, page: number, name?: string, gender?: Gender, category?: string,
@@ -44,6 +46,7 @@ export class ComingUpComponent implements OnInit {
           this.auxProductsDetailsTO = response.content;
           this.content = response;
           this.paginationService.getPageRange(this.content.totalElements);
+          this.hasError = false;
         }, () => {
           this.hasError = true;
         }
@@ -55,6 +58,10 @@ export class ComingUpComponent implements OnInit {
       .pipe(take(1))
       .subscribe(product => {
         localStorage.setItem('product', JSON.stringify(product));
+        this.hasError = false;
+      }, error => {
+        console.log(error);
+        this.hasError = true;
       });
     this.router.navigateByUrl('/produtos/' + idProductDetails);
   }
@@ -66,5 +73,9 @@ export class ComingUpComponent implements OnInit {
   goToProductListing(brand?: string, category?: string, gender?: Gender): void {
     this.filterService.setSearch('', brand, category, gender);
     this.router.navigateByUrl('/search');
+  }
+
+  filterSelected(filter: string): void {
+    this.selectedFilter = filter;
   }
 }

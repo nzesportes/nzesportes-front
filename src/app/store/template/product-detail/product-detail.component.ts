@@ -47,6 +47,7 @@ export class ProductDetailComponent implements OnInit {
   shippingResult: ShippingResult[] = [];
   notShipResult = false;
   errorShipResult = false;
+  public hasError = false;
 
   dynamicSlides: ImageSlide[] = [];
 
@@ -60,7 +61,7 @@ export class ProductDetailComponent implements OnInit {
     pullDrag: false,
     dots: false,
     navSpeed: 700,
-    navText: ['<i class=fas fa-chevron-left></i>', '<i class=fas fa-chevron-right></i>'],
+    navText: ['<i class="fas fa-chevron-left"></i>', '<i class="fas fa-chevron-right"></i>'],
     responsive: {
       0: {
         items: 3
@@ -101,9 +102,11 @@ export class ProductDetailComponent implements OnInit {
     const params: Observable<Params> = this.activatedRoute.params;
     params.subscribe(urlParams => {
       this.id = urlParams.url;
+      this.hasError = false;
       if (this.id) {
         this.productsService.getDetailById(this.id)
           .subscribe(response => {
+              this.hasError = false;
               this.productDetails = response;
               this.setImages();
               const productJson = localStorage.getItem('product');
@@ -114,13 +117,21 @@ export class ProductDetailComponent implements OnInit {
                   .pipe(take(1))
                   .subscribe(p => {
                     this.product = p;
-                  }, error => console.log(error));
+                    this.hasError = false;
+                  }, error => {
+                    console.log(error);
+                    this.hasError = true;
+                  });
               }
             },
             error => {
               console.log(error);
+              this.hasError = true;
             });
       }
+    }, error => {
+      console.log(error);
+      this.hasError = true;
     });
   }
 
@@ -237,6 +248,7 @@ export class ProductDetailComponent implements OnInit {
         .pipe(take(1))
         .subscribe(r => {
           console.log(r);
+          this.hasError = false;
           this.shippingResult = r.filter(ship => !ship.error);
           if (this.shippingResult.length === 0 ) {
             this.notShipResult = true;
@@ -246,10 +258,16 @@ export class ProductDetailComponent implements OnInit {
           this.errorShipResult = false;
         }, () =>  {
           this.errorShipResult = true;
+          this.hasError = true;
         });
     } else {
       this.verifyValidation(this.formShipping);
     }
+  }
+
+  isMobile(): any {
+    const userAgent = window.navigator.userAgent.toLocaleLowerCase();
+    return userAgent.includes('iphone') || userAgent.includes('android');
   }
 
   goToProductListing(brand?: string, category?: string, gender?: Gender): void {

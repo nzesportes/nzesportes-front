@@ -1,16 +1,28 @@
 <div class="container-fluid container-product-listing">
-
-  <div id="button-filters">Filtros<button class="btn" data-toggle="modal" data-target="#filters-modal"><i class="fas fa-filter"></i></button></div>
+  <div id="button-filters">Filtros
+    <button class="btn" data-toggle="modal" data-target="#filters-modal"><i class="fas fa-filter"></i></button>
+  </div>
   <app-filters *ngIf="!isMobile" id="filters-component"></app-filters>
 
-  <div class="row m-0">
+  <div class="alert alert-danger m-3 ml-md-3 mr-md-3" role="alert" *ngIf="hasError">
+    Ops! Não foi possível exibir os produtos. Por favor, <span class="alert-link"
+                                                               (click)="ngOnInit()">tente novamente</span> mais tarde.
+  </div>
+  <div class="alert alert-warning m-3 ml-md-3 mr-md-3" role="alert" *ngIf="productDetailsTO.length === 0 && !hasError">
+    Não foram encontrados produtos.
+  </div>
+
+  <div class="row m-0" *ngIf="productDetailsTO.length > 0 && !hasError">
     <!--produto começa aqui-->
     <div class="col-12 col-sm-6 col-md-4 col-xl-3 p-0" *ngFor="let productDetails of productDetailsTO">
-      <div class="m-3 ml-md-3 mr-md-3 product" (click)="goToProductDetails(productDetails.id, productDetails.productId)" routerLink="/produtos/{{ productDetails.id }}">
+      <div class="m-3 ml-md-3 mr-md-3 product"
+           (click)="goToProductDetails(productDetails.id, productDetails.productId)"
+           routerLink="/produtos/{{ productDetails.id }}">
         <div class="product-content">
           <div class="product-image">
             <div class="badge-product" *ngIf="false"><span>Novo</span></div>
-            <div class="badge-product badge-sale" [class.second-sale]="false && false" *ngIf="false"><span>35%</span></div>
+            <div class="badge-product badge-sale" [class.second-sale]="false && false" *ngIf="false"><span>35%</span>
+            </div>
             <!--<a class="product-favorite"><i class="far fa-heart"></i></a>-->
             <img src="{{productDetails.images.split(';')[0]}}" class="w-100">
             <a class="image-overlay"></a>
@@ -29,7 +41,7 @@
   </div>
   <nav class="mt-4" aria-label="Page navigation" *ngIf="content && productDetailsTO.length > 0">
     <ul class="pagination justify-content-end">
-      <li class="page-item"  [ngClass]="{'disabled': this.paginationService.page === 0}">
+      <li class="page-item" [ngClass]="{'disabled': this.paginationService.page === 0}">
         <a class="page-link" (click)="updateIndex(this.paginationService.page-1)">
           <i class="fas fa-angle-left"></i>
         </a>
@@ -38,7 +50,8 @@
           *ngFor="let i of this.paginationService.getRange(); let in = index">
         <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
       </li>
-      <li class="page-item" [ngClass]="{'disabled': (this.paginationService.page  + 1) === this.paginationService.pages }">
+      <li class="page-item"
+          [ngClass]="{'disabled': (this.paginationService.page  + 1) === this.paginationService.pages }">
         <a class="page-link" (click)="updateIndex(this.paginationService.page + 1)">
           <i class="fas fa-angle-right"></i>
         </a>
