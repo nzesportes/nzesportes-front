@@ -23,6 +23,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
   verifyFilters = false;
   brands: Brand[] = [];
   categories: Category[] = [];
+  sizes: string[] = [];
   content!: BrandPage;
   hasError = false;
 
@@ -114,6 +115,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this.verifyFilters = this._verifyFilters();
     this.getBrands();
     this.getCategories();
+    this.createSize();
   }
 
   ngOnDestroy(): void {
@@ -129,6 +131,17 @@ export class FiltersComponent implements OnInit, OnDestroy {
       brand: [this.filterService.filter?.brand ? this.filterService.filter.brand : ''],
       classBy: [this.filterService.filter?.classBy ? this.filterService.filter.classBy : '']
     });
+  }
+
+  createSize(): void {
+    this.sizes.push('P');
+    this.sizes.push('M');
+    this.sizes.push('G');
+    this.sizes.push('GG');
+    this.sizes.push('XGG');
+    for (let i = 26; i <= 48; i++) {
+      this.sizes.push(i.toString());
+    }
   }
 
   sendDetailsFilters(): void {
@@ -149,10 +162,10 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   changeStateItemMenu(itemMenu: HTMLElement): void {
-    if (itemMenu.className === 'submenu') {
-      itemMenu.className = 'submenu menu-opened';
-    } else if (itemMenu.className === 'submenu menu-opened') {
-      itemMenu.className = 'submenu';
+    if (itemMenu.className === 'scroll submenu') {
+      itemMenu.className = 'scroll submenu menu-opened';
+    } else if (itemMenu.className === 'scroll submenu menu-opened') {
+      itemMenu.className = 'scroll submenu';
     }
   }
 

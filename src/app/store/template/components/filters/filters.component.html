@@ -3,7 +3,7 @@
     <div class="col-xl-10 col-md-9 p-0 nav">
       <li class="nav-item">
         <a class="nav-link" (click)="changeStateItemMenu(gender)">Gênero<i class="fas fa-angle-down ml-1"></i></a>
-        <div class="submenu" #gender>
+        <div class="scroll submenu" #gender>
           <ul class="items-submenu">
             <li>
               <a class="item-submenu">
@@ -24,7 +24,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" (click)="changeStateItemMenu(category)">Categoria<i class="fas fa-angle-down ml-1"></i></a>
-        <div class="submenu" #category>
+        <div class="scroll submenu" #category>
           <ul class="items-submenu">
             <li *ngFor="let category of categories">
               <a class="item-submenu">
@@ -39,48 +39,13 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" (click)="changeStateItemMenu(size)">Tamanho<i class="fas fa-angle-down ml-1"></i></a>
-        <div class="submenu" #size>
+        <div class="scroll submenu" #size>
           <ul class="items-submenu p-2 row">
-            <li class="col-4 mb-2 pr-2 pl-2">
+            <li class="col-4 mb-2 pr-2 pl-2" *ngFor="let size of sizes">
               <a class="item-submenu size">
-                <input class="form-check-input radiosInput" type="radio" name="size" id="size34" (change)="selectFilter()"
-                       formControlName="size" value="34">
-                <label class="form-check-label" for="size34">34</label>
-              </a>
-            </li>
-            <li class="col-4 mb-2 pr-2 pl-2">
-              <a class="item-submenu size">
-                <input class="form-check-input radiosInput" type="radio" name="size" id="size36" (change)="selectFilter()"
-                       formControlName="size" value="36">
-                <label class="form-check-label" for="size36">36</label>
-              </a>
-            </li>
-            <li class="col-4 mb-2 pr-2 pl-2">
-              <a class="item-submenu size">
-                <input class="form-check-input radiosInput" type="radio" name="size" id="size38" (change)="selectFilter()"
-                       formControlName="size" value="38">
-                <label class="form-check-label" for="size38">38</label>
-              </a>
-            </li>
-            <li class="col-4 mb-2 pr-2 pl-2">
-              <a class="item-submenu size">
-                <input class="form-check-input radiosInput" type="radio" name="size" id="size40" (change)="selectFilter()"
-                       formControlName="size" value="40">
-                <label class="form-check-label" for="size40">40</label>
-              </a>
-            </li>
-            <li class="col-4 mb-2 pr-2 pl-2">
-              <a class="item-submenu size">
-                <input class="form-check-input radiosInput" type="radio" name="size" id="size42" (change)="selectFilter()"
-                       formControlName="size" value="42">
-                <label class="form-check-label" for="size42">42</label>
-              </a>
-            </li>
-            <li class="col-4 mb-2 pr-2 pl-2">
-              <a class="item-submenu size">
-                <input class="form-check-input radiosInput" type="radio" name="size" id="size44" (change)="selectFilter()"
-                       formControlName="size" value="44">
-                <label class="form-check-label" for="size44">44</label>
+                <input class="form-check-input radiosInput" type="radio" name="size" id="size{{ size }}" (change)="selectFilter()"
+                       formControlName="size" value="{{ size | lowercase }}">
+                <label class="form-check-label" for="size{{ size }}">{{ size }}</label>
               </a>
             </li>
           </ul>
@@ -88,13 +53,13 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" (click)="changeStateItemMenu(color)">Cor<i class="fas fa-angle-down ml-1"></i></a>
-        <div class="submenu" #color>
+        <div class="scroll submenu" #color>
           <ul class="items-submenu p-2 row">
             <li class="col-3 mb-2 pr-3 pl-3" *ngFor="let c of colors">
               <a class="item-submenu color" [style]="'background-color: ' + c.color + '; border: 1px solid ' + c.border + ';'">
                 <input class="form-check-input radiosInput" type="radio" name="color" id="color{{ c.name | titlecase }}" (change)="selectFilter()"
                        formControlName="color" value="{{ c.name }}">
-                <label class="form-check-label" [style]="'color: ' + c.color + ';'" for="color{{ c.name | titlecase }}">ooo</label>
+                <label class="form-check-label" [style]="'color: ' + c.color + ';'" for="color{{ c.name | titlecase }}">lll</label>
               </a>
             </li>
           </ul>
@@ -102,7 +67,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" (click)="changeStateItemMenu(brand)">Marca<i class="fas fa-angle-down ml-1"></i></a>
-        <div class="submenu" #brand>
+        <div class="scroll submenu" #brand>
           <ul class="items-submenu">
             <li *ngFor="let brand of brands">
               <a class="item-submenu">
