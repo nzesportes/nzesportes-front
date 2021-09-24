@@ -41,7 +41,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   sizeMax = 1;
   startValue = 1;
 
-  avaliacao = 3.8;
+  rating = 3.8;
   positionImage = 0;
 
   shippingResult: ShippingResult[] = [];
@@ -141,7 +141,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.sizeMax = 1;
     this.startValue = 1;
 
-    this.avaliacao = 3.8;
+    this.rating = 3.8;
     this.positionImage = 0;
 
     this.shippingResult = [];

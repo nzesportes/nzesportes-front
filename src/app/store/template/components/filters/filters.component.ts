@@ -21,8 +21,6 @@ import {DetailsFiltersRequest} from '../../../models/details-filters-request';
 })
 export class FiltersComponent implements OnInit, OnDestroy {
 
-  // CONTINUAR MELHORANDO O FILTRO
-
   formFilters!: FormGroup;
   verifyFilters = false;
   brands: Brand[] = [];
