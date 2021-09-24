@@ -15,12 +15,14 @@ import {BetterSendService} from '../../../shared/services/better-send.service';
 import {ShippingResult} from '../../../shared/models/shipping-result.model';
 import {FiltersService} from '../../services/filters.service';
 import {Gender} from '../../../shared/enums/gender';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 
-export  interface ImageSlide {
+export interface ImageSlide {
   id: number;
   fullImage: string;
   thumb: string;
 }
+
 @Component({
   selector: 'app-product-detail',
   templateUrl: './product-detail.component.html',
@@ -37,11 +39,13 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   @ViewChild('stock')
   public readonly selectedStock!: any;
+  @ViewChild('success')
+  public readonly dialogSuccess!: SwalComponent;
 
   sizeMax = 1;
   startValue = 1;
 
-  avaliacao = 3.8;
+  rating = 3.8;
   positionImage = 0;
 
   shippingResult: ShippingResult[] = [];
@@ -141,7 +145,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.sizeMax = 1;
     this.startValue = 1;
 
-    this.avaliacao = 3.8;
+    this.rating = 3.8;
     this.positionImage = 0;
 
     this.shippingResult = [];
@@ -155,16 +159,17 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.dynamicSlides = [];
     this.productDetails.images.split(';').forEach((image, i) => {
       this.dynamicSlides.push({
-          id: i,
-          fullImage: image,
-          thumb: image
-        });
+        id: i,
+        fullImage: image,
+        thumb: image
+      });
     });
   }
 
   routerLinkToProduct(id: string): void {
+    this.formStock.reset();
     this.noStock = false;
-    this.router.navigateByUrl(`/produtos/${ id }`);
+    this.router.navigateByUrl(`/produtos/${id}`);
   }
 
   private createForm(): void {
@@ -179,6 +184,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       ])),
     });
   }
+
   get validateFields(): any {
     return this.formStock.controls;
   }
@@ -188,32 +194,38 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       'is-invalid': field.invalid && field.touched
     };
   }
+
   changeImage(index: number): void {
     this.positionImage = index;
   }
 
   changeMax(index: number): void {
-      this.sizeMax = this.productDetails.stock[index].quantity;
-      this.startValue = 1;
+    this.sizeMax = this.productDetails.stock[index].quantity;
+    this.startValue = 1;
   }
 
   addToCart(productDetail: ProductDetails, stockIndex: number): void {
-    if (this.formStock.valid){
+    if (this.formStock.valid) {
       const stockCart = this.productDetails.stock[stockIndex];
       const cartItem = this.cartService.getProductsCart().find(item => item.id === stockCart.id);
       if (cartItem) {
         const sumQuantity = cartItem.quantity + 1;
         if (sumQuantity > stockCart.quantity) {
           this.noStock = true;
-        }else {
+        } else {
           this.noStock = false;
           this.sendToCart(productDetail, stockCart);
         }
-      }else{
+      } else {
         this.sendToCart(productDetail, stockCart);
       }
-    }else {
-        this.verifyValidation(this.formStock);
+      if (!this.noStock) {
+        this.formStock.reset();
+        this.dialogSuccess.title = 'Adicionado ao carrinho!';
+        this.dialogSuccess.fire();
+      }
+    } else {
+      this.verifyValidation(this.formStock);
     }
 
   }
@@ -236,14 +248,14 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       productId: this.product.id,
       model: this.product.model,
       quantity: this.startValue,
-      stock:  stockCart,
+      stock: stockCart,
       total: productDetail.price * this.startValue
     };
     this.cartService.addToCart(itemCart);
   }
 
   calculateShipping(): void {
-    if (this.formShipping.valid){
+    if (this.formShipping.valid) {
       // @ts-ignore
       const cep = this.formShipping.get('shipping').value;
       const shipping: Shipping = {
@@ -271,13 +283,13 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
           console.log(r);
           this.hasError = false;
           this.shippingResult = r.filter(ship => !ship.error);
-          if (this.shippingResult.length === 0 ) {
+          if (this.shippingResult.length === 0) {
             this.notShipResult = true;
-          }else {
+          } else {
             this.notShipResult = false;
           }
           this.errorShipResult = false;
-        }, () =>  {
+        }, () => {
           this.errorShipResult = true;
           this.hasError = true;
         });
@@ -294,5 +306,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   goToProductListing(brand?: string, category?: string, gender?: Gender): void {
     this.filterService.setSearch('', brand, category, gender);
     this.router.navigateByUrl('/search');
+  }
+
+  redirect(): void {
+    this.router.navigateByUrl(`produtos/${this.id}`);
   }
 }
