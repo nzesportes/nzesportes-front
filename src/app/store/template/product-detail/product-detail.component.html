@@ -52,7 +52,7 @@
         <h3 class="title-details">Escolher Modelo</h3>
         <ul class="choose-model">
           <li *ngFor="let model of product?.productDetails">
-            <a routerLink="/produtos/{{ model.id }}">
+            <a (click)="routerLinkToProduct(model.id)">
               <img src="{{model.images.split(';')[0]}}">
             </a>
           </li>
