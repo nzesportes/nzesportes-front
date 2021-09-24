@@ -3,6 +3,7 @@ import {NavBarService} from '../../../services/nav-bar.service';
 import {CartService} from '../../../services/cart.service';
 import {FiltersService} from '../../../services/filters.service';
 import {Router} from '@angular/router';
+import {ProductsService} from '../../../../shared/services/products.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -33,11 +34,11 @@ export class NavBarComponent implements OnInit {
   changeStateSidebar(): void {
     this.navbarService.changeSidebarState();
   }
+
   searchProducts(): void {
     this.filterService.setSearch(this.search);
     this.router.navigateByUrl('/search');
   }
-
 
   // getTotalItemsCart(): number {
   //   return this.cartService.getTotalItems();

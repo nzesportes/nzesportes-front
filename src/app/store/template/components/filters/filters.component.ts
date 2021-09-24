@@ -11,6 +11,8 @@ import {BrandPage} from '../../../../shared/models/pagination-model/brand-page.m
 import {PaginationService} from '../../../../shared/services/pagination.service';
 import {Category} from '../../../../shared/models/category.model';
 import {CategoriesService} from '../../../../shared/services/categories.service';
+import {Subscription} from 'rxjs';
+import {DetailsFiltersRequest} from '../../../models/details-filters-request';
 
 @Component({
   selector: 'app-filters',
@@ -18,6 +20,8 @@ import {CategoriesService} from '../../../../shared/services/categories.service'
   styleUrls: ['./filters.component.scss']
 })
 export class FiltersComponent implements OnInit, OnDestroy {
+
+  // CONTINUAR MELHORANDO O FILTRO
 
   formFilters!: FormGroup;
   verifyFilters = false;
@@ -100,6 +104,14 @@ export class FiltersComponent implements OnInit, OnDestroy {
     }
   ];
 
+  subscription!: Subscription;
+  nameInit!: string;
+  genderInit!: string;
+  categoryInit!: string;
+  sizeInit!: string;
+  colorInit!: string;
+  brandInit!: string;
+
   constructor(
     private formBuilder: FormBuilder,
     private productsService: ProductsService,
@@ -112,6 +124,19 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
+    this._resetValuesForm();
+    this.verifyFilters = this._verifyFilters();
+    this._setValuesInit();
+
+    this.subscription = this.productsService.detailsFiltersState$.subscribe(filter => {
+      this._initializeVariables(filter);
+      this._setValuesInit();
+      this.hasError = false;
+    }, error => {
+      console.log(error);
+      this.hasError = true;
+    });
+
     this.verifyFilters = this._verifyFilters();
     this.getBrands();
     this.getCategories();
@@ -139,7 +164,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this.sizes.push('G');
     this.sizes.push('GG');
     this.sizes.push('XGG');
-    for (let i = 26; i <= 48; i++) {
+    for (let i = 18; i <= 50; i++) {
       this.sizes.push(i.toString());
     }
   }
@@ -193,11 +218,8 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   removeAll(): void {
-    this.formFilters.get('gender')?.setValue('');
-    this.formFilters.get('category')?.setValue('');
-    this.formFilters.get('size')?.setValue('');
-    this.formFilters.get('color')?.setValue('');
-    this.formFilters.get('brand')?.setValue('');
+    this._resetValuesForm();
+    this._setValuesInit();
     this.sendDetailsFilters();
     this.verifyFilters = this._verifyFilters();
   }
@@ -226,5 +248,46 @@ export class FiltersComponent implements OnInit, OnDestroy {
         this.hasError = true;
         console.log(error);
       });
+  }
+
+  private _setValuesInit(): void {
+    this.genderInit = this.formFilters.get('gender')?.value;
+    this.categoryInit = this.formFilters.get('category')?.value;
+    this.sizeInit = this.formFilters.get('size')?.value;
+    this.colorInit = this.formFilters.get('color')?.value;
+    this.brandInit = this.formFilters.get('brand')?.value;
+  }
+
+  private _initializeVariables(filter: DetailsFiltersRequest): void{
+    this.nameInit = filter.name;
+    if (this.nameInit) {
+      this._setValuesInit();
+      this._resetValuesForm();
+      this.verifyFilters = this._verifyFilters();
+    } else {
+      this.formFilters?.get('category')?.setValue(
+        filter.category ? filter.category : this.formFilters?.get('category')?.value
+      );
+      this.formFilters?.get('size')?.setValue(
+        filter.size ? filter.size : this.formFilters?.get('size')?.value
+      );
+      this.formFilters?.get('color')?.setValue(
+        filter.color ? filter.color : this.formFilters?.get('color')?.value
+      );
+      this.formFilters?.get('brand')?.setValue(
+        filter.brand ? filter.brand : this.formFilters?.get('brand')?.value
+      );
+      this.formFilters?.get('gender')?.setValue(
+        filter.gender ? filter.gender : this.formFilters?.get('gender')?.value
+      );
+    }
+  }
+
+  private _resetValuesForm(): void {
+    this.formFilters.get('gender')?.setValue('');
+    this.formFilters.get('category')?.setValue('');
+    this.formFilters.get('size')?.setValue('');
+    this.formFilters.get('color')?.setValue('');
+    this.formFilters.get('brand')?.setValue('');
   }
 }

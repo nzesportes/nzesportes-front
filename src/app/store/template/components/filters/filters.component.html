@@ -141,34 +141,35 @@
     </div>
   </form>
 </ul>
+{{ categoryInit | json }}
 <div>
   <div class="container-remove-filters">
-    <span *ngIf="this.formFilters?.get('gender')?.value" class="remove-filter">
-      Gênero: {{ this.formFilters?.get('gender')?.value }}
+    <span *ngIf="genderInit" class="remove-filter">
+      Gênero: {{ genderInit }}
       <button class="btn btn-remove-filter" (click)="removeFilter('gender')">
         <i class="fas fa-times"></i>
       </button>
     </span>
-    <span *ngIf="this.formFilters?.get('category')?.value" class="remove-filter">
-      Categoria: {{ this.formFilters?.get('category')?.value }}
+    <span *ngIf="categoryInit" class="remove-filter">
+      Categoria: {{ categoryInit }}
       <button class="btn btn-remove-filter" (click)="removeFilter('category')">
         <i class="fas fa-times"></i>
       </button>
     </span>
-    <span *ngIf="this.formFilters?.get('size')?.value" class="remove-filter">
-      Tamanho: {{ this.formFilters?.get('size')?.value }}
+    <span *ngIf="sizeInit" class="remove-filter">
+      Tamanho: {{ sizeInit }}
       <button class="btn btn-remove-filter" (click)="removeFilter('size')">
         <i class="fas fa-times"></i>
       </button>
     </span>
-    <span *ngIf="this.formFilters?.get('color')?.value" class="remove-filter">
-      Cor: {{ this.formFilters?.get('color')?.value }}
+    <span *ngIf="colorInit" class="remove-filter">
+      Cor: {{ colorInit }}
       <button class="btn btn-remove-filter" (click)="removeFilter('color')">
         <i class="fas fa-times"></i>
       </button>
     </span>
-    <span *ngIf="this.formFilters?.get('brand')?.value" class="remove-filter">
-      Marca: {{ this.formFilters?.get('brand')?.value }}
+    <span *ngIf="brandInit" class="remove-filter">
+      Marca: {{ brandInit }}
       <button class="btn btn-remove-filter" (click)="removeFilter('brand')">
         <i class="fas fa-times"></i>
       </button>
