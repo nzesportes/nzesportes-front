@@ -19,6 +19,7 @@ export class NavBarComponent implements OnInit {
   isSidebarOpened = false;
   search = '';
   products$!: Observable<ItemCart[]>;
+  totalItems = 0;
 
   constructor(
     private navbarService: NavBarService,
@@ -34,6 +35,7 @@ export class NavBarComponent implements OnInit {
     this.navbarService.sidebarState.subscribe(response => {
       this.isSidebarOpened = response;
     });
+    this.getTotalItems();
   }
 
   changeStateSidebar(): void {
@@ -45,8 +47,12 @@ export class NavBarComponent implements OnInit {
     this.router.navigateByUrl('/search');
   }
 
-  // getTotalItemsCart(): number {
-  //   return this.cartService.getTotalItems();
-  // }
-
+  getTotalItems(): void {
+    this.products$.subscribe(product => {
+      this.totalItems = 0;
+      product.forEach(item => {
+        this.totalItems += item.quantity;
+      });
+    });
+  }
 }
