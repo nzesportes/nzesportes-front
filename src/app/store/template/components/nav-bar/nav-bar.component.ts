@@ -4,6 +4,10 @@ import {CartService} from '../../../services/cart.service';
 import {FiltersService} from '../../../services/filters.service';
 import {Router} from '@angular/router';
 import {ProductsService} from '../../../../shared/services/products.service';
+import {Observable} from 'rxjs';
+import {ItemCart} from '../../../models/item-cart';
+import * as fromSelector from '../../../redux/cart/cart.selectors';
+import {Store} from '@ngrx/store';
 
 @Component({
   selector: 'app-nav-bar',
@@ -14,18 +18,19 @@ export class NavBarComponent implements OnInit {
 
   isSidebarOpened = false;
   search = '';
+  products$!: Observable<ItemCart[]>;
 
   constructor(
     private navbarService: NavBarService,
     private cartService: CartService,
     private filterService: FiltersService,
-    private router: Router
+    private router: Router,
+    private store: Store<any>
   ) {
   }
 
   ngOnInit(): void {
-    // this.getTotalItemsCart();
-
+    this.products$ = this.store.select(fromSelector.products);
     this.navbarService.sidebarState.subscribe(response => {
       this.isSidebarOpened = response;
     });
