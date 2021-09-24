@@ -43,4 +43,9 @@ export class StoreComponent implements OnInit {
     this.filterService.setSearch(this.search);
     this.router.navigateByUrl('/search');
   }
+
+  isMobile(): any {
+    const userAgent = window.navigator.userAgent.toLocaleLowerCase();
+    return userAgent.includes('iphone') || userAgent.includes('android');
+  }
 }
