@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {SubCategory} from '../../../shared/models/sub-category.model';
 import {map, take} from 'rxjs/operators';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -41,7 +41,6 @@ export class SubCategoriesNewComponent implements OnInit {
   ngOnInit(): void {
     this.hasError = false;
     this.createForm();
-    this.createFormCategories();
     if (this.router.url.includes('sub-categorias/sub-categoria')) {
       this.route.params.pipe(
         map(p => p.id)
@@ -65,8 +64,9 @@ export class SubCategoriesNewComponent implements OnInit {
       id: new FormControl(this.subCategory?.id ? this.subCategory.id : null),
       name: new FormControl(this.subCategory?.name ? this.subCategory.name : '', Validators.required),
       status: new FormControl(this.subCategory?.status ? this.subCategory.status : false),
+      onMenu: new FormControl(this.subCategory?.onMenu ? this.subCategory.onMenu : false),
       gender: new FormControl(this.subCategory?.gender ? this.subCategory.gender : '', Validators.required),
-      categories: new FormControl(this.subCategory?.categories ? this.subCategory.categories : []),
+      categoryId: new FormControl(this.subCategory?.category?.id ? this.subCategory.category.id : '', Validators.required),
     });
   }
 
@@ -80,11 +80,7 @@ export class SubCategoriesNewComponent implements OnInit {
 
   save(): void {
     const category = this.formSubCategory.value as SubCategory;
-    category.categoriesToAdd = this.categoriesArrayForm.controls.filter(c => c.value.checked).map(form => form.value.id);
     category.name = category.name.toLowerCase();
-    if (this.subCategory) {
-      category.categoriesToRemove =  this.categoriesArrayForm.controls.filter(c => !c.value.checked).map(form => form.value.id);
-    }
     const request = this.subCategory ?
       this.subCategoriesService.update(category) :
       this.subCategoriesService.create(category);
@@ -125,43 +121,14 @@ export class SubCategoriesNewComponent implements OnInit {
         });
       });
   }
-  get categoriesFromSubCategoies(): FormArray {
-    return this.formSubCategory.get('categories') as FormArray;
-  }
-
-  private createFormCategories(): void {
-    this.formCategoryList = this.formBuilder.group({
-        categories:  this.formBuilder.array([]),
-      }
-    );
-  }
-  get categoriesArrayForm(): FormArray {
-    return this.formCategoryList.get('categories') as FormArray;
-  }
   getCategories(): void {
     this.categoriesService.getAll(50, 0)
       .pipe(take(1))
       .subscribe(r => {
         this.categories = r.content;
-        this.createFormCategories();
-        this.categoriesArrayForm.clear();
-        this.categories.forEach(c => this.categoriesArrayForm.push(this.createFormArrayCategorie(c)));
-
       }, () => {
         this.hasError = true;
       });
-  }
-  private createFormArrayCategorie(category: Category): FormGroup {
-    let hasChecked;
-    if (this.subCategory) {
-      hasChecked = this.subCategory.categories.find(c => c.id === category.id);
-    }
-    return new FormGroup({
-      id: new FormControl(category?.id ? category.id : null),
-      name: new FormControl(category?.name ? category.name : '', Validators.required),
-      status: new FormControl(category?.status ? category.status : false),
-      checked: new FormControl(hasChecked ? true : false)
-    });
   }
 
 
@@ -169,12 +136,11 @@ export class SubCategoriesNewComponent implements OnInit {
     if (this.subCategory) {
       const updateCategory: SubCategory = {
         id: this.subCategory.id,
-        name: this.formSubCategory.value.name,
+        name: this.formSubCategory.value.name.toLowerCase(),
         gender: this.formSubCategory.value.gender,
         status: this.formSubCategory.value.status,
-        categories: [],
-        categoriesToAdd: this.categoriesArrayForm.controls.filter(c => c.value.checked).map(form => form.value.id),
-        categoriesToRemove: this.categoriesArrayForm.controls.filter(c => !c.value.checked).map(form => form.value.id)
+        categoryId: this.formSubCategory.value.categoryId,
+        onMenu: this.formSubCategory.value.onMenu
       };
       this.subCategoriesService.update(updateCategory)
         .pipe(

@@ -45,8 +45,9 @@
     <table class="table table-hover">
       <thead>
       <tr>
-        <th scope="col" style="width: 30%">Nome</th>
+        <th scope="col" style="width: 50%">Nome</th>
         <th scope="col" style="width: 20%">No site</th>
+        <th scope="col" style="width: 20%">No menu</th>
         <th scope="col" style="width: 10%">Ações</th>
       </tr>
       </thead>
@@ -57,6 +58,10 @@
         'text-success': c.status,
         'text-secondary': !c.status
         }"><b>{{c.status ? 'Ativo' : 'Inativo'}}</b></td>
+        <td [ngClass]="{
+        'text-success': c.onMenu,
+        'text-secondary': !c.onMenu
+        }"><b>{{c.onMenu ? 'Ativo' : 'Inativo'}}</b></td>
         <td><i class="fas fa-edit text-primary"></i></td>
       </tr>
       </tbody>

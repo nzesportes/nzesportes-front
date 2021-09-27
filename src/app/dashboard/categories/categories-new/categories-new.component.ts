@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Category} from '../../../shared/models/category.model';
-import {TypeCategorie, TypeCategorieList} from '../../../shared/enums/type-categorie';
+import {TypeCategorieList} from '../../../shared/enums/type-categorie';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CategoriesService} from '../../../shared/services/categories.service';
@@ -21,7 +21,6 @@ export class CategoriesNewComponent implements OnInit {
   public readonly dialogError!: SwalComponent;
 
   public formCategorie: FormGroup = new FormGroup({});
-  public formCategorieList: FormGroup = new FormGroup({});
   public categorie!: Category;
   public typeCategorieList = TypeCategorieList;
   hasError!: boolean;
@@ -59,6 +58,7 @@ export class CategoriesNewComponent implements OnInit {
       id: new FormControl(this.categorie?.id ? this.categorie.id : null),
       name: new FormControl(this.categorie?.name ? this.categorie.name : '', Validators.required),
       status: new FormControl(this.categorie?.status ? this.categorie.status : false),
+      onMenu: new FormControl(this.categorie?.onMenu ? this.categorie.onMenu : false),
     });
   }
 
