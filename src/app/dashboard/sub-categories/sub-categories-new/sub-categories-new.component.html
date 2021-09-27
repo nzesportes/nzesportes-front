@@ -37,7 +37,7 @@
             <hr>
             <div class="form-row">
               <div class="form-group col-6 mb-3">
-                <label for="categorieName">Nome da Categoria</label>
+                <label for="categorieName">Nome da Subcategoria</label>
                 <input type="text" class="form-control" formControlName="name" id="categorieName"
                        aria-describedby="emailHelp"
                        placeholder="Comisetas"
@@ -59,43 +59,27 @@
                 </div>
               </div>
             </div>
+            <div class="alert alert-warning" role="alert" *ngIf="categories.length === 0">
+              Você precisa adicionar uma Categoria antes de cadastrar uma subcategoria.
+              <div class="alert-link" routerLink="/painel/categorias">Clique aqui para adicionar.</div>
+            </div>
+            <div class="form-row">
+              <label for="gender">Categoria relacionada</label>
+              <select class="form-control" id="categoryId" formControlName="categoryId"
+                      [ngClass]="{ 'is-invalid': validateFields.categoryId.errors && validateFields.categoryId.touched }">
+                <option [value]="category.id" *ngFor="let category of categories">{{category.name}}</option>
+              </select>
+              <div id="fileld-categoryId" class="invalid-feedback" *ngIf="validateFields.name?.errors?.required">
+                Por favor, insira a categoria relacionada.
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
 
-    <form [formGroup]="formCategoryList">
-      <div class="card mb-3">
-        <div class="card-body">
-          <h5 class="card-title">Categorias</h5>
-          <hr>
-          <div class="overflow-auto" style="height: 300px">
-            <div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="categories.length === 0">
-              Você precisa adicionar uma Categoria antes de cadastrar uma subcategoria.
-              <div class="alert-link" routerLink="/painel/categorias">Clique aqui para adicionar.</div>
-            </div>
-            <div class="list-group">
-              <button formArrayName="categories"
-                      *ngFor="let category of categoriesArrayForm.controls; let i = index"
-                      type="button"
-                      class="list-group-item d-flex justify-content-between list-group-item-action"
-              >
-                {{category.value.name | titlecase}}
-              <div class="form-check" [formGroupName]="i">
-                <input class="form-check-input" type="checkbox"  value="" id="categoria" formControlName="checked"
-                       (change)="setCategorie()">
-              </div>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </form>
-
-
-
-    <div class="card mb-3" *ngIf="subCategory?.id">
+    <div class="card mb-3">
       <div class="card-body">
         <div class="form-check">
           <input class="form-check-input" type="checkbox" value="" id="isShowOnStore" formControlName="status">
@@ -106,27 +90,28 @@
       </div>
     </div>
 
-    <div class="card mb-3" *ngIf="subCategory?.id">
-      <div class="card-body">
-        <h5 class="card-title">Excluir Subcategoria</h5>
-        <hr>
-        Ao exclui-lá ela será apagada definitivamente e não aparecerá mais em sua loja.
-        <div class="d-flex justify-content-end">
-          <button type="button" class="btn btn-danger col-lg-2 col-sm-12" (click)="delete()">Excluir</button>
-        </div>
-      </div>
-
-    </div>
-
     <div class="card mb-3">
       <div class="card-body">
-        <h5 class="card-title">Promoções</h5>
-        <hr>
-        <div class="card-link">
-          <i class="fas fa-ticket-alt p-1" style="color: cornflowerblue"></i><a href="#">Criar cupom de desconto</a>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="isOnMenu" formControlName="onMenu">
+          <label class="form-check-label" for="isOnMenu">
+            Disponível no menu principal da página
+          </label>
         </div>
       </div>
     </div>
+
+<!--    <div class="card mb-3" *ngIf="subCategory?.id">-->
+<!--      <div class="card-body">-->
+<!--        <h5 class="card-title">Excluir Subcategoria</h5>-->
+<!--        <hr>-->
+<!--        Ao exclui-lá ela será apagada definitivamente e não aparecerá mais em sua loja.-->
+<!--        <div class="d-flex justify-content-end">-->
+<!--          <button type="button" class="btn btn-danger col-lg-2 col-sm-12" (click)="delete()">Excluir</button>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--    </div>-->
   </div>
 </form>
 

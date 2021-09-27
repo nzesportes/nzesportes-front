@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {OwlOptions} from 'ngx-owl-carousel-o';
-import {map, take} from 'rxjs/operators';
+import {take} from 'rxjs/operators';
 import {ProductsService} from '../../../../shared/services/products.service';
 import {Gender} from '../../../../shared/enums/gender';
 import {Order} from '../../../../shared/enums/order.enum';
@@ -64,8 +64,8 @@ export class NzStoreComponent implements OnInit {
   }
 
   getAllDetails(size: number, page: number, name?: string, gender?: Gender, category?: string,
-                productSize?: string, color?: string, brand?: string, order?: Order): void {
-    this.productsService.getAllDetails(size, page, name, gender, category, productSize, color, brand, order)
+                productSize?: string, color?: string, brand?: string, order?: Order, subCategory?: string): void {
+    this.productsService.getAllDetails(size, page, name, gender, category, productSize, color, brand, order, subCategory)
       .pipe(take(1))
       .subscribe(response => {
           this.productDetailsTO = response.content;

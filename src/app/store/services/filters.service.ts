@@ -21,7 +21,8 @@ export class FiltersService {
         size: '',
         color: '',
         brand: '',
-        classBy: ''
+        classBy: '',
+        SubCategory: ''
       });
     }
   }
@@ -34,15 +35,17 @@ export class FiltersService {
     return this._filter;
   }
 
-  setSearch(search?: string, brand?: string, category?: string, gender?: Gender): void {
+  setSearch(search?: string, brand?: string, category?: string, gender?: Gender, subCategory?: string): void {
     this.productsService.setDetailsFiltersState(
       search ? search : '',
       gender ? gender : undefined,
       category ? category : '',
       '',
       '',
-      brand ? brand : ''
-    );
+      brand ? brand : '',
+      '',
+      subCategory ? subCategory : ''
+  );
 
     this.setFilter({
       name: search ? search : '',
@@ -51,7 +54,8 @@ export class FiltersService {
       size: '',
       color: '',
       brand: brand ? brand : '',
-      classBy: ''
+      classBy: '',
+      SubCategory: ''
     });
   }
 }

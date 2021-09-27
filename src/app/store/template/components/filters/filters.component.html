@@ -37,6 +37,22 @@
           </ul>
         </div>
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link" (click)="changeStateItemMenu(subCategory)">Subcategoria<i class="fas fa-angle-down ml-1"></i></a>
+        <div class="scroll submenu" #subCategory>
+          <ul class="items-submenu">
+            <li *ngFor="let category of subCategories">
+              <a class="item-submenu">
+                <input class="form-check-input radiosInput" type="radio" name="subCategory" id="subCategory{{ category.name | titlecase }}"
+                       (change)="selectFilter()"
+                       formControlName="subCategory" value="{{ category.name | lowercase }}">
+                <label class="form-check-label" for="subCategory{{ category.name | titlecase }}">{{ category.name | titlecase }}</label>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
       <li class="nav-item">
         <a class="nav-link" (click)="changeStateItemMenu(size)">Tamanho<i class="fas fa-angle-down ml-1"></i></a>
         <div class="scroll submenu" #size>
@@ -152,6 +168,12 @@
     <span *ngIf="categoryInit" class="remove-filter">
       Categoria: {{ categoryInit }}
       <button class="btn btn-remove-filter" (click)="removeFilter('category')">
+        <i class="fas fa-times"></i>
+      </button>
+    </span>
+    <span *ngIf="subCategoryInit" class="remove-filter">
+      SubCategoria: {{ subCategoryInit }}
+      <button class="btn btn-remove-filter" (click)="removeFilter('subCategory')">
         <i class="fas fa-times"></i>
       </button>
     </span>

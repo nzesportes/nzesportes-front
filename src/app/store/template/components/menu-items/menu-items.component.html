@@ -6,53 +6,10 @@
     <a class="menu-item" (click)="changeStateItemMenu(masculino)">Masculino <i class="fas fa-caret-down"></i></a>
     <div class="mega-menu" #masculino>
       <div class="row p-3 p-xl-5 w-100 m-0">
-        <div class="col-12 col-xl mega-column">
-          <h4 class="mega-heading">Tênis</h4>
+        <div class="col-12 col-xl mega-column" *ngFor="let masculino of menu.masculino">
+          <h4 class="mega-heading">{{masculino.name}}</h4>
           <ul class="mega-item">
-            <li><a href="#">Todos Tênis</a></li>
-            <li><a href="#">Corrida</a></li>
-            <li><a href="#">Academia</a></li>
-            <li><a href="#">Basquete</a></li>
-            <li><a href="#">Futebol Americano</a></li>
-            <li><a href="#">Futebol</a></li>
-            <li><a href="#">Beisebol</a></li>
-          </ul>
-        </div>
-        <div class="col-12 col-xl mega-column">
-          <h4 class="mega-heading">Roupas</h4>
-          <ul class="mega-item">
-            <li><a href="#">Regata Basquete</a></li>
-            <li><a href="#">Camiseta Futebol</a></li>
-            <li><a href="#">Camisete Futebol Americano</a></li>
-            <li><a href="#">Camiseta Beisebol</a></li>
-            <li><a href="#">Shorts</a></li>
-            <li><a href="#">Jaqueta</a></li>
-            <li><a href="#">Moletom</a></li>
-          </ul>
-        </div>
-        <div class="col-12 col-xl mega-column">
-          <h4 class="mega-heading">Acessórios</h4>
-          <ul class="mega-item">
-            <li><a href="#">Meia</a></li>
-            <li><a href="#">Boné</a></li>
-            <li><a href="#">Chaveiros</a></li>
-          </ul>
-        </div>
-        <div class="col-12 col-xl mega-column">
-          <h4 class="mega-heading">NZ</h4>
-          <ul class="mega-item">
-            <li><a href="#">Exemplo 1</a></li>
-            <li><a href="#">Exemplo 2</a></li>
-            <li><a href="#">Exemplo 3</a></li>
-            <li><a href="#">Basquete</a></li>
-          </ul>
-        </div>
-        <div class="col-12 col-xl mega-column">
-          <h4 class="mega-heading">Marca</h4>
-          <ul class="mega-item">
-            <li><a href="#">Nike</a></li>
-            <li><a href="#">Adidas</a></li>
-            <li><a href="#">Jordan</a></li>
+            <li><a (click)="goToProductListing('', masculino.name, gender.MALE, subCategoria.name)" *ngFor="let subCategoria of masculino.subCategory">{{subCategoria.name | titlecase}}</a></li>
           </ul>
         </div>
       </div>
@@ -62,53 +19,10 @@
     <a class="menu-item" (click)="changeStateItemMenu(feminino)">Feminino <i class="fas fa-caret-down"></i></a>
     <div class="mega-menu" #feminino>
       <div class="row p-3 p-xl-5 w-100 m-0">
-        <div class="col-12 col-xl mega-column">
-          <h4 class="mega-heading">Tênis</h4>
+        <div class="col-12 col-xl mega-column"  *ngFor="let feminino of menu.feminino">
+          <h4 class="mega-heading">{{feminino.name}}</h4>
           <ul class="mega-item">
-            <li><a href="#">Todos Tênis</a></li>
-            <li><a href="#">Corrida</a></li>
-            <li><a href="#">Academia</a></li>
-            <li><a href="#">Basquete</a></li>
-            <li><a href="#">Futebol Americano</a></li>
-            <li><a href="#">Futebol</a></li>
-            <li><a href="#">Beisebol</a></li>
-          </ul>
-        </div>
-        <div class="col-12 col-xl mega-column">
-          <h4 class="mega-heading">Roupas</h4>
-          <ul class="mega-item">
-            <li><a href="#">Regata Basquete</a></li>
-            <li><a href="#">Camiseta Futebol</a></li>
-            <li><a href="#">Camisete Futebol Americano</a></li>
-            <li><a href="#">Camiseta Beisebol</a></li>
-            <li><a href="#">Shorts</a></li>
-            <li><a href="#">Jaqueta</a></li>
-            <li><a href="#">Moletom</a></li>
-          </ul>
-        </div>
-        <div class="col-12 col-xl mega-column">
-          <h4 class="mega-heading">Acessórios</h4>
-          <ul class="mega-item">
-            <li><a href="#">Meia</a></li>
-            <li><a href="#">Boné</a></li>
-            <li><a href="#">Chaveiros</a></li>
-          </ul>
-        </div>
-        <div class="col-12 col-xl mega-column">
-          <h4 class="mega-heading">NZ</h4>
-          <ul class="mega-item">
-            <li><a href="#">Exemplo 1</a></li>
-            <li><a href="#">Exemplo 2</a></li>
-            <li><a href="#">Exemplo 3</a></li>
-            <li><a href="#">Basquete</a></li>
-          </ul>
-        </div>
-        <div class="col-12 col-xl mega-column">
-          <h4 class="mega-heading">Marca</h4>
-          <ul class="mega-item">
-            <li><a href="#">Nike</a></li>
-            <li><a href="#">Adidas</a></li>
-            <li><a href="#">Jordan</a></li>
+            <li><a (click)="goToProductListing('',  feminino.name, gender.FEMALE, subCategoria.name)"  *ngFor="let subCategoria of feminino.subCategory">{{subCategoria.name | titlecase}}</a></li>
           </ul>
         </div>
       </div>
