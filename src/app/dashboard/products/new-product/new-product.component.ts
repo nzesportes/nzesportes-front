@@ -35,6 +35,9 @@ export class NewProductComponent implements OnInit, OnDestroy {
 
   addQuantity = '';
 
+  colors = ['preto', 'branco', 'cinza', 'azul', 'vermelho', 'verde', 'amarelo', 'laranja', 'rosa', 'bege', 'marrom', 'roxo',
+    'borgonha', 'turquesa'];
+
   constructor(
     private formBuilder: FormBuilder,
     private brandsService: BrandsService,
