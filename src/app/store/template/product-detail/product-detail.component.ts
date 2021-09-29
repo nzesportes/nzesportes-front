@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {OwlOptions} from 'ngx-owl-carousel-o';
 import {CartService} from '../../services/cart.service';
 import {Store} from '@ngrx/store';
@@ -16,6 +16,7 @@ import {ShippingResult} from '../../../shared/models/shipping-result.model';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {FiltersService} from '../../services/filters.service';
 import {Gender} from '../../../shared/enums/gender';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 
 export interface ImageSlide {
   id: number;
@@ -30,7 +31,7 @@ export interface ImageSlide {
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss']
 })
-export class ProductDetailComponent implements OnInit {
+export class ProductDetailComponent implements OnInit, OnDestroy {
 
   private id = '';
 
@@ -43,17 +44,20 @@ export class ProductDetailComponent implements OnInit {
 
   @ViewChild('stock')
   public readonly selectedStock!: any;
+  @ViewChild('success')
+  public readonly dialogSuccess!: SwalComponent;
 
   sizeMax = 1;
   startValue = 1;
 
-  avaliacao = 3.8;
+  rating = 3.8;
   positionImage = 0;
 
   shippingResult: ShippingResult[] = [];
   notShipResult = false;
   errorShipResult = false;
   public hasError = false;
+  noStock = false;
 
   dynamicSlides: ImageSlide[] = [];
 
@@ -88,8 +92,6 @@ export class ProductDetailComponent implements OnInit {
   public formStock: FormGroup = new FormGroup({});
   public formShipping: FormGroup = new FormGroup({});
 
-  noStock = false;
-
   constructor(
     private cartService: CartService,
     private productsService: ProductsService,
@@ -104,6 +106,7 @@ export class ProductDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.noStock = false;
     window.scrollTo(0, 0);
     this.createForm();
     const params: Observable<Params> = this.activatedRoute.params;
@@ -115,6 +118,8 @@ export class ProductDetailComponent implements OnInit {
           .subscribe(response => {
               this.hasError = false;
               this.productDetails = response;
+              this.createForm();
+              this.changeMax(0);
               this.setImages();
               const productJson = localStorage.getItem('product');
               if (productJson) {
@@ -142,6 +147,20 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.sizeMax = 1;
+    this.startValue = 1;
+
+    this.rating = 3.8;
+    this.positionImage = 0;
+
+    this.shippingResult = [];
+    this.notShipResult = false;
+    this.errorShipResult = false;
+    this.hasError = false;
+    this.noStock = false;
+  }
+
   setImages(): void {
     this.dynamicSlides = [];
     this.productDetails.images.split(';').forEach((image, i) => {
@@ -153,6 +172,12 @@ export class ProductDetailComponent implements OnInit {
         thumbSafe: this.sanitizer.bypassSecurityTrustResourceUrl(image)
       });
     });
+  }
+
+  routerLinkToProduct(id: string): void {
+    this.formStock.reset();
+    this.noStock = false;
+    this.router.navigateByUrl(`/produtos/${id}`);
   }
 
   private createForm(): void {
@@ -201,6 +226,11 @@ export class ProductDetailComponent implements OnInit {
         }
       } else {
         this.sendToCart(productDetail, stockCart);
+      }
+      if (!this.noStock) {
+        this.formStock.reset();
+        this.dialogSuccess.title = 'Adicionado ao carrinho!';
+        this.dialogSuccess.fire();
       }
     } else {
       this.verifyValidation(this.formStock);
@@ -284,5 +314,9 @@ export class ProductDetailComponent implements OnInit {
   goToProductListing(brand?: string, category?: string, gender?: Gender): void {
     this.filterService.setSearch('', brand, category, gender);
     this.router.navigateByUrl('/search');
+  }
+
+  redirect(): void {
+    this.router.navigateByUrl(`produtos/${this.id}`);
   }
 }

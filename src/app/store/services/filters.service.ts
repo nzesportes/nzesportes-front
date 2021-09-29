@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Gender} from '../../shared/enums/gender';
+import {ProductsService} from '../../shared/services/products.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,9 @@ export class FiltersService {
   // tslint:disable-next-line:variable-name
   private _filter: any;
 
-  constructor() {
+  constructor(
+    private productsService: ProductsService
+  ) {
     if (!this._filter) {
       this.setFilter({
         name: '',
@@ -18,7 +21,8 @@ export class FiltersService {
         size: '',
         color: '',
         brand: '',
-        classBy: ''
+        classBy: '',
+        SubCategory: ''
       });
     }
   }
@@ -31,7 +35,18 @@ export class FiltersService {
     return this._filter;
   }
 
-  setSearch(search?: string, brand?: string, category?: string, gender?: Gender): void {
+  setSearch(search?: string, brand?: string, category?: string, gender?: Gender, subCategory?: string): void {
+    this.productsService.setDetailsFiltersState(
+      search ? search : '',
+      gender ? gender : undefined,
+      category ? category : '',
+      '',
+      '',
+      brand ? brand : '',
+      '',
+      subCategory ? subCategory : ''
+  );
+
     this.setFilter({
       name: search ? search : '',
       gender: gender ? gender : undefined,
@@ -39,7 +54,8 @@ export class FiltersService {
       size: '',
       color: '',
       brand: brand ? brand : '',
-      classBy: ''
+      classBy: '',
+      SubCategory: ''
     });
   }
 }

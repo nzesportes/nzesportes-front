@@ -2,6 +2,27 @@
   overflow-x: hidden;
 }
 
+.whatsapp-position {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  z-index: 1000000000;
+}
+
+.background-wpp {
+  position: fixed;
+  bottom: 24px;
+  right: 18px;
+  z-index: 100000000;
+  width: 50px;
+  height: 46px;
+  background-color: #ffffff;
+}
+
+.whatsapp-position i {
+  color: #06d755;
+}
+
 .sidebar-wrapper {
   position: fixed;
   top: 0;
@@ -99,7 +120,15 @@
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
-
+  /*.background-wpp {
+    position: fixed;
+    bottom: 24px;
+    right: 19px;
+    z-index: 100000000;
+    width: 62px;
+    height: 62px;
+    background-color: #ffffff;
+  }*/
 }
 
 // Extra large devices (large desktops, 1200px and up)

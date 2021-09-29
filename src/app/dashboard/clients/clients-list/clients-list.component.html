@@ -38,8 +38,8 @@
       <tr>
         <th scope="col" style="width: 30%">Nome</th>
         <th scope="col" style="width: 20%">CPF</th>
+        <th scope="col" style="width: 15%">Instagram</th>
         <th scope="col" style="width: 15%">Telefone</th>
-        <th scope="col" style="width: 15%">instagram</th>
 
         <th scope="col" style="width: 10%">Ações</th>
       </tr>
@@ -55,7 +55,13 @@
             target="_blank"
           > {{c.instagram}}</a>
         </td>
-        <td>{{c.phone}}</td>
+        <td>
+          <a href="https://{{isMobile() ? 'api.whatsapp.com' : 'web.whatsapp.com'}}/send?phone=+55{{ c.phone }}&text=Olá, {{ c.name }}"
+             class="badge badge-info"
+             target="_blank">
+            {{c.phone}}
+          </a>
+        </td>
         <td ><i class="fas fa-eye text-primary" routerLink="view/{{c.id}}"></i></td>
       </tr>
       </tbody>

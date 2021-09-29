@@ -192,9 +192,7 @@
               <select class="form-control" id="color"
                       formControlName="color"
                       [ngClass]="cssError(validateFieldsFormProductDetail.color)">
-                <option value="azul">Azul</option>
-                <option value="vermelho">Vermelho</option>
-                <option value="preto">Preto</option>
+                <option *ngFor="let cor of colors" value="cor">{{ cor | titlecase }}</option>
               </select>
               <div id="field-color" class="invalid-feedback">
                 Por favor, insira a cor.

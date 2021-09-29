@@ -18,6 +18,7 @@ export class CartPreviewComponent implements OnInit {
   products$!: Observable<ItemCart[]>;
   total$!: Observable<number>;
   isLoading$!: Observable<boolean>;
+  totalItems = 0;
 
   constructor(
     private cartService: CartService,
@@ -30,9 +31,19 @@ export class CartPreviewComponent implements OnInit {
     this.products$ = this.store.select(fromSelector.products);
     this.total$ = this.store.select(fromSelector.total);
     this.isLoading$ = this.store.select(fromSelector.isLoading);
+    this.getTotalItems();
   }
   removeItemCart(id: string): void {
     this.cartService.removeItemCart(id);
+  }
+
+  getTotalItems(): void {
+    this.products$.subscribe(product => {
+      this.totalItems = 0;
+      product.forEach(item => {
+        this.totalItems += item.quantity;
+      });
+    });
   }
 
 }
