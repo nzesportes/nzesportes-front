@@ -4,6 +4,7 @@ import {BrandPage} from '../../../shared/models/pagination-model/brand-page.mode
 import {CustomerService} from '../../../shared/services/customer.service';
 import {PaginationService} from '../../../shared/services/pagination.service';
 import {take} from 'rxjs/operators';
+import {CustomerPage} from '../../../shared/models/pagination-model/customer-page.model';
 
 @Component({
   selector: 'app-clients-list',
@@ -12,7 +13,7 @@ import {take} from 'rxjs/operators';
 })
 export class ClientsListComponent implements OnInit {
   customers: Customer[] = [];
-  content: BrandPage | undefined;
+  content: CustomerPage | undefined;
   hasError!: boolean;
 
   constructor(

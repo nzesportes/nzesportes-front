@@ -12,6 +12,13 @@
             <li><a (click)="goToProductListing('', masculino.name, gender.MALE, subCategoria.name)" *ngFor="let subCategoria of masculino.subCategory">{{subCategoria.name | titlecase}}</a></li>
           </ul>
         </div>
+
+        <div class="col-12 col-xl mega-column">
+          <h4 class="mega-heading">Marca</h4>
+          <ul class="mega-item" >
+            <li><a (click)="goToProductListing(marca.name,  '', gender.MALE, '')" *ngFor="let marca of menu.marcas">{{marca.name | titlecase}}</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   </li>
@@ -23,6 +30,13 @@
           <h4 class="mega-heading">{{feminino.name}}</h4>
           <ul class="mega-item">
             <li><a (click)="goToProductListing('',  feminino.name, gender.FEMALE, subCategoria.name)"  *ngFor="let subCategoria of feminino.subCategory">{{subCategoria.name | titlecase}}</a></li>
+          </ul>
+        </div>
+
+        <div class="col-12 col-xl mega-column">
+          <h4 class="mega-heading">Marca</h4>
+          <ul class="mega-item" >
+            <li><a (click)="goToProductListing(marca.name,  '', gender.FEMALE, '')" *ngFor="let marca of menu.marcas">{{marca.name | titlecase}}</a></li>
           </ul>
         </div>
       </div>
