@@ -9,4 +9,5 @@ export interface DetailsFiltersRequest {
   color: string;
   brand: string;
   classBy: Order | string;
+  subCategory: string;
 }
