@@ -5,6 +5,21 @@
 
 </div>
 
+<form [formGroup]="formFilterContactUs">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="form-group col-lg-4 col-sm-12 mb-3 mb-lg-0">
+        <label for="filter">Status</label>
+        <select class="form-control" id="filter" formControlName="status" (change)="onChangeFilter()">
+          <option></option>
+          <option value="true">Lido</option>
+          <option value="false">Não Lido</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</form>
+
 <div class="card mb-3 mr-3 ml-3">
   <div class="table-responsive">
     <table class="table table-hover">
