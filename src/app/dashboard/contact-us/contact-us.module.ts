@@ -4,6 +4,7 @@ import {CommonModule} from '@angular/common';
 import {ContactUsRoutingModule} from './contact-us-routing.module';
 import {ContactUsListComponent} from './contact-us-list/contact-us-list.component';
 import {ContactUsDetailsComponent} from './contact-us-details/contact-us-details.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import {ContactUsDetailsComponent} from './contact-us-details/contact-us-details
   ],
   imports: [
     CommonModule,
-    ContactUsRoutingModule
+    ContactUsRoutingModule,
+    ReactiveFormsModule
   ]
 })
 export class ContactUsModule {

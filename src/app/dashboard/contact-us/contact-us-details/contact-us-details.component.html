@@ -1,4 +1,16 @@
 <div class="row mt-3">
+  <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/painel/fale-conosco">Fale Conosco</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ contact?.fullName }}</li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="col-lg-4 col-sm-12 mb-3 mb-lg-0" routerLink="/painel/fale-conosco">
+    <button type="button" class="btn btn-secondary w-100">Voltar</button>
+  </div>
   <div class="col-12 mb-3">
     <div class="card">
       <div class="card-body">
@@ -7,23 +19,23 @@
         <div class="form-row">
           <div class="form-group col-12 mb-3">
             <label for="fullname">Nome Completo</label>
-            <input type="text" class="form-control" id="fullname" formControlName="name" [value]="contact?.fullName" disabled>
+            <input type="text" class="form-control" id="fullname" [value]="contact?.fullName" disabled>
           </div>
           <div class="form-group col-12 mb-3">
             <label for="email">E-mail</label>
-            <input type="text" class="form-control" id="email" formControlName="name" [value]="contact?.email" disabled>
+            <input type="text" class="form-control" id="email" [value]="contact?.email" disabled>
           </div>
           <div class="form-group col-12 mb-3">
             <label for="instagram">Instagram</label>
-            <input type="text" class="form-control" id="instagram" formControlName="name" [value]="contact?.instagram" disabled>
+            <input type="text" class="form-control" id="instagram" [value]="contact?.instagram" disabled>
           </div>
           <div class="form-group col-12 mb-3">
             <label for="phone">Telefone</label>
-            <input type="text" class="form-control" id="phone" formControlName="name" [value]="contact?.phone" disabled>
+            <input type="text" class="form-control" id="phone" [value]="contact?.phone" disabled>
           </div>
           <div class="form-group col-12 mb-3">
             <label for="message">Mensagem</label>
-            <textarea class="form-control field-message" id="message" formControlName="name" disabled>{{ contact?.message }}</textarea>
+            <textarea class="form-control field-message" id="message" disabled>{{ contact?.message }}</textarea>
           </div>
           <div class="d-flex justify-content-end col-12">
             <button type="button" class="btn btn-primary col-lg-3 col-sm-12" (click)="markRead()">{{ contact?.read ? 'Marcar como não lido' : 'Marcar como lido' }}</button>
