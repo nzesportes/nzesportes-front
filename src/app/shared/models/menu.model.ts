@@ -1,3 +1,5 @@
+import {Brand} from './brand.model';
+
 export interface SubCategory {
   id: string;
   name: string;
@@ -11,4 +13,5 @@ export interface SubMenu {
 export interface Menu {
   masculino: SubMenu[];
   feminino: SubMenu[];
+  marcas: Brand[];
 }

@@ -31,6 +31,7 @@ export class MenuItemsComponent implements OnInit {
         this.menu = menu;
         this.menu.feminino = this.menu.feminino.length > 4 ? this.menu.feminino.slice(0, 3) : this.menu.feminino;
         this.menu.masculino =  this.menu.masculino.length > 4 ? this.menu.masculino.slice(0, 3) : this.menu.masculino;
+        this.menu.marcas = this.menu.marcas.length > 7 ?  this.menu.marcas.slice(0, 6) : this.menu.marcas;
       });
   }
 
