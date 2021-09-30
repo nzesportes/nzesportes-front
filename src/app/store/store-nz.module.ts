@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {StoreRoutingModule} from './store-routing.module';
