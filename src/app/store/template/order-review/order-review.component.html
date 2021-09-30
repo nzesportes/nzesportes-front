@@ -1,9 +1,10 @@
 <div *ngIf="isLoading$ | async; else orderReview"></div>
 <ng-template #orderReview>
   <div class="container p-container">
-    <form class="row m-0 p-0">
+    <form class="row m-0 p-0" [formGroup]="formGoToPayment">
       <div *ngIf="!isLogged" class="col-12 col-lg-8">
-        <div class="container-login">
+        <div class="container-login text-center">
+          <h1 class="page-title mb-3 mb-lg-4 text-left">Login</h1>
           <app-login></app-login>
         </div>
       </div>
@@ -14,7 +15,7 @@
             <div class="card container-card">
               <div class="card-body">
                 <div class="ml-3">
-                  <input class="form-check-input" type="radio" name="address-radio" id="address{{ address.id }}"
+                  <input class="form-check-input" type="radio" formControlName="shipmentId" name="shipmentId" id="address{{ address.id }}"
                          [value]="address.id">
                   <label class="form-check-label" for="address{{ address.id }}"><h5
                     class="card-title">{{ address.street }}, {{ address.number }}</h5></label>
@@ -41,16 +42,24 @@
               <div class="col-4 p-0">Total</div>
             </div>
             <div class="row m-0 p-0" *ngFor="let item of products$ | async">
-              <div class="col-8 p-0 pr-2 mb-1">{{ item.model }}</div>
+              <div class="col-8 p-0 pr-2 mb-1">{{ item.model }} {{ item.productDetails.color | titlecase }}</div>
               <div class="col-4 p-0">{{ item.total | currency }}</div>
+            </div>
+            <div class="row m-0 p-0 pt-2 mt-2 bt-ordem-review" *ngIf="voucher > 0">
+              <div class="col-8 p-0 pr-2 mb-1">Cupom de Desconto</div>
+              <div class="col-4 p-0">- {{ voucher | currency }}</div>
+            </div>
+            <div class="row m-0 p-0" [class]="voucher === 0 ? 'pt-2 mt-2 bt-ordem-review' : ''">
+              <div class="col-8 p-0 pr-2 mb-1">Frete</div>
+              <div class="col-4 p-0">{{ shipment | currency }}</div>
             </div>
             <div class="row m-0 p-0 total-order">
               <div class="col-8 p-0 pr-2 mb-1">Valor Total</div>
-              <div class="col-4 p-0">{{ total$ | async | currency }}</div>
+              <div class="col-4 p-0">{{ total | currency }}</div>
             </div>
           </div>
           <div class="footer-order pt-2 pb-2">
-            <button class="btn btn-finish-shopping mt-3" [disabled]="!isLogged">Ir para o pagamento</button>
+            <button class="btn btn-finish-shopping mt-3" (click)="goToPayment()" [disabled]="!isLogged || !this.formGoToPayment.valid">Ir para o pagamento</button>
           </div>
         </div>
       </div>
