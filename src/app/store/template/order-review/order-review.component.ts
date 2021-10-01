@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {TokenStorageService} from '../../../shared/services/token-storage.service';
 import {AddressService} from '../../../shared/services/address.service';
 import {Address} from '../../../shared/models/address.model';
@@ -14,6 +14,9 @@ import {PaymentTO} from '../../../shared/models/payment-to.model';
 import {ShippingResult} from '../../../shared/models/shipping-result.model';
 import {Shipping} from '../../../shared/models/shipping.model';
 import {BetterSendService} from '../../../shared/services/better-send.service';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
+import {ErrorWarning} from '../../../shared/models/error-warning.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-order-review',
@@ -21,6 +24,11 @@ import {BetterSendService} from '../../../shared/services/better-send.service';
   styleUrls: ['./order-review.component.scss']
 })
 export class OrderReviewComponent implements OnInit {
+
+  @ViewChild('success')
+  public readonly dialogSuccess!: SwalComponent;
+  @ViewChild('error')
+  public readonly dialogError!: SwalComponent;
 
   formGoToPayment!: FormGroup;
   isLogged = false;
@@ -41,6 +49,7 @@ export class OrderReviewComponent implements OnInit {
   notShipResult = false;
   errorShipResult = false;
   public hasError = false;
+  paymentUrl = '';
 
   constructor(
     private tokenStorageService: TokenStorageService,
@@ -48,6 +57,7 @@ export class OrderReviewComponent implements OnInit {
     private purchaseService: PurchaseService,
     private formBuilder: FormBuilder,
     private betterSendService: BetterSendService,
+    private router: Router,
     private store: Store<any>
   ) {
   }
@@ -109,8 +119,22 @@ export class OrderReviewComponent implements OnInit {
     this.paymentTO.shipment = this.shipment;
     this.purchaseService.createPaymentRequest(this.paymentTO)
       .subscribe(response => {
-        window.open(response.paymentUrl, '_blank');
-      }, error => console.error('ERROR SERVICE', error));
+        console.log('chegou');
+        this.paymentUrl = response.paymentUrl;
+        this.dialogSuccess.title = 'Você está sendo redirecionado para a tela de pagamento!';
+        this.dialogSuccess.fire();
+        setTimeout(() => {
+          this.dialogSuccess.close();
+          this.redirect();
+        }, 5000);
+      }, (error: ErrorWarning) => {
+        this.setErrorDialog(error);
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.goToPayment();
+          }
+        });
+      });
   }
 
 
@@ -163,6 +187,20 @@ export class OrderReviewComponent implements OnInit {
   changePriceShipment(): void {
     this.shipment = parseFloat(this.formGoToPayment?.get('shipment')?.value);
     this.getTotalPurchase();
+  }
+
+  redirect(): void {
+    if (this.paymentUrl !== '') {
+      window.location.href = this.paymentUrl;
+      return;
+    }
+    this.router.navigateByUrl('/finalizar-compra');
+  }
+
+  setErrorDialog(error: ErrorWarning): void {
+    this.dialogError.confirmButtonText = error.action;
+    this.dialogError.title = error.title;
+    this.dialogError.text = error.message;
   }
 }
 

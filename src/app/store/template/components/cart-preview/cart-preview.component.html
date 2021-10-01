@@ -5,7 +5,7 @@
     <div class="row m-0 pl-2 pr-2 pt-3 pb-3 row-items" *ngFor="let item of products$ | async">
       <a class="item-cart-preview-close" (click)="removeItemCart(item.id)"><i class="fas fa-times"></i></a>
       <div class="col-auto p-0">
-        <img class="image-cart-preview" [src]="''">
+        <img class="image-cart-preview" src="{{ item.productDetails.images.split(';')[0] }}">
       </div>
       <div class="col-auto p-0 pl-3">
         <a class="title-cart-preview" href="#">{{ item.model }} {{ item.productDetails.color | titlecase }} {{item.stock.size}}</a>
