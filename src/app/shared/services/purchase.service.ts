@@ -9,15 +9,13 @@ import {PaymentTO} from '../models/payment-to.model';
   providedIn: 'root'
 })
 export class PurchaseService {
-  api: string = environment.NZESPORTES_API + 'purchase/';
+  api: string = environment.NZESPORTES_API + 'purchase';
 
   constructor(
     private httpClient: HttpClient
   ) { }
 
   createPaymentRequest(paymentTO: PaymentTO): Observable<PaymentPurchaseTO> {
-    const params = new HttpParams()
-      .set('async', 'true');
-    return this.httpClient.post<PaymentPurchaseTO>(`${this.api}`, paymentTO, {params});
+    return this.httpClient.post<PaymentPurchaseTO>(`${this.api}`, paymentTO);
   }
 }

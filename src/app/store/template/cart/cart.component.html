@@ -19,7 +19,7 @@
             <div class="col-12 col-xl-5" routerLink="/produtos/{{item.productDetails.id}}">
               <a class="items-description">
                 <img class="cart-image mr-3" src="{{item.productDetails.images.split(';')[0]}}">
-                {{item.model}} {{item.stock.size}}
+                {{item.model}} {{ item.productDetails.color }} {{item.stock.size}}
               </a>
             </div>
             <div class="col-6 col-xl-2 pt-3 pb-3"><span
