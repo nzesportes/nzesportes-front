@@ -34,7 +34,31 @@
       </div>
       <div class="col-12 col-lg-4 pr-3 pl-3">
         <div class="row p-0 m-0">
-          <div class="my-order">
+          <div class="col-12 mb-3 shipments" *ngIf="formGoToPayment?.get('shipmentId')?.value">
+            <h1 class="page-title ml-3 mb-3">Frete</h1>
+            <div class="row p-0 m-0">
+              <div class="col-12 mb-3" *ngFor="let result of shippingResult">
+                <input class="form-check-input" type="radio" formControlName="shipment" name="shipment"
+                       id="shipment{{ result.id }}"
+                       [value]="result.price" (change)="changePriceShipment()">
+                <label class="form-check-label mb-1" for="shipment{{ result.id }}">
+                  <span class="img-shipping">
+                    <img class="pb-2" [src]="result.company.picture">
+                  </span>
+                  <span>
+                    até {{ result.delivery_range.max }} dias úteis - {{ result?.price | currency }} ({{result.name}})
+                  </span>
+                </label>
+              </div>
+            </div>
+            <div class="alert alert-warning" role="alert" *ngIf="notShipResult">
+              Ops! Não foi possível calcular o frete para este CEP.
+            </div>
+            <div class="alert alert-danger" role="alert" *ngIf="errorShipResult">
+              Ops, ocorreu um erro! Não foi possível buscar o CEP.
+            </div>
+          </div>
+          <div class="col-12 my-order">
             <div class="your-order pt-2 pb-2">
               <h3>Seu Pedido</h3>
             </div>
@@ -66,33 +90,27 @@
               </button>
             </div>
           </div>
-          <div *ngIf="formGoToPayment?.get('shipmentId')?.value">
-            <h1 class="page-title ml-3 mb-3 mb-lg-4">Frete</h1>
-            <div class="row p-0 m-0">
-              <div class="col-12 mb-3" *ngFor="let result of shippingResult">
-                <input class="form-check-input" type="radio" formControlName="shipment" name="shipment"
-                       id="shipment{{ result.id }}"
-                       [value]="result.price" (change)="changePriceShipment()">
-                <label class="form-check-label" for="shipment{{ result.id }}">
-              <span class="img-shipping">
-                <img [src]="result.company.picture">
-              </span>
-                  <span class="m-1">
-                até {{ result.delivery_range.max }} dias úteis - {{ result?.price | currency }} ({{result.name}})
-              </span>
-                </label>
-              </div>
-            </div>
-
-            <div class="alert alert-warning" role="alert" *ngIf="notShipResult">
-              Ops! Não foi possível calcular o frete para este CEP.
-            </div>
-            <div class="alert alert-danger" role="alert" *ngIf="errorShipResult">
-              Ops, ocorreu um erro! Não foi possível buscar o CEP.
-            </div>
-          </div>
         </div>
       </div>
     </form>
   </div>
 </ng-template>
+
+<swal
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>
+
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirect()"
+  #success
+  [title]="''"
+  icon="success">
+</swal>
