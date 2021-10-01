@@ -11,6 +11,9 @@ import * as fromSelector from '../../redux/cart/cart.selectors';
 import {take} from 'rxjs/operators';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PaymentTO} from '../../../shared/models/payment-to.model';
+import {ShippingResult} from '../../../shared/models/shipping-result.model';
+import {Shipping} from '../../../shared/models/shipping.model';
+import {BetterSendService} from '../../../shared/services/better-send.service';
 
 @Component({
   selector: 'app-order-review',
@@ -21,24 +24,30 @@ export class OrderReviewComponent implements OnInit {
 
   formGoToPayment!: FormGroup;
   isLogged = false;
-  addresses: Address[] | undefined;
+  addresses: Address[] = [];
   products$!: Observable<ItemCart[]>;
   total$!: Observable<number>;
   isLoading$!: Observable<boolean>;
   total!: number;
   shipment!: number;
-  voucher = 5;
+  voucher = 0;
   paymentTO: PaymentTO = {
     products: [],
     shipment: 0,
     shipmentId: ''
   };
+  shippingResult: ShippingResult[] = [];
+  indexAddress!: number;
+  notShipResult = false;
+  errorShipResult = false;
+  public hasError = false;
 
   constructor(
     private tokenStorageService: TokenStorageService,
     private addressService: AddressService,
     private purchaseService: PurchaseService,
     private formBuilder: FormBuilder,
+    private betterSendService: BetterSendService,
     private store: Store<any>
   ) {
   }
@@ -49,7 +58,7 @@ export class OrderReviewComponent implements OnInit {
     this.products$ = this.store.select(fromSelector.products);
     this.total$ = this.store.select(fromSelector.total);
     this.isLoading$ = this.store.select(fromSelector.isLoading);
-    this.shipment = 20;
+    this.shipment = 0;
 
     this.getPaymentTO();
     this.getTotalPurchase();
@@ -59,7 +68,8 @@ export class OrderReviewComponent implements OnInit {
 
   createForm(): void {
     this.formGoToPayment = this.formBuilder.group({
-      shipmentId: ['', Validators.required]
+      shipmentId: ['', Validators.required],
+      shipment: ['', Validators.required]
     });
   }
 
@@ -83,24 +93,80 @@ export class OrderReviewComponent implements OnInit {
           });
         });
       });
-    this.paymentTO.shipment = this.shipment;
   }
 
   getTotalPurchase(): void {
     this.total$
       .pipe(take(1))
       .subscribe(response => {
+        this.total = 0;
         this.total = response + this.shipment - this.voucher;
+        console.warn('RESPONSE', response);
+        console.warn('RESPONSE', this.shipment);
+        console.warn('RESPONSE', this.voucher);
       });
   }
 
   goToPayment(): void {
     this.paymentTO.shipmentId = this.formGoToPayment?.get('shipmentId')?.value;
-    console.warn('TESTANDO', this.paymentTO);
+    this.paymentTO.shipment = this.shipment;
     this.purchaseService.createPaymentRequest(this.paymentTO)
       .subscribe(response => {
         window.open(response.paymentUrl, '_blank');
       }, error => console.error('ERROR SERVICE', error));
   }
 
+
+  calculateShipping(): void {
+    if (this.formGoToPayment?.get('shipmentId')?.value) {
+      const shipping: Shipping = {
+        from: {
+          postal_code: '02078030'
+        },
+        to: {
+          postal_code: this.addresses[this.indexAddress].cep
+        },
+        products: [
+          {
+            id: '',
+            width: 11,
+            height: 17,
+            length: 11,
+            weight: 0.3,
+            insurance_value: 10.1,
+            quantity: 1
+          }
+        ]
+      };
+      this.betterSendService.calculateShipping(shipping)
+        .pipe(take(1))
+        .subscribe(r => {
+          console.log(r);
+          this.hasError = false;
+          this.shippingResult = r.filter(ship => !ship.error);
+          if (this.shippingResult.length === 0) {
+            this.notShipResult = true;
+          } else {
+            this.notShipResult = false;
+          }
+          this.errorShipResult = false;
+        }, () => {
+          this.errorShipResult = true;
+          this.hasError = true;
+        });
+    }
+  }
+
+  getIndexAddress(index: number): void {
+    this.indexAddress = index;
+    this.formGoToPayment?.get('shipment')?.reset();
+    this.shipment = 0;
+    this.calculateShipping();
+  }
+
+  changePriceShipment(): void {
+    this.shipment = parseFloat(this.formGoToPayment?.get('shipment')?.value);
+    this.getTotalPurchase();
+  }
 }
+
