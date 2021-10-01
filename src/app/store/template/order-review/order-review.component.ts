@@ -101,9 +101,6 @@ export class OrderReviewComponent implements OnInit {
       .subscribe(response => {
         this.total = 0;
         this.total = response + this.shipment - this.voucher;
-        console.warn('RESPONSE', response);
-        console.warn('RESPONSE', this.shipment);
-        console.warn('RESPONSE', this.voucher);
       });
   }
 
@@ -141,7 +138,6 @@ export class OrderReviewComponent implements OnInit {
       this.betterSendService.calculateShipping(shipping)
         .pipe(take(1))
         .subscribe(r => {
-          console.log(r);
           this.hasError = false;
           this.shippingResult = r.filter(ship => !ship.error);
           if (this.shippingResult.length === 0) {
