@@ -119,7 +119,6 @@ export class OrderReviewComponent implements OnInit {
     this.paymentTO.shipment = this.shipment;
     this.purchaseService.createPaymentRequest(this.paymentTO)
       .subscribe(response => {
-        console.log('chegou');
         this.paymentUrl = response.paymentUrl;
         this.dialogSuccess.title = 'Você está sendo redirecionado para a tela de pagamento!';
         this.dialogSuccess.fire();
@@ -185,7 +184,7 @@ export class OrderReviewComponent implements OnInit {
   }
 
   changePriceShipment(): void {
-    this.shipment = parseFloat(this.formGoToPayment?.get('shipment')?.value);
+    this.shipment = parseFloat(this.formGoToPayment?.get('shipment')?.value.price);
     this.getTotalPurchase();
   }
 
