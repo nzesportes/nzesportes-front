@@ -6,10 +6,11 @@ export interface SubCategory {
   name: string;
   gender: Gender;
   status: boolean;
-  categories: Category[];
-  categoriesToAdd: string[];
-  categoriesToRemove: string[];
   hasLoop?: boolean;
+  categoryId: string;
+  category?: Category;
+  categories?: [];
+  onMenu: boolean;
 }
 
 

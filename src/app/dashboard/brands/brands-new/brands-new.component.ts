@@ -53,6 +53,8 @@ export class BrandsNewComponent implements OnInit {
     this.formBrand = this.formBuilder.group({
       id: new FormControl(this.brand?.id ? this.brand.id : null),
       name: new FormControl(this.brand?.name ? this.brand.name : '', Validators.required),
+      status: new FormControl(this.brand?.status ? this.brand.status : '', Validators.required),
+      onMenu: new FormControl(this.brand?.onMenu ? this.brand.onMenu : '', Validators.required)
     });
   }
 

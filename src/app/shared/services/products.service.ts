@@ -25,7 +25,8 @@ export class ProductsService {
     size: '',
     color: '',
     brand: '',
-    classBy: ''
+    classBy: '',
+    subCategory: ''
   });
 
   constructor(
@@ -110,9 +111,10 @@ export class ProductsService {
     name?: string,
     gender?: Gender,
     category?: string,
-    productSize?: string, color?: string, brand?: string, order?: Order): Observable<ProductDetailsTOPage> {
+    productSize?: string, color?: string, brand?: string, order?: Order,  subcategory?: string): Observable<ProductDetailsTOPage> {
     const urlGender = gender ? '&gender=' + gender.toString() : '';
     const urlCategory = category ? '&category=' + category : '';
+    const urlSubCategory = subcategory ? '&subcategory=' + subcategory : '';
     const urlProductSize = productSize ? '&productSize=' + productSize : '';
     const urlColor = color ? '&color=' + color : '';
     const urlBrand = brand ? '&brand=' + brand : '';
@@ -120,7 +122,7 @@ export class ProductsService {
     const urlName = name ? '&name=' + name : '';
 
     const url = `page=${page.toString()}&size=${size.toString() +
-    urlName + urlGender + urlCategory + urlProductSize + urlColor + urlBrand + urlOrder}`;
+    urlName + urlGender + urlCategory + urlProductSize + urlColor + urlBrand + urlOrder + urlSubCategory}`;
 
     return this.http.get<ProductDetailsTOPage>(`${this.api}details?${url}`);
   }
@@ -128,7 +130,7 @@ export class ProductsService {
   setDetailsFiltersState(
     name?: string,
     gender?: string,
-    category?: string, size?: string, color?: string, brand?: string, classBy?: string): void {
+    category?: string, size?: string, color?: string, brand?: string, classBy?: string, subCategory?: string): void {
     const filter: DetailsFiltersRequest = this._detailsFiltersState.getValue();
     filter.name = name ? name : '';
     filter.gender = gender ? gender : '';
@@ -137,7 +139,7 @@ export class ProductsService {
     filter.color = color ? color : '';
     filter.brand = brand ? brand : '';
     filter.classBy = classBy ? classBy : '';
-
+    filter.subCategory = subCategory ? subCategory : '';
     this._detailsFiltersState.next(filter);
   }
 

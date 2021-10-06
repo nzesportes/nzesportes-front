@@ -5,4 +5,5 @@ export interface Category {
   name: string;
   status: boolean;
   type: TypeCategorie[];
+  onMenu: boolean;
 }

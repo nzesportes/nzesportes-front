@@ -26,7 +26,7 @@ export class ContactService {
   }
 
   getAll(size: number, page: number, read?: boolean): Observable<ContactPage> {
-    const urlRead = read ? '&read=' + read : '';
+    const urlRead = read !== undefined ? '&read=' + read : '';
     return this.http.get<ContactPage>(this.apiURL + '?async=true&page=' + page.toString() + '&size=' + size.toString()
       + urlRead);
   }

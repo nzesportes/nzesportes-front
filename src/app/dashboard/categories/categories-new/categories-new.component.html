@@ -52,7 +52,7 @@
       </div>
     </div>
 
-    <div class="card mb-3" *ngIf="categorie?.id">
+    <div class="card mb-3">
       <div class="card-body">
         <div class="form-check">
           <input class="form-check-input" type="checkbox" value="" id="isShowOnStore" formControlName="status">
@@ -63,27 +63,28 @@
       </div>
     </div>
 
-    <div class="card mb-3" *ngIf="categorie?.id">
-      <div class="card-body">
-        <h5 class="card-title">Excluir categoria</h5>
-        <hr>
-        Ao exclui-lá ela será apagada definitivamente e não aparecerá mais em sua loja.
-        <div class="d-flex justify-content-end">
-          <button type="button" class="btn btn-danger col-lg-2 col-sm-12" (click)="delete()">Excluir</button>
-        </div>
-      </div>
-
-    </div>
-
     <div class="card mb-3">
       <div class="card-body">
-        <h5 class="card-title">Promoções</h5>
-        <hr>
-        <div class="card-link">
-          <i class="fas fa-ticket-alt p-1" style="color: cornflowerblue"></i><a href="#">Criar cupom de desconto</a>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="isOnMenu" formControlName="onMenu">
+          <label class="form-check-label" for="isOnMenu">
+            Disponível no menu - Limite de 4 - items*
+          </label>
         </div>
       </div>
     </div>
+
+<!--    <div class="card mb-3" *ngIf="categorie?.id">-->
+<!--      <div class="card-body">-->
+<!--        <h5 class="card-title">Excluir categoria</h5>-->
+<!--        <hr>-->
+<!--        Ao exclui-lá ela será apagada definitivamente e não aparecerá mais em sua loja.-->
+<!--        <div class="d-flex justify-content-end">-->
+<!--          <button type="button" class="btn btn-danger col-lg-2 col-sm-12" (click)="delete()">Excluir</button>-->
+<!--        </div>-->
+<!--      </div>-->
+
+<!--    </div>-->
   </div>
 
 

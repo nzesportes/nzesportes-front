@@ -74,7 +74,7 @@
               <p class="product-categories mb-0">
                 <a (click)="goToProductListing(productDetails?.product?.brand?.name?.toLowerCase())">{{ productDetails?.product?.brand?.name | titlecase }}</a>,
                 <a>{{ productDetails?.color | titlecase }}</a></p>
-              <span><del *ngIf="false">R$ 150,00</del> R$ {{ productDetails?.price }}</span>
+              <span><del *ngIf="false">R$ 150,00</del> {{ productDetails?.price | currency }}</span>
             </div>
           </div>
         </div>

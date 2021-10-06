@@ -13,6 +13,8 @@ import {Category} from '../../../../shared/models/category.model';
 import {CategoriesService} from '../../../../shared/services/categories.service';
 import {Subscription} from 'rxjs';
 import {DetailsFiltersRequest} from '../../../models/details-filters-request';
+import {SubCategoriesService} from '../../../../shared/services/sub-categories.service';
+import {SubCategory} from '../../../../shared/models/sub-category.model';
 
 @Component({
   selector: 'app-filters',
@@ -25,6 +27,8 @@ export class FiltersComponent implements OnInit, OnDestroy {
   verifyFilters = false;
   brands: Brand[] = [];
   categories: Category[] = [];
+  subCategories: SubCategory[] = [];
+
   sizes: string[] = [];
   content!: BrandPage;
   hasError = false;
@@ -106,6 +110,8 @@ export class FiltersComponent implements OnInit, OnDestroy {
   nameInit!: string;
   genderInit!: string;
   categoryInit!: string;
+  subCategoryInit!: string;
+
   sizeInit!: string;
   colorInit!: string;
   brandInit!: string;
@@ -116,8 +122,10 @@ export class FiltersComponent implements OnInit, OnDestroy {
     private filterService: FiltersService,
     private brandsService: BrandsService,
     private paginationService: PaginationService,
-    private categoriesService: CategoriesService
-  ) {
+    private categoriesService: CategoriesService,
+    private subCategoriesService: SubCategoriesService
+
+) {
   }
 
   ngOnInit(): void {
@@ -138,6 +146,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this.verifyFilters = this._verifyFilters();
     this.getBrands();
     this.getCategories();
+    this.getSubCategories();
     this.createSize();
   }
 
@@ -149,6 +158,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this.formFilters = this.formBuilder.group({
       gender: [this.filterService.filter?.gender ? this.filterService.filter.gender : ''],
       category: [this.filterService.filter?.category ? this.filterService.filter.category : ''],
+      subCategory: [this.filterService.filter?.subCategory ? this.filterService.filter.subCategory : ''],
       size: [this.filterService.filter?.size ? this.filterService.filter.size : ''],
       color: [this.filterService.filter?.color ? this.filterService.filter.color : ''],
       brand: [this.filterService.filter?.brand ? this.filterService.filter.brand : ''],
@@ -175,7 +185,8 @@ export class FiltersComponent implements OnInit, OnDestroy {
       this.formFilters?.get('size')?.value,
       this.formFilters?.get('color')?.value,
       this.formFilters?.get('brand')?.value,
-      this.formFilters?.get('classBy')?.value as Order
+      this.formFilters?.get('classBy')?.value as Order,
+      this.formFilters?.get('subCategory')?.value,
     );
   }
 
@@ -203,7 +214,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
   private _verifyFilters(): boolean {
     if (this.formFilters.get('gender')?.value === '' && this.formFilters.get('category')?.value === ''
       && this.formFilters.get('size')?.value === '' && this.formFilters.get('color')?.value === ''
-      && this.formFilters.get('brand')?.value === '') {
+      && this.formFilters.get('brand')?.value === '' && this.formFilters.get('subCategory')?.value === '') {
       return false;
     }
     return true;
@@ -223,7 +234,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   getBrands(): void {
-    this.brandsService.getAll(10000, 0)
+    this.brandsService.getAll(200, 0)
       .pipe(take(1))
       .subscribe(response => {
         this.brands = response.content;
@@ -237,10 +248,21 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   getCategories(): void {
-    this.categoriesService.getAll(10000, 0)
+    this.categoriesService.getAll(200, 0)
       .pipe(take(1))
       .subscribe(response => {
         this.categories = response.content;
+        this.hasError = false;
+      }, error => {
+        this.hasError = true;
+        console.log(error);
+      });
+  }
+  getSubCategories(): void {
+    this.subCategoriesService.getAll(200, 0)
+      .pipe(take(1))
+      .subscribe(response => {
+        this.subCategories = response.content;
         this.hasError = false;
       }, error => {
         this.hasError = true;
@@ -251,6 +273,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
   private _setValuesInit(): void {
     this.genderInit = this.formFilters.get('gender')?.value;
     this.categoryInit = this.formFilters.get('category')?.value;
+    this.subCategoryInit = this.formFilters.get('subCategory')?.value;
     this.sizeInit = this.formFilters.get('size')?.value;
     this.colorInit = this.formFilters.get('color')?.value;
     this.brandInit = this.formFilters.get('brand')?.value;
@@ -278,6 +301,9 @@ export class FiltersComponent implements OnInit, OnDestroy {
       this.formFilters?.get('gender')?.setValue(
         filter.gender ? filter.gender : this.formFilters?.get('gender')?.value
       );
+      this.formFilters?.get('subCategory')?.setValue(
+        filter.subCategory ? filter.subCategory : this.formFilters?.get('subCategory')?.value
+      );
     }
   }
 
@@ -287,5 +313,6 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this.formFilters.get('size')?.setValue('');
     this.formFilters.get('color')?.setValue('');
     this.formFilters.get('brand')?.setValue('');
+    this.formFilters.get('subCategory')?.setValue('');
   }
 }

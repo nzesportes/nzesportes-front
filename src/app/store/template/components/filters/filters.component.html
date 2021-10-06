@@ -37,6 +37,22 @@
           </ul>
         </div>
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link" (click)="changeStateItemMenu(subCategory)">Subcategoria<i class="fas fa-angle-down ml-1"></i></a>
+        <div class="scroll submenu" #subCategory>
+          <ul class="items-submenu">
+            <li *ngFor="let category of subCategories">
+              <a class="item-submenu">
+                <input class="form-check-input radiosInput" type="radio" name="subCategory" id="subCategory{{ category.name | titlecase }}"
+                       (change)="selectFilter()"
+                       formControlName="subCategory" value="{{ category.name | lowercase }}">
+                <label class="form-check-label" for="subCategory{{ category.name | titlecase }}">{{ category.name | titlecase }}</label>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </li>
       <li class="nav-item">
         <a class="nav-link" (click)="changeStateItemMenu(size)">Tamanho<i class="fas fa-angle-down ml-1"></i></a>
         <div class="scroll submenu" #size>
@@ -44,7 +60,7 @@
             <li class="col-4 mb-2 pr-2 pl-2" *ngFor="let size of sizes">
               <a class="item-submenu size">
                 <input class="form-check-input radiosInput" type="radio" name="size" id="size{{ size }}" (change)="selectFilter()"
-                       formControlName="size" value="{{ size | lowercase }}">
+                       formControlName="size" value="{{ size }}">
                 <label class="form-check-label" for="size{{ size }}">{{ size }}</label>
               </a>
             </li>
@@ -144,31 +160,37 @@
 <div>
   <div class="container-remove-filters">
     <span *ngIf="genderInit" class="remove-filter">
-      Gênero: {{ genderInit }}
+      Gênero: {{ genderInit === 'FEMALE' ? 'feminino' : 'masculino' | titlecase }}
       <button class="btn btn-remove-filter" (click)="removeFilter('gender')">
         <i class="fas fa-times"></i>
       </button>
     </span>
     <span *ngIf="categoryInit" class="remove-filter">
-      Categoria: {{ categoryInit }}
+      Categoria: {{ categoryInit | titlecase }}
       <button class="btn btn-remove-filter" (click)="removeFilter('category')">
         <i class="fas fa-times"></i>
       </button>
     </span>
+    <span *ngIf="subCategoryInit" class="remove-filter">
+      SubCategoria: {{ subCategoryInit | titlecase }}
+      <button class="btn btn-remove-filter" (click)="removeFilter('subCategory')">
+        <i class="fas fa-times"></i>
+      </button>
+    </span>
     <span *ngIf="sizeInit" class="remove-filter">
-      Tamanho: {{ sizeInit }}
+      Tamanho: {{ sizeInit | titlecase }}
       <button class="btn btn-remove-filter" (click)="removeFilter('size')">
         <i class="fas fa-times"></i>
       </button>
     </span>
     <span *ngIf="colorInit" class="remove-filter">
-      Cor: {{ colorInit }}
+      Cor: {{ colorInit | titlecase }}
       <button class="btn btn-remove-filter" (click)="removeFilter('color')">
         <i class="fas fa-times"></i>
       </button>
     </span>
     <span *ngIf="brandInit" class="remove-filter">
-      Marca: {{ brandInit }}
+      Marca: {{ brandInit | titlecase }}
       <button class="btn btn-remove-filter" (click)="removeFilter('brand')">
         <i class="fas fa-times"></i>
       </button>
