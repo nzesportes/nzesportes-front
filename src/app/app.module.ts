@@ -17,7 +17,7 @@ import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {EffectsModule} from '@ngrx/effects';
-import {registerLocaleData} from '@angular/common';
+import {LocationStrategy, PathLocationStrategy, registerLocaleData} from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 
 registerLocaleData(localePt);
@@ -54,7 +54,9 @@ registerLocaleData(localePt);
     },
     AuthGuard,
     AuthVerifyLogin,
-    AuthDashGuard
+    AuthDashGuard,
+    { provide: LocationStrategy, useClass: PathLocationStrategy }
+
   ],
     exports: [
         StoreModule,
