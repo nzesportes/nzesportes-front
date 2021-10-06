@@ -16,6 +16,11 @@ import {ShippingResult} from '../../../shared/models/shipping-result.model';
 import {FiltersService} from '../../services/filters.service';
 import {Gender} from '../../../shared/enums/gender';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
+import {RatingService} from '../../../shared/services/rating.service';
+import {Rating} from '../../../shared/models/rating.model';
+import {RatingPage} from '../../../shared/models/pagination-model/rating-page.model';
+import {PaginationService} from '../../../shared/services/pagination.service';
+import {Order} from '../../../shared/enums/order.enum';
 
 export interface ImageSlide {
   id: number;
@@ -45,8 +50,13 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   sizeMax = 1;
   startValue = 1;
 
-  rating = 3.8;
+  rating = 0;
   positionImage = 0;
+
+  totalRatings = 0;
+  contentRating!: RatingPage;
+  ratings: Rating[] = [];
+  hasErrorRating = false;
 
   shippingResult: ShippingResult[] = [];
   notShipResult = false;
@@ -88,6 +98,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   public formShipping: FormGroup = new FormGroup({});
 
   constructor(
+    public paginationService: PaginationService,
     private cartService: CartService,
     private productsService: ProductsService,
     private activatedRoute: ActivatedRoute,
@@ -95,11 +106,13 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private betterSendService: BetterSendService,
     private router: Router,
+    private ratingService: RatingService,
     private filterService: FiltersService
   ) {
   }
 
   ngOnInit(): void {
+    this.paginationService.initPagination();
     this.noStock = false;
     window.scrollTo(0, 0);
     this.createForm();
@@ -118,11 +131,13 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
               const productJson = localStorage.getItem('product');
               if (productJson) {
                 this.product = JSON.parse(productJson);
+                this.getRatingsByProductId(this.product.id, this.paginationService.page, 10);
               } else {
                 this.productsService.getById(this.productDetails.productId)
                   .pipe(take(1))
                   .subscribe(p => {
                     this.product = p;
+                    this.getRatingsByProductId(this.product.id, this.paginationService.page, 10);
                     this.hasError = false;
                   }, error => {
                     console.log(error);
@@ -145,7 +160,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.sizeMax = 1;
     this.startValue = 1;
 
-    this.rating = 3.8;
+    this.rating = 0;
     this.positionImage = 0;
 
     this.shippingResult = [];
@@ -311,4 +326,36 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   redirect(): void {
     this.router.navigateByUrl(`produtos/${this.id}`);
   }
+
+  getRatingsByProductId(productId: string, page: number, size: number): void {
+    this.ratingService.getRatingsByProductId(productId, page, size)
+      .pipe(take(1))
+      .subscribe(response => {
+        this.hasErrorRating = false;
+        this.ratings = response.content;
+        this.contentRating = response;
+        this.totalRatings = this.contentRating.totalElements;
+        this.paginationService.getPageRange(this.contentRating.totalElements);
+        this.calculateRating();
+      }, error => {
+        this.hasErrorRating = true;
+      });
+  }
+
+  calculateRating(): void {
+    this.ratings.forEach(rating => {
+      this.rating += rating.rate;
+    });
+    if (this.rating > 0) {
+      this.rating /= this.totalRatings;
+      return;
+    }
+    this.rating = 0;
+  }
+
+  updateIndex(index: number): void {
+    this.getRatingsByProductId(this.product.id, index, 10);
+    this.paginationService.page = index;
+  }
+
 }

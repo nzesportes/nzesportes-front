@@ -55,6 +55,11 @@ const routes: Routes = [
         // canActivate: [AuthGuard],
         loadChildren: () => import('./template/account-details/account-details.module').then(m => m.AccountDetailsModule)
       },
+      {
+        path: 'avaliar',
+        // canActivate: [AuthGuard],
+        loadChildren: () => import('./template/rating/rating.module').then(m => m.RatingModule)
+      },
       {path: '', redirectTo: '', pathMatch: 'full'}
     ]
   }
