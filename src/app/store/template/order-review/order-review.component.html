@@ -40,7 +40,7 @@
               <div class="col-12 mb-3" *ngFor="let result of shippingResult">
                 <input class="form-check-input" type="radio" formControlName="shipment" name="shipment"
                        id="shipment{{ result.id }}"
-                       [value]="result.price" (change)="changePriceShipment()">
+                       [value]="result" (change)="changePriceShipment()">
                 <label class="form-check-label mb-1" for="shipment{{ result.id }}">
                   <span class="img-shipping">
                     <img class="pb-2" [src]="result.company.picture">
@@ -95,7 +95,9 @@
     </form>
   </div>
 </ng-template>
-
+<div>
+  {{formGoToPayment.value | json}}
+</div>
 <swal
   #error
   [title]="''"
