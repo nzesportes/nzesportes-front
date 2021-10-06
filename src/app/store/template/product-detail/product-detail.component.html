@@ -117,7 +117,7 @@
           <i class="fas fa-star"></i>
           <i class="fas fa-star"></i>
         </p>
-        <p>89 avalições</p>
+        <p>{{ totalRatings }} avalições</p>
         <h1>{{ product?.model }}</h1>
         <p class="categories">
           <a (click)="goToProductListing(product?.brand?.name?.toLowerCase())">{{ product?.brand?.name | titlecase }}</a>,
@@ -203,58 +203,87 @@
     </div>
     <div class="col-12 pt-5 container-review">
       <h2>AVALIAÇÕES</h2>
-      <div>
-        <div class="review">
+      <div class="alert alert-danger alert-pointer" role="alert" *ngIf="hasErrorRating">
+        Ops! Não foi possível exibir as avaliações deste produto. Por favor, <span class="alert-link"
+                                                                   (click)="getRatingsByProductId(product.id, 0, 10)">tente novamente</span> mais tarde.
+      </div>
+      <div class="alert alert-warning" role="alert" *ngIf="ratings.length === 0 && !hasErrorRating">
+        Ainda não temos avaliações para este produto.
+      </div>
+      <div *ngIf="ratings.length > 0">
+        <div class="review" *ngFor="let rate of ratings">
           <h3>Lorem Ipsum</h3>
-          <p class="rating">
+          <p class="rating mb-0" *ngIf="rate.rate === 0">
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+          </p>
+
+          <p class="rating mb-0" *ngIf="rate.rate === 1">
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+          </p>
+
+          <p class="rating mb-0" *ngIf="rate.rate === 2">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+          </p>
+
+          <p class="rating mb-0" *ngIf="rate.rate === 3">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+            <i class="far fa-star"></i>
+          </p>
+
+          <p class="rating mb-0" *ngIf="rate.rate === 4">
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>
             <i class="far fa-star"></i>
           </p>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </p>
-          <p class="rated-by">Por Rafael Peinado da Silva em 13 de novembro de 2021</p>
-        </div>
-        <div class="review">
-          <h3>Lorem Ipsum</h3>
-          <p class="rating">
+
+          <p class="rating mb-0" *ngIf="rate.rate === 5">
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>
             <i class="fas fa-star"></i>
-            <i class="far fa-star"></i>
+            <i class="fas fa-star"></i>
           </p>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            {{ rate.comment }}
           </p>
-          <p class="rated-by">Por Rafael Peinado da Silva em 13 de novembro de 2021</p>
-        </div>
-        <div class="review">
-          <h3>Lorem Ipsum</h3>
-          <p class="rating">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="far fa-star"></i>
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi hendrerit, augue et consectetur consectetur,
-            nunc dui egestas massa, vitae tincidunt purus elit et elit.
-          </p>
-          <p class="rated-by">Por Rafael Peinado da Silva em 13 de novembro de 2021</p>
+          <p class="rated-by">Por Rafael Peinado da Silva em {{ rate.creationDate | date:'dd' }} de
+            {{ rate.creationDate | date:'MMMM' }} de {{ rate.creationDate | date:'yyyy' }}</p>
         </div>
       </div>
-      <nav aria-label="Page navigation">
+      <nav class="mt-4" aria-label="Page navigation" *ngIf="contentRating && ratings.length > 0">
         <ul class="pagination justify-content-end">
-          <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-left"></i></a></li>
-          <li class="page-item active"><a class="page-link" href="#">1</a></li>
-          <li class="page-item"><a class="page-link" href="#">2</a></li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item"><a class="page-link" href="#"><i class="fas fa-angle-right"></i></a></li>
+          <li class="page-item" [ngClass]="{'disabled': this.paginationService.page === 0}">
+            <a class="page-link" (click)="updateIndex(this.paginationService.page-1)">
+              <i class="fas fa-angle-left"></i>
+            </a>
+          </li>
+          <li class="page-item active" [ngClass]="{ 'active': i == this.paginationService.page }"
+              *ngFor="let i of this.paginationService.getRange(); let in = index">
+            <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
+          </li>
+          <li class="page-item"
+              [ngClass]="{'disabled': (this.paginationService.page  + 1) === this.paginationService.pages }">
+            <a class="page-link" (click)="updateIndex(this.paginationService.page + 1)">
+              <i class="fas fa-angle-right"></i>
+            </a>
+          </li>
         </ul>
       </nav>
     </div>
