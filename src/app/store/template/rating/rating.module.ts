@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 
 import { RatingRoutingModule } from './rating-routing.module';
 import { RatingFormComponent } from './rating-form/rating-form.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 
 
 @NgModule({
@@ -11,7 +13,9 @@ import { RatingFormComponent } from './rating-form/rating-form.component';
   ],
   imports: [
     CommonModule,
-    RatingRoutingModule
+    RatingRoutingModule,
+    ReactiveFormsModule,
+    SweetAlert2Module
   ]
 })
 export class RatingModule { }
