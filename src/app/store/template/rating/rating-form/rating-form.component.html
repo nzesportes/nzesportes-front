@@ -1,6 +1,11 @@
 <div class="container-fluid p-0">
   <div class="form-create-account">
     <h1 class="page-title mb-3 mb-lg-4">Avaliação</h1>
+
+    <div>
+      <h2 class="title-rate">Produto: {{ product.model | titlecase }} {{ product.brand.name | titlecase }}</h2>
+    </div>
+
     <form class="row" [formGroup]="createRating">
       <div class="form-group col-12">
         <label for="title">Título *</label>

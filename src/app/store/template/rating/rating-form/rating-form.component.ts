@@ -11,6 +11,8 @@ import {Observable} from 'rxjs';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 import {ErrorWarning} from '../../../../shared/models/error-warning.model';
+import {ProductsService} from '../../../../shared/services/products.service';
+import {Product} from '../../../../shared/models/product.model';
 
 @Component({
   selector: 'app-rating-form',
@@ -46,17 +48,21 @@ export class RatingFormComponent implements OnInit {
   ratings: Rating[] = [];
   selectedFilter = '';
 
+  product!: Product;
+
   constructor(
     private formBuilder: FormBuilder,
     private ratingService: RatingService,
     private paginationService: PaginationService,
     private activatedRoute: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private productService: ProductsService
   ) {
   }
 
   ngOnInit(): void {
     this.getPurchaseIdParam();
+    this.getProduct();
     this.createForm();
     this.paginationService.initPagination();
   }
@@ -72,6 +78,15 @@ export class RatingFormComponent implements OnInit {
       rate: ['', Validators.required]
     });
   }
+
+  getProduct(): void {
+    this.productService.getById('b243d01c-6239-4b64-babc-0f471952ac26')
+      .pipe(take(1))
+      .subscribe(response => {
+        this.product = response;
+      });
+  }
+
 
   create(): void {
     // e4decdc2-8343-4ffa-9908-504fcf3fbcb0
