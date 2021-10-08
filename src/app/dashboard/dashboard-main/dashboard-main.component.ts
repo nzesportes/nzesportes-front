@@ -9,6 +9,7 @@ import {take} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {TokenStorageService} from '../../shared/services/token-storage.service';
 import {Role} from '../../shared/enums/role.enum';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-dashboard-main',
@@ -20,7 +21,7 @@ export class DashboardMainComponent implements OnInit {
   public readonly dialogWarn!: SwalComponent;
 
   isAdmin = false;
-
+  linkNz = '';
   constructor(
     private brandsService: BrandsService,
     private categoriesService: CategoriesService,
@@ -30,6 +31,7 @@ export class DashboardMainComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.linkNz = environment.URL_FRONT;
     // Toggle Click Function
     // tslint:disable-next-line:only-arrow-functions typedef
     $('#menu-toggle').click(function(e: { preventDefault: () => void; }) {

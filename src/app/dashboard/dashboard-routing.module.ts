@@ -47,6 +47,10 @@ const routes: Routes = [
         path: 'melhor-envio',
         loadChildren: () => import('./better-send/better-send.module').then(m => m.BetterSendModule)
       },
+      {
+        path: 'banner',
+        loadChildren: () => import('./banner/banner.module').then(m => m.BannerModule)
+      },
       { path: '', redirectTo: 'produtos', pathMatch: 'full' },
     ]
   }
