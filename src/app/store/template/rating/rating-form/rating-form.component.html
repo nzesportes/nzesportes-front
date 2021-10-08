@@ -3,7 +3,7 @@
     <h1 class="page-title mb-3 mb-lg-4">Avaliação</h1>
 
     <div>
-      <h2 class="title-rate">Produto: {{ product.model | titlecase }} {{ product.brand.name | titlecase }}</h2>
+      <h2 class="title-rate">Produto: {{ product.model }} {{ product.brand.name | titlecase }}</h2>
     </div>
 
     <form class="row" [formGroup]="createRating">

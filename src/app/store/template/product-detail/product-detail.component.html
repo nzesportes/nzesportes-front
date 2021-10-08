@@ -212,7 +212,7 @@
       </div>
       <div *ngIf="ratings.length > 0">
         <div class="review" *ngFor="let rate of ratings">
-          <h3>Lorem Ipsum</h3>
+          <h3>{{ rate.title }}</h3>
           <p class="rating mb-0" *ngIf="rate.rate === 0">
             <i class="far fa-star"></i>
             <i class="far fa-star"></i>
@@ -263,7 +263,7 @@
           <p>
             {{ rate.comment }}
           </p>
-          <p class="rated-by">Por Rafael Peinado da Silva em {{ rate.creationDate | date:'dd' }} de
+          <p class="rated-by">Por {{ rate.customer.name }} {{ rate.customer.lastName }} em {{ rate.creationDate | date:'dd' }} de
             {{ rate.creationDate | date:'MMMM' }} de {{ rate.creationDate | date:'yyyy' }}</p>
         </div>
       </div>
