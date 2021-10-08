@@ -80,7 +80,7 @@ export class RatingFormComponent implements OnInit {
   }
 
   getProduct(): void {
-    this.productService.getById('b243d01c-6239-4b64-babc-0f471952ac26')
+    this.productService.getById('95b888da-a2dd-41ff-9d59-7e01000ca0b9')
       .pipe(take(1))
       .subscribe(response => {
         this.product = response;
@@ -92,8 +92,7 @@ export class RatingFormComponent implements OnInit {
     // e4decdc2-8343-4ffa-9908-504fcf3fbcb0
     this.ratingSaveTO = this.createRating.value;
     this.ratingSaveTO.purchaseId = this.purchaseId;
-    this.ratingSaveTO.productId = 'b243d01c-6239-4b64-babc-0f471952ac26';
-
+    this.ratingSaveTO.productId = this.product.id;
     this.ratingService.create(this.ratingSaveTO)
       .pipe(take(1))
       .subscribe(response => {

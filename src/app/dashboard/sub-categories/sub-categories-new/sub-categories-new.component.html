@@ -40,7 +40,7 @@
                 <label for="categorieName">Nome da Subcategoria</label>
                 <input type="text" class="form-control" formControlName="name" id="categorieName"
                        aria-describedby="emailHelp"
-                       placeholder="Comisetas"
+                       placeholder="ex: Bermuda PSG"
                        [ngClass]="{ 'is-invalid': validateFields.name.errors && validateFields.name.touched }">
                 <div id="field-name" class="invalid-feedback" *ngIf="validateFields.name?.errors?.required">
                   Por favor, insira o nome da subcategoria.

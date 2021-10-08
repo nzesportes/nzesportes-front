@@ -39,7 +39,7 @@
                 <label for="categorieName">Nome da Categoria</label>
                 <input type="text" class="form-control" formControlName="name" id="categorieName"
                        aria-describedby="emailHelp"
-                       placeholder="ex: Camiseta Chicago Bulls"
+                       placeholder="ex: roupas"
                        [ngClass]="{ 'is-invalid': validateFields.name.errors && validateFields.name.touched }">
                 <div id="field-name" class="invalid-feedback" *ngIf="validateFields.name?.errors?.required">
                   Por favor, insira o nome da categoria.
