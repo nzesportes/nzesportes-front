@@ -3,26 +3,51 @@
   <form class="form-container mr-auto ml-auto" [formGroup]="formContact">
     <div class="form-group">
       <label for="nome">Nome Completo</label>
-      <input type="text" class="form-control" id="nome" formControlName="fullName">
+      <input type="text" class="form-control" id="nome" formControlName="fullName" aria-describedby="field-fullName"
+             [ngClass]="{ 'is-invalid': validateFields.fullName.errors && validateFields.fullName.touched }">
+      <div id="field-fullName" class="invalid-feedback" *ngIf="validateFields.fullName?.errors?.required">
+        Por favor, insira seu nome.
+      </div>
     </div>
     <div class="form-group">
       <label for="email">E-mail</label>
-      <input type="email" class="form-control" id="email" formControlName="email">
+      <input type="email" class="form-control" id="email" formControlName="email" aria-describedby="field-email"
+             [ngClass]="{ 'is-invalid': validateFields.email.errors && validateFields.email.touched }">
+      <div id="field-email" class="invalid-feedback" *ngIf="validateFields.email?.errors">
+        <span *ngIf="validateFields.email?.errors?.required">Por favor, insira seu e-mail.</span>
+        <span *ngIf="validateFields.email?.errors?.email">Por favor, insira um e-mail válido.</span>
+      </div>
     </div>
     <div class="form-group">
       <label for="telefone">Telefone</label>
-      <input type="text" class="form-control" id="telefone" formControlName="phone">
+      <input type="text" class="form-control" id="telefone" formControlName="phone" aria-describedby="field-phone"
+             [ngClass]="{ 'is-invalid': validateFields.phone.errors && validateFields.phone.touched }">
+      <div id="field-phone" class="invalid-feedback" *ngIf="validateFields.phone?.errors?.required">
+        Por favor, insira seu telefone.
+      </div>
     </div>
     <div class="form-group">
       <label for="instagram">Instagram</label>
-      <input type="text" class="form-control" id="instagram" formControlName="instagram">
+      <input type="text" class="form-control" id="instagram" formControlName="instagram"
+             aria-describedby="field-instagram"
+             [ngClass]="{ 'is-invalid': validateFields.instagram.errors && validateFields.instagram.touched }">
+      <div id="field-instagram" class="invalid-feedback" *ngIf="validateFields.instagram?.errors?.required">
+        Por favor, insira seu Instagram.
+      </div>
     </div>
     <div class="form-group">
       <label for="sua-mensagem">Sua Mensagem</label>
-      <textarea class="form-control" id="sua-mensagem" rows="4" formControlName="message"></textarea>
+      <textarea class="form-control" id="sua-mensagem" rows="4" formControlName="message"
+                aria-describedby="field-message"
+                [ngClass]="{ 'is-invalid': validateFields.message.errors && validateFields.message.touched }"></textarea>
+      <div id="field-message" class="invalid-feedback" *ngIf="validateFields.message?.errors?.required">
+        Por favor, insira uma mensagem.
+      </div>
     </div>
     <div class="text-center">
-      <button type="button" (click)="save()" class="btn btn-orange-crayola font-weight-bolder pl-5 pr-5 text-uppercase">Enviar</button>
+      <button type="button" [disabled]="!formContact.valid" (click)="save()"
+              class="btn btn-orange-crayola font-weight-bolder pl-5 pr-5 text-uppercase">Enviar
+      </button>
     </div>
   </form>
 </div>

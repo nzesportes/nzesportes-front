@@ -73,4 +73,8 @@ export class ContactUsComponent implements OnInit {
     this.dialogError.title = error.title;
     this.dialogError.text = error.message;
   }
+
+  get validateFields(): any {
+    return this.formContact.controls;
+  }
 }

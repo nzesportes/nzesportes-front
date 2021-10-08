@@ -9,10 +9,10 @@ const routes: Routes = [
     component: RatingComponent,
     children: [
       {
-        path: '',
+        path: ':id',
         component: RatingFormComponent
       },
-      { path: '', redirectTo: '', pathMatch: 'full' }
+      { path: '', redirectTo: ':id', pathMatch: 'full' }
     ]
   }
 ];
