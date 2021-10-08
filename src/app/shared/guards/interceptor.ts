@@ -22,7 +22,7 @@ export class Interceptor extends AbstractService implements HttpInterceptor {
           // 'Access-Control-Allow-Origin': '*',
           // 'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
           'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE',
-          Authorization: `Bearer ${this.tokenStorageService.getToken()}`,
+          Authorization: this.tokenStorageService.getToken() ? `Bearer ${this.tokenStorageService.getToken()}` : '',
         },
       });
 
