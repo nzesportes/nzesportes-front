@@ -14,7 +14,8 @@ export const environment = {
   ME_REDIRECT_URI: '',
   ME_REQUEST_SCOPE: '',
   ME_STATE: '',
-  ME_URL: ''
+  ME_URL: '',
+  URL_FRONT: 'http://localhost:4200/'
 };
 
 /*
