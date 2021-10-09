@@ -33,7 +33,6 @@ export class HeaderComponent implements OnInit {
 
   getUser(): void {
     if (this.tokenStorageService.isLoggedIn()) {
-      console.log('is logged');
       this.authenticationResponse = this.tokenStorageService.getSessionUser();
       this.customerService.getByUserId(this.authenticationResponse.id)
         .pipe(take(1))

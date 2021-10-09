@@ -40,6 +40,7 @@ import {EffectsModule} from '@ngrx/effects';
 import { CartEffect } from './redux/cart/cart.effect';
 import * as fromProduct from './redux/cart/cart.reducer';
 import { RatingComponent } from './template/rating/rating.component';
+import { SizeGuideComponent } from './template/size-guide/size-guide.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { RatingComponent } from './template/rating/rating.component';
     OrderReviewComponent,
     FirstAccessComponent,
     RatingComponent,
+    SizeGuideComponent,
   ],
   imports: [
     CommonModule,
