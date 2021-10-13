@@ -1,0 +1,144 @@
+.modal-content {
+  border-radius: 0;
+  max-width: 800px;
+}
+
+.modal-dialog {
+  max-width: 800px;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 0;
+}
+
+.modal-dialog p {
+  font-size: 16px;
+}
+
+.modal-body {
+  font-size: 14px;
+  color: #979797;
+}
+
+.page-title {
+  font-weight: 700;
+  font-size: 18px;
+  color: #2b2828;
+  text-transform: uppercase;
+}
+
+.page-subtitle {
+  font-weight: 700;
+  font-size: 24px;
+  color: #2b2828;
+  text-transform: uppercase;
+}
+
+.input-forgot-password {
+  position: relative;
+}
+
+.input-forgot-password input {
+  padding-left: 30px;
+}
+
+.icon-input {
+  position: absolute;
+  top: 12px;
+  left: 10px;
+}
+
+input {
+  font-size: 14px;
+  width: 100%;
+  border-radius: 0;
+  padding-left: 30px;
+}
+
+.btn-submit {
+  width: 150px;
+  border-radius: 0;
+  background-color: #F37135;
+  border: #F37135;
+  font-size: 14px;
+  margin-top: 10px;
+  padding: 10px 6px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.img-size-guide {
+  max-width: 100%;
+  max-height: 200px;
+  display: block;
+  margin: auto;
+}
+
+.title-table {
+  text-transform: uppercase;
+}
+
+.table-size-guide th, .table-size-guide td {
+  padding: 8px;
+  border: 1px solid #dee2e6;
+}
+
+.container-table-guide-size {
+  overflow-x: scroll;
+}
+
+.ancor-size-guide {
+  border: 1px solid #e9ecef;
+  background-color: #e8e8e8;
+  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: 40px;
+  color: #1d1d1d;
+  text-decoration: none;
+}
+
+.ancor-size-guide:hover {
+  opacity: 0.9;
+  background-color: #cccccc;
+  color: #010101;
+}
+
+.container-sizes {
+  border-bottom: 1px solid #ddd;
+}
+
+.container-sizes:last-child {
+  border-bottom: none;
+}
+
+@media (min-width: 576px) {
+  .container-table-guide-size {
+    overflow-x: hidden;
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .page-subtitle {
+    font-size: 36px;
+  }
+
+  .img-size-guide {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+    margin: auto;
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .page-title {
+    font-size: 22px;
+  }
+}
