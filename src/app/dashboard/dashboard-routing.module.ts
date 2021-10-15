@@ -48,6 +48,10 @@ const routes: Routes = [
         loadChildren: () => import('./better-send/better-send.module').then(m => m.BetterSendModule)
       },
       {
+        path: 'tabela-medidas',
+        loadChildren: () => import('./measurement-chart/measurement-chart.module').then(m => m.MeasurementChartModule)
+      },
+      {
         path: 'banner',
         loadChildren: () => import('./banner/banner.module').then(m => m.BannerModule)
       },

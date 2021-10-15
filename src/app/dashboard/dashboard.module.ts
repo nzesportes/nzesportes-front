@@ -14,11 +14,15 @@ import {BrandsModule} from './brands/brands.module';
 import {AccountModule} from './account/account.module';
 import {BetterSendModule} from './better-send/better-send.module';
 import {NgxMaskModule} from 'ngx-mask';
+import { MeasurementChartListComponent } from './measurement-chart/measurement-chart-list/measurement-chart-list.component';
+import { MeasurementChartNewComponent } from './measurement-chart/measurement-chart-new/measurement-chart-new.component';
 
 
 @NgModule({
   declarations: [
-    DashboardMainComponent
+    DashboardMainComponent,
+    MeasurementChartListComponent,
+    MeasurementChartNewComponent
   ],
   imports: [
     // modules dash
