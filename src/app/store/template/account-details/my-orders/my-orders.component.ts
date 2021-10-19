@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {PaginationService} from '../../../../shared/services/pagination.service';
+import {Order} from '../../../../shared/enums/order.enum';
 
 @Component({
   selector: 'app-my-orders',
@@ -7,9 +9,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyOrdersComponent implements OnInit {
 
-  constructor() { }
+  listMyOrders = ['1', '2', '3', '4', '5'];
+  content = ['1', '2', '3', '4', '5'];
 
-  ngOnInit(): void {
+  constructor(
+    public paginationService: PaginationService
+  ) {
   }
 
+  ngOnInit(): void {
+    this.paginationService.initPagination();
+    this.getOrders(10, this.paginationService.page);
+  }
+
+  changeStatusCollpse(itemMenu: HTMLElement): void {
+    if (itemMenu.className === 'collapse') {
+      itemMenu.className = 'collapse show';
+    } else if (itemMenu.className === 'collapse show') {
+      itemMenu.className = 'collapse';
+    }
+  }
+
+  getOrders(size: number, page: number): void {
+    this.paginationService.getPageRange(this.content.length);
+  }
+
+  updateIndex(index: number): void {
+    this.getOrders(10, index);
+    this.paginationService.page = index;
+  }
 }

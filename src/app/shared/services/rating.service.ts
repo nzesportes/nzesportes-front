@@ -54,9 +54,15 @@ export class RatingService {
     return this.http.get<RatingPage>(`${this.apiURL}/product/${id}`, {params});
   }
 
+  getRatingsByPurchaseId(id: string, page: number, size: number): Observable<RatingPage> {
+    const params = new HttpParams()
+      .set('async', 'true')
+      .set('page', page.toString())
+      .set('size', size.toString());
+    return this.http.get<RatingPage>(`${this.apiURL}/purchase/${id}`, {params});
+  }
+
   deleteById(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiURL}/${id}`);
   }
-
-
 }

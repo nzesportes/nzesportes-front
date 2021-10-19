@@ -89,7 +89,6 @@ export class RatingFormComponent implements OnInit {
 
 
   create(): void {
-    // e4decdc2-8343-4ffa-9908-504fcf3fbcb0
     this.ratingSaveTO = this.createRating.value;
     this.ratingSaveTO.purchaseId = this.purchaseId;
     this.ratingSaveTO.productId = this.product.id;
@@ -113,7 +112,18 @@ export class RatingFormComponent implements OnInit {
     const params: Observable<Params> = this.activatedRoute.params;
     params.subscribe(urlParams => {
       this.purchaseId = urlParams.id;
+      this.getRatingsByPurchaseId();
     });
+  }
+
+  getRatingsByPurchaseId(): void {
+    this.ratingService.getRatingsByPurchaseId(this.purchaseId, 0, 100)
+      .pipe(take(1))
+      .subscribe(response => {
+        console.warn('GET RESPONSE', response);
+      }, error => {
+        console.error(error);
+      });
   }
 
   update(): void {
