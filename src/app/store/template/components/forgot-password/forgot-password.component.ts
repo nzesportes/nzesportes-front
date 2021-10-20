@@ -6,6 +6,7 @@ import {Router} from '@angular/router';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 import {ErrorWarning} from '../../../../shared/models/error-warning.model';
 import {take} from 'rxjs/operators';
+declare var $: any;
 
 @Component({
   selector: 'app-forgot-password',
@@ -54,6 +55,7 @@ export class ForgotPasswordComponent implements OnInit {
       .pipe(take(1))
       .subscribe(() => {
         this.forgotPasswordForm.reset();
+        $('#esqueci-minha-senha').modal('hide');
         this.dialogSuccess.title = 'E-mail enviado com sucesso!';
         this.dialogSuccess.fire();
       }, (error: ErrorWarning) => {

@@ -4,6 +4,7 @@ import {Observable} from 'rxjs';
 import {Menu} from '../models/menu.model';
 import {environment} from '../../../environments/environment';
 import {LayoutImages} from '../models/layout-images.model';
+import {SizeTO} from '../models/size-to.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,9 @@ export class MenuService {
     return this.http.post<LayoutImages>(this.api + 'images', layout, {params});
   }
 
-
+  getSizes(): Observable<SizeTO[]> {
+    const params = new HttpParams()
+      .set('async', 'true');
+    return this.http.get<SizeTO[]>(this.api + 'sizes', {params});
+  }
 }

@@ -1,0 +1,96 @@
+<div class="d-flex justify-content-between m-3">
+  <div>
+    <h3>Pedidos</h3>
+  </div>
+  <div>
+    <button type="button" class="btn btn-primary" routerLink="nova"> + Nova Tabela</button>
+  </div>
+
+</div>
+<form [formGroup]="formOrders">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
+        <label for="name">Pesquisa</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="name" formControlName="title" placeholder="ex: camiseta nba"
+                 aria-label="tabela-medidas"
+                 aria-describedby="tabela-medidas">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</form>
+<div class="alert alert-warning mr-3 ml-3" role="alert">
+  Não encontramos nenhum pedido.
+</div>
+<div class="alert alert-danger mr-3 ml-3" role="alert">
+  Não foi possível carregar algumas informações. Por favor,
+  <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+</div>
+<div class="card mb-3 mr-3 ml-3">
+  <div class="table-responsive ">
+
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th scope="col">Pagamento</th>
+        <th scope="col">Pedido</th>
+        <th scope="col">Data</th>
+        <th scope="col">Total</th>
+        <th scope="col">Ações</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr scope="row" class="row-table" routerLink="64663b98">
+        <td style="width: 30%">Aprovado</td>
+        <td style="width: 30%">64663b98</td>
+        <td style="width: 15%">29/07/2021</td>
+        <td style="width: 15%">{{ '150' | currency }}</td>
+        <td style="width: 10%"><i class="fas fa-edit text-primary"></i></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+<nav aria-label="Page navigation example" *ngIf="content && true">
+  <ul class="pagination justify-content-end mr-3 ml-3">
+    <li class="page-item" [ngClass]="{'disabled': paginationService.page === 0}">
+      <a class="page-link" tabindex="-1" aria-disabled="true"
+         (click)="updateIndex(paginationService.page-1)">Previous</a>
+    </li>
+    <li class="page-item" [ngClass]="{'active': i == paginationService.page}"
+        *ngFor="let i of paginationService.getRange(); let in = index"
+    >
+      <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
+    </li>
+    <li class="page-item" [ngClass]="{'disabled': (paginationService.page + 1) === paginationService.pages }">
+      <a class="page-link" (click)="updateIndex(paginationService.page + 1)">Next</a>
+    </li>
+  </ul>
+</nav>
+
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirect()"
+  #success
+  [title]="''"
+  icon="success">
+</swal>
+
+<swal
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>
