@@ -27,4 +27,9 @@ export class OrdersDetailsComponent implements OnInit {
     this.router.navigateByUrl('/painel/pedidos');
   }
 
+  isMobile(): any {
+    const userAgent = window.navigator.userAgent.toLocaleLowerCase();
+    return userAgent.includes('iphone') || userAgent.includes('android');
+  }
+
 }
