@@ -1,13 +1,13 @@
 <div class="d-flex justify-content-between m-3">
   <div>
-    <h3>Tabela de Medidas</h3>
+    <h3>Pedidos</h3>
   </div>
   <div>
     <button type="button" class="btn btn-primary" routerLink="nova"> + Nova Tabela</button>
   </div>
 
 </div>
-<form [formGroup]="formMCList">
+<form [formGroup]="formOrders">
   <div class="container-fluid">
     <div class="row">
       <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
@@ -26,7 +26,7 @@
   </div>
 </form>
 <div class="alert alert-warning mr-3 ml-3" role="alert">
-  Não encontramos nenhuma tabela de medidas.
+  Não encontramos nenhum pedido.
 </div>
 <div class="alert alert-danger mr-3 ml-3" role="alert">
   Não foi possível carregar algumas informações. Por favor,
@@ -38,14 +38,20 @@
     <table class="table table-hover">
       <thead>
       <tr>
-        <th scope="col">Nome</th>
+        <th scope="col">Pagamento</th>
+        <th scope="col">Pedido</th>
+        <th scope="col">Data</th>
+        <th scope="col">Total</th>
         <th scope="col">Ações</th>
       </tr>
       </thead>
       <tbody>
-      <tr scope="row" class="row-table">
-        <td style="width: 80%">Exemplos</td>
-        <td style="width: 20%"><i class="fas fa-edit text-primary"></i></td>
+      <tr scope="row" class="row-table" routerLink="64663b98">
+        <td style="width: 30%">Aprovado</td>
+        <td style="width: 30%">64663b98</td>
+        <td style="width: 15%">29/07/2021</td>
+        <td style="width: 15%">{{ '150' | currency }}</td>
+        <td style="width: 10%"><i class="fas fa-edit text-primary"></i></td>
       </tr>
       </tbody>
     </table>
