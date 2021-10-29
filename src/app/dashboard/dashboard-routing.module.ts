@@ -32,6 +32,10 @@ const routes: Routes = [
         loadChildren: () => import('./promotions/promotions.module').then(m => m.PromotionsModule)
       },
       {
+        path: 'pedidos',
+        loadChildren: () => import('./orders/orders.module').then(m => m.OrdersModule)
+      },
+      {
         path: 'usuarios',
         loadChildren: () => import('./users/users.module').then(m => m.UsersModule)
       },
@@ -46,6 +50,10 @@ const routes: Routes = [
       {
         path: 'melhor-envio',
         loadChildren: () => import('./better-send/better-send.module').then(m => m.BetterSendModule)
+      },
+      {
+        path: 'tabela-medidas',
+        loadChildren: () => import('./measurement-chart/measurement-chart.module').then(m => m.MeasurementChartModule)
       },
       {
         path: 'banner',

@@ -59,9 +59,9 @@
           <ul class="items-submenu p-2 row">
             <li class="col-4 mb-2 pr-2 pl-2" *ngFor="let size of sizes">
               <a class="item-submenu size">
-                <input class="form-check-input radiosInput" type="radio" name="size" id="size{{ size }}" (change)="selectFilter()"
-                       formControlName="size" value="{{ size }}">
-                <label class="form-check-label" for="size{{ size }}">{{ size }}</label>
+                <input class="form-check-input radiosInput" type="radio" name="size" id="size{{ size.size }}" (change)="selectFilter()"
+                       formControlName="size" value="{{ size.size }}">
+                <label class="form-check-label" for="size{{ size.size }}">{{ size.size }}</label>
               </a>
             </li>
           </ul>
@@ -75,7 +75,7 @@
               <a class="item-submenu color" [style]="'background-color: ' + c.color + '; border: 1px solid ' + c.border + ';'">
                 <input class="form-check-input radiosInput" type="radio" name="color" id="color{{ c.name | titlecase }}" (change)="selectFilter()"
                        formControlName="color" value="{{ c.name }}">
-                <label class="form-check-label" [style]="'color: ' + c.color + ';'" for="color{{ c.name | titlecase }}">lll</label>
+                <label class="form-check-label color-label" [style]="'color: ' + c.color + ';'" for="color{{ c.name | titlecase }}">o</label>
               </a>
             </li>
           </ul>

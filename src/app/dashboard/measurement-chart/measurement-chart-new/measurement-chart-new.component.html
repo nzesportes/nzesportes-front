@@ -1,0 +1,73 @@
+<form [formGroup]="formMCNew">
+
+  <div class="row mt-3">
+    <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/painel/tabela-medidas">Tabela de Medidas</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Nova Tabela de Medida</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
+      <button type="button" routerLink="/painel/tabela-medidas" class="btn btn-secondary w-100">Cancelar</button>
+    </div>
+    <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
+      <button
+        type="button"
+        class="btn btn-primary w-100"
+        (click)="save()">
+        Salvar
+      </button>
+    </div>
+  </div>
+  <div class="alert alert-danger" role="alert" *ngIf="hasError">
+    Não foi possível carregar algumas informações. Por favor,
+    <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+  </div>
+
+  <div *ngIf="!hasError">
+    <div class="row mt-3">
+      <div class="col-12 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Informações da Tabela</h5>
+            <hr>
+            <div class="form-row mb-3">
+              <div class="col-6">
+                <label>Cabeçalho da Tabela</label>
+              </div>
+              <div class="col-6">
+                <button class="btn btn-primary" (click)="addHeader()">+ Adicionar cabeçalho</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-2 pr-0">
+                <input type="text" class="form-control" id="header" formControlName="header" placeholder="ex: P">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirect()"
+  #success
+  [title]="''"
+  icon="success">
+</swal>
+<swal
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>
