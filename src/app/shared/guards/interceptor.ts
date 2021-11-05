@@ -17,14 +17,25 @@ export class Interceptor extends AbstractService implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.url.includes(environment.NZESPORTES_API)) {
-      let request = req.clone({
-        setHeaders: {
-          // 'Access-Control-Allow-Origin': '*',
-          // 'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
-          'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE',
-          Authorization: this.tokenStorageService.getToken() ? `Bearer ${this.tokenStorageService.getToken()}` : '',
-        },
-      });
+      let request;
+      if (this.tokenStorageService.getToken()){
+        request = req.clone({
+          setHeaders: {
+            // 'Access-Control-Allow-Origin': '*',
+            // 'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+            'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE',
+            Authorization: this.tokenStorageService.getToken() ? `Bearer ${this.tokenStorageService.getToken()}` : '',
+          },
+        });
+      }else {
+        request = req.clone({
+          setHeaders: {
+            // 'Access-Control-Allow-Origin': '*',
+            // 'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+            'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE',
+          },
+        });
+      }
 
       if (req.urlWithParams.includes('?async=true')) {
         this.loader.isLoading.next(true);

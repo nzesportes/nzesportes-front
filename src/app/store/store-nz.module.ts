@@ -41,6 +41,7 @@ import { CartEffect } from './redux/cart/cart.effect';
 import * as fromProduct from './redux/cart/cart.reducer';
 import { RatingComponent } from './template/rating/rating.component';
 import { SizeGuideComponent } from './template/size-guide/size-guide.component';
+import {AuthOrderReviewGuard} from '../shared/guards/auth-order-review.guard';
 
 @NgModule({
   declarations: [
@@ -87,7 +88,8 @@ import { SizeGuideComponent } from './template/size-guide/size-guide.component';
     EffectsModule.forFeature([CartEffect]),
   ],
   providers: [
-    AuthGuard
+    AuthGuard,
+    AuthOrderReviewGuard
   ]
 })
 export class StoreNzModule {
