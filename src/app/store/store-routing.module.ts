@@ -10,6 +10,7 @@ import {ProductDetailComponent} from './template/product-detail/product-detail.c
 import {ProductListingComponent} from './template/product-listing/product-listing.component';
 import {OrderReviewComponent} from './template/order-review/order-review.component';
 import {FirstAccessComponent} from './template/first-access/first-access.component';
+import {AuthOrderReviewGuard} from '../shared/guards/auth-order-review.guard';
 
 const routes: Routes = [
   {
@@ -43,7 +44,8 @@ const routes: Routes = [
       },
       {
         path: 'finalizar-compra',
-        component: OrderReviewComponent
+        component: OrderReviewComponent,
+        canActivate: [AuthOrderReviewGuard]
       },
       {
         path: 'auth/:flow/:id',

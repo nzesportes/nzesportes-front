@@ -9,7 +9,7 @@
                id="newPassword" formControlName="newPassword">
         <div id="field-newPassword" class="invalid-feedback">
           <span *ngIf="validateFields.newPassword?.errors?.required">Por favor, insira uma senha.</span>
-          <span *ngIf="validateFields.newPassword?.errors?.minlength">Senha deve conter no mínimo 8 caracteres</span>
+          <span *ngIf="validateFields.newPassword?.errors?.pattern || validateFields.newPassword?.errors?.minlength">Preencha o campo corretamente.</span>
         </div>
       </div>
       <div class="form-group col-12">
@@ -22,6 +22,12 @@
           <span *ngIf="validateFields.repeatPassword?.errors?.mustMatch">Senhas não coincidem.</span>
         </div>
       </div>
+      <div class="row   mr-3">
+        <div class="col-12 ml-3" style="color: #979797;">
+          <small >Sua senha deve ter entre 8 e 20 caracteres, os quais devem ser letras(maiúsculo e minúsculo), números e caractere especial.</small>
+        </div>
+      </div>
+
       <div class="col-12 text-center mt-3">
         <button type="submit" class="btn btn-primary btn-submit" [disabled]="!formFirstAccess.valid">{{ flow === 'recovery' ? 'Alterar' : 'Criar Senha' }}</button>
       </div>

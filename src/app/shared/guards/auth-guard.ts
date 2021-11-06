@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(): Observable<boolean> | boolean  {
     if (this.tokenStorageService.isLoggedIn()) {
-      this.tokenStorageService.refreshToken();
+      // this.tokenStorageService.refreshToken();
       return true;
     } else {
       this.tokenStorageService.signOut();

@@ -89,7 +89,7 @@ export class TokenStorageService {
     }
   }
 
-  isLoggedIn(): any {
+  isLoggedIn(): boolean {
     return moment().isBefore(this.getExpiration());
   }
 
