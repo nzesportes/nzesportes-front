@@ -8,15 +8,18 @@
     </nav>
   </div>
   <div class="col-lg-4 col-sm-12 mb-3 mb-lg-0">
-    <button type="button" routerLink="/painel/pedidos" class="btn btn-secondary w-100">Cancelar</button>
+    <button type="button" routerLink="/painel/pedidos" class="btn btn-secondary w-100">Voltar</button>
   </div>
 </div>
-<div class="alert alert-danger" role="alert" *ngIf="hasError">
+<div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="!purchase && !hasError">
+  Não encontramos o pedido.
+</div>
+<div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
   Não foi possível carregar algumas informações. Por favor,
   <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
 </div>
 
-<div *ngIf="!hasError">
+<div *ngIf="purchase && !hasError">
   <div class="row mt-3">
     <div class="col-12 mb-3">
       <div class="card">
@@ -28,31 +31,36 @@
               <h4>Dados do Cliente</h4>
               <div class="row">
                 <div class="col-12"><b>Nome</b></div>
-                <div class="col-12 mb-2">Rafael Peinado da Silva</div>
+                <div class="col-12 mb-2">{{ purchase.customer.name }} {{ purchase.customer.lastName }}</div>
                 <div class="col-12"><b>Instagram</b></div>
-                <div class="col-12 mb-2">@rafa.peinado</div>
+                <div class="col-12 mb-2">{{ purchase.customer.instagram }}</div>
                 <div class="col-12"><b>WhatsApp</b></div>
-                <div class="col-12 mb-2">11 99246-4452</div>
+                <div class="col-12 mb-2">{{ purchase.customer.phone }}</div>
               </div>
             </div>
             <div class="col-12 col-lg-6 mb-5">
               <h4>Endereço de Entrega</h4>
               <div class="row">
                 <div class="col-12"><b>CEP</b></div>
-                <div class="col-12 mb-2">03733-020</div>
+                <div class="col-12 mb-2">{{ purchase.shipmentAddress.cep }}</div>
                 <div class="col-12"><b>Endereço</b></div>
-                <div class="col-12 mb-2">Rua São Florêncio, 1464 - Bloco A2 apto 34 - Cangaíba</div>
+                <div class="col-12 mb-2">
+                  {{ purchase.shipmentAddress.street }},
+                  {{ purchase.shipmentAddress.number }} -
+                  {{ purchase.shipmentAddress.complement }} -
+                  {{ purchase.shipmentAddress.district }}
+                </div>
                 <div class="row p-0 m-0">
                   <div class="col-6 p-0 m-0">
                     <div class="row p-0 m-0">
                       <div class="col-12"><b>Cidade</b></div>
-                      <div class="col-12 mb-2">São Paulo</div>
+                      <div class="col-12 mb-2">{{ purchase.shipmentAddress.city }}</div>
                     </div>
                   </div>
                   <div class="col-6 p-0 m-0">
                     <div class="row p-0 m-0">
                       <div class="col-12"><b>Estado</b></div>
-                      <div class="col-12 mb-2">SP</div>
+                      <div class="col-12 mb-2">{{ purchase.shipmentAddress.state }}</div>
                     </div>
                   </div>
                 </div>
@@ -62,26 +70,26 @@
               <h4>Detalhes do Pedido</h4>
               <div class="row">
                 <div class="col-12"><b>Pagamento</b></div>
-                <div class="col-12 mb-2">Aprovado</div>
+                <div class="col-12 mb-2">{{ purchase.status | titlecase }}</div>
                 <div class="col-12"><b>Pedido</b></div>
-                <div class="col-12 mb-2">64663b98o</div>
+                <div class="col-12 mb-2">{{ purchase.id }}</div>
                 <div class="col-12"><b>Data</b></div>
-                <div class="col-12 mb-2">29/07/2021</div>
+                <div class="col-12 mb-2">{{ purchase.paymentRequest.creationDate }}</div>
                 <div class="col-12"><b>Total</b></div>
-                <div class="col-12 mb-2">{{ '150' | currency }}</div>
+                <div class="col-12 mb-2">{{ purchase.totalCost | currency }}</div>
               </div>
             </div>
             <div class="col-12 col-lg-6 mb-5">
               <h4>Detalhes da Compra</h4>
               <div class="row">
-                <div class="col-6 col-lg-3"><b>Valor da Compra</b></div>
-                <div class="col-6 col-lg-9 mb-2">{{ '750' | currency }}</div>
-                <div class="col-6 col-lg-3"><b>Descontos</b></div>
-                <div class="col-6 col-lg-9 mb-2">- {{ '10' | currency }}</div>
-                <div class="col-6 col-lg-3"><b>Frete</b></div>
-                <div class="col-6 col-lg-9 mb-2">{{ '10' | currency }}</div>
-                <div class="col-6 col-lg-3"><b>Total</b></div>
-                <div class="col-6 col-lg-9 mb-2">{{ '750' | currency }}</div>
+                <div class="col-6 col-lg-4"><b>Valor da Compra</b></div>
+                <div class="col-6 col-lg-8 mb-2 text-right">{{ totalPurchase | currency }}</div>
+                <div class="col-6 col-lg-4"><b>Descontos</b></div>
+                <div class="col-6 col-lg-8 mb-2 text-right">- {{ '0' | currency }}</div>
+                <div class="col-6 col-lg-4"><b>Frete</b></div>
+                <div class="col-6 col-lg-8 mb-2 text-right">{{ purchase.shipment | currency }}</div>
+                <div class="col-6 col-lg-4"><b>Total</b></div>
+                <div class="col-6 col-lg-8 mb-2 text-right">{{ purchase.totalCost | currency }}</div>
               </div>
             </div>
             <div class="col-12 mb-5" *ngIf="!isMobile()">
@@ -92,17 +100,11 @@
                 <div class="col-2"><b>Preço</b></div>
                 <div class="col-2"><b>Total</b></div>
               </div>
-              <div class="row mb-2 border-top">
+              <div class="row mb-2 border-top" *ngFor="let item of purchase.items">
                 <div class="col-6 mt-2">Chicago Bulls Preto P</div>
-                <div class="col-2 mt-2">2</div>
-                <div class="col-2 mt-2">{{ '150' | currency }}</div>
-                <div class="col-2 mt-2">{{ '300' | currency }}</div>
-              </div>
-              <div class="row mb-2 border-top">
-                <div class="col-6 mt-2">Chicago Bulls Preto M</div>
-                <div class="col-2 mt-2">3</div>
-                <div class="col-2 mt-2">{{ '150' | currency }}</div>
-                <div class="col-2 mt-2">{{ '450' | currency }}</div>
+                <div class="col-2 mt-2">{{ item.quantity }}</div>
+                <div class="col-2 mt-2">{{ item.cost | currency }}</div>
+                <div class="col-2 mt-2">{{ item.quantity * item.cost | currency }}</div>
               </div>
             </div>
 
