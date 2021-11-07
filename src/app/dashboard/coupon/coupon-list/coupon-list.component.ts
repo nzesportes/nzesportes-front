@@ -1,41 +1,41 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
-import {Sale} from '../../../shared/models/sale.model';
-import {FormGroup} from '@angular/forms';
 import {PaginationService} from '../../../shared/services/pagination.service';
-import {SalePage} from '../../../shared/models/pagination-model/sale-page.model';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
+import {FormGroup} from '@angular/forms';
+import {Coupon} from '../../../shared/models/coupon.model';
+import {CouponPage} from '../../../shared/models/pagination-model/coupon-page.model';
 
 @Component({
-  selector: 'app-promotions-list',
-  templateUrl: './promotions-list.component.html',
-  styleUrls: ['./promotions-list.component.scss']
+  selector: 'app-coupon-list',
+  templateUrl: './coupon-list.component.html',
+  styleUrls: ['./coupon-list.component.scss']
 })
-export class PromotionsListComponent implements OnInit {
+export class CouponListComponent implements OnInit {
 
   @ViewChild('success')
   public readonly dialogSuccess!: SwalComponent;
   @ViewChild('error')
   public readonly dialogError!: SwalComponent;
-  content: SalePage | undefined;
-  promotions: Sale[] = [];
   hasError!: boolean;
-  formPromotions!: FormGroup;
-
+  content: CouponPage | undefined;
+  coupons: Coupon[] = [];
+  formCoupons!: FormGroup;
 
   constructor(
     public paginationService: PaginationService
   ) { }
 
   ngOnInit(): void {
-    const sale: Sale = {
-      percentage: 10,
+    const coupon: Coupon = {
+      discount: 10,
       endDate: new Date(),
       startDate: new Date(),
       quantityLeft: 89,
       id: '123',
-      quantity: 100
+      quantity: 100,
+      code: 'NOVEMBRO10'
     };
-    this.promotions.push(sale);
+    this.coupons.push(coupon);
   }
 
 
@@ -43,7 +43,6 @@ export class PromotionsListComponent implements OnInit {
     // this.getAll(10, index);
     this.paginationService.page = index;
   }
-
 
   redirect(): void {
 
