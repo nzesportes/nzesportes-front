@@ -1,13 +1,13 @@
 <div class="d-flex justify-content-between m-3">
   <div>
-    <h3>Promoções</h3>
+    <h3>Cupons</h3>
   </div>
   <div>
-    <button type="button" class="btn btn-primary" routerLink="nova-promocao"> + Nova Promoção</button>
+    <button type="button" class="btn btn-primary" routerLink="novo-cupom"> + Novo Cupom</button>
   </div>
 
 </div>
-<form [formGroup]="formPromotions">
+<form [formGroup]="formCoupons">
   <div class="container-fluid">
     <div class="row">
       <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
@@ -25,32 +25,32 @@
 
   </div>
 </form>
-<div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="promotions.length === 0 && !hasError">
-  Não encontramos nenhum pedido.
+<div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="coupons.length === 0 && !hasError">
+  Não encontramos nenhum cupom.
 </div>
 <div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
   Não foi possível carregar algumas informações. Por favor,
   <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
 </div>
-<div class="card mb-3 mr-3 ml-3" *ngIf="promotions.length > 0 && !hasError">
+<div class="card mb-3 mr-3 ml-3" *ngIf="coupons.length > 0 && !hasError">
   <div class="table-responsive ">
 
     <table class="table table-hover">
       <thead>
       <tr>
-        <th scope="col">Produto</th>
+        <th scope="col">Código Cupom</th>
         <th scope="col">Qtde Restante</th>
-        <th scope="col">Percentual</th>
+        <th scope="col">Desconto</th>
         <th scope="col">Termina em</th>
         <th scope="col">Ações</th>
       </tr>
       </thead>
       <tbody>
-      <tr scope="row" class="row-table" *ngFor="let promotion of promotions" routerLink="detalhes/{{promotion.id}}">
-        <td style="width: 45%">CHICAGO BULL P AZUL</td>
-        <td style="width: 15%">{{ promotion.quantityLeft }}</td>
-        <td style="width: 15%">{{ promotion.percentage }}%</td>
-        <td style="width: 15%">{{ promotion.endDate | date: 'dd/MM/yyyy' }}</td>
+      <tr scope="row" class="row-table" *ngFor="let coupon of coupons" routerLink="detalhes/{{coupon.id}}">
+        <td style="width: 35%">{{ coupon.code }}</td>
+        <td style="width: 15%">{{ coupon.quantityLeft }}</td>
+        <td style="width: 15%">{{ coupon.discount | currency }}</td>
+        <td style="width: 15%">{{ coupon.endDate | date: 'dd/MM/yyyy' }}</td>
         <td style="width: 10%"><i class="fas fa-edit text-primary"></i></td>
       </tr>
       </tbody>
