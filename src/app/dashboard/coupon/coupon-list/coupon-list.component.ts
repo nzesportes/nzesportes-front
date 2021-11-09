@@ -1,9 +1,11 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {PaginationService} from '../../../shared/services/pagination.service';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
-import {FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Coupon} from '../../../shared/models/coupon.model';
 import {CouponPage} from '../../../shared/models/pagination-model/coupon-page.model';
+import {take} from 'rxjs/operators';
+import {CouponService} from '../../../shared/services/coupon.service';
 
 @Component({
   selector: 'app-coupon-list',
@@ -22,20 +24,39 @@ export class CouponListComponent implements OnInit {
   formCoupons!: FormGroup;
 
   constructor(
-    public paginationService: PaginationService
+    public paginationService: PaginationService,
+    private couponService: CouponService,
+    private formBuilder: FormBuilder,
+
   ) { }
 
   ngOnInit(): void {
-    const coupon: Coupon = {
-      discount: 10,
-      endDate: new Date(),
-      startDate: new Date(),
-      quantityLeft: 89,
-      id: '123',
-      quantity: 100,
-      code: 'NOVEMBRO10'
-    };
-    this.coupons.push(coupon);
+    this.hasError = false;
+    this.paginationService.initPagination();
+    this.createForm();
+    this.getAllCoupons(10, this.paginationService.page);
+  }
+  private createForm(): void {
+    this.formCoupons = this.formBuilder.group({
+      code: new FormControl(),
+    });
+  }
+
+  getAllCoupons(size: number, page: number, code?: string): void {
+    this.couponService.getAll(size, page, code)
+      .pipe(take(1))
+      .subscribe(r => {
+        this.coupons = r.content;
+        this.content = r;
+        this.paginationService.getPageRange(this.content.totalElements);
+      }, () => {
+        this.hasError = true;
+      });
+  }
+  onChangeFilter(): void {
+    this.paginationService.initPagination();
+    const code = this.formCoupons.get('code')?.value;
+    this.getAllCoupons(10, 0, code);
   }
 
 
