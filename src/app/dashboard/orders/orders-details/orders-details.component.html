@@ -33,9 +33,21 @@
                 <div class="col-12"><b>Nome</b></div>
                 <div class="col-12 mb-2">{{ purchase.customer.name }} {{ purchase.customer.lastName }}</div>
                 <div class="col-12"><b>Instagram</b></div>
-                <div class="col-12 mb-2">{{ purchase.customer.instagram }}</div>
+                <div class="col-12 mb-2">
+                  <a href="https://www.instagram.com/{{ purchase.customer.instagram.replace('@', '') }}"
+                     class="badge badge-info"
+                     target="_blank">{{ purchase.customer.instagram }}
+                  </a>
+                </div>
                 <div class="col-12"><b>WhatsApp</b></div>
-                <div class="col-12 mb-2">{{ purchase.customer.phone }}</div>
+                <div class="col-12 mb-2">
+                  <a
+                    href="https://{{isMobile() ? 'api.whatsapp.com' : 'web.whatsapp.com'}}/send?phone=+55{{ purchase.customer.phone }}&text=Olá, {{ purchase.customer.name }}"
+                    class="badge badge-info"
+                    target="_blank">
+                    {{ purchase.customer.phone }}
+                  </a>
+                </div>
               </div>
             </div>
             <div class="col-12 col-lg-6 mb-5">
