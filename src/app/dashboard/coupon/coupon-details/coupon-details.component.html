@@ -1,51 +1,105 @@
+<form [formGroup]="formBrand">
+
 <div class="row mt-3">
   <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a routerLink="/painel/cupons">Cupons</a></li>
-        <li class="breadcrumb-item active" aria-current="page">{{ id ? 'Detalhes' : 'Novo Cupom' }}</li>
+        <li class="breadcrumb-item active" aria-current="page">{{ coupon ? 'Detalhes' : 'Novo Cupom' }}</li>
       </ol>
     </nav>
   </div>
-  <div class="col-lg-4 col-sm-12 mb-3 mb-lg-0" *ngIf="id">
-    <button type="button" routerLink="/painel/cupons" class="btn btn-secondary w-100">Voltar</button>
-  </div>
-  <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0" *ngIf="!id">
+  <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
     <button type="button" routerLink="/painel/cupons" class="btn btn-secondary w-100">Cancelar</button>
   </div>
-  <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0" *ngIf="!id">
+  <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
     <button
       type="button"
       class="btn btn-primary w-100"
+      [disabled]="formBrand.invalid"
       (click)="save()">
       Salvar
     </button>
   </div>
-</div>
-<div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="!coupon && !hasError">
-  Não encontramos o cupom.
 </div>
 <div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
   Não foi possível carregar algumas informações. Por favor,
   <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
 </div>
 
-<div *ngIf="coupon && !hasError">
+<div *ngIf="!hasError && loaded">
   <div class="row mt-3">
     <div class="col-12 mb-3">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Informações da Promoção</h5>
+          <h5 class="card-title">Informações da cupom</h5>
           <hr>
-          <div class="form-row mb-3">
+          <div class="form-row">
+            <div class="form-group col-12 mb-3">
+              <label for="code">Código do cupom</label>
+              <input type="text" class="form-control" id="code" formControlName="code" placeholder="ex: FX0032094"
+                     [ngClass]="cssError(formBrand.get('code'))">
+              <div id="field-code" class="invalid-feedback">
+                Por favor, insira o código cupom.
+              </div>
+            </div>
 
+            <div class="form-group col-12 mb-3">
+              <label for="quantity">Quantidade</label>
+              <input type="number" class="form-control" id="quantity" formControlName="quantity" placeholder="10"
+                     [ngClass]="cssError(formBrand.get('quantity'))">
+              <div id="field-quantity" class="invalid-feedback">
+                Por favor, insira a quantidade.
+              </div>
+            </div>
+
+            <div class="form-group col-12 mb-3">
+              <label for="discount">Desconto</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">R$</span>
+                </div>
+                <input type="text" id="discount" class="form-control"
+                       formControlName="discount"
+                       [ngClass]="cssError(formBrand.get('discount'))">
+                <div id="field-discount" class="invalid-feedback">
+                  Por favor, insira a desconto.
+                </div>
+              </div>
+
+            </div>
+
+            <div class="form-group col-12 mb-3">
+              <label for="startDate">Data de inicio</label>
+              <input type="date" class="form-control" id="startDate" formControlName="startDate" placeholder="50"
+                     [ngClass]="cssError(formBrand.get('startDate'))">
+              <div id="field-startDate" class="invalid-feedback">
+                Por favor, insira a data de inicio.
+              </div>
+            </div>
+
+            <div class="form-group col-12 mb-3">
+              <label for="endDate">Data fim</label>
+              <input type="date" class="form-control" id="endDate" formControlName="endDate" placeholder="50"
+                     [ngClass]="cssError(formBrand.get('endDate'))">
+              <div id="field-endDatee" class="invalid-feedback">
+                Por favor, insira a data fim do cupom.
+              </div>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="isShowOnStore" formControlName="status">
+              <label class="form-check-label" for="isShowOnStore">
+                Disponível na loja
+              </label>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
-
+</form>
 <swal
   [swalOptions]="{ confirmButtonText: 'ok'}"
   (confirm)="redirect()"
