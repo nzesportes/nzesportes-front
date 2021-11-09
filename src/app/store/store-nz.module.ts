@@ -42,6 +42,7 @@ import * as fromProduct from './redux/cart/cart.reducer';
 import { RatingComponent } from './template/rating/rating.component';
 import { SizeGuideComponent } from './template/size-guide/size-guide.component';
 import {AuthOrderReviewGuard} from '../shared/guards/auth-order-review.guard';
+import { DevelopedByComponent } from './template/components/developed-by/developed-by.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import {AuthOrderReviewGuard} from '../shared/guards/auth-order-review.guard';
     FirstAccessComponent,
     RatingComponent,
     SizeGuideComponent,
+    DevelopedByComponent,
   ],
   imports: [
     CommonModule,

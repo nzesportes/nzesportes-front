@@ -45,7 +45,6 @@ export class CouponDetailsComponent implements OnInit {
           .subscribe((c: Coupon) => {
             this.coupon = c;
             this.loaded = true;
-            console.log('entrou');
             this.createForm();
           }, () => {
             this.hasError = true;
