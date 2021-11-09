@@ -13,6 +13,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {Shipping} from '../../../shared/models/shipping.model';
 import {BetterSendService} from '../../../shared/services/better-send.service';
 import {ShippingResult} from '../../../shared/models/shipping-result.model';
+import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 import {FiltersService} from '../../services/filters.service';
 import {Gender} from '../../../shared/enums/gender';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
@@ -26,6 +27,8 @@ export interface ImageSlide {
   id: number;
   fullImage: string;
   thumb: string;
+  fullImageSafe: SafeResourceUrl;
+  thumbSafe: SafeResourceUrl;
 }
 
 @Component({
@@ -42,6 +45,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   // @ts-ignore
   product: Product;
 
+  images: string[] | undefined;
+
   @ViewChild('stock')
   public readonly selectedStock!: any;
   @ViewChild('success')
@@ -57,6 +62,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   contentRating!: RatingPage;
   ratings: Rating[] = [];
   hasErrorRating = false;
+  bestRating = 0;
 
   shippingResult: ShippingResult[] = [];
   notShipResult = false;
@@ -105,6 +111,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private store: Store<fromStore.ProductState>,
     private formBuilder: FormBuilder,
     private betterSendService: BetterSendService,
+    private sanitizer: DomSanitizer,
     private router: Router,
     private ratingService: RatingService,
     private filterService: FiltersService
@@ -176,7 +183,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       this.dynamicSlides.push({
         id: i,
         fullImage: image,
-        thumb: image
+        thumb: image,
+        fullImageSafe: this.sanitizer.bypassSecurityTrustResourceUrl(image),
+        thumbSafe: this.sanitizer.bypassSecurityTrustResourceUrl(image)
       });
     });
   }
@@ -345,6 +354,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   calculateRating(): void {
     this.ratings.forEach(rating => {
       this.rating += rating.rate;
+      if (this.bestRating < rating.rate) {
+        this.bestRating = rating.rate;
+      }
     });
     if (this.rating > 0) {
       this.rating /= this.totalRatings;

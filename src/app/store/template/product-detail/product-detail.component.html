@@ -293,6 +293,35 @@
   </div>
 </div>
 
+<div>
+  <div itemtype="https://schema.org/Product" itemscope>
+    <meta itemprop="mpn" content="{{ productDetails?.productId }}" />
+    <meta itemprop="name" content="{{ productDetails?.id }}" />
+    <link *ngFor="let image of dynamicSlides, let i = index" itemprop="image" [href]="image.fullImageSafe" />
+    <meta itemprop="description" content="{{ productDetails?.description }}" />
+    <div *ngIf="false" itemprop="offers" itemtype="https://schema.org/AggregateOffer" itemscope>
+      <meta itemprop="priceCurrency" content="BRL" />
+    </div>
+    <div itemprop="aggregateRating" itemtype="https://schema.org/AggregateRating" itemscope>
+      <meta itemprop="reviewCount" content="{{ ratings.length }}" />
+      <meta itemprop="ratingValue" content="{{ rating }}" />
+    </div>
+    <div itemprop="review" itemtype="https://schema.org/Review" itemscope>
+      <div itemprop="author" itemtype="https://schema.org/Person" itemscope>
+        <meta itemprop="name" *ngIf="ratings.length > 0" content="{{ ratings[ratings.length - 1].customer.name }} {{ ratings[ratings.length - 1].customer.lastName }}" />
+      </div>
+      <div itemprop="reviewRating" itemtype="https://schema.org/Rating" itemscope>
+        <meta itemprop="ratingValue" content="{{ rating }}" />
+        <meta itemprop="bestRating" content="{{ bestRating }}" />
+      </div>
+    </div>
+    <meta itemprop="sku" content="{{ productDetails?.id }}" />
+    <div itemprop="brand" itemtype="https://schema.org/Brand" itemscope>
+      <meta itemprop="name" content="{{ product?.brand?.name }}" />
+    </div>
+  </div>
+</div>
+
 <swal
   [swalOptions]="{ confirmButtonText: 'ok'}"
   (confirm)="redirect()"
