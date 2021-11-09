@@ -62,6 +62,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   contentRating!: RatingPage;
   ratings: Rating[] = [];
   hasErrorRating = false;
+  bestRating = 0;
 
   shippingResult: ShippingResult[] = [];
   notShipResult = false;
@@ -353,6 +354,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   calculateRating(): void {
     this.ratings.forEach(rating => {
       this.rating += rating.rate;
+      if (this.bestRating < rating.rate) {
+        this.bestRating = rating.rate;
+      }
     });
     if (this.rating > 0) {
       this.rating /= this.totalRatings;

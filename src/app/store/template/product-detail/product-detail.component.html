@@ -300,22 +300,19 @@
     <link *ngFor="let image of dynamicSlides, let i = index" itemprop="image" [href]="image.fullImageSafe" />
     <meta itemprop="description" content="{{ productDetails?.description }}" />
     <div *ngIf="false" itemprop="offers" itemtype="https://schema.org/AggregateOffer" itemscope>
-      <meta itemprop="lowPrice" content="{{ productDetails?.price }}" />
-      <meta itemprop="highPrice" content="{{ productDetails?.price }}" />
-      <meta itemprop="offerCount" content="6" />
       <meta itemprop="priceCurrency" content="BRL" />
     </div>
     <div itemprop="aggregateRating" itemtype="https://schema.org/AggregateRating" itemscope>
-      <meta itemprop="reviewCount" content="89" />
-      <meta itemprop="ratingValue" content="4.4" />
+      <meta itemprop="reviewCount" content="{{ ratings.length }}" />
+      <meta itemprop="ratingValue" content="{{ rating }}" />
     </div>
     <div itemprop="review" itemtype="https://schema.org/Review" itemscope>
       <div itemprop="author" itemtype="https://schema.org/Person" itemscope>
-        <meta itemprop="name" content="Fred Benson" />
+        <meta itemprop="name" *ngIf="ratings.length > 0" content="{{ ratings[ratings.length - 1].customer.name }} {{ ratings[ratings.length - 1].customer.lastName }}" />
       </div>
       <div itemprop="reviewRating" itemtype="https://schema.org/Rating" itemscope>
-        <meta itemprop="ratingValue" content="4" />
-        <meta itemprop="bestRating" content="5" />
+        <meta itemprop="ratingValue" content="{{ rating }}" />
+        <meta itemprop="bestRating" content="{{ bestRating }}" />
       </div>
     </div>
     <meta itemprop="sku" content="{{ productDetails?.id }}" />
