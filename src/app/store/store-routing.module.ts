@@ -11,6 +11,7 @@ import {ProductListingComponent} from './template/product-listing/product-listin
 import {OrderReviewComponent} from './template/order-review/order-review.component';
 import {FirstAccessComponent} from './template/first-access/first-access.component';
 import {AuthOrderReviewGuard} from '../shared/guards/auth-order-review.guard';
+import {DevelopedByComponent} from './template/components/developed-by/developed-by.component';
 
 const routes: Routes = [
   {
@@ -51,6 +52,10 @@ const routes: Routes = [
         path: 'auth/:flow/:id',
         component: FirstAccessComponent,
         canActivate: [AuthVerifyLogin]
+      },
+      {
+        path: 'desenvolvido-por',
+        component: DevelopedByComponent
       },
       {
         path: 'minha-conta',

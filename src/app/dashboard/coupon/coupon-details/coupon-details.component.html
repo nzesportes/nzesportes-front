@@ -30,7 +30,7 @@
   <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
 </div>
 
-<div *ngIf="coupon && !hasError">
+<div *ngIf="coupon && !hasError && id">
   <div class="row mt-3">
     <div class="col-12 mb-3">
       <div class="card">
@@ -45,6 +45,22 @@
     </div>
   </div>
 </div>
+
+<form *ngIf="!id">
+  <div class="row mt-3">
+    <div class="col-12 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Informações da Promoção</h5>
+          <hr>
+          <div class="form-row mb-3">
+            teste
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
 
 <swal
   [swalOptions]="{ confirmButtonText: 'ok'}"
