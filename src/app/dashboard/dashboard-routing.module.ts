@@ -32,6 +32,10 @@ const routes: Routes = [
         loadChildren: () => import('./promotions/promotions.module').then(m => m.PromotionsModule)
       },
       {
+        path: 'pedidos',
+        loadChildren: () => import('./orders/orders.module').then(m => m.OrdersModule)
+      },
+      {
         path: 'usuarios',
         loadChildren: () => import('./users/users.module').then(m => m.UsersModule)
       },
@@ -40,12 +44,24 @@ const routes: Routes = [
         loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
       },
       {
+        path: 'cupons',
+        loadChildren: () => import('./coupon/coupon.module').then(m => m.CouponModule)
+      },
+      {
         path: 'fale-conosco',
         loadChildren: () => import('./contact-us/contact-us.module').then(m => m.ContactUsModule)
       },
       {
         path: 'melhor-envio',
         loadChildren: () => import('./better-send/better-send.module').then(m => m.BetterSendModule)
+      },
+      {
+        path: 'tabela-medidas',
+        loadChildren: () => import('./measurement-chart/measurement-chart.module').then(m => m.MeasurementChartModule)
+      },
+      {
+        path: 'banner',
+        loadChildren: () => import('./banner/banner.module').then(m => m.BannerModule)
       },
       { path: '', redirectTo: 'produtos', pathMatch: 'full' },
     ]

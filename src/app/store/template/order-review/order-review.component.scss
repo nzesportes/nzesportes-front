@@ -101,8 +101,26 @@
   color: #fff;
 }
 
+.bt-ordem-review {
+  border-top: 1px solid #fff;
+  margin-top: 16px;
+}
+
 .container-login {
   max-width: 320px;
+}
+
+.img-shipping {
+  img{
+    max-width: 80px;
+  }
+}
+
+.shipments {
+  background-color: #ededed;
+  color: #2b2828;
+  font-size: 16px;
+  padding: 20px 30px;
 }
 
 @media (min-width: 576px) {

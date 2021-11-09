@@ -1,0 +1,79 @@
+<form [formGroup]="formLayoutImages">
+  <div class="row mt-3">
+    <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/painel/categorias">Banners</a></li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
+      <button type="button" class="btn btn-secondary w-100" routerLink="/painel">Cancelar</button>
+    </div>
+    <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
+      <button
+        type="button"
+        class="btn btn-primary w-100"
+        [disabled]="formLayoutImages.invalid"
+        (click)="save()">Salvar
+      </button>
+    </div>
+  </div>
+  <div class="alert alert-danger" role="alert" *ngIf="hasError">
+    Não foi possível carregar algumas informações. Por favor, <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+  </div>
+  <div class="row mt-3"  *ngIf="!hasError">
+    <div class="col-12 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Banners da pagina inicial</h5>
+          <hr>
+          <div class="form-row">
+            <div class="form-group col-12 mb-3">
+              <label for="slideImages">Slide de imagens</label>
+              <textarea class="form-control mb-3" id="slideImages" rows="3"
+                        placeholder="Descreva seu produto" formControlName="slideImages"
+                        [ngClass]="cssError(formLayoutImages.get('slideImages'))">
+              </textarea>
+              <div id="field-slideImages" class="invalid-feedback">
+                Por favor, insira o link das imagens.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-12 mb-3">
+              <label for="bannerImages">Banner inferior da tela</label>
+              <textarea class="form-control mb-3" id="bannerImages" rows="3"
+                        placeholder="Descreva seu produto" formControlName="bannerImages"
+                        [ngClass]="cssError(formLayoutImages.get('bannerImages'))">
+              </textarea>
+              <div id="field-bannerImages" class="invalid-feedback">
+                Por favor, insira o link das imagens.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirect()"
+  #success
+  [title]="''"
+  icon="success">
+</swal>
+
+<swal
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>

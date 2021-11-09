@@ -1,1 +1,131 @@
-<p>my-orders works!</p>
+<div class="container-fluid p-0">
+  <h1 class="page-title mb-3 mb-lg-4">Meus Pedidos</h1>
+
+  <div class="row p-0 m-0 mb-2 title-table-orders">
+    <div class="col-2">Pagamento</div>
+    <div class="col-3">Pedido</div>
+    <div class="col-2">Data</div>
+    <div class="col-2">Qtde</div>
+    <div class="col-2">Total</div>
+    <div class="col-1"></div>
+  </div>
+
+  <div class="accordion" id="myOrders">
+    <div class="card mb-2 accordion-button" *ngFor="let purchase of purchases; let i = index">
+      <div class="card-header" id="headingOne">
+        <h2 class="mb-0">
+          <button class="btn btn-link btn-block text-left row p-0 m-0 title-orders" type="button" data-toggle="collapse"
+                  id="button{{ purchase.id }}" (click)="changeStatusCollpse(collapse)" aria-expanded="true">
+            <div class="row">
+              <div class="col-2">{{ purchase.status | titlecase }}</div>
+              <div class="col-3">64663b98</div>
+              <div class="col-2">{{ purchase.paymentRequest.creationDate | date:'dd/MM/yyyy' }}</div>
+              <div class="col-2">{{ totalItems[i] }}</div>
+              <div class="col-2">{{ purchase.totalCost | currency }}</div>
+              <div class="col-1"><i class="{{ collapsed ? 'fas fa-angle-up' : 'fas fa-angle-down' }}"></i></div>
+            </div>
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapse{{ purchase.id }}" #collapse class="collapse" aria-labelledby="headingOne" data-parent="#myOrders">
+        <div class="card-body">
+          <div class="mb-5">
+            <h1 class="h1-details mb-3">Detalhes do Pedido</h1>
+            <div class="row p-0 m-0 mb-2 title-products-details">
+              <div class="col-7 p-0">Produtos</div>
+              <div class="col-1 p-0">QTDE</div>
+              <div class="col-2 p-0">Preço</div>
+              <div class="col-2 p-0">Subtotal</div>
+            </div>
+            <div class="row p-0 m-0 mb-2 orders-products-details" *ngFor="let item of purchase.items; let i = index">
+              <div class="col-7 p-0">
+                <div class="row m-0 p-0">
+                  <div class="img-details">
+                    <img class="w-100"
+                         src="https://res.cloudinary.com/nzesportes/image/upload/v1631149505/produtos/vans-vinho-thumb_rrvnqz.jpg">
+                  </div>
+                  <div class="description-details m-auto">
+                    <span><b>CHICAGO BULLS BRANCO XGG</b></span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-1 p-0 m-auto">{{ item.quantity }}</div>
+              <div class="col-2 p-0 m-auto">
+                <div class="m-0 p-0">
+                  <div *ngIf="false">
+                    <del class="mb-1 promotion">{{ '20.00' | currency }}</del>
+                  </div>
+                  <div>
+                    {{ item.cost | currency }}
+                  </div>
+                </div>
+              </div>
+              <div class="col-2 p-0 m-auto"><b>{{ item.quantity * item.cost | currency }}</b></div>
+            </div>
+          </div>
+          <div class="mt-4 m-0 p-0 row">
+            <div class="col-12 col-md-6 p-0 m-0">
+              <h1 class="h1-details mb-3">Endereço</h1>
+              <div class="row m-0 pr-4">
+                <div class="col-12 p-0 m-0"><b>CEP</b></div>
+                <div class="col-12 mb-2 p-0 m-0">{{ purchase.shipmentAddress.cep }}</div>
+                <div class="col-12 p-0 m-0"><b>Endereço</b></div>
+                <div class="col-12 mb-2 p-0 m-0">{{ purchase.shipmentAddress.street }}, {{ purchase.shipmentAddress.number }} - {{ purchase.shipmentAddress.complement }} - {{ purchase.shipmentAddress.district }}</div>
+                <div class="col-12 mb-2 p-0 m-0">
+                  <div class="row p-0 m-0">
+                    <div class="col-12 col-md-6 p-0 m-0">
+                      <div class="row p-0 m-0">
+                        <div class="col-12 p-0 m-0"><b>Cidade</b></div>
+                        <div class="col-12 mb-2 p-0 m-0">{{ purchase.shipmentAddress.city }}</div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6 p-0 m-0">
+                      <div class="row p-0 m-0">
+                        <div class="col-12 p-0 m-0"><b>Estado</b></div>
+                        <div class="col-12 mb-2 p-0 m-0">{{ purchase.shipmentAddress.state }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 p-0 m-0">
+              <h1 class="h1-details mb-3">Detalhes da Compra</h1>
+              <div class="row p-0 m-0">
+                <div class="col-12 col-lg-8 p-0 m-0"><b>Valor da Compra</b></div>
+                <div class="col-12 col-lg-4 mb-2 p-0 m-0 text-right">{{ totalPurchase[i] | currency }}</div>
+                <div class="col-12 col-lg-8 p-0 m-0"><b>Descontos</b></div>
+                <div class="col-12 col-lg-4 mb-2 p-0 m-0 text-right">- {{ '0' | currency }}</div>
+                <div class="col-12 col-lg-8 p-0 m-0"><b>Frete</b></div>
+                <div class="col-12 col-lg-4 mb-2 p-0 m-0 text-right">{{ purchase.shipment | currency }}</div>
+                <div class="col-12 col-lg-8 p-0 m-0"><b>Total</b></div>
+                <div class="col-12 col-lg-4 mb-2 p-0 m-0 text-right">{{ purchase.totalCost | currency }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="mt-4" aria-label="Page navigation" *ngIf="content && listMyOrders.length > 0">
+    <ul class="pagination justify-content-end">
+      <li class="page-item" [ngClass]="{'disabled': this.paginationService.page === 0}">
+        <a class="page-link" (click)="updateIndex(this.paginationService.page-1)">
+          <i class="fas fa-angle-left"></i>
+        </a>
+      </li>
+      <li class="page-item active" [ngClass]="{ 'active': i == this.paginationService.page }"
+          *ngFor="let i of this.paginationService.getRange(); let in = index">
+        <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
+      </li>
+      <li class="page-item"
+          [ngClass]="{'disabled': (this.paginationService.page  + 1) === this.paginationService.pages }">
+        <a class="page-link" (click)="updateIndex(this.paginationService.page + 1)">
+          <i class="fas fa-angle-right"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>

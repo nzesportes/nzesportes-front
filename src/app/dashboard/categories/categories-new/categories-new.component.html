@@ -10,7 +10,7 @@
       </nav>
     </div>
     <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
-      <button type="button" class="btn btn-secondary w-100">Cancelar</button>
+      <button type="button" routerLink="/painel/categorias" class="btn btn-secondary w-100">Cancelar</button>
     </div>
     <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
       <button
@@ -39,7 +39,7 @@
                 <label for="categorieName">Nome da Categoria</label>
                 <input type="text" class="form-control" formControlName="name" id="categorieName"
                        aria-describedby="emailHelp"
-                       placeholder="ex: Camiseta Chicago Bulls"
+                       placeholder="ex: roupas"
                        [ngClass]="{ 'is-invalid': validateFields.name.errors && validateFields.name.touched }">
                 <div id="field-name" class="invalid-feedback" *ngIf="validateFields.name?.errors?.required">
                   Por favor, insira o nome da categoria.

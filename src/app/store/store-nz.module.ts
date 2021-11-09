@@ -39,6 +39,10 @@ import {EffectsModule} from '@ngrx/effects';
 
 import { CartEffect } from './redux/cart/cart.effect';
 import * as fromProduct from './redux/cart/cart.reducer';
+import { RatingComponent } from './template/rating/rating.component';
+import { SizeGuideComponent } from './template/size-guide/size-guide.component';
+import {AuthOrderReviewGuard} from '../shared/guards/auth-order-review.guard';
+import { DevelopedByComponent } from './template/components/developed-by/developed-by.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +70,9 @@ import * as fromProduct from './redux/cart/cart.reducer';
     FiltersComponent,
     OrderReviewComponent,
     FirstAccessComponent,
+    RatingComponent,
+    SizeGuideComponent,
+    DevelopedByComponent,
   ],
   imports: [
     CommonModule,
@@ -83,7 +90,8 @@ import * as fromProduct from './redux/cart/cart.reducer';
     EffectsModule.forFeature([CartEffect]),
   ],
   providers: [
-    AuthGuard
+    AuthGuard,
+    AuthOrderReviewGuard
   ]
 })
 export class StoreNzModule {

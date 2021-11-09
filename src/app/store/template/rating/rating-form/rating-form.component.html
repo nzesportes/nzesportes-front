@@ -1,0 +1,94 @@
+<div class="container-fluid p-0">
+  <div class="form-create-account">
+    <h1 class="page-title mb-3 mb-lg-4">Avaliação</h1>
+
+    <div>
+      <h2 class="title-rate">Produto: {{ product.model }} {{ product.brand.name | titlecase }}</h2>
+    </div>
+
+    <form class="row" [formGroup]="createRating">
+      <div class="form-group col-12">
+        <label for="title">Título *</label>
+        <input type="text" class="form-control"
+               [ngClass]="{ 'is-invalid': validateFields.title.errors && validateFields.title.touched }"
+               id="title" formControlName="title" aria-describedby="field-title"
+               placeholder="Ex: Tênis muito confortável" #title maxlength="100">
+        <div id="field-title" class="invalid-feedback" *ngIf="validateFields.title?.errors?.required">
+          Por favor, insira uma pequena descrição.
+        </div>
+      </div>
+      <div class="form-group col-12">
+        <label for="comment">Comentário *</label>
+        <textarea type="text" class="form-control"
+                  [ngClass]="{ 'is-invalid': validateFields.comment.errors && validateFields.comment.touched }"
+                  id="comment" formControlName="comment" aria-describedby="field-comment" rows="4"
+                  placeholder="O tênis tem muita qualidade, sem nenhum defeito e o tamanho foi perfeito."
+                  #comment maxlength="500"></textarea>
+        <small>{{ comment.textLength }}/500</small>
+        <div id="field-comment" class="invalid-feedback" *ngIf="validateFields.comment?.errors">
+          <span *ngIf="validateFields.comment?.errors?.required">Por favor, insira um comentário.</span>
+          <span *ngIf="validateFields.comment?.errors?.maxlength">Limite de 500 caracteres.</span>
+        </div>
+      </div>
+
+      <div class="form-group col-12">
+        <label for="comment">Comentário *</label>
+        <ul class="rate-avaliable pl-0 text-left">
+          <li class="form-check form-check-inline rate m-0" [ngClass]="selectedFilter === '1' ? 'current' : ''">
+            <input class="form-check-input radiosRate" type="radio" name="rate" id="rate1" value="1"
+                   formControlName="rate">
+            <label (click)="filterSelected('1')" class="form-check-label" for="rate1">1 <i
+              class="fas fa-star"></i></label>
+          </li>
+          <li (click)="filterSelected('2')" class="form-check form-check-inline rate m-0"
+              [ngClass]="selectedFilter === '2' ? 'current' : ''">
+            <input class="form-check-input radiosRate" type="radio" name="rate" id="rate2" value="2"
+                   formControlName="rate">
+            <label class="form-check-label" for="rate2">2 <i class="fas fa-star"></i></label>
+          </li>
+          <li (click)="filterSelected('3')" class="form-check form-check-inline rate m-0"
+              [ngClass]="selectedFilter === '3' ? 'current' : ''">
+            <input class="form-check-input radiosRate" type="radio" name="rate" id="rate3" value="3"
+                   formControlName="rate">
+            <label class="form-check-label" for="rate3">3 <i class="fas fa-star"></i></label>
+          </li>
+          <li (click)="filterSelected('4')" class="form-check form-check-inline rate m-0"
+              [ngClass]="selectedFilter === '4' ? 'current' : ''">
+            <input class="form-check-input radiosRate" type="radio" name="rate" id="rate4" value="4"
+                   formControlName="rate">
+            <label class="form-check-label" for="rate4">4 <i class="fas fa-star"></i></label>
+          </li>
+          <li (click)="filterSelected('5')" class="form-check form-check-inline rate m-0"
+              [ngClass]="selectedFilter === '5' ? 'current' : ''">
+            <input class="form-check-input radiosRate" type="radio" name="rate" id="rate5" value="5"
+                   formControlName="rate">
+            <label class="form-check-label" for="rate5">5 <i class="fas fa-star"></i></label>
+          </li>
+        </ul>
+      </div>
+      <div class="col-12 text-center text-md-right mt-3">
+        <button type="submit" class="btn btn-primary btn-submit" [disabled]="!createRating.valid"
+                (click)="id ? update() : create()">{{ id ? 'Salvar' : 'Avaliar'}}</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<swal
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>
+
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirect()"
+  #success
+  [title]="''"
+  icon="success">
+</swal>

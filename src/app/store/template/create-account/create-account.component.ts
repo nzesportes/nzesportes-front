@@ -93,7 +93,11 @@ export class CreateAccountComponent implements OnInit {
         name: ['', Validators.required],
         lastName: ['', Validators.required],
         username: [{value: '', disabled: this.id ? true : false}, [Validators.required, Validators.email]],
-        password: [{value: '', disabled: this.id ? true : false}, [Validators.required, Validators.minLength(8)]],
+        password: [{value: '', disabled: this.id ? true : false}, [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern('^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\\d]){1,})(?=(.*[\\W]){1,})(?!.*\\s).{8,}$')
+        ]],
         passwordRepeat: [{value: '', disabled: this.id ? true : false}, Validators.required],
         cpf: [{value: '', disabled: this.id ? true : false}, Validators.required],
         instagram: [''],

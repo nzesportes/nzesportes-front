@@ -3,6 +3,12 @@ import {ItemCart} from '../models/item-cart';
 import {Store} from '@ngrx/store';
 import * as fromStore from '../redux/cart/cart.reducer';
 import * as fromCartActions from '../redux/cart/cart.actions';
+import {environment} from '../../../environments/environment';
+import * as CryptoJS from 'crypto-js';
+
+
+const USER_HASH_KEY = environment.USER_HASH_KEY;
+const CART_KEY = 'cart';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +28,7 @@ export class CartService {
   getProductsCart(): ItemCart[] {
     this.cart = localStorage.getItem('cart');
     if (this.cart) {
-      this.items = JSON.parse(this.cart);
+      this.items = this.getItemEncryptKey(this.cart);
       return this.items as ItemCart[];
     }
     return [];
@@ -47,7 +53,7 @@ export class CartService {
         this.pushItemCart(itemCart);
       }
     }
-    localStorage.setItem('cart', JSON.stringify(this.items));
+    this.setItemEncryptKey();
     this.updateLoadProducts();
   }
   addQuantityCart(idCart: string, quantity: number): void {
@@ -58,7 +64,7 @@ export class CartService {
       const index = this.items.indexOf(hasProductDetail);
       this.items[index].quantity = this.items[index].quantity + quantity;
       this.items[index].total = this.items[index].quantity * this.items[index].productDetails.price;
-      localStorage.setItem('cart', JSON.stringify(this.items));
+      this.setItemEncryptKey();
       this.updateLoadProducts();
     }
   }
@@ -71,12 +77,20 @@ export class CartService {
 
   pushItemCart(itemCart: ItemCart): void {
     this.items.push(itemCart);
-    localStorage.setItem('cart', JSON.stringify(this.items));
+    this.setItemEncryptKey();
+  }
+  setItemEncryptKey(): void {
+    const cartHash = CryptoJS.AES.encrypt(JSON.stringify(this.items), USER_HASH_KEY).toString();
+    localStorage.setItem(CART_KEY, cartHash);
+  }
+
+  getItemEncryptKey(cart: any): any {
+    return JSON.parse(CryptoJS.AES.decrypt(cart, USER_HASH_KEY).toString(CryptoJS.enc.Utf8));
   }
 
   removeItemCart(id: string): void {
     this.items = this.items.filter( i => i.id !== id);
-    localStorage.setItem('cart', JSON.stringify(this.items));
+    this.setItemEncryptKey();
     this.updateLoadProducts();
   }
 }

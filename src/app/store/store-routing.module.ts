@@ -10,6 +10,8 @@ import {ProductDetailComponent} from './template/product-detail/product-detail.c
 import {ProductListingComponent} from './template/product-listing/product-listing.component';
 import {OrderReviewComponent} from './template/order-review/order-review.component';
 import {FirstAccessComponent} from './template/first-access/first-access.component';
+import {AuthOrderReviewGuard} from '../shared/guards/auth-order-review.guard';
+import {DevelopedByComponent} from './template/components/developed-by/developed-by.component';
 
 const routes: Routes = [
   {
@@ -43,7 +45,8 @@ const routes: Routes = [
       },
       {
         path: 'finalizar-compra',
-        component: OrderReviewComponent
+        component: OrderReviewComponent,
+        canActivate: [AuthOrderReviewGuard]
       },
       {
         path: 'auth/:flow/:id',
@@ -51,9 +54,18 @@ const routes: Routes = [
         canActivate: [AuthVerifyLogin]
       },
       {
+        path: 'desenvolvido-por',
+        component: DevelopedByComponent
+      },
+      {
         path: 'minha-conta',
         // canActivate: [AuthGuard],
         loadChildren: () => import('./template/account-details/account-details.module').then(m => m.AccountDetailsModule)
+      },
+      {
+        path: 'avaliar',
+        // canActivate: [AuthGuard],
+        loadChildren: () => import('./template/rating/rating.module').then(m => m.RatingModule)
       },
       {path: '', redirectTo: '', pathMatch: 'full'}
     ]

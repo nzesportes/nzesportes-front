@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './app-routing.module';
@@ -17,6 +17,10 @@ import {StoreModule} from '@ngrx/store';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
 import {EffectsModule} from '@ngrx/effects';
+import {LocationStrategy, PathLocationStrategy, registerLocaleData} from '@angular/common';
+import localePt from '@angular/common/locales/pt';
+
+registerLocaleData(localePt);
 
 @NgModule({
   declarations: [
@@ -40,9 +44,19 @@ import {EffectsModule} from '@ngrx/effects';
       useClass: Interceptor,
       multi: true
     },
+    {
+      provide: LOCALE_ID,
+      useValue: 'pt-BR'
+    },
+    {
+      provide: DEFAULT_CURRENCY_CODE,
+      useValue: 'BRL'
+    },
     AuthGuard,
     AuthVerifyLogin,
-    AuthDashGuard
+    AuthDashGuard,
+    { provide: LocationStrategy, useClass: PathLocationStrategy }
+
   ],
     exports: [
         StoreModule,

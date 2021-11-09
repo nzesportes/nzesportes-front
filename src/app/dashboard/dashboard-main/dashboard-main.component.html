@@ -34,6 +34,12 @@
             Promoções
           </a>
         </li>
+        <li class="nav-item">
+          <a  routerLink="cupons" class="nav-link text-white" routerLinkActive="active">
+            <svg class="bi me-2" width="16" height="16"></svg>
+            Cupons
+          </a>
+        </li>
         <li>
           <a routerLink="pedidos" class="nav-link text-white" routerLinkActive="active">
             <svg class="bi me-2" width="16" height="16"></svg>
@@ -62,6 +68,24 @@
           <a routerLink="melhor-envio" class="nav-link text-white" routerLinkActive="active">
             <svg class="bi me-2" width="16" height="16"></svg>
             Melhor envio
+          </a>
+        </li>
+        <li>
+          <a routerLink="tabela-medidas" class="nav-link text-white" routerLinkActive="active">
+            <svg class="bi me-2" width="16" height="16"></svg>
+            Tabela de Medidas
+          </a>
+        </li>
+        <li>
+          <a routerLink="banner" class="nav-link text-white" routerLinkActive="active">
+            <svg class="bi me-2" width="16" height="16"></svg>
+            Banner
+          </a>
+        </li>
+        <li>
+          <a [href]="linkNz" target="_blank" class="nav-link text-white">
+            <svg class="bi me-2" width="16" height="16"></svg>
+            Ir para nz
           </a>
         </li>
       </ul>
@@ -96,8 +120,11 @@
           <li class="nav-item " routerLink="marcas" routerLinkActive="active">
             <a class="nav-link">Marcas</a>
           </li>
-          <li class="nav-item " routerLink="categorias" routerLinkActive="active">
+          <li class="nav-item " routerLink="promocoes" routerLinkActive="active">
             <a class="nav-link">Promoções</a>
+          </li>
+          <li class="nav-item " routerLink="cupons" routerLinkActive="active">
+            <a class="nav-link">Cupons</a>
           </li>
           <li class="nav-item " routerLink="clientes" routerLinkActive="active">
             <a class="nav-link">Clientes</a>
@@ -111,19 +138,17 @@
           <li class="nav-item " routerLink="melhor-envio" routerLinkActive="active">
             <a class="nav-link">Melhor envio</a>
           </li>
+          <li class="nav-item " routerLink="banner" routerLinkActive="active">
+            <a class="nav-link">Banner</a>
+          </li>
+          <li class="nav-item " routerLink="tabela-medidas" routerLinkActive="active">
+            <a class="nav-link">Tabela de Medidas</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" [href]="linkNz" target="_blank" >Ir para nz</a>
+          </li>
           <li class="nav-item" (click)="logout()" routerLinkActive="active">
             <a class="nav-link"> Sair  <i class="fas fa-sign-out-alt"></i></a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown
-            </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div>
           </li>
         </ul>
       </div>

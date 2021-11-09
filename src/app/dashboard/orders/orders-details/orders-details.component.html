@@ -1,0 +1,169 @@
+<div class="row mt-3">
+  <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink="/painel/pedidos">Pedidos</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Detalhes</li>
+      </ol>
+    </nav>
+  </div>
+  <div class="col-lg-4 col-sm-12 mb-3 mb-lg-0">
+    <button type="button" routerLink="/painel/pedidos" class="btn btn-secondary w-100">Voltar</button>
+  </div>
+</div>
+<div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="!purchase && !hasError">
+  Não encontramos o pedido.
+</div>
+<div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
+  Não foi possível carregar algumas informações. Por favor,
+  <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+</div>
+
+<div *ngIf="purchase && !hasError">
+  <div class="row mt-3">
+    <div class="col-12 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Informações do Pedido</h5>
+          <hr>
+          <div class="form-row mb-3">
+            <div class="col-12 col-lg-6 mb-5">
+              <h4>Dados do Cliente</h4>
+              <div class="row">
+                <div class="col-12"><b>Nome</b></div>
+                <div class="col-12 mb-2">{{ purchase.customer.name }} {{ purchase.customer.lastName }}</div>
+                <div class="col-12"><b>Instagram</b></div>
+                <div class="col-12 mb-2">
+                  <a href="https://www.instagram.com/{{ purchase.customer.instagram.replace('@', '') }}"
+                     class="badge badge-info"
+                     target="_blank">{{ purchase.customer.instagram }}
+                  </a>
+                </div>
+                <div class="col-12"><b>WhatsApp</b></div>
+                <div class="col-12 mb-2">
+                  <a
+                    href="https://{{isMobile() ? 'api.whatsapp.com' : 'web.whatsapp.com'}}/send?phone=+55{{ purchase.customer.phone }}&text=Olá, {{ purchase.customer.name }}"
+                    class="badge badge-info"
+                    target="_blank">
+                    {{ purchase.customer.phone }}
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 mb-5">
+              <h4>Endereço de Entrega</h4>
+              <div class="row">
+                <div class="col-12"><b>CEP</b></div>
+                <div class="col-12 mb-2">{{ purchase.shipmentAddress.cep }}</div>
+                <div class="col-12"><b>Endereço</b></div>
+                <div class="col-12 mb-2">
+                  {{ purchase.shipmentAddress.street }},
+                  {{ purchase.shipmentAddress.number }} -
+                  {{ purchase.shipmentAddress.complement }} -
+                  {{ purchase.shipmentAddress.district }}
+                </div>
+                <div class="row p-0 m-0">
+                  <div class="col-6 p-0 m-0">
+                    <div class="row p-0 m-0">
+                      <div class="col-12"><b>Cidade</b></div>
+                      <div class="col-12 mb-2">{{ purchase.shipmentAddress.city }}</div>
+                    </div>
+                  </div>
+                  <div class="col-6 p-0 m-0">
+                    <div class="row p-0 m-0">
+                      <div class="col-12"><b>Estado</b></div>
+                      <div class="col-12 mb-2">{{ purchase.shipmentAddress.state }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 mb-5">
+              <h4>Detalhes do Pedido</h4>
+              <div class="row">
+                <div class="col-12"><b>Pagamento</b></div>
+                <div class="col-12 mb-2">{{ purchase.status | titlecase }}</div>
+                <div class="col-12"><b>Pedido</b></div>
+                <div class="col-12 mb-2">{{ purchase.id }}</div>
+                <div class="col-12"><b>Data</b></div>
+                <div class="col-12 mb-2">{{ purchase.paymentRequest.creationDate }}</div>
+                <div class="col-12"><b>Total</b></div>
+                <div class="col-12 mb-2">{{ purchase.totalCost | currency }}</div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-6 mb-5">
+              <h4>Detalhes da Compra</h4>
+              <div class="row">
+                <div class="col-6 col-lg-4"><b>Valor da Compra</b></div>
+                <div class="col-6 col-lg-8 mb-2 text-right">{{ totalPurchase | currency }}</div>
+                <div class="col-6 col-lg-4"><b>Descontos</b></div>
+                <div class="col-6 col-lg-8 mb-2 text-right">- {{ '0' | currency }}</div>
+                <div class="col-6 col-lg-4"><b>Frete</b></div>
+                <div class="col-6 col-lg-8 mb-2 text-right">{{ purchase.shipment | currency }}</div>
+                <div class="col-6 col-lg-4"><b>Total</b></div>
+                <div class="col-6 col-lg-8 mb-2 text-right">{{ purchase.totalCost | currency }}</div>
+              </div>
+            </div>
+            <div class="col-12 mb-5" *ngIf="!isMobile()">
+              <h4>Resumo do Pedido</h4>
+              <div class="row mb-2">
+                <div class="col-6"><b>Produto</b></div>
+                <div class="col-2"><b>Quantidade</b></div>
+                <div class="col-2"><b>Preço</b></div>
+                <div class="col-2"><b>Total</b></div>
+              </div>
+              <div class="row mb-2 border-top" *ngFor="let item of purchase.items">
+                <div class="col-6 mt-2">Chicago Bulls Preto P</div>
+                <div class="col-2 mt-2">{{ item.quantity }}</div>
+                <div class="col-2 mt-2">{{ item.cost | currency }}</div>
+                <div class="col-2 mt-2">{{ item.quantity * item.cost | currency }}</div>
+              </div>
+            </div>
+
+            <div class="col-12 mb-5" *ngIf="isMobile()">
+              <h4>Resumo do Pedido</h4>
+              <div class="row mb-2 border-top">
+                <div class="col-12 mt-3"><b>Produto</b></div>
+                <div class="col-12 mb-1">Chicago Bulls Preto P</div>
+                <div class="col-6"><b>Quantidade</b></div>
+                <div class="col-6 mb-1">2</div>
+                <div class="col-6"><b>Preço</b></div>
+                <div class="col-6 mb-1">{{ '150' | currency }}</div>
+                <div class="col-6"><b>Total</b></div>
+                <div class="col-6 mb-3">{{ '300' | currency }}</div>
+              </div>
+              <div class="row mb-2 border-top">
+                <div class="col-12 mt-3"><b>Produto</b></div>
+                <div class="col-12 mb-1">Chicago Bulls Preto M</div>
+                <div class="col-6"><b>Quantidade</b></div>
+                <div class="col-6 mb-1">3</div>
+                <div class="col-6"><b>Preço</b></div>
+                <div class="col-6 mb-1">{{ '150' | currency }}</div>
+                <div class="col-6"><b>Total</b></div>
+                <div class="col-6 mb-3">{{ '450' | currency }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirect()"
+  #success
+  [title]="''"
+  icon="success">
+</swal>
+<swal
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>

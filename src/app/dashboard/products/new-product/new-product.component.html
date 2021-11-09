@@ -146,7 +146,7 @@
       </div>
     </div>
     <div class="col-lg-4 mb-3">
-      <div class="card mb-3" *ngIf="product?.id">
+      <div class="card mb-3">
         <div class="card-body">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" value="" id="isShowOnStore" formControlName="status">
@@ -192,7 +192,7 @@
               <select class="form-control" id="color"
                       formControlName="color"
                       [ngClass]="cssError(validateFieldsFormProductDetail.color)">
-                <option *ngFor="let cor of colors" value="cor">{{ cor | titlecase }}</option>
+                <option *ngFor="let cor of colors" value="{{ cor }}">{{ cor | titlecase }}</option>
               </select>
               <div id="field-color" class="invalid-feedback">
                 Por favor, insira a cor.

@@ -46,7 +46,11 @@ export class FirstAccessComponent implements OnInit {
 
   createForm(): void {
     this.formFirstAccess = this.formBuilder.group({
-        newPassword: ['', [Validators.required, Validators.minLength(8)]],
+        newPassword: ['', [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.pattern('^(?=.*?[A-Z])(?=(.*[a-z]){1,})(?=(.*[\\d]){1,})(?=(.*[\\W]){1,})(?!.*\\s).{8,}$')
+        ]],
         repeatPassword: ['', Validators.required]
       },
       {
