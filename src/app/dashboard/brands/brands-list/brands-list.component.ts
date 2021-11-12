@@ -34,8 +34,6 @@ export class BrandsListComponent implements OnInit {
         this.brands = r.content;
         this.content = r;
         this.paginationService.getPageRange(this.content.totalElements);
-        console.log(this.content);
-        console.log(this.paginationService.getRange());
       }, () => {
         this.hasError = true;
       });
