@@ -7,6 +7,7 @@ import {take} from 'rxjs/operators';
 import {Purchase} from '../../../../shared/models/purchase.model';
 import {PurchasePage} from '../../../../shared/models/pagination-model/purchase-page.model';
 import {ProductsService} from '../../../../shared/services/products.service';
+import {PaymentStatusPt} from '../../../../shared/enums/mercado-pago-payment-status.enum';
 
 @Component({
   selector: 'app-my-orders',
@@ -23,6 +24,7 @@ export class MyOrdersComponent implements OnInit {
   totalPurchase: number[] = [];
   totalItems: number[] = [];
   isMobile = false;
+  statusPt = PaymentStatusPt;
 
   constructor(
     public paginationService: PaginationService,

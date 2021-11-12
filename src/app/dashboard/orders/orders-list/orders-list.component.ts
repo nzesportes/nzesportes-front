@@ -7,6 +7,7 @@ import {PurchaseService} from '../../../shared/services/purchase.service';
 import {take} from 'rxjs/operators';
 import {PurchasePage} from '../../../shared/models/pagination-model/purchase-page.model';
 import {Purchase} from '../../../shared/models/purchase.model';
+import {PaymentStatusPt} from '../../../shared/enums/mercado-pago-payment-status.enum';
 
 @Component({
   selector: 'app-orders-list',
@@ -23,6 +24,7 @@ export class OrdersListComponent implements OnInit {
   purchases: Purchase[] = [];
   hasError!: boolean;
   formOrders!: FormGroup;
+  statusPt = PaymentStatusPt;
 
   constructor(
     private router: Router,

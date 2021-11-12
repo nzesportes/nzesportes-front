@@ -17,7 +17,7 @@
           <button class="btn btn-link btn-block text-left row p-0 m-0 title-orders" type="button" data-toggle="collapse"
                   id="button{{ purchase.id }}" (click)="changeStatusCollpse(collapse)" aria-expanded="true">
             <div class="row">
-              <div class="col-2">{{ purchase.status | titlecase }}</div>
+              <div class="col-2">{{ statusPt[purchase.status] | titlecase }}</div>
               <div class="col-3">64663b98</div>
               <div class="col-2">{{ purchase.paymentRequest.creationDate | date:'dd/MM/yyyy' }}</div>
               <div class="col-2">{{ totalItems[i] }}</div>

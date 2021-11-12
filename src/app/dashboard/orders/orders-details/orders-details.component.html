@@ -82,7 +82,7 @@
               <h4>Detalhes do Pedido</h4>
               <div class="row">
                 <div class="col-12"><b>Pagamento</b></div>
-                <div class="col-12 mb-2">{{ purchase.status | titlecase }}</div>
+                <div class="col-12 mb-2">{{ statusPt[purchase.status] | titlecase }}</div>
                 <div class="col-12"><b>Pedido</b></div>
                 <div class="col-12 mb-2">{{ purchase.id }}</div>
                 <div class="col-12"><b>Data</b></div>

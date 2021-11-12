@@ -7,6 +7,7 @@ import {take} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {Purchase} from '../../../shared/models/purchase.model';
 import {ProductsService} from '../../../shared/services/products.service';
+import {PaymentStatusPt} from '../../../shared/enums/mercado-pago-payment-status.enum';
 
 @Component({
   selector: 'app-orders-details',
@@ -23,6 +24,7 @@ export class OrdersDetailsComponent implements OnInit {
   id = '';
   purchase!: Purchase;
   totalPurchase = 0;
+  statusPt = PaymentStatusPt;
 
   constructor(
     private router: Router,

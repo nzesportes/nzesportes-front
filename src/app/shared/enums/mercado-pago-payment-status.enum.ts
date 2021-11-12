@@ -9,3 +9,15 @@ export enum MercadoPagoPaymentStatus {
   REFUNDED = 'refunded', // Payment was refunded to the user.
   CHARGED_BACK = 'charged_back' // Was made a chargeback in the buyer’s credit card.
 }
+
+export enum PaymentStatusPt {
+   'pending'= 'pendente',
+  'approved' = 'aprovado',
+  'authorized' = 'não autorizado',
+  'in_process' = 'processando',
+  'in_mediation' = 'processando',
+  'rejected' = 'rejeitado',
+   'cancelled' = 'cancelado',
+  'refunded' = 'pagamento foi devolvido',
+  'charged_back' = 'processando'
+}
