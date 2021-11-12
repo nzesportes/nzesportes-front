@@ -1,7 +1,7 @@
 <div class="container-fluid p-0">
   <h1 class="page-title mb-3 mb-lg-4">Meus Pedidos</h1>
 
-  <div class="row p-0 m-0 mb-2 title-table-orders">
+  <div class="row p-0 m-0 mb-2 title-table-orders" *ngIf="!isMobile">
     <div class="col-2">Pagamento</div>
     <div class="col-3">Pedido</div>
     <div class="col-2">Data</div>
@@ -10,7 +10,7 @@
     <div class="col-1"></div>
   </div>
 
-  <div class="accordion" id="myOrders">
+  <div class="accordion" id="myOrders" *ngIf="!isMobile">
     <div class="card mb-2 accordion-button" *ngFor="let purchase of purchases; let i = index" (click)="click(i, purchase.id)">
       <div class="card-header" id="headingOne">
         <h2 class="mb-0">
@@ -105,6 +105,113 @@
                 <div class="col-12 col-lg-4 mb-2 p-0 m-0 text-right">{{ purchase.shipment | currency }}</div>
                 <div class="col-12 col-lg-8 p-0 m-0"><b>Total</b></div>
                 <div class="col-12 col-lg-4 mb-2 p-0 m-0 text-right">{{ purchase.totalCost | currency }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VERSÃO MOBILE -->
+  <div class="accordion" id="myOrders" *ngIf="isMobile">
+    <div class="card mb-2 accordion-button" *ngFor="let purchase of purchases; let i = index" (click)="click(i, purchase.id)">
+      <div class="card-header" id="headingOne">
+        <h2 class="mb-0">
+          <button class="btn btn-link btn-block text-left row p-0 m-0 title-orders" type="button" data-toggle="collapse"
+                  id="button{{ purchase.id }}" (click)="changeStatusCollpse(collapse)" aria-expanded="true">
+            <div class="row p-0 m-0">
+              <div class="col-6 p-0 m-0 ">
+                <div class="row p-0 m-0">
+                  <div class="col-12 p-0 m-0 title-mobile">Pedido</div>
+                  <div class="col-12 pb-3 p-0 m-0 text-mobile">64663b98</div>
+                  <div class="col-12 pb-3 p-0 m-0 text-mobile">{{ purchase.paymentRequest.creationDate | date:'dd/MM/yyyy' }}</div>
+                </div>
+              </div>
+              <div class="col-6 p-0 m-0 text-right">
+                <div class="row p-0 m-0">
+                  <div class="col-12 p-0 m-0 title-mobile">Valor</div>
+                  <div class="col-12 pb-3 p-0 m-0 text-price-mobile">{{ purchase.totalCost | currency }}</div>
+                  <div class="col-12 pb-3 p-0 m-0 text-mobile">{{ totalItems[i] }} produtos</div>
+                </div>
+              </div>
+              <div class="col-12  p-0 m-0">
+                <div class="row p-0 m-0">
+                  <div class="col-6 p-0 m-0 text-mobile">{{ purchase.status | titlecase }}</div>
+                  <div class="col-6 p-0 m-0 text-right text-mobile"><i class="{{ collapsed ? 'fas fa-angle-up' : 'fas fa-angle-down' }}"></i></div>
+                </div>
+              </div>
+            </div>
+          </button>
+        </h2>
+      </div>
+
+      <div id="collapse{{ purchase.id }}" #collapse class="collapse" aria-labelledby="headingOne" data-parent="#myOrders">
+        <div class="card-body">
+          <div class="mb-5">
+            <h1 class="h1-details mb-3">Detalhes do Pedido</h1>
+            <div class="row p-0 m-0 mb-2 products-details-mobile border-bottom" *ngFor="let item of purchase.items; let j = index;">
+              <div class="col-12 p-0 mb-1 title-mobile">Produto</div>
+              <div class="col-12 p-0 mb-2">
+                <div class="row m-0 p-0">
+                  <div class="img-details" *ngIf="item.productDetails && item.productDetails.images && item.productDetails.images.split(';').length > 0">
+                    <img class="w-100"
+                         [src]="item.productDetails.images.split(';')[0]">
+                  </div>
+                  <div class="description-details m-auto">
+                    <span><b>
+                      {{ item?.productDetails?.product?.model | uppercase }}
+                      {{ item?.productDetails?.color | uppercase }}
+                      {{ item?.item?.size | uppercase }}
+                    </b></span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 p-0 title-mobile">Quantidade</div>
+              <div class="col-6 p-0 mb-1">{{ item.quantity }}</div>
+              <div class="col-6 p-0 title-mobile">Preço</div>
+              <div class="col-6 p-0 mb-1">{{ item.cost | currency }}</div>
+              <div class="col-6 p-0 title-mobile">Subtotal</div>
+              <div class="col-6 p-0 mb-2">{{ item.quantity * item.cost | currency }}</div>
+            </div>
+          </div>
+          <div class="mt-4 m-0 p-0 row">
+            <div class="col-12 col-md-6 p-0 m-0">
+              <h1 class="h1-details mb-3">Endereço</h1>
+              <div class="row m-0 pr-4">
+                <div class="col-12 p-0 m-0"><b>CEP</b></div>
+                <div class="col-12 mb-2 p-0 m-0">{{ purchase.shipmentAddress.cep }}</div>
+                <div class="col-12 p-0 m-0"><b>Endereço</b></div>
+                <div class="col-12 mb-2 p-0 m-0">{{ purchase.shipmentAddress.street }}, {{ purchase.shipmentAddress.number }} - {{ purchase.shipmentAddress.complement }} - {{ purchase.shipmentAddress.district }}</div>
+                <div class="col-12 mb-2 p-0 m-0">
+                  <div class="row p-0 m-0">
+                    <div class="col-12 col-md-6 p-0 m-0">
+                      <div class="row p-0 m-0">
+                        <div class="col-12 p-0 m-0"><b>Cidade</b></div>
+                        <div class="col-12 mb-2 p-0 m-0">{{ purchase.shipmentAddress.city }}</div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-6 p-0 m-0">
+                      <div class="row p-0 m-0">
+                        <div class="col-12 p-0 m-0"><b>Estado</b></div>
+                        <div class="col-12 mb-2 p-0 m-0">{{ purchase.shipmentAddress.state }}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-md-6 p-0 m-0 mt-3">
+              <h1 class="h1-details mb-3">Detalhes da Compra</h1>
+              <div class="row p-0 m-0">
+                <div class="col-8 p-0 m-0"><b>Valor da Compra</b></div>
+                <div class="col-4 mb-2 p-0 m-0 text-right">{{ totalPurchase[i] | currency }}</div>
+                <div class="col-8 p-0 m-0"><b>Descontos</b></div>
+                <div class="col-4 mb-2 p-0 m-0 text-right">- {{ '0' | currency }}</div>
+                <div class="col-8 p-0 m-0"><b>Frete</b></div>
+                <div class="col-4 mb-2 p-0 m-0 text-right">{{ purchase.shipment | currency }}</div>
+                <div class="col-8 p-0 m-0"><b>Total</b></div>
+                <div class="col-4 mb-2 p-0 m-0 text-right">{{ purchase.totalCost | currency }}</div>
               </div>
             </div>
           </div>
