@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {PaginationService} from '../../../../shared/services/pagination.service';
-import {Order} from '../../../../shared/enums/order.enum';
 import {PurchaseService} from '../../../../shared/services/purchase.service';
 import {TokenStorageService} from '../../../../shared/services/token-storage.service';
 import {CustomerService} from '../../../../shared/services/customer.service';
@@ -8,7 +7,6 @@ import {take} from 'rxjs/operators';
 import {Purchase} from '../../../../shared/models/purchase.model';
 import {PurchasePage} from '../../../../shared/models/pagination-model/purchase-page.model';
 import {ProductsService} from '../../../../shared/services/products.service';
-import {ProductDetailsTO} from '../../../../shared/models/product-details-to.model';
 
 @Component({
   selector: 'app-my-orders',
@@ -24,7 +22,7 @@ export class MyOrdersComponent implements OnInit {
   content: PurchasePage | undefined;
   totalPurchase: number[] = [];
   totalItems: number[] = [];
-  productsDetailsTO: ProductDetailsTO[] = [];
+  isMobile = false;
 
   constructor(
     public paginationService: PaginationService,
@@ -40,6 +38,11 @@ export class MyOrdersComponent implements OnInit {
     this.paginationService.initPagination();
     // this.getOrders(10, this.paginationService.page);
     this.collapsed = false;
+    this.isMobile = this.verifyWindowWidth();
+  }
+
+  verifyWindowWidth(): boolean {
+    return window.innerWidth < 768 ? true : false;
   }
 
   changeStatusCollpse(itemMenu: HTMLElement): void {

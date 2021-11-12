@@ -88,6 +88,31 @@
   font-size: 12px;
 }
 
+.title-mobile {
+  font-weight: 700;
+  font-size: 12px;
+  color: #979797;
+  text-transform: uppercase;
+}
+
+.text-mobile {
+  color: #2b2828;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.text-price-mobile {
+  color: #2b2828;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.products-details-mobile {
+  text-transform: uppercase;
+  color: #2b2828;
+  font-size: 14px;
+}
+
 // Extra small devices (portrait phones, less than 576px)
 // No media query for `xs` since this is the default in Bootstrap
 
