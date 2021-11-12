@@ -41,7 +41,7 @@ export class RatingFormComponent implements OnInit {
     comment: ''
   };
 
-  id = null;
+  id = '';
   purchaseId!: string;
 
   content!: RatingPage;
@@ -80,7 +80,7 @@ export class RatingFormComponent implements OnInit {
   }
 
   getProduct(): void {
-    this.productService.getById('95b888da-a2dd-41ff-9d59-7e01000ca0b9')
+    this.productService.getById('27ac05ca-7d58-4684-965a-bcf29115fc76')
       .pipe(take(1))
       .subscribe(response => {
         this.product = response;
@@ -120,7 +120,6 @@ export class RatingFormComponent implements OnInit {
     this.ratingService.getRatingsByPurchaseId(this.purchaseId, 0, 100)
       .pipe(take(1))
       .subscribe(response => {
-        console.warn('GET RESPONSE', response);
       }, error => {
         console.error(error);
       });

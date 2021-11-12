@@ -3,6 +3,11 @@ import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {Router} from '@angular/router';
 import {PaginationService} from '../../../shared/services/pagination.service';
+import {PurchaseService} from '../../../shared/services/purchase.service';
+import {take} from 'rxjs/operators';
+import {PurchasePage} from '../../../shared/models/pagination-model/purchase-page.model';
+import {Purchase} from '../../../shared/models/purchase.model';
+import {PaymentStatusPt} from '../../../shared/enums/mercado-pago-payment-status.enum';
 
 @Component({
   selector: 'app-orders-list',
@@ -15,34 +20,48 @@ export class OrdersListComponent implements OnInit {
   public readonly dialogSuccess!: SwalComponent;
   @ViewChild('error')
   public readonly dialogError!: SwalComponent;
-  content: string[] | undefined;
+  content: PurchasePage | undefined;
+  purchases: Purchase[] = [];
   hasError!: boolean;
   formOrders!: FormGroup;
+  statusPt = PaymentStatusPt;
 
   constructor(
     private router: Router,
     public paginationService: PaginationService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private purchaseService: PurchaseService
   ) { }
 
   ngOnInit(): void {
     this.hasError = false;
     this.paginationService.initPagination();
+    this.getAll(10, this.paginationService.page);
     this.createForm();
   }
 
   createForm(): void {
     this.formOrders = this.formBuilder.group({
-
+      title: ['']
     });
   }
 
-  getAllOrders(size: number, page: number): void {
-
+  getAll(size: number, page: number): void {
+    this.purchaseService.getAll(size, page)
+      .pipe(take(1))
+      .subscribe(response => {
+        this.purchases = response.content;
+        this.content = response;
+        this.paginationService.getPageRange(this.content.totalElements);
+        this.hasError = false;
+      }, () => {
+        this.hasError = true;
+      });
   }
 
+
   updateIndex(index: number): void {
-    this.getAllOrders(10, index);
+    this.getAll(10, index);
     this.paginationService.page = index;
   }
 

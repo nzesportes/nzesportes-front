@@ -11,7 +11,7 @@ import {BrandPage} from '../../../../shared/models/pagination-model/brand-page.m
 import {PaginationService} from '../../../../shared/services/pagination.service';
 import {Category} from '../../../../shared/models/category.model';
 import {CategoriesService} from '../../../../shared/services/categories.service';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {DetailsFiltersRequest} from '../../../models/details-filters-request';
 import {SubCategoriesService} from '../../../../shared/services/sub-categories.service';
 import {SubCategory} from '../../../../shared/models/sub-category.model';
@@ -130,13 +130,11 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
 ) {
   }
-
   ngOnInit(): void {
     this.createForm();
     this._resetValuesForm();
     this.verifyFilters = this._verifyFilters();
     this._setValuesInit();
-
     this.subscription = this.productsService.detailsFiltersState$.subscribe(filter => {
       this._initializeVariables(filter);
       this._setValuesInit();
@@ -154,6 +152,9 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this.subscription){
+      this.subscription.unsubscribe();
+    }
     this.filterService.setFilter(this.formFilters.value);
   }
 

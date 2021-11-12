@@ -1,8 +1,8 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {TokenStorageService} from '../../../shared/services/token-storage.service';
 import {AddressService} from '../../../shared/services/address.service';
 import {Address} from '../../../shared/models/address.model';
-import {Observable} from 'rxjs';
+import {Observable, Subscription, zip} from 'rxjs';
 import {ItemCart} from '../../models/item-cart';
 import {PurchaseService} from '../../../shared/services/purchase.service';
 import {Store} from '@ngrx/store';
@@ -23,7 +23,7 @@ import {Router} from '@angular/router';
   templateUrl: './order-review.component.html',
   styleUrls: ['./order-review.component.scss']
 })
-export class OrderReviewComponent implements OnInit {
+export class OrderReviewComponent implements OnInit, OnDestroy {
 
   @ViewChild('success')
   public readonly dialogSuccess!: SwalComponent;
@@ -51,6 +51,9 @@ export class OrderReviewComponent implements OnInit {
   public hasError = false;
   paymentUrl = '';
 
+  productsSubscription$!: Subscription;
+
+
   constructor(
     private tokenStorageService: TokenStorageService,
     private addressService: AddressService,
@@ -69,11 +72,19 @@ export class OrderReviewComponent implements OnInit {
     this.total$ = this.store.select(fromSelector.total);
     this.isLoading$ = this.store.select(fromSelector.isLoading);
     this.shipment = 0;
-
     this.getPaymentTO();
     this.getTotalPurchase();
     this.getAddressesByUser();
     this.isLogged = this.tokenStorageService.isLoggedIn();
+    this.productsSubscription$ =
+      zip(
+        this.products$,
+        this.isLoading$
+      ).subscribe(([r, loading]) => {
+      if ((!loading && !r) || (!loading && r && Array.isArray(r) && r.length === 0) ){
+        this.router.navigateByUrl('/carrinho');
+      }
+    });
   }
 
   createForm(): void {
@@ -117,6 +128,7 @@ export class OrderReviewComponent implements OnInit {
   goToPayment(): void {
     this.paymentTO.shipmentId = this.formGoToPayment?.get('shipmentId')?.value;
     this.paymentTO.shipment = this.shipment;
+    console.log(JSON.stringify(this.paymentTO));
     this.purchaseService.createPaymentRequest(this.paymentTO)
       .subscribe(response => {
         this.paymentUrl = response.paymentUrl;
@@ -200,6 +212,10 @@ export class OrderReviewComponent implements OnInit {
     this.dialogError.confirmButtonText = error.action;
     this.dialogError.title = error.title;
     this.dialogError.text = error.message;
+  }
+
+  ngOnDestroy(): void {
+    this.productsSubscription$.unsubscribe();
   }
 }
 

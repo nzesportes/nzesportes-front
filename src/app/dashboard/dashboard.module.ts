@@ -14,8 +14,11 @@ import {BrandsModule} from './brands/brands.module';
 import {AccountModule} from './account/account.module';
 import {BetterSendModule} from './better-send/better-send.module';
 import {NgxMaskModule} from 'ngx-mask';
+// @ts-ignore
 import { MeasurementChartListComponent } from './measurement-chart/measurement-chart-list/measurement-chart-list.component';
+// @ts-ignore
 import { MeasurementChartNewComponent } from './measurement-chart/measurement-chart-new/measurement-chart-new.component';
+import {CouponModule} from './coupon/coupon.module';
 
 
 @NgModule({
@@ -34,6 +37,7 @@ import { MeasurementChartNewComponent } from './measurement-chart/measurement-ch
     BrandsModule,
     AccountModule,
     BetterSendModule,
+    CouponModule,
     // angular modules
     DashboardRoutingModule,
     CommonModule,
