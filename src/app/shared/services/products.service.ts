@@ -11,6 +11,7 @@ import {Gender} from '../enums/gender';
 import {Order} from '../enums/order.enum';
 import {DetailsFiltersRequest} from '../../store/models/details-filters-request';
 import {ProductDetailsTOPage} from '../models/pagination-model/product-details-to-page.model';
+import {ProductDetailsTO} from '../models/product-details-to.model';
 
 @Injectable({
   providedIn: 'root'
@@ -85,6 +86,10 @@ export class ProductsService {
     const params = new HttpParams()
       .set('async', 'true');
     return this.http.delete<Product>(this.api + id, {params});
+  }
+
+  getByPurchaseId(purchaseId: string): Observable<ProductDetailsTO[]> {
+    return this.http.get<ProductDetailsTO[]>(`${this.api}details/purchase/${purchaseId}`);
   }
 
   getDetailById(uuid: string): Observable<ProductDetails> {

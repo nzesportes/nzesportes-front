@@ -7,6 +7,8 @@ import {CustomerService} from '../../../../shared/services/customer.service';
 import {take} from 'rxjs/operators';
 import {Purchase} from '../../../../shared/models/purchase.model';
 import {PurchasePage} from '../../../../shared/models/pagination-model/purchase-page.model';
+import {ProductsService} from '../../../../shared/services/products.service';
+import {ProductDetailsTO} from '../../../../shared/models/product-details-to.model';
 
 @Component({
   selector: 'app-my-orders',
@@ -22,12 +24,14 @@ export class MyOrdersComponent implements OnInit {
   content: PurchasePage | undefined;
   totalPurchase: number[] = [];
   totalItems: number[] = [];
+  productsDetailsTO: ProductDetailsTO[] = [];
 
   constructor(
     public paginationService: PaginationService,
-    public purchaseService: PurchaseService,
-    public tokenStorageService: TokenStorageService,
-    public customerService: CustomerService
+    private purchaseService: PurchaseService,
+    private tokenStorageService: TokenStorageService,
+    private customerService: CustomerService,
+    private productsService: ProductsService
   ) {
   }
 
@@ -67,6 +71,27 @@ export class MyOrdersComponent implements OnInit {
         this.content = response;
         this.paginationService.getPageRange(this.content.totalElements);
         this.getTotalPurchaseAndItems();
+      }, error => {
+        console.error(error);
+      });
+  }
+
+  click(index: number, purchaseId: string): void {
+    if (!this.purchases[index].isLoaded) {
+      this.getByPurchaseId(index, purchaseId);
+    }
+  }
+
+  getByPurchaseId(index: number, purchaseId: string): void {
+    this.productsService.getByPurchaseId(purchaseId)
+      .subscribe(response => {
+        this.purchases[index].isLoaded = true;
+        this.purchases[index].items.forEach(purchaseItem => {
+          const product = response.find(i => i.purchaseStockId === purchaseItem.item.id);
+          if (product) {
+            purchaseItem.productDetails = product;
+          }
+        });
       }, error => {
         console.error(error);
       });

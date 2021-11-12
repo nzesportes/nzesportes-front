@@ -6,6 +6,7 @@ import {PurchaseService} from '../../../shared/services/purchase.service';
 import {take} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 import {Purchase} from '../../../shared/models/purchase.model';
+import {ProductsService} from '../../../shared/services/products.service';
 
 @Component({
   selector: 'app-orders-details',
@@ -20,13 +21,14 @@ export class OrdersDetailsComponent implements OnInit {
   public readonly dialogError!: SwalComponent;
   hasError = false;
   id = '';
-  purchase: Purchase | undefined;
+  purchase!: Purchase;
   totalPurchase = 0;
 
   constructor(
     private router: Router,
     private purchaseService: PurchaseService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private productsService: ProductsService
   ) {
   }
 
@@ -45,6 +47,7 @@ export class OrdersDetailsComponent implements OnInit {
         this.purchase = response;
         this.hasError = false;
         this.getTotalPurchase();
+        this.getByPurchaseId(this.purchase.id);
       }, () => {
         this.hasError = true;
       });
@@ -54,6 +57,20 @@ export class OrdersDetailsComponent implements OnInit {
     this.purchase?.items.forEach(item => {
       this.totalPurchase += (item.cost * item.quantity);
     });
+  }
+
+  getByPurchaseId(purchaseId: string): void {
+    this.productsService.getByPurchaseId(purchaseId)
+      .subscribe(response => {
+        this.purchase.items.forEach(purchaseItem => {
+          const product = response.find(i => i.purchaseStockId === purchaseItem.item.id);
+          if (product) {
+            purchaseItem.productDetails = product;
+          }
+        });
+      }, error => {
+        console.error(error);
+      });
   }
 
   redirect(): void {

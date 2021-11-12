@@ -28,8 +28,7 @@ export class PurchaseService {
     const params = new HttpParams()
       .set('async', 'true')
       .set('page', page.toString())
-      .set('size', size.toString())
-      .set('customerId', customerId ? customerId : '');
+      .set('size', size.toString());
     return this.httpClient.get<PurchasePage>(`${this.api}/customers/${customerId}`, {params});
   }
 

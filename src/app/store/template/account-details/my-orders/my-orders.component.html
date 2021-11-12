@@ -11,7 +11,7 @@
   </div>
 
   <div class="accordion" id="myOrders">
-    <div class="card mb-2 accordion-button" *ngFor="let purchase of purchases; let i = index">
+    <div class="card mb-2 accordion-button" *ngFor="let purchase of purchases; let i = index" (click)="click(i, purchase.id)">
       <div class="card-header" id="headingOne">
         <h2 class="mb-0">
           <button class="btn btn-link btn-block text-left row p-0 m-0 title-orders" type="button" data-toggle="collapse"
@@ -38,15 +38,19 @@
               <div class="col-2 p-0">Preço</div>
               <div class="col-2 p-0">Subtotal</div>
             </div>
-            <div class="row p-0 m-0 mb-2 orders-products-details" *ngFor="let item of purchase.items; let i = index">
+            <div class="row p-0 m-0 mb-2 orders-products-details" *ngFor="let item of purchase.items; let j = index;">
               <div class="col-7 p-0">
                 <div class="row m-0 p-0">
-                  <div class="img-details">
+                  <div class="img-details" *ngIf="item.productDetails && item.productDetails.images && item.productDetails.images.split(';').length > 0">
                     <img class="w-100"
-                         src="https://res.cloudinary.com/nzesportes/image/upload/v1631149505/produtos/vans-vinho-thumb_rrvnqz.jpg">
+                         [src]="item.productDetails.images.split(';')[0]">
                   </div>
                   <div class="description-details m-auto">
-                    <span><b>CHICAGO BULLS BRANCO XGG</b></span>
+                    <span><b>
+                      {{ item?.productDetails?.product?.model | uppercase }}
+                      {{ item?.productDetails?.color | uppercase }}
+                      {{ item?.item?.size | uppercase }}
+                    </b></span>
                   </div>
                 </div>
               </div>

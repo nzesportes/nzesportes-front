@@ -128,6 +128,7 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
   goToPayment(): void {
     this.paymentTO.shipmentId = this.formGoToPayment?.get('shipmentId')?.value;
     this.paymentTO.shipment = this.shipment;
+    console.log(JSON.stringify(this.paymentTO));
     this.purchaseService.createPaymentRequest(this.paymentTO)
       .subscribe(response => {
         this.paymentUrl = response.paymentUrl;

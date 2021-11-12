@@ -122,15 +122,19 @@
 
             <div class="col-12 mb-5" *ngIf="isMobile()">
               <h4>Resumo do Pedido</h4>
-              <div class="row mb-2 border-top">
+              <div class="row mb-2 border-top" *ngFor="let item of purchase.items">
                 <div class="col-12 mt-3"><b>Produto</b></div>
-                <div class="col-12 mb-1">Chicago Bulls Preto P</div>
+                <div class="col-12 mb-1">
+                  {{ item?.productDetails?.product?.model | uppercase }}
+                  {{ item?.productDetails?.color | uppercase }}
+                  {{ item?.item?.size | uppercase }}
+                </div>
                 <div class="col-6"><b>Quantidade</b></div>
-                <div class="col-6 mb-1">2</div>
+                <div class="col-6 mb-1">{{ item.quantity }}</div>
                 <div class="col-6"><b>Preço</b></div>
-                <div class="col-6 mb-1">{{ '150' | currency }}</div>
+                <div class="col-6 mb-1">{{ item.cost | currency }}</div>
                 <div class="col-6"><b>Total</b></div>
-                <div class="col-6 mb-3">{{ '300' | currency }}</div>
+                <div class="col-6 mb-3">{{ item.quantity * item.cost | currency }}</div>
               </div>
               <div class="row mb-2 border-top">
                 <div class="col-12 mt-3"><b>Produto</b></div>
