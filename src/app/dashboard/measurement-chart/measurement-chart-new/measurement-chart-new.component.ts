@@ -51,7 +51,7 @@ export class MeasurementChartNewComponent implements OnInit {
   }
 
   addHeader(): void {
-    console.warn('ADD', this.createHeaderForm());
+    // console.warn('ADD', this.createHeaderForm());
     this.measurementChartNew.insert(0, this.createHeaderForm());
   }
 

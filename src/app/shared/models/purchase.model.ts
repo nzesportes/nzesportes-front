@@ -3,6 +3,8 @@ import {PaymenteRequestTO} from './paymente-request-to.model';
 import {MercadoPagoPaymentStatus} from '../enums/mercado-pago-payment-status.enum';
 import {AddressTO} from './address-to.model';
 import {Customer} from './customer.model';
+import {ProductDetails} from './product-details.model';
+import {ProductDetailsTO} from './product-details-to.model';
 
 export interface Purchase {
   id: string;
@@ -13,4 +15,5 @@ export interface Purchase {
   status: MercadoPagoPaymentStatus;
   paymentRequest: PaymenteRequestTO;
   customer: Customer;
+  isLoaded: boolean;
 }

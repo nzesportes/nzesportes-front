@@ -114,7 +114,6 @@ export class AddressFormComponent implements OnInit {
         });
     } else {
       this.address.id = this.id;
-      console.warn(this.address);
       this.addressService.update(this.address)
         .pipe(take(1))
         .subscribe(() => {

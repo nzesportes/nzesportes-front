@@ -15,4 +15,5 @@ export interface ProductDetailsTO {
   stock: Stock[];
   subCategories: SubCategory[];
   product: ProductTO;
+  purchaseStockId: string;
 }

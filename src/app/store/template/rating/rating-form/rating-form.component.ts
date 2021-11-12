@@ -120,7 +120,6 @@ export class RatingFormComponent implements OnInit {
     this.ratingService.getRatingsByPurchaseId(this.purchaseId, 0, 100)
       .pipe(take(1))
       .subscribe(response => {
-        console.warn('GET RESPONSE', response);
       }, error => {
         console.error(error);
       });

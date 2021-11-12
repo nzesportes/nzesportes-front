@@ -51,6 +51,8 @@ export class OrdersListComponent implements OnInit {
         this.purchases = response.content;
         this.content = response;
         this.paginationService.getPageRange(this.content.totalElements);
+        console.log(this.content);
+        console.log(this.paginationService.getRange());
         this.hasError = false;
       }, () => {
         this.hasError = true;
