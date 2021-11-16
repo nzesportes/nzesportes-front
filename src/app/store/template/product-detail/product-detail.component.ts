@@ -135,7 +135,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
               this.createForm();
               this.changeMax(0);
               this.setImages();
-              const productJson = localStorage.getItem('product');
+              const productJson = sessionStorage.getItem('product');
               if (productJson) {
                 this.product = JSON.parse(productJson);
                 this.getRatingsByProductId(this.product.id, this.paginationService.page, 10);

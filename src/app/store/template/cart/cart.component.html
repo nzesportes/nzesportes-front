@@ -1,5 +1,5 @@
 <div class="container p-container">
-  <div  *ngIf="loading; else productList"></div>
+  <div *ngIf="loading; else productList"></div>
   <ng-template #productList>
     <div class="empty-cart text-center" *ngIf="(products$ | async)?.length === 0">
       <h3>Você não tem itens no carrinho</h3>
@@ -27,11 +27,17 @@
             <div class="col-6 col-xl-2 pt-3 pb-3">
               <div class="input-group quantity ml-auto ml-xl-0">
                 <div class="input-group-prepend">
-                  <button type="button" class="btn btn-controls-cart" [disabled]="inputQuantity?.value === (1).toString()" (click)="addQuantityCart(item.id, -1)">-</button>
+                  <button type="button" class="btn btn-controls-cart"
+                          [disabled]="inputQuantity?.value === (1).toString()" (click)="addQuantityCart(item.id, -1)">-
+                  </button>
                 </div>
-                <input type="number" class="form-control input-qtde" readonly #inputQuantity  [min]="1" [value]="item.quantity">
+                <input type="number" class="form-control input-qtde" readonly #inputQuantity [min]="1"
+                       [value]="item.quantity">
                 <div class="input-group-append">
-                  <button type="button" class="btn btn-controls-cart"   [disabled]="item.stock.quantity.toString() === inputQuantity?.value" (click)="addQuantityCart(item.id, 1)">+</button>
+                  <button type="button" class="btn btn-controls-cart"
+                          [disabled]="item.stock.quantity.toString() === inputQuantity?.value"
+                          (click)="addQuantityCart(item.id, 1)">+
+                  </button>
                 </div>
               </div>
             </div>
@@ -46,7 +52,21 @@
       <div class="row w-100 m-0 actions-cart pt-5" *ngIf="(products$ | async)?.length !== 0">
         <div class="col-12 col-md-6 col-lg-8 col-xl-9 p-3">
           <div class="form-group items-actions-cart text-xl-left text-center">
-            <input type="text" class="form-control promocode" placeholder="Código Promocional">
+            <input type="text" #promocode
+                   class="form-control {{ hasCouponError ? 'promocodeError' : 'promocodeSuccess' }} promocode"
+                   placeholder="Código Promocional" [value]="coupon" [disabled]="isValidCoupon">
+            <button class="btn button-check-availability" (click)="checkAvailability(promocode.value)"
+                    [disabled]="isValidCoupon">Adicionar
+            </button>
+            <div class="coupons-error" *ngIf="hasCouponError">
+              <small class="ml-3" *ngIf="isNotFoundError">Cupom inválido.</small>
+              <small class="ml-3" *ngIf="isExpiredCoupon">O cupom informado venceu.</small>
+              <small class="ml-3" *ngIf="isUndefinedError">Campo não preenchido corretamente.</small>
+            </div>
+            <div class="coupon-valid" *ngIf="!hasCouponError && isValidCoupon">
+              <small class="ml-3 mt-1">{{ promocode.value }}<i class="fas fa-times ml-1 close-coupon"
+                                                               (click)="removeCoupon(promocode)"></i></small>
+            </div>
           </div>
           <div class="items-actions-cart text-xl-left text-center">
             <a class="btn btn-continue-shopping w-100" routerLink="/search">Continuar Comprando</a>
@@ -58,7 +78,7 @@
               class="float-right">{{ total$ | async | currency }}</span></h3>
           </div>
           <div class="items-actions-cart text-xl-right text-center">
-            <button routerLink="/finalizar-compra" class="btn btn-finish-shopping w-100" >Finalizar Compra</button>
+            <button routerLink="/finalizar-compra" class="btn btn-finish-shopping w-100">Finalizar Compra</button>
           </div>
         </div>
       </div>

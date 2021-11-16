@@ -34,4 +34,8 @@ export class CouponService {
       .set('async', 'true');
     return this.http.get<Coupon>(this.api + id, {params});
   }
+
+  validate(code: string): Observable<boolean> {
+    return this.http.get<boolean>(`${this.api}validate/${code}`);
+  }
 }
