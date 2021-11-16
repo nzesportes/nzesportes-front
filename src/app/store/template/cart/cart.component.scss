@@ -188,6 +188,25 @@
   border-radius: 45px;
 }
 
+.promocodeError, .promocodeSuccess {
+  margin-bottom: 0px;
+}
+
+.coupons-error {
+  text-transform: none;
+  width: 100%;
+  margin-top: 0.25rem;
+  color: #dc3545;
+}
+
+.close-coupon {
+  cursor: pointer;
+}
+
+.close-coupon:hover {
+  color: #f37135;
+}
+
 .empty-cart h3 {
   text-transform: uppercase;
   font-weight: 700;
@@ -204,6 +223,19 @@
 
 .empty-cart a i {
   font-size: 14px;
+}
+
+.items-actions-cart {
+  position: relative;
+}
+
+.button-check-availability {
+  position: absolute;
+  left: 225px;
+  top: 3px;
+  color: #f37135;
+  text-decoration: underline;
+  font-weight: 600;
 }
 
 @media (min-width: 576px) {

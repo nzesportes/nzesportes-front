@@ -82,7 +82,7 @@ export class NzStoreComponent implements OnInit {
     this.productsService.getById(id)
       .pipe(take(1))
       .subscribe(product => {
-        localStorage.setItem('product', JSON.stringify(product));
+        sessionStorage.setItem('product', JSON.stringify(product));
         this.hasError = false;
       }, error => {
         console.log(error);
