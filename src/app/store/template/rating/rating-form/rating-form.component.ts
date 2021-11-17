@@ -13,6 +13,9 @@ import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 import {ErrorWarning} from '../../../../shared/models/error-warning.model';
 import {ProductsService} from '../../../../shared/services/products.service';
 import {Product} from '../../../../shared/models/product.model';
+import {ProductDetailsTO} from '../../../../shared/models/product-details-to.model';
+import {Purchase} from '../../../../shared/models/purchase.model';
+import {PurchaseService} from '../../../../shared/services/purchase.service';
 
 @Component({
   selector: 'app-rating-form',
@@ -49,6 +52,7 @@ export class RatingFormComponent implements OnInit {
   selectedFilter = '';
 
   product!: Product;
+  purchase!: Purchase;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -56,13 +60,13 @@ export class RatingFormComponent implements OnInit {
     private paginationService: PaginationService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private productService: ProductsService
+    private productsService: ProductsService,
+    private purchaseService: PurchaseService
   ) {
   }
 
   ngOnInit(): void {
     this.getPurchaseIdParam();
-    this.getProduct();
     this.createForm();
     this.paginationService.initPagination();
   }
@@ -75,15 +79,19 @@ export class RatingFormComponent implements OnInit {
     this.createRating = this.formBuilder.group({
       title: ['', Validators.required],
       comment: ['', [Validators.required, Validators.maxLength(500)]],
-      rate: ['', Validators.required]
+      rate: ['', Validators.required],
+      productId: ['', Validators.required]
     });
   }
 
-  getProduct(): void {
-    this.productService.getById('27ac05ca-7d58-4684-965a-bcf29115fc76')
+  getById(): void {
+    this.purchaseService.getById(this.purchaseId)
       .pipe(take(1))
       .subscribe(response => {
-        this.product = response;
+        this.purchase = response;
+        this.getByPurchaseId(this.purchase.id);
+      }, (error) => {
+        console.error(error);
       });
   }
 
@@ -91,7 +99,7 @@ export class RatingFormComponent implements OnInit {
   create(): void {
     this.ratingSaveTO = this.createRating.value;
     this.ratingSaveTO.purchaseId = this.purchaseId;
-    this.ratingSaveTO.productId = this.product.id;
+    this.ratingSaveTO.productId = this.createRating.get('productId')?.value.product.id;
     this.ratingService.create(this.ratingSaveTO)
       .pipe(take(1))
       .subscribe(response => {
@@ -112,14 +120,19 @@ export class RatingFormComponent implements OnInit {
     const params: Observable<Params> = this.activatedRoute.params;
     params.subscribe(urlParams => {
       this.purchaseId = urlParams.id;
-      this.getRatingsByPurchaseId();
+      this.getById();
     });
   }
 
-  getRatingsByPurchaseId(): void {
-    this.ratingService.getRatingsByPurchaseId(this.purchaseId, 0, 100)
-      .pipe(take(1))
+  getByPurchaseId(purchaseId: string): void {
+    this.productsService.getByPurchaseId(purchaseId)
       .subscribe(response => {
+        this.purchase.items.forEach(purchaseItem => {
+          const product = response.find(i => i.purchaseStockId === purchaseItem.item.id);
+          if (product) {
+            purchaseItem.productDetails = product;
+          }
+        });
       }, error => {
         console.error(error);
       });
