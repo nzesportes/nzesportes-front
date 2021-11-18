@@ -38,7 +38,6 @@ export class MyOrdersComponent implements OnInit {
   ngOnInit(): void {
     this.getCustomer();
     this.paginationService.initPagination();
-    // this.getOrders(10, this.paginationService.page);
     this.collapsed = false;
     this.isMobile = this.verifyWindowWidth();
   }

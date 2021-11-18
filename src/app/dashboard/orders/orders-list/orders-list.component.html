@@ -48,7 +48,7 @@
       <tbody>
       <tr scope="row" class="row-table" *ngFor="let purchase of purchases" routerLink="{{purchase.id}}">
         <td style="width: 30%">{{ statusPt[purchase.status] | titlecase }}</td>
-        <td style="width: 30%">{{ purchase.id }}</td>
+        <td style="width: 30%">{{ purchase.code }}</td>
         <td style="width: 15%">{{ purchase.paymentRequest.creationDate | date:'dd/MM/yyyy' }}</td>
         <td style="width: 15%">{{ purchase.totalCost | currency }}</td>
         <td style="width: 10%"><i class="fas fa-edit text-primary"></i></td>
