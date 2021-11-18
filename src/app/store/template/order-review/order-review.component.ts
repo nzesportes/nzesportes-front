@@ -17,6 +17,7 @@ import {BetterSendService} from '../../../shared/services/better-send.service';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 import {ErrorWarning} from '../../../shared/models/error-warning.model';
 import {Router} from '@angular/router';
+import {CouponService} from '../../../shared/services/coupon.service';
 
 @Component({
   selector: 'app-order-review',
@@ -42,7 +43,8 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
   paymentTO: PaymentTO = {
     products: [],
     shipment: 0,
-    shipmentId: ''
+    shipmentId: '',
+    coupon: ''
   };
   shippingResult: ShippingResult[] = [];
   indexAddress!: number;
@@ -50,6 +52,10 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
   errorShipResult = false;
   public hasError = false;
   paymentUrl = '';
+
+  promocodeSessionStorage: any;
+  coupon = '';
+  isValidCoupon = false;
 
   productsSubscription$!: Subscription;
 
@@ -61,11 +67,20 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private betterSendService: BetterSendService,
     private router: Router,
+    private couponService: CouponService,
     private store: Store<any>
   ) {
   }
 
   ngOnInit(): void {
+    this.promocodeSessionStorage = sessionStorage.getItem('coupon');
+    if (this.promocodeSessionStorage) {
+      this.promocodeSessionStorage = JSON.parse(this.promocodeSessionStorage);
+      this.coupon = this.promocodeSessionStorage.code;
+      this.voucher = this.promocodeSessionStorage.discount;
+      this.checkSessionStorageCoupon(this.promocodeSessionStorage.code);
+    }
+
     this.createForm();
     this.store.dispatch(fromActions.requestLoadProducts());
     this.products$ = this.store.select(fromSelector.products);
@@ -81,10 +96,10 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
         this.products$,
         this.isLoading$
       ).subscribe(([r, loading]) => {
-      if ((!loading && !r) || (!loading && r && Array.isArray(r) && r.length === 0) ){
-        this.router.navigateByUrl('/carrinho');
-      }
-    });
+        if ((!loading && !r) || (!loading && r && Array.isArray(r) && r.length === 0)) {
+          this.router.navigateByUrl('/carrinho');
+        }
+      });
   }
 
   createForm(): void {
@@ -126,26 +141,42 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
   }
 
   goToPayment(): void {
-    this.paymentTO.shipmentId = this.formGoToPayment?.get('shipmentId')?.value;
-    this.paymentTO.shipment = this.shipment;
-    console.log(JSON.stringify(this.paymentTO));
-    this.purchaseService.createPaymentRequest(this.paymentTO)
-      .subscribe(response => {
-        this.paymentUrl = response.paymentUrl;
-        this.dialogSuccess.title = 'Você está sendo redirecionado para a tela de pagamento!';
-        this.dialogSuccess.fire();
-        setTimeout(() => {
-          this.dialogSuccess.close();
-          this.redirect();
-        }, 5000);
-      }, (error: ErrorWarning) => {
-        this.setErrorDialog(error);
-        this.dialogError.fire().then(r => {
-          if (r.isConfirmed) {
-            this.goToPayment();
-          }
+    if (this.checkCouponPayment(this.coupon)) {
+      this.paymentTO.shipmentId = this.formGoToPayment?.get('shipmentId')?.value;
+      this.paymentTO.shipment = this.shipment;
+      this.paymentTO.coupon = this.coupon;
+      console.log(JSON.stringify(this.paymentTO));
+      this.purchaseService.createPaymentRequest(this.paymentTO)
+        .subscribe(response => {
+          this.paymentUrl = response.paymentUrl;
+          this.dialogSuccess.title = 'Você está sendo redirecionado para a tela de pagamento!';
+          this.dialogSuccess.fire();
+          setTimeout(() => {
+            this.dialogSuccess.close();
+            this.redirect();
+          }, 5000);
+        }, (error: ErrorWarning) => {
+          this.setErrorDialog(error);
+          this.dialogError.fire().then(r => {
+            if (r.isConfirmed) {
+              this.goToPayment();
+            }
+          });
         });
+    } else {
+      const error: ErrorWarning = {
+        message: 'O cupom informado acabou ou está expirado.',
+        title: 'Erro no cupom',
+        action: 'OK'
+      };
+      this.setErrorDialog(error);
+      sessionStorage.removeItem('coupon');
+      this.dialogError.fire().then(r => {
+        if (r.isConfirmed) {
+          this.dialogError.close();
+        }
       });
+    }
   }
 
 
@@ -216,6 +247,66 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.productsSubscription$.unsubscribe();
+  }
+
+  checkSessionStorageCoupon(coupon: string): void {
+    this.couponService.validate(coupon)
+      .subscribe(response => {
+        if (response.status) {
+          sessionStorage.setItem('coupon', JSON.stringify(response.coupon));
+          this.isValidCoupon = true;
+          return;
+        } else {
+          this.isValidCoupon = false;
+          const error: ErrorWarning = {
+            message: 'O cupom informado acabou ou está expirado.',
+            title: 'Erro no cupom',
+            action: 'OK'
+          };
+          this.setErrorDialog(error);
+          sessionStorage.removeItem('coupon');
+          this.dialogError.fire().then(r => {
+            if (r.isConfirmed) {
+              this.dialogError.close();
+            }
+          });
+        }
+      }, (error: ErrorWarning) => {
+        this.isValidCoupon = false;
+        error.message = 'O cupom informado acabou ou está expirado.';
+        error.title = 'Erro no cupom';
+        this.setErrorDialog(error);
+        sessionStorage.removeItem('coupon');
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.dialogError.close();
+          }
+        });
+      });
+  }
+
+  checkCouponPayment(coupon: string): boolean {
+    if (coupon) {
+      this.couponService.validate(coupon)
+        .pipe(take(1))
+        .subscribe(response => {
+          if (response.status) {
+            return response.status;
+          }
+          this.isValidCoupon = false;
+          this.voucher = 0;
+          this.getTotalPurchase();
+          sessionStorage.removeItem('coupon');
+          return response.status;
+        }, error => {
+          this.isValidCoupon = false;
+          this.voucher = 0;
+          this.getTotalPurchase();
+          sessionStorage.removeItem('coupon');
+          return false;
+        });
+    }
+    return true;
   }
 }
 
