@@ -10,5 +10,6 @@ export const environment = {
     ME_REDIRECT_URI: 'undefined',
     ME_REQUEST_SCOPE: 'undefined',
     ME_STATE: 'undefined',
-    ME_URL: 'undefined'
+    ME_URL: 'undefined',
+    URL_FRONT: 'undefined'
 };

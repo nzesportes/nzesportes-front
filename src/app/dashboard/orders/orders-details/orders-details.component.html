@@ -97,7 +97,7 @@
                 <div class="col-6 col-lg-4"><b>Valor da Compra</b></div>
                 <div class="col-6 col-lg-8 mb-2 text-right">{{ totalPurchase | currency }}</div>
                 <div class="col-6 col-lg-4"><b>Descontos</b></div>
-                <div class="col-6 col-lg-8 mb-2 text-right">- {{ '0' | currency }}</div>
+                <div class="col-6 col-lg-8 mb-2 text-right">- {{ purchase?.coupon?.discount ? (purchase.coupon.discount | currency) : ('0' | currency) }}</div>
                 <div class="col-6 col-lg-4"><b>Frete</b></div>
                 <div class="col-6 col-lg-8 mb-2 text-right">{{ purchase.shipment | currency }}</div>
                 <div class="col-6 col-lg-4"><b>Total</b></div>

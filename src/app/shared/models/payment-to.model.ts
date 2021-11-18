@@ -4,4 +4,5 @@ export interface PaymentTO {
   products: ProductPaymentTO[];
   shipment: number;
   shipmentId: string;
+  coupon: string;
 }

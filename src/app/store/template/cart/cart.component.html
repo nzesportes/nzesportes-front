@@ -53,19 +53,20 @@
         <div class="col-12 col-md-6 col-lg-8 col-xl-9 p-3">
           <div class="form-group items-actions-cart text-xl-left text-center">
             <input type="text" #promocode
-                   class="form-control {{ hasCouponError ? 'promocodeError' : 'promocodeSuccess' }} promocode"
+                   class="form-control {{ hasCouponError ? 'promocodeError' : 'promocodeSuccess' }} {{ isValidCoupon ? 'promocodeIsValid' : '' }} promocode"
                    placeholder="Código Promocional" [value]="coupon" [disabled]="isValidCoupon">
             <button class="btn button-check-availability" (click)="checkAvailability(promocode.value)"
                     [disabled]="isValidCoupon">Adicionar
             </button>
             <div class="coupons-error" *ngIf="hasCouponError">
               <small class="ml-3" *ngIf="isNotFoundError">Cupom inválido.</small>
-              <small class="ml-3" *ngIf="isExpiredCoupon">O cupom informado venceu.</small>
+              <small class="ml-3" *ngIf="isExpiredCoupon">O cupom informado acabou ou está expirado.</small>
               <small class="ml-3" *ngIf="isUndefinedError">Campo não preenchido corretamente.</small>
             </div>
-            <div class="coupon-valid" *ngIf="!hasCouponError && isValidCoupon">
-              <small class="ml-3 mt-1">{{ promocode.value }}<i class="fas fa-times ml-1 close-coupon"
+            <div class="coupon-valid row" *ngIf="!hasCouponError && isValidCoupon">
+              <small class="ml-3 mt-1 col-12">{{ promocode.value }}<i class="fas fa-times ml-1 close-coupon"
                                                                (click)="removeCoupon(promocode)"></i></small>
+              <small class="ml-3 col-12" *ngIf="!hasCouponError && isValidCoupon">Desconto: {{ discount | currency }}</small>
             </div>
           </div>
           <div class="items-actions-cart text-xl-left text-center">

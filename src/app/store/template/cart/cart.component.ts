@@ -10,6 +10,7 @@ import * as fromSelector from '../../redux/cart/cart.selectors';
 import {ItemCart} from '../../models/item-cart';
 import {LoaderService} from '../../../shared/services/loader.service';
 import {CouponService} from '../../../shared/services/coupon.service';
+import {CouponTO} from '../../../shared/models/coupon-to.model';
 
 @Component({
   selector: 'app-cart',
@@ -44,6 +45,7 @@ export class CartComponent implements OnInit, OnDestroy {
   isExpiredCoupon = false;
   promocodeSessionStorage: any;
   coupon = '';
+  discount = 0;
 
   constructor(
     private cartService: CartService,
@@ -55,12 +57,11 @@ export class CartComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.promocodeSessionStorage = sessionStorage.getItem('coupon');
-
     if (this.promocodeSessionStorage) {
-      this.checkSessionStorageCoupon(this.promocodeSessionStorage);
+      this.promocodeSessionStorage = JSON.parse(this.promocodeSessionStorage);
+      this.discount = this.promocodeSessionStorage.discount;
+      this.checkSessionStorageCoupon(this.promocodeSessionStorage.code);
     }
-
-    this.promocodeSessionStorage = sessionStorage.getItem('coupon') !== null ? sessionStorage.getItem('coupon') : '';
     this.store.dispatch(fromActions.requestLoadProducts());
     this.products$ = this.store.select(fromSelector.products);
     this.isLoading$ = this.store.select(fromSelector.isLoading);
@@ -72,8 +73,6 @@ export class CartComponent implements OnInit, OnDestroy {
       () => this.callLoading(false),
       () => this.callLoading(false)
     );
-
-    console.log('TEM SESSIONSTORAGE', sessionStorage.getItem('coupon'));
   }
 
   callLoading(loading: boolean): void {
@@ -98,24 +97,29 @@ export class CartComponent implements OnInit, OnDestroy {
     this.isUndefinedError = false;
     this.isNotFoundError = false;
     this.isExpiredCoupon = false;
+    this.discount = 0;
     if (promocode) {
       this.couponService.validate(promocode)
         .subscribe(response => {
-          if (response) {
+          if (response.status) {
             this.isValidCoupon = true;
-            sessionStorage.setItem('coupon', promocode);
+            this.discount = response.coupon.discount;
+            sessionStorage.setItem('coupon', JSON.stringify(response.coupon));
             return;
           }
+          this.discount = 0;
           this.hasCouponError = true;
           this.isExpiredCoupon = true;
         }, error => {
           if (error.message.error.status === 404) {
+            this.discount = 0;
             this.hasCouponError = true;
             this.isNotFoundError = true;
           }
         });
       return;
     }
+    this.discount = 0;
     this.isUndefinedError = true;
     this.hasCouponError = true;
     return;
@@ -124,12 +128,15 @@ export class CartComponent implements OnInit, OnDestroy {
   checkSessionStorageCoupon(coupon: string): void {
     this.couponService.validate(coupon)
       .subscribe(response => {
-        if (response) {
+        if (response.status) {
           this.coupon = coupon;
+          this.discount = response.coupon.discount;
           this.isValidCoupon = true;
+          sessionStorage.setItem('coupon', JSON.stringify(response.coupon));
           return;
         }
       }, error => {
+        this.discount = 0;
         sessionStorage.removeItem('coupon');
       });
   }
@@ -140,11 +147,8 @@ export class CartComponent implements OnInit, OnDestroy {
     this.isNotFoundError = false;
     this.isValidCoupon = false;
     this.isExpiredCoupon = false;
+    this.discount = 0;
     promocode.value = '';
     sessionStorage.removeItem('coupon');
   }
-
-  // calculateTotal(): number {
-  //   return this.cartService.getTotalPrice();
-  // }
 }
