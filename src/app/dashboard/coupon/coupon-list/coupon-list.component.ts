@@ -68,5 +68,4 @@ export class CouponListComponent implements OnInit {
   redirect(): void {
 
   }
-
 }
