@@ -46,8 +46,8 @@ export class OrdersListComponent implements OnInit {
     });
   }
 
-  getAll(size: number, page: number): void {
-    this.purchaseService.getAll(size, page)
+  getAll(size: number, page: number, code?: number): void {
+    this.purchaseService.getAll(size, page, code)
       .pipe(take(1))
       .subscribe(response => {
         this.purchases = response.content;
@@ -59,6 +59,11 @@ export class OrdersListComponent implements OnInit {
       });
   }
 
+  onChangeFilter(): void {
+    this.paginationService.initPagination();
+    const code = this.formOrders.get('code')?.value;
+    this.getAll(10, 0, code);
+  }
 
   updateIndex(index: number): void {
     this.getAll(10, index);

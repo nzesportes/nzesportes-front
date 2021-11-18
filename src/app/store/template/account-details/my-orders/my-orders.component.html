@@ -42,7 +42,7 @@
             </div>
             <div class="row p-0 m-0 mb-2 orders-products-details" *ngFor="let item of purchase.items; let j = index;">
               <div class="col-7 p-0">
-                <div class="row m-0 p-0" routerLink="../../produtos/{{ item?.productDetails?.id }}">
+                <div class="row m-0 p-0 go-to-product-details" routerLink="../../produtos/{{ item?.productDetails?.id }}">
                   <div class="img-details"
                        *ngIf="item.productDetails && item.productDetails.images && item.productDetails.images.split(';').length > 0">
                     <img class="w-100"

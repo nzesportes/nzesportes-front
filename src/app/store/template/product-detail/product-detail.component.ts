@@ -175,6 +175,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.errorShipResult = false;
     this.hasError = false;
     this.noStock = false;
+    this.formStock.reset();
   }
 
   setImages(): void {

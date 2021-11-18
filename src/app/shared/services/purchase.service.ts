@@ -32,11 +32,12 @@ export class PurchaseService {
     return this.httpClient.get<PurchasePage>(`${this.api}/customers/${customerId}`, {params});
   }
 
-  getAll(size: number, page: number): Observable<PurchasePage> {
+  getAll(size: number, page: number, code?: number): Observable<PurchasePage> {
     const params = new HttpParams()
       .set('async', 'true')
       .set('page', page.toString())
-      .set('size', size.toString());
+      .set('size', size.toString())
+      .set('code', code ? code.toString() : '');
     return this.httpClient.get<PurchasePage>(`${this.api}`, {params});
   }
 
