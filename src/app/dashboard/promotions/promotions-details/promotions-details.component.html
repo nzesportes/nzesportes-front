@@ -1,3 +1,4 @@
+<form [formGroup]="formBrand">
 <div class="row mt-3">
   <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
     <nav aria-label="breadcrumb">
@@ -17,34 +18,207 @@
     <button
       type="button"
       class="btn btn-primary w-100"
-      (click)="save()">
+      (click)="save()"
+      [disabled]="formBrand.invalid || (!this.productSelected)">
       Salvar
     </button>
   </div>
-</div>
-<div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="!promotion && !hasError">
-  Não encontramos o pedido.
 </div>
 <div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
   Não foi possível carregar algumas informações. Por favor,
   <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
 </div>
-
-<div *ngIf="promotion && !hasError">
+<div *ngIf="!hasError && loaded">
   <div class="row mt-3">
     <div class="col-12 mb-3">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Informações da Promoção</h5>
+          <h5 class="card-title">Informações da promoção</h5>
           <hr>
-          <div class="form-row mb-3">
+          <div class="form-row">
 
+            <div class="form-group col-12 mb-3">
+              <label for="quantity">Quantidade</label>
+              <input type="number" class="form-control" id="quantity" formControlName="quantity" placeholder="10"
+                     [ngClass]="cssError(formBrand.get('quantity'))">
+              <div id="field-quantity" class="invalid-feedback">
+                Por favor, insira a quantidade.
+              </div>
+            </div>
+
+            <div class="form-group col-12 mb-3">
+              <label for="percentage">Desconto</label>
+              <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">%</span>
+                </div>
+                <input type="number" id="percentage" class="form-control"
+                       formControlName="percentage"
+                       [ngClass]="cssError(formBrand.get('percentage'))">
+                <div id="field-discount" class="invalid-feedback">
+                  Por favor, insira a desconto.
+                </div>
+              </div>
+
+            </div>
+
+            <div class="form-group col-12 mb-3">
+              <label for="startDate">Data de inicio</label>
+              <input type="date" class="form-control" id="startDate" formControlName="startDate" placeholder="50"
+                     [ngClass]="cssError(formBrand.get('startDate'))">
+              <div id="field-startDate" class="invalid-feedback">
+                Por favor, insira a data de inicio.
+              </div>
+            </div>
+
+            <div class="form-group col-12 mb-3">
+              <label for="endDate">Data fim</label>
+              <input type="date" class="form-control" id="endDate" formControlName="endDate" placeholder="50"
+                     [ngClass]="cssError(formBrand.get('endDate'))">
+              <div id="field-endDatee" class="invalid-feedback">
+                Por favor, insira a data fim do cupom.
+              </div>
+            </div>
+
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="isShowOnStore" formControlName="status">
+              <label class="form-check-label" for="isShowOnStore">
+                Disponível na loja
+              </label>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="col-12 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-lg-9 col-sm-12">
+              <h5 class="card-title">Produto relacionado</h5>
+            </div>
+            <div class="col-lg-3 col-sm-12 ">
+              <button
+                *ngIf="!sale"
+                type="button"
+                class="btn btn-primary w-100"
+                data-toggle="modal"
+                data-target="#modalProductDetail"
+                [disabled]="this.sale"
+                (click)="onChangeFilter('')"
+              >
+                Adicionar
+              </button>
+            </div>
+          </div>
+          <div class="alert alert-warning m-3" role="alert" *ngIf="!productSelected && !hasError">
+            Você precisa adicionar um produto a essa promoção.
+          </div>
+          <div class="row m-3" *ngIf="productSelected">
+            <div class="mr-3">
+              <img style="max-width: 100px" [src]="productSelected.images.split(';')[0]">
+            </div>
+            <div class="ml-3">
+              <div class="row">
+                {{ productSelected.product.model }} {{productSelected.color}}
+
+              </div>
+              <div class="row">
+                {{productSelected.product.brand.name}}
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
   </div>
 </div>
+</form>
+
+
+<form>
+  <div class="modal fade" id="modalProductDetail" tabindex="-1" aria-labelledby="modalProductDetailLabel"
+       aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalProductDetailLabel">
+            pesquise por produto
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
+              <label for="name"></label>
+              <div class="input-group mb-3">
+                <input type="text" class="form-control" id="name"  #search  placeholder="Informe o número do pedido"
+                       aria-label="tabela-medidas"
+                       aria-describedby="tabela-medidas">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" type="button" (click)="onChangeFilter(search.value)"><i class="fas fa-search"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="productDetailsTO.length === 0 && !hasError">
+              Não encontramos nenhuma marca.
+            </div>
+            <div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
+              Não foi possível carregar algumas informações. Por favor, <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+            </div>
+            <div *ngIf="content && productDetailsTO.length > 0" class="m-3">
+              <div *ngFor="let product of productDetailsTO" class="row select isSelected" (click)="alterProduct(product)"
+                   [ngClass]="{
+                   'isSelected': this.productSelected && this.productSelected.id === product.id
+             }">
+                <div class="mr-3">
+                  <img style="max-width: 100px" [src]="product.images.split(';')[0]">
+                </div>
+                <div class="ml-3">
+                  <div class="row">
+                    {{product.product.model}} {{product.color}}
+
+                  </div>
+                  <div class="row">
+                    {{product.product.brand.name}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <nav aria-label="Page navigation example" *ngIf="content && productDetailsTO.length > 0">
+              <ul class="pagination justify-content-end mr-3 ml-3">
+                <li class="page-item" [ngClass]="{'disabled': this.paginationService.page === 0}">
+                  <a class="page-link" tabindex="-1" aria-disabled="true" (click)="updateIndex(this.paginationService.page-1)">Previous</a>
+                </li>
+                <li class="page-item" [ngClass]="{'active': i == this.paginationService.page }"
+                    *ngFor="let i of this.paginationService.getRange(); let in = index">
+                  <a class="page-link" (click)="updateIndex(i)">{{i + 1}}</a>
+                </li>
+                <li class="page-item" [ngClass]="{'disabled': (this.paginationService.page  + 1) === this.paginationService.pages }">
+                  <a class="page-link" (click)="updateIndex(this.paginationService.page + 1)">Next</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-primary"
+            data-dismiss="modal">
+            fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
 
 <swal
   [swalOptions]="{ confirmButtonText: 'ok'}"
