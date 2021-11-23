@@ -25,6 +25,7 @@ export class OrdersListComponent implements OnInit {
   hasError!: boolean;
   formOrders!: FormGroup;
   statusPt = PaymentStatusPt;
+  isRefreshing = false;
 
   constructor(
     private router: Router,
@@ -34,6 +35,7 @@ export class OrdersListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.isRefreshing = false;
     this.hasError = false;
     this.paginationService.initPagination();
     this.getAll(10, this.paginationService.page);
@@ -42,7 +44,7 @@ export class OrdersListComponent implements OnInit {
 
   createForm(): void {
     this.formOrders = this.formBuilder.group({
-      title: ['']
+      code: ['']
     });
   }
 
@@ -72,6 +74,19 @@ export class OrdersListComponent implements OnInit {
 
   redirect(): void {
     this.router.navigateByUrl('/painel/pedidos');
+  }
+
+  refreshPurchases(): void {
+    this.isRefreshing = true;
+    this.purchaseService.refresh()
+      .pipe(take(1))
+      .subscribe(() => {
+        this.isRefreshing = false;
+        this.ngOnInit();
+      }, error => {
+        this.isRefreshing = false;
+        console.error(error);
+      });
   }
 
 }
