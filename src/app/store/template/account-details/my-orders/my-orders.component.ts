@@ -8,6 +8,8 @@ import {Purchase} from '../../../../shared/models/purchase.model';
 import {PurchasePage} from '../../../../shared/models/pagination-model/purchase-page.model';
 import {ProductsService} from '../../../../shared/services/products.service';
 import {PaymentStatusPt} from '../../../../shared/enums/mercado-pago-payment-status.enum';
+import {ActivatedRoute} from '@angular/router';
+import {CartService} from '../../../services/cart.service';
 
 @Component({
   selector: 'app-my-orders',
@@ -16,7 +18,6 @@ import {PaymentStatusPt} from '../../../../shared/enums/mercado-pago-payment-sta
 })
 export class MyOrdersComponent implements OnInit {
 
-  listMyOrders = ['1', '2', '3', '4', '5'];
   collapsed = false;
   customerId = '';
   purchases: Purchase[] = [];
@@ -31,7 +32,9 @@ export class MyOrdersComponent implements OnInit {
     private purchaseService: PurchaseService,
     private tokenStorageService: TokenStorageService,
     private customerService: CustomerService,
-    private productsService: ProductsService
+    private productsService: ProductsService,
+    private route: ActivatedRoute,
+    private cartService: CartService
   ) {
   }
 
@@ -40,6 +43,17 @@ export class MyOrdersComponent implements OnInit {
     this.paginationService.initPagination();
     this.collapsed = false;
     this.isMobile = this.verifyWindowWidth();
+    this.clearSesssionItens();
+  }
+  clearSesssionItens(): void {
+    this.route.queryParams.pipe(
+      take(1)
+    ).subscribe(r => {
+      if (r.clear) {
+        this.cartService.clearItensOnCart();
+        sessionStorage.removeItem('coupon');
+      }
+    });
   }
 
   verifyWindowWidth(): boolean {
