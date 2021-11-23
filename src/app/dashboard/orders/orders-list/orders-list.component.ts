@@ -34,8 +34,6 @@ export class OrdersListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.getAll(10, 0, 1);
-
     this.hasError = false;
     this.paginationService.initPagination();
     this.getAll(10, this.paginationService.page);
@@ -44,7 +42,7 @@ export class OrdersListComponent implements OnInit {
 
   createForm(): void {
     this.formOrders = this.formBuilder.group({
-      title: ['']
+      code: ['']
     });
   }
 

@@ -10,11 +10,11 @@
       <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
         <label for="name">Pesquisa</label>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" id="name" formControlName="title" placeholder="Informe o número do pedido"
-                 aria-label="tabela-medidas"
-                 aria-describedby="tabela-medidas">
+          <input type="text" class="form-control" id="name" formControlName="code" placeholder="Informe o número do pedido"
+                 aria-label="numero-pedido"
+                 aria-describedby="numero-pedido">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button"><i class="fas fa-search"></i></button>
+            <button class="btn btn-outline-secondary" type="button" (click)="onChangeFilter()"><i class="fas fa-search"></i></button>
           </div>
         </div>
       </div>
