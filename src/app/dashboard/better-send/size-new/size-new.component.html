@@ -1,0 +1,104 @@
+<form [formGroup]="formSize">
+
+  <div class="row mt-3">
+    <div class="col-lg-8 col-sm-12 mb-3 mb-lg-0">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a routerLink="/painel/melhor-envio">Melhor envio</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{ sizeBetterSend ? 'tamanho' : 'Novo tamanho' }}</li>
+        </ol>
+      </nav>
+    </div>
+    <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
+      <button type="button" routerLink="/painel/cupons" class="btn btn-secondary w-100">Cancelar</button>
+    </div>
+    <div class="col-lg-2 col-sm-12 mb-3 mb-lg-0">
+      <button
+        type="button"
+        class="btn btn-primary w-100"
+        [disabled]="formSize.invalid"
+        (click)="save()">
+        Salvar
+      </button>
+    </div>
+  </div>
+  <div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
+    Não foi possível carregar algumas informações. Por favor,
+    <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+  </div>
+
+  <div *ngIf="!hasError">
+    <div class="row mt-3">
+      <div class="col-12 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Informações da cupom</h5>
+            <hr>
+            <div class="form-row">
+              <div class="form-group col-12 mb-3">
+                <label for="type">Tipo</label>
+                <input type="text" class="form-control" id="type" formControlName="type" placeholder="ex: Camisetas"
+                       [ngClass]="cssError(formSize.get('type'))">
+                <div id="field-code" class="invalid-feedback">
+                  Por favor, insira o tipo.
+                </div>
+              </div>
+
+              <div class="form-group col-12 mb-3">
+                <label for="weight">Peso</label>
+                <input type="number" class="form-control" id="weight" formControlName="weight" placeholder="0"
+                       [ngClass]="cssError(formSize.get('weight'))">
+                <div id="field-weight" class="invalid-feedback">
+                  Por favor, insira a peso.
+                </div>
+              </div>
+              <div class="form-group col-12 mb-3">
+                <label for="length">Tamanho</label>
+                <input type="number" class="form-control" id="length" formControlName="length" placeholder="0"
+                       [ngClass]="cssError(formSize.get('length'))">
+                <div id="field-length" class="invalid-feedback">
+                  Por favor, insira a tamanho.
+                </div>
+              </div>
+
+              <div class="form-group col-12 mb-3">
+                <label for="depth">Largura</label>
+                <input type="number" class="form-control" id="depth" formControlName="depth" placeholder="0"
+                       [ngClass]="cssError(formSize.get('depth'))">
+                <div id="field-length" class="invalid-feedback">
+                  Por favor, insira a largura.
+                </div>
+              </div>
+
+              <div class="form-group col-12 mb-3">
+                <label for="height">Altura</label>
+                <input type="number" class="form-control" id="height" formControlName="height" placeholder="0"
+                       [ngClass]="cssError(formSize.get('height'))">
+                <div id="field-height" class="invalid-feedback">
+                  Por favor, insira a altura.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<swal
+  [swalOptions]="{ confirmButtonText: 'ok'}"
+  (confirm)="redirect()"
+  #success
+  [title]="''"
+  icon="success">
+</swal>
+<swal
+  #error
+  [title]="''"
+  [text]="''"
+  [confirmButtonText]="''"
+  [cancelButtonText]="'cancelar'"
+  (cancel)="redirect()"
+  [showCancelButton]="true"
+  icon="error">
+</swal>

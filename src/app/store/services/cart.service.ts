@@ -34,6 +34,11 @@ export class CartService {
     return [];
   }
 
+  clearItensOnCart(): void {
+    localStorage.removeItem('cart');
+    this.updateLoadProducts();
+  }
+
   addToCart(itemCart: ItemCart): void {
     this.items = this.getProductsCart();
     // verificar tamanho do carrinho

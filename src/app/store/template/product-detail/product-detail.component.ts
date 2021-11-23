@@ -22,6 +22,7 @@ import {Rating} from '../../../shared/models/rating.model';
 import {RatingPage} from '../../../shared/models/pagination-model/rating-page.model';
 import {PaginationService} from '../../../shared/services/pagination.service';
 import {Order} from '../../../shared/enums/order.enum';
+import {environment} from '../../../../environments/environment';
 
 export interface ImageSlide {
   id: number;
@@ -175,6 +176,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.errorShipResult = false;
     this.hasError = false;
     this.noStock = false;
+    this.formStock.reset();
   }
 
   setImages(): void {
@@ -273,7 +275,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       model: this.product.model,
       quantity: this.startValue,
       stock: stockCart,
-      total: productDetail.price * this.startValue
+      total: productDetail.price * this.startValue,
+      size: this.product.size
     };
     this.cartService.addToCart(itemCart);
   }
@@ -284,7 +287,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       const cep = this.formShipping.get('shipping').value;
       const shipping: Shipping = {
         from: {
-          postal_code: '02078030'
+          postal_code: environment.ME_CEP_NZ
         },
         to: {
           postal_code: cep
@@ -292,11 +295,11 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         products: [
           {
             id: this.product.id,
-            width: 11,
-            height: 17,
-            length: 11,
-            weight: 0.3,
-            insurance_value: 10.1,
+            width: this.product.size.depth,
+            height: this.product.size.height,
+            length: this.product.size.length,
+            weight: this.product.size.weight,
+            insurance_value: this.productDetails.price,
             quantity: 1
           }
         ]
@@ -306,7 +309,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         .subscribe(r => {
           console.log(r);
           this.hasError = false;
-          this.shippingResult = r.filter(ship => !ship.error);
+          this.shippingResult = r.filter(ship => !ship.error).map(map => {
+            map.price = map.price + 2;
+            return map;
+          });
           if (this.shippingResult.length === 0) {
             this.notShipResult = true;
           } else {

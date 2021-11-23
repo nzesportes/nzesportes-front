@@ -10,10 +10,10 @@
 <form [formGroup]="formPromotions">
   <div class="container-fluid">
     <div class="row">
-      <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
+      <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
         <label for="name">Pesquisa</label>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" id="name" formControlName="title" placeholder="Informe o número do pedido"
+          <input type="text" class="form-control" id="name"  placeholder="informe o codigo"
                  aria-label="tabela-medidas"
                  aria-describedby="tabela-medidas">
           <div class="input-group-append">
@@ -26,7 +26,7 @@
   </div>
 </form>
 <div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="promotions.length === 0 && !hasError">
-  Não encontramos nenhum pedido.
+  Não encontramos nenhuma promoção.
 </div>
 <div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
   Não foi possível carregar algumas informações. Por favor,
@@ -38,7 +38,7 @@
     <table class="table table-hover">
       <thead>
       <tr>
-        <th scope="col">Produto</th>
+        <th scope="col">Qtde </th>
         <th scope="col">Qtde Restante</th>
         <th scope="col">Percentual</th>
         <th scope="col">Termina em</th>
@@ -47,8 +47,8 @@
       </thead>
       <tbody>
       <tr scope="row" class="row-table" *ngFor="let promotion of promotions" routerLink="detalhes/{{promotion.id}}">
-        <td style="width: 45%">CHICAGO BULL P AZUL</td>
-        <td style="width: 15%">{{ promotion.quantityLeft }}</td>
+        <td style="width: 10%" class="text-info">{{ promotion.quantity }}</td>
+        <td style="width: 10%" class="text-warning">{{ promotion.quantityLeft }}</td>
         <td style="width: 15%">{{ promotion.percentage }}%</td>
         <td style="width: 15%">{{ promotion.endDate | date: 'dd/MM/yyyy' }}</td>
         <td style="width: 10%"><i class="fas fa-edit text-primary"></i></td>
@@ -59,7 +59,7 @@
 </div>
 
 
-<nav aria-label="Page navigation example" *ngIf="content && true">
+<nav aria-label="Page navigation example" *ngIf="content && promotions.length > 0 && true">
   <ul class="pagination justify-content-end mr-3 ml-3">
     <li class="page-item" [ngClass]="{'disabled': paginationService.page === 0}">
       <a class="page-link" tabindex="-1" aria-disabled="true"
@@ -75,22 +75,3 @@
     </li>
   </ul>
 </nav>
-
-<swal
-  [swalOptions]="{ confirmButtonText: 'ok'}"
-  (confirm)="redirect()"
-  #success
-  [title]="''"
-  icon="success">
-</swal>
-
-<swal
-  #error
-  [title]="''"
-  [text]="''"
-  [confirmButtonText]="''"
-  [cancelButtonText]="'cancelar'"
-  (cancel)="redirect()"
-  [showCancelButton]="true"
-  icon="error">
-</swal>

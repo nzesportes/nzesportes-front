@@ -5,4 +5,6 @@ export interface Sale {
   startDate: Date;
   endDate: Date;
   quantityLeft: number;
+  status: boolean;
+  productDetailId: string;
 }

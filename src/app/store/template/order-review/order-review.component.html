@@ -71,7 +71,7 @@
                 <div class="col-8 p-0 pr-2 mb-1">{{ item.model }} {{ item.productDetails.color | titlecase }}</div>
                 <div class="col-4 p-0">{{ item.total | currency }}</div>
               </div>
-              <div class="row m-0 p-0 pt-2 mt-2 bt-ordem-review" *ngIf="voucher > 0">
+              <div class="row m-0 p-0 pt-2 mt-2 bt-ordem-review" *ngIf="isValidCoupon">
                 <div class="col-8 p-0 pr-2 mb-1">Cupom de Desconto</div>
                 <div class="col-4 p-0">- {{ voucher | currency }}</div>
               </div>

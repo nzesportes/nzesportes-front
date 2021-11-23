@@ -4,6 +4,7 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {Coupon} from '../models/coupon.model';
 import {Observable} from 'rxjs';
 import {CouponPage} from '../models/pagination-model/coupon-page.model';
+import {CouponTO} from '../models/coupon-to.model';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class CouponService {
     return this.http.get<Coupon>(this.api + id, {params});
   }
 
-  validate(code: string): Observable<boolean> {
-    return this.http.get<boolean>(`${this.api}validate/${code}`);
+  validate(code: string): Observable<CouponTO> {
+    return this.http.get<CouponTO>(`${this.api}validate/${code}`);
   }
 }

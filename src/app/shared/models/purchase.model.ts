@@ -5,6 +5,7 @@ import {AddressTO} from './address-to.model';
 import {Customer} from './customer.model';
 import {ProductDetails} from './product-details.model';
 import {ProductDetailsTO} from './product-details-to.model';
+import {Coupon} from './coupon.model';
 
 export interface Purchase {
   id: string;
@@ -16,4 +17,6 @@ export interface Purchase {
   paymentRequest: PaymenteRequestTO;
   customer: Customer;
   isLoaded: boolean;
+  coupon: Coupon;
+  code: number;
 }

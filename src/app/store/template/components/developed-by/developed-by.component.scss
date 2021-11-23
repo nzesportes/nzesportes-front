@@ -1,4 +1,102 @@
+.container-header {
+  max-width: 850px;
+  margin: auto;
+}
+
+.container-header h1 {
+  text-align: center;
+  font-weight: 700;
+  color: #2b2828;
+  margin-bottom: 22px;
+  font-size: 28px;
+  text-transform: uppercase;
+}
+
 .container-people {
-  background-color: #ededed;
-  height: 200px;
+  padding: 20px;
+  max-width: 850px;
+  margin: auto;
+}
+
+.profile-image img {
+  border-radius: 50%;
+  max-width: 230px;
+}
+
+.details-dev {
+  margin-top: auto;
+  margin-bottom: auto;
+
+  h2 {
+    text-transform: uppercase;
+    font-size: 24px;
+    font-weight: 600;
+    padding-bottom: 6px;
+  }
+
+  h3 {
+    font-size: 18px;
+    padding-bottom: 10px;
+  }
+
+  p {
+    font-size: 18px;
+  }
+}
+
+.icons-social-midia {
+  a {
+    font-size: 40px;
+    color: #999999;
+  }
+
+  a:hover {
+    opacity: 0.9;
+  }
+}
+
+
+// Extra small devices (portrait phones, less than 576px)
+// No media query for `xs` since this is the default in Bootstrap
+
+// Small devices (landscape phones, 576px and up)
+@media (min-width: 576px) {
+
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .container-header h1 {
+    font-size: 36px;
+  }
+
+  .container-people {
+    padding: 30px;
+  }
+
+  .details-dev {
+    h2 {
+      font-size: 28px;
+    }
+
+    h3 {
+      font-size: 20px;
+    }
+
+    p {
+      font-size: 20px;
+    }
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .container-header h1 {
+    font-size: 48px;
+  }
 }
