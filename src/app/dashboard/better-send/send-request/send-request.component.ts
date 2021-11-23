@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {environment} from '../../../../environments/environment';
 import {BetterSendService} from '../../../shared/services/better-send.service';
 import {take} from 'rxjs/operators';
 import {BetterSendTokenStatus} from '../../../shared/models/BetterSendTokenStatus.model';
 import {BetterSendStatus} from '../../../shared/enums/BetterSendStatus.enum';
+import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
+import {SizeBetterSend} from '../../../shared/models/size-better-send.model';
+import {SizeBetterSendPage} from '../../../shared/models/pagination-model/size-better-send-page.model';
+import {PaginationService} from '../../../shared/services/pagination.service';
+import {SizeBetterSendService} from '../../../shared/services/size-better-send.service';
 
 @Component({
   selector: 'app-send-request',
@@ -19,8 +24,17 @@ export class SendRequestComponent implements OnInit {
   message = '';
 
   status = BetterSendStatus;
+
+  @ViewChild('success')
+  public readonly dialogSuccess!: SwalComponent;
+  @ViewChild('error')
+  public readonly dialogError!: SwalComponent;
+  content: SizeBetterSendPage | undefined;
+  sizeBetterSends: SizeBetterSend[] = [];
   constructor(
-    private betterSendService: BetterSendService
+    private betterSendService: BetterSendService,
+    public paginationService: PaginationService,
+    private sizeBetterSendService: SizeBetterSendService
   ) { }
 
   ngOnInit(): void {
@@ -34,6 +48,10 @@ export class SendRequestComponent implements OnInit {
     this.url = `${url}/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=${responseType}&scope=${scope}&state=${state}`;
 
     this.getStatusBetterSend();
+
+    this.paginationService.initPagination();
+    this.getAllSizes(10, this.paginationService.page);
+
   }
 
   getStatusBetterSend(): void {
@@ -64,6 +82,28 @@ export class SendRequestComponent implements OnInit {
   setMessages(message: string, textButton: string): void{
     this.message = message;
     this.textButton = textButton;
+  }
+
+  getAllSizes(size: number, page: number, type?: string): void {
+    this.sizeBetterSendService.getAll(size, page, type)
+      .pipe(take(1))
+      .subscribe(r => {
+        this.sizeBetterSends = r.content;
+        this.content = r;
+        this.paginationService.getPageRange(this.content.totalElements);
+      }, () => {
+        this.hasError = true;
+      });
+  }
+
+  updateIndex(index: number): void {
+    this.getAllSizes(10, index);
+    this.paginationService.page = index;
+  }
+
+  onChangeFilter(search: string): void {
+    this.paginationService.page = 0;
+    this.getAllSizes(10, 0, search);
   }
 
 }

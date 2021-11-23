@@ -5,7 +5,6 @@ import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {PaginationService} from '../../../shared/services/pagination.service';
 import {SalePage} from '../../../shared/models/pagination-model/sale-page.model';
 import {take} from 'rxjs/operators';
-import {ProductsService} from '../../../shared/services/products.service';
 import {SalesService} from '../../../shared/services/sales.service';
 
 @Component({
