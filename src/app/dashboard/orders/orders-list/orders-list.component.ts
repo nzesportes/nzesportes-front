@@ -42,7 +42,7 @@ export class OrdersListComponent implements OnInit {
 
   createForm(): void {
     this.formOrders = this.formBuilder.group({
-      title: ['']
+      code: ['']
     });
   }
 
