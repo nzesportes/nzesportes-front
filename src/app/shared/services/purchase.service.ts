@@ -44,4 +44,8 @@ export class PurchaseService {
   getById(id: string): Observable<Purchase> {
     return this.httpClient.get<Purchase>(`${this.api}/${id}`);
   }
+
+  refresh(): Observable<void> {
+    return this.httpClient.get<void>(`${this.api}/refresh`);
+  }
 }
