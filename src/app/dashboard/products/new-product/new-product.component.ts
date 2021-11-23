@@ -11,6 +11,8 @@ import {ProductsService} from '../../../shared/services/products.service';
 import {ErrorWarning} from '../../../shared/models/error-warning.model';
 import {SubCategoriesService} from '../../../shared/services/sub-categories.service';
 import {SubCategory} from '../../../shared/models/sub-category.model';
+import {SizeBetterSendService} from '../../../shared/services/size-better-send.service';
+import {SizeBetterSend} from '../../../shared/models/size-better-send.model';
 
 @Component({
   selector: 'app-new-product',
@@ -30,6 +32,9 @@ export class NewProductComponent implements OnInit, OnDestroy {
 
   public product!: Product;
   public brands!: Brand[];
+  public sizes!: SizeBetterSend[];
+  public  size!: SizeBetterSend;
+
   public subCategoies: SubCategory[] = [];
   hasError!: boolean;
 
@@ -44,7 +49,9 @@ export class NewProductComponent implements OnInit, OnDestroy {
     private subCategoriesService: SubCategoriesService,
     private productService: ProductsService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private sizeBetterSendService: SizeBetterSendService,
+
   ) {
   }
 
@@ -60,6 +67,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
           .pipe(take(1))
           .subscribe(p => {
             this.product = p;
+            this.size = this.product.size;
             this.initAllForms();
           }, () => {
             this.hasError = true;
@@ -74,6 +82,7 @@ export class NewProductComponent implements OnInit, OnDestroy {
     this.initDetailForm();
     this.getAllBrands();
     this.createFormCategories();
+    this.getAllSizes();
   }
 
   private createForm(): void {
@@ -85,6 +94,14 @@ export class NewProductComponent implements OnInit, OnDestroy {
       brand: this.formBuilder.group({
         id: new FormControl(this.product?.brand ? this.product.brand.id : null, Validators.required),
         name: new FormControl(this.product?.brand ? this.product.brand.name : '', Validators.required),
+      }),
+      size: this.formBuilder.group({
+        id: new FormControl(this.product?.size ?  this.product.size?.id : Validators.required),
+        type: new FormControl(this.product?.size ? this.product.size?.type : '', Validators.required),
+        weight: new FormControl(this.product?.size ? this.product.size?.weight : '', Validators.required),
+        length: new FormControl(this.product?.size ? this.product.size?.length : '', Validators.required),
+        depth: new FormControl(this.product?.size ? this.product.size?.depth : '', Validators.required),
+        height: new FormControl(this.product?.size ? this.product.size?.height : '', Validators.required)
       }),
     });
   }
@@ -117,6 +134,11 @@ export class NewProductComponent implements OnInit, OnDestroy {
   get validateFieldsFormBrand(): { [p: string]: AbstractControl } {
     // @ts-ignore
     return this.formProduct.get('brand').controls;
+  }
+
+  get validateFieldsFormSize(): { [p: string]: AbstractControl } {
+    // @ts-ignore
+    return this.formProduct.get('size').controls;
   }
 
   cssError(field: any): any {
@@ -254,12 +276,33 @@ export class NewProductComponent implements OnInit, OnDestroy {
       this.formProduct.get('brand')?.get('id')?.setValue(brand.id);
     }
   }
+  setIdSize(): void {
+    const name = this.formProduct.get('size')?.get('type')?.value;
+    const brand = this.sizes.find(b => b.type === name);
+    if (brand) {
+      this.formProduct.get('size')?.get('id')?.setValue(brand.id);
+      this.formProduct.get('size')?.get('weight')?.setValue(brand.weight);
+      this.formProduct.get('size')?.get('length')?.setValue(brand.length);
+      this.formProduct.get('size')?.get('depth')?.setValue(brand.depth);
+      this.formProduct.get('size')?.get('height')?.setValue(brand.height);
+    }
+  }
 
   getAllBrands(): void {
     this.brandsService.getAll(100, 0)
       .pipe(take(1))
       .subscribe(result => {
         this.brands = result.content;
+      }, () => {
+        this.hasError = true;
+      });
+  }
+
+  getAllSizes(): void {
+    this.sizeBetterSendService.getAll(100, 0)
+      .pipe(take(1))
+      .subscribe(result => {
+        this.sizes = result.content;
       }, () => {
         this.hasError = true;
       });
@@ -275,7 +318,9 @@ export class NewProductComponent implements OnInit, OnDestroy {
       const productRequest: ProductUpdateTO = {
         id: this.formProduct.value.id,
         model: this.formProduct.value.model,
-        status: this.formProduct.value.status
+        status: this.formProduct.value.status,
+        // @ts-ignore
+        sizeId: this.formProduct.get('size')?.get('id')?.value
       };
       request = this.productService.update(productRequest);
     } else {

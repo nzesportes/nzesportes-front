@@ -38,7 +38,7 @@
               </div>
             </div>
           </div>
-          <div class="form-row">
+          <div class="form-row" *ngIf="!product">
             <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0" formGroupName="brand">
               <label for="name">Marca</label>
               <select class="form-control" id="name" (change)="setIdBrand()"
@@ -51,15 +51,35 @@
               </div>
             </div>
           </div>
-          <div class="form-row p-2">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="onSale" data-toggle="collapse"
-                     href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-              <label class="form-check-label" for="onSale">
-                Em promoção
-              </label>
+          <div class="form-row" *ngIf="product">
+            <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
+              <label for="brand-view">Marca</label>
+              <input type="text" class="form-control" id="brand-view" [value]="this.product.brand.name" aria-describedby="emailHelp"
+                     [disabled]="true">
             </div>
           </div>
+          <div class="form-row">
+            <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0" formGroupName="size">
+              <label for="type">Tipo tamanho melhor envio</label>
+              <select class="form-control" id="type"
+                      formControlName="type" (change)="setIdSize()"
+                      [ngClass]="cssError(validateFieldsFormSize.type)">
+                <option [ngValue]="b.type" [selected]="size && size.id === b.id" *ngFor="let b of sizes">{{b?.type | lowercase}}</option>
+              </select>
+              <div id="field-type" class="invalid-feedback">
+                Por favor, insira a o tipo tamanho melhor envio.
+              </div>
+            </div>
+          </div>
+<!--          <div class="form-row p-2">-->
+<!--            <div class="form-check">-->
+<!--              <input class="form-check-input" type="checkbox" value="" id="onSale" data-toggle="collapse"-->
+<!--                     href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">-->
+<!--              <label class="form-check-label" for="onSale">-->
+<!--                Em promoção-->
+<!--              </label>-->
+<!--            </div>-->
+<!--          </div>-->
           <div class="row">
             <div class="collapse m-3" id="collapseExample">
               <div class="row">

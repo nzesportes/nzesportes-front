@@ -22,3 +22,65 @@
     </a>
   </div>
 </div>
+
+<div class="d-flex justify-content-between m-3">
+  <div>
+    <h3>Melhor envio tamanhos</h3>
+  </div>
+  <div>
+    <button type="button" class="btn btn-primary" routerLink="novo-tamanho"> + adicionar um tamanho</button>
+  </div>
+
+</div>
+<form>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
+        <label for="name">Pesquisa</label>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" id="name" placeholder="pesquise por tipo"
+                 aria-label="tabela-medidas"
+                 aria-describedby="tabela-medidas"  #search>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" (click)="onChangeFilter(search.value)"><i class="fas fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</form>
+<div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="sizeBetterSends.length === 0 && !hasError">
+  Não encontramos nenhum tamanho para melhor envio.
+</div>
+<div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
+  Não foi possível carregar algumas informações. Por favor,
+  <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+</div>
+<div class="card mb-3 mr-3 ml-3" *ngIf="sizeBetterSends.length > 0 && !hasError">
+  <div class="table-responsive ">
+
+    <table class="table table-hover">
+      <thead>
+      <tr>
+        <th scope="col">tipo </th>
+        <th scope="col">Peso</th>
+        <th scope="col">Tamanho</th>
+        <th scope="col">Largura</th>
+        <th scope="col">Altura</th>
+        <th scope="col">Ações</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr scope="row" class="row-table" *ngFor="let sizeBetterSend of sizeBetterSends" routerLink="tamanho/{{sizeBetterSend.id}}">
+        <td style="width: 10%" class="text-info">{{ sizeBetterSend.type }}</td>
+        <td style="width: 10%">{{ sizeBetterSend.weight }}</td>
+        <td style="width: 15%">{{ sizeBetterSend.length }}</td>
+        <td style="width: 15%">{{ sizeBetterSend.depth}}</td>
+        <td style="width: 15%">{{ sizeBetterSend.height}}</td>
+        <td style="width: 10%"><i class="fas fa-edit text-primary"></i></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

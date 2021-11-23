@@ -15,7 +15,8 @@ export const environment = {
   ME_REQUEST_SCOPE: '',
   ME_STATE: '',
   ME_URL: '',
-  URL_FRONT: 'http://localhost:4200/'
+  URL_FRONT: 'http://localhost:4200/',
+  ME_CEP_NZ: ''
 };
 
 /*

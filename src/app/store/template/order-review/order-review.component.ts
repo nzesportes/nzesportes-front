@@ -12,12 +12,13 @@ import {take} from 'rxjs/operators';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {PaymentTO} from '../../../shared/models/payment-to.model';
 import {ShippingResult} from '../../../shared/models/shipping-result.model';
-import {Shipping} from '../../../shared/models/shipping.model';
+import {ProductShipping, Shipping} from '../../../shared/models/shipping.model';
 import {BetterSendService} from '../../../shared/services/better-send.service';
 import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
 import {ErrorWarning} from '../../../shared/models/error-warning.model';
 import {Router} from '@angular/router';
 import {CouponService} from '../../../shared/services/coupon.service';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-order-review',
@@ -59,7 +60,7 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
 
   productsSubscription$!: Subscription;
 
-
+  listProductShipment: ProductShipping[] = [];
   constructor(
     private tokenStorageService: TokenStorageService,
     private addressService: AddressService,
@@ -123,6 +124,15 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe(response => {
         response.forEach(product => {
+          this.listProductShipment.push({
+            id: '',
+            width: product.size.depth,
+            height: product.size.height,
+            length: product.size.length,
+            weight: product.size.weight,
+            insurance_value: product.productDetails.price,
+            quantity: product.quantity
+          });
           this.paymentTO.products.push({
             stockId: product?.stock.id,
             quantity: product?.quantity
@@ -145,7 +155,6 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
       this.paymentTO.shipmentId = this.formGoToPayment?.get('shipmentId')?.value;
       this.paymentTO.shipment = this.shipment;
       this.paymentTO.coupon = this.coupon;
-      console.log(JSON.stringify(this.paymentTO));
       this.purchaseService.createPaymentRequest(this.paymentTO)
         .subscribe(response => {
           this.paymentUrl = response.paymentUrl;
@@ -184,22 +193,12 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
     if (this.formGoToPayment?.get('shipmentId')?.value) {
       const shipping: Shipping = {
         from: {
-          postal_code: '02078030'
+          postal_code: environment.ME_CEP_NZ
         },
         to: {
           postal_code: this.addresses[this.indexAddress].cep
         },
-        products: [
-          {
-            id: '',
-            width: 11,
-            height: 17,
-            length: 11,
-            weight: 0.3,
-            insurance_value: 10.1,
-            quantity: 1
-          }
-        ]
+        products: this.listProductShipment
       };
       this.betterSendService.calculateShipping(shipping)
         .pipe(take(1))

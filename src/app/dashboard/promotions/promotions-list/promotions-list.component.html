@@ -13,7 +13,7 @@
       <div class="form-group col-lg-12 col-sm-12 mb-3 mb-lg-0">
         <label for="name">Pesquisa</label>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" id="name" formControlName="code" placeholder="informe o codigo"
+          <input type="text" class="form-control" id="name"  placeholder="informe o codigo"
                  aria-label="tabela-medidas"
                  aria-describedby="tabela-medidas">
           <div class="input-group-append">
@@ -26,7 +26,7 @@
   </div>
 </form>
 <div class="alert alert-warning mr-3 ml-3" role="alert" *ngIf="promotions.length === 0 && !hasError">
-  Não encontramos nenhum pedido.
+  Não encontramos nenhuma promoção.
 </div>
 <div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
   Não foi possível carregar algumas informações. Por favor,
