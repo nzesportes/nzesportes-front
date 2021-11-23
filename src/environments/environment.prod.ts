@@ -11,5 +11,6 @@ export const environment = {
     ME_REQUEST_SCOPE: 'undefined',
     ME_STATE: 'undefined',
     ME_URL: 'undefined',
-    URL_FRONT: 'undefined'
+    URL_FRONT: 'undefined',
+    ME_CEP_NZ: 'undefined'
 };
