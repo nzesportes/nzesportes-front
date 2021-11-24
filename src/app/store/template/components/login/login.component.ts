@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {TokenStorageService} from '../../../../shared/services/token-storage.service';
-import {AuthService} from '../../../../shared/services/auth.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationRequest} from '../../../../shared/models/authentication-request.model';
 import {take} from 'rxjs/operators';
@@ -79,5 +78,9 @@ export class LoginComponent implements OnInit {
     this.dialogError.confirmButtonText = error.action;
     this.dialogError.title = error.title;
     this.dialogError.text = error.message;
+
+    if (error.status === 401){
+      this.dialogError.text = 'Erro de senha/E-mail - por favor, confira as informações e tente novamente';
+    }
   }
 }

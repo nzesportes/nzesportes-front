@@ -204,7 +204,10 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
         .pipe(take(1))
         .subscribe(r => {
           this.hasError = false;
-          this.shippingResult = r.filter(ship => !ship.error);
+          this.shippingResult = r.filter(ship => !ship.error).map(map => {
+            map.price = map.price + 2;
+            return map;
+          });
           if (this.shippingResult.length === 0) {
             this.notShipResult = true;
           } else {

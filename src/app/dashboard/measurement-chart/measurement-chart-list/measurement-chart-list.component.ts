@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {ProductPage} from '../../../shared/models/pagination-model/product-page.model';
+import {Component, OnInit} from '@angular/core';
 import {PaginationService} from '../../../shared/services/pagination.service';
 import {Router} from '@angular/router';
-import {SwalComponent} from '@sweetalert2/ngx-sweetalert2';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {ProductSizeService} from '../../../shared/services/product-size.service';
+import {take} from 'rxjs/operators';
+import {ProductSize} from '../../../shared/models/product-size.model';
+import {ProductSizePage} from '../../../shared/models/pagination-model/product-size-page.model';
 
 @Component({
   selector: 'app-measurement-chart-list',
@@ -12,34 +13,32 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 })
 export class MeasurementChartListComponent implements OnInit {
 
-  @ViewChild('success')
-  public readonly dialogSuccess!: SwalComponent;
-  @ViewChild('error')
-  public readonly dialogError!: SwalComponent;
-  content: ProductPage | undefined;
+  // content: ProductSizePage | undefined;
   hasError!: boolean;
-  formMCList!: FormGroup;
+  productsSize: ProductSize[] = [];
 
   constructor(
     private router: Router,
     public paginationService: PaginationService,
-    private formBuilder: FormBuilder
+    public productSizeService: ProductSizeService
   ) { }
 
   ngOnInit(): void {
     this.hasError = false;
     this.paginationService.initPagination();
-    this.createForm();
-  }
-
-  createForm(): void {
-    this.formMCList = this.formBuilder.group({
-      title: ['']
-    });
+    this.getAllMeasurementChart(10, this.paginationService.page);
   }
 
   getAllMeasurementChart(size: number, page: number): void {
-
+    this.productSizeService.getAll(size, page)
+      .pipe(take(1))
+      .subscribe(r => {
+        this.productsSize = r;
+        // this.content = r;
+        // this.paginationService.getPageRange(this.content.totalElements);
+      }, () => {
+        this.hasError = true;
+      });
   }
 
   updateIndex(index: number): void {

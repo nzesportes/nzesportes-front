@@ -107,7 +107,7 @@ export class ProductsService {
   updateStock(updateStock: UpdateStock): Observable<Stock> {
     const params = new HttpParams()
       .set('async', 'true');
-    return this.http.put<Stock>(this.api + 'details/stock', updateStock, {params});
+    return this.http.put<Stock>(this.api + 'details/stock/quantity', updateStock, {params});
   }
 
   getAllDetails(
