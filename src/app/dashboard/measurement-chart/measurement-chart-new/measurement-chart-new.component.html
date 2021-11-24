@@ -5,7 +5,7 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a routerLink="/painel/tabela-medidas">Tabela de Medidas</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Nova Tabela de Medida</li>
+          <li class="breadcrumb-item active" aria-current="page"> {{productSize?.id ? 'Editar' : 'Nova tabela de medida' }}</li>
         </ol>
       </nav>
     </div>
@@ -16,7 +16,8 @@
       <button
         type="button"
         class="btn btn-primary w-100"
-        (click)="save()">
+        (click)="save()"
+        [disabled]="formMCNew.invalid">
         Salvar
       </button>
     </div>
@@ -26,24 +27,111 @@
     <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
   </div>
 
-  <div *ngIf="!hasError">
-    <div class="row mt-3">
-      <div class="col-12 mb-3">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Informações da Tabela</h5>
-            <hr>
-            <div class="form-row mb-3">
-              <div class="col-6">
-                <label>Cabeçalho da Tabela</label>
-              </div>
-              <div class="col-6">
-                <button class="btn btn-primary" (click)="addHeader()">+ Adicionar cabeçalho</button>
+  <div class="row mt-3"  *ngIf="!hasError">
+    <div class="col-12 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Informações da Tabela de medida</h5>
+          <hr>
+          <div class="form-row">
+            <div class="form-group col-6 mb-3">
+              <label for="name">Nome da tabela</label>
+              <input type="text" class="form-control" id="name" formControlName="name" placeholder=""
+                     [ngClass]="cssError(formMCNew.get('name'))">
+              <div id="field-name" class="invalid-feedback">
+                Por favor, insira o nome da tabela.
               </div>
             </div>
-            <div class="form-row">
-              <div class="form-group col-2 pr-0">
-                <input type="text" class="form-control" id="header" formControlName="header" placeholder="ex: P">
+            <div class="form-group col-6 mb-3">
+              <label for="size">Tamanho</label>
+              <input type="text" class="form-control" id="size" formControlName="size" placeholder=""
+                     [ngClass]="cssError(formMCNew.get('size'))">
+              <div id="field-size" class="invalid-feedback">
+                Por favor, insira um tamanho.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-6 mb-3">
+              <label for="name">Altura</label>
+              <input type="text" class="form-control" id="height" formControlName="height" placeholder=""
+                     [ngClass]="cssError(formMCNew.get('height'))">
+              <div id="field-height" class="invalid-feedback">
+                Por favor, insira a altura.
+              </div>
+            </div>
+            <div class="form-group col-6 mb-3">
+              <label for="size">Peito</label>
+              <input type="text" class="form-control" id="chest" formControlName="chest" placeholder=""
+                     [ngClass]="cssError(formMCNew.get('chest'))">
+              <div id="field-chest" class="invalid-feedback">
+                Por favor, insira o peito.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-6 mb-3">
+              <label for="length">Comprimento</label>
+              <input type="text" class="form-control" id="length" formControlName="length" placeholder=""
+                     [ngClass]="cssError(formMCNew.get('length'))">
+              <div id="field-length" class="invalid-feedback">
+                Por favor, insira a comprimento.
+              </div>
+            </div>
+            <div class="form-group col-6 mb-3">
+              <label for="sleeve">Manga</label>
+              <input type="text" class="form-control" id="sleeve" formControlName="sleeve" placeholder=""
+                     [ngClass]="cssError(formMCNew.get('sleeve'))">
+              <div id="field-sleeve" class="invalid-feedback">
+                Por favor, insira o manga.
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-6 mb-3">
+              <label for="shoulder">Ombro</label>
+              <input type="text" class="form-control" id="shoulder" formControlName="shoulder" placeholder=""
+                     [ngClass]="cssError(formMCNew.get('shoulder'))">
+              <div id="field-shoulder" class="invalid-feedback">
+                Por favor, insira a ombro.
+              </div>
+            </div>
+            <div class="form-group col-6 mb-3">
+              <label for="width">Largura</label>
+              <input type="text" class="form-control" id="width" formControlName="width" placeholder=""
+                     [ngClass]="cssError(formMCNew.get('width'))">
+              <div id="field-width" class="invalid-feedback">
+                Por favor, insira o largura.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-6 mb-3">
+              <label for="indicated_weight">Peso indicado</label>
+              <input type="text" class="form-control" id="indicated_weight" formControlName="indicated_weight" placeholder=""
+                     [ngClass]="cssError(formMCNew.get('indicated_weight'))">
+              <div id="field-indicated_weight" class="invalid-feedback">
+                Por favor, insira o peso indicado.
+              </div>
+            </div>
+            <div class="form-group col-6 mb-3">
+              <label for="indicated_height">Altura indicada</label>
+              <input type="text" class="form-control" id="indicated_height" formControlName="indicated_height" placeholder=""
+                     [ngClass]="cssError(formMCNew.get('indicated_height'))">
+              <div id="field-indicated_height" class="invalid-feedback">
+                Por favor, insira a altura indicada.
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-12 mb-3">
+              <label for="image">Imagem</label>
+              <input type="text" class="form-control" id="image" formControlName="image" placeholder=""
+                     [ngClass]="cssError(formMCNew.get('image'))">
+              <div id="field-image" class="invalid-feedback">
+                Por favor, insira a imagem.
               </div>
             </div>
           </div>

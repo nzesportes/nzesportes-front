@@ -32,7 +32,7 @@ export const mapErrorResponse = new Map<TypeError, string>([
   [TypeError.NOT_FOUND, 'NOT_FOUND - Não encontrado'],
   [TypeError.COMPLETED, 'COMPLETED - ação já realizada'],
   // Authentication
-  [TypeError.AUTH001, 'AUTH001 - Usuário já registrado'],
+  [TypeError.AUTH001, 'Já existe um usuário cadastrado com esses dados (email ou cpf).'],
   // PROFILE
   [TypeError.PRO001, 'PRO001 - Perfil perfil não encontrado'],
   [TypeError.PRO002, 'PRO002 - Perfil desse usuário já cadastrado ou token inválido'],

@@ -3,61 +3,48 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title page-title">Guia de Tamanhos</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" routerLink="{{rota}}">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
         <p>Obs: as medidas estão em centímetros (cm)</p>
         <div class="mb-3">
-          <a *ngFor="let testa of testar" class="ancor-size-guide mr-1" href="{{ rota }}#{{ testa }}">{{ testa | titlecase }}</a>
+          <a *ngFor="let tableSize of tables" class="ancor-size-guide mr-1" href="{{ rota }}#{{ tableSize.name }}">{{ tableSize.name | titlecase }}</a>
         </div>
-        <div class="container-sizes mb-3 pt-3 pb-3" *ngFor="let testa of testar">
-          <h6 class="page-subtitle mb-3 text-center" id="{{ testa }}">{{ testa }}</h6>
+        <div class="container-sizes mb-3 pt-3 pb-3" *ngFor="let table of tables; let i = index">
+          <h6 class="page-subtitle mb-3 text-center" id="{{ table.name }}">{{ table.name }}</h6>
           <div class="row">
             <div class="col-12 col-md-4 mb-3 mb-md-0">
-              <img class="img-size-guide" src="assets/images/exemplo-shorts.png">
+              <img class="img-size-guide" [src]="table.image">
             </div>
             <div class="col-12 col-md-8 container-table-guide-size">
               <table class="table table-size-guide">
                 <thead>
                 <tr>
-                  <th class="title-table" scope="col">Tamanho</th>
-                  <th class="title-table" scope="col">Cintura</th>
-                  <th class="title-table" scope="col">Quadril</th>
-                  <th class="title-table" scope="col">Comprimento</th>
+                  <th class="title-table" scope="col" *ngIf="table.size">Tamanho</th>
+                  <th class="title-table" scope="col" *ngIf="table.height">Altura</th>
+                  <th class="title-table" scope="col" *ngIf="table.chest">Peito</th>
+                  <th class="title-table" scope="col" *ngIf="table.height">Comprimento</th>
+                  <th class="title-table" scope="col" *ngIf="table.sleeve">Manga</th>
+                  <th class="title-table" scope="col" *ngIf="table.shoulder">Ombro</th>
+                  <th class="title-table" scope="col" *ngIf="table.width">Largura</th>
+                  <th class="title-table" scope="col" *ngIf="table.indicated_weight">Peso indicado</th>
+                  <th class="title-table" scope="col" *ngIf="table.indicated_height">Altura indicada</th>
+
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                  <th scope="row">S (P)</th>
-                  <td>64</td>
-                  <td>102</td>
-                  <td>50</td>
-                </tr>
-                <tr>
-                  <th scope="row">M (M)</th>
-                  <td>66</td>
-                  <td>110</td>
-                  <td>51</td>
-                </tr>
-                <tr>
-                  <th scope="row">L (G)</th>
-                  <td>68</td>
-                  <td>116</td>
-                  <td>52</td>
-                </tr>
-                <tr>
-                  <th scope="row">XL (GG)</th>
-                  <td>70</td>
-                  <td>122</td>
-                  <td>53</td>
-                </tr>
-                <tr>
-                  <th scope="row">XXL (XG)</th>
-                  <td>72</td>
-                  <td>126</td>
-                  <td>54</td>
+                <tr *ngFor="let item of table.item">
+                  <td  *ngIf="table.size">{{item.size}}</td>
+                  <td *ngIf="table.height">{{item.height}}</td>
+                  <td *ngIf="table.chest">{{item.chest}}</td>
+                  <td *ngIf="table.height">{{item.length}}</td>
+                  <td *ngIf="table.sleeve">{{item.sleeve}}</td>
+                  <td *ngIf="table.shoulder">{{item.shoulder}}</td>
+                  <td *ngIf="table.width">{{item.width}}</td>
+                  <td *ngIf="table.indicated_weight">{{item.indicated_weight}}</td>
+                  <td  *ngIf="table.indicated_height">{{item.indicated_height}}</td>
                 </tr>
                 </tbody>
               </table>
