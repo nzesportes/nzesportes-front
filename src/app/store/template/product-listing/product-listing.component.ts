@@ -24,6 +24,7 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   hasError!: boolean;
   subscription!: Subscription;
   isMobile = false;
+  thirtyDaysAgo = new Date(Date.now() - (1000 * 60 * 60 * 24 * 30));
 
   constructor(
     public paginationService: PaginationService,
@@ -108,5 +109,9 @@ export class ProductListingComponent implements OnInit, OnDestroy {
       Order.ASC
     );
     this.paginationService.page = index;
+  }
+
+  verifyDate(date: Date | undefined): boolean {
+    return date && new Date(date) > this.thirtyDaysAgo ? true : false;
   }
 }
