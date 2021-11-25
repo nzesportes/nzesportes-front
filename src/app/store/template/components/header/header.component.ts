@@ -41,6 +41,7 @@ export class HeaderComponent implements OnInit {
         }, error => {
           this.customer = undefined;
           console.log(error);
+          console.log('error header account');
         });
     }
   }

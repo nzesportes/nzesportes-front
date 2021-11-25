@@ -41,11 +41,19 @@ export class PurchaseService {
     return this.httpClient.get<PurchasePage>(`${this.api}`, {params});
   }
 
+  tag(id: string): Observable<Purchase> {
+    const params = new HttpParams()
+      .set('async', 'true');
+    return this.httpClient.put<Purchase>(`${this.api}/${id}/tag`, {params});
+  }
+
   getById(id: string): Observable<Purchase> {
     return this.httpClient.get<Purchase>(`${this.api}/${id}`);
   }
 
   refresh(): Observable<void> {
-    return this.httpClient.get<void>(`${this.api}/refresh`);
+    const params = new HttpParams()
+      .set('async', 'true');
+    return this.httpClient.get<void>(`${this.api}/refresh`, {params});
   }
 }

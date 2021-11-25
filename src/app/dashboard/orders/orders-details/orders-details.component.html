@@ -89,6 +89,23 @@
                 <div class="col-12 mb-2">{{ purchase.paymentRequest.creationDate | date: 'dd/MM/yyyy' }}</div>
                 <div class="col-12"><b>Total</b></div>
                 <div class="col-12 mb-2">{{ purchase.totalCost | currency }}</div>
+                <div class="col-12"><b>ETIQUETA MELHOR ENVIO</b></div>
+                <div class="col-12 mb-2"[ngClass]="{
+                  'text-success': purchase.tag,
+                  'text-warning': !purchase.tag
+                }">
+                  <b>{{ purchase.tag ? 'PRODUTO ETIQUETADO' : 'PENDENTE ETIQUETA'}} </b>
+                </div>
+                <div class="col-3 mb-2">
+                  <button type="button" class="btn w-100"
+                          [ngClass]="{
+                  'btn-warning': purchase.tag,
+                  'btn-info': !purchase.tag
+                   }" (click)="changeTagPurchase()">
+                    {{purchase.tag ? 'Remover etiqueta' : 'Etiquetar'}}
+                  </button>
+                </div>
+
               </div>
             </div>
             <div class="col-12 col-lg-6 mb-5">

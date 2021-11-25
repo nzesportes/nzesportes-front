@@ -19,7 +19,7 @@ export class AddressListComponent implements OnInit {
   public hasError = false;
 
   // @ts-ignore
-  addresses: Address[];
+  addresses: Address[] = [];
 
   constructor(
     private addressService: AddressService,

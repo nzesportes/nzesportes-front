@@ -26,7 +26,7 @@ export class MyOrdersComponent implements OnInit {
   totalItems: number[] = [];
   isMobile = false;
   statusPt = PaymentStatusPt;
-
+  hasError = false;
   constructor(
     public paginationService: PaginationService,
     private purchaseService: PurchaseService,
@@ -39,6 +39,7 @@ export class MyOrdersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.hasError = false;
     this.getCustomer();
     this.paginationService.initPagination();
     this.collapsed = false;
@@ -71,14 +72,18 @@ export class MyOrdersComponent implements OnInit {
   }
 
   getCustomer(): void {
-    this.customerService.getByUserId(this.tokenStorageService.getSessionUser().id)
-      .pipe(take(1))
-      .subscribe(response => {
-        this.customerId = response.id;
-        this.getAllByCustomerId(10, this.paginationService.page, this.customerId);
-      }, error => {
-        console.error(error);
-      });
+    if (this.tokenStorageService.getSessionUser() && this.tokenStorageService.getSessionUser().id) {
+      this.customerService.getByUserId(this.tokenStorageService.getSessionUser().id)
+        .pipe(take(1))
+        .subscribe(response => {
+          this.customerId = response.id;
+          this.getAllByCustomerId(10, this.paginationService.page, this.customerId);
+        }, () => {
+          this.hasError = true;
+        });
+    }else{
+        this.hasError = true;
+    }
   }
 
   getAllByCustomerId(size: number, page: number, customerId: string): void {
@@ -89,8 +94,8 @@ export class MyOrdersComponent implements OnInit {
         this.content = response;
         this.paginationService.getPageRange(this.content.totalElements);
         this.getTotalPurchaseAndItems();
-      }, error => {
-        console.error(error);
+      }, () => {
+         this.hasError = true;
       });
   }
 

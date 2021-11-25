@@ -70,8 +70,8 @@ export class OrdersDetailsComponent implements OnInit {
             purchaseItem.productDetails = product;
           }
         });
-      }, error => {
-        console.error(error);
+      }, () => {
+        this.hasError = true;
       });
   }
 
@@ -82,6 +82,15 @@ export class OrdersDetailsComponent implements OnInit {
   isMobile(): any {
     const userAgent = window.navigator.userAgent.toLocaleLowerCase();
     return userAgent.includes('iphone') || userAgent.includes('android');
+  }
+  changeTagPurchase(): void {
+    this.purchaseService.tag(this.purchase.id)
+      .pipe(take(1))
+      .subscribe(r => {
+        this.purchase.tag = r.tag;
+      }, () => {
+        this.hasError = true;
+      });
   }
 
 }

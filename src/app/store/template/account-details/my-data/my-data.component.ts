@@ -27,14 +27,15 @@ export class MyDataComponent implements OnInit {
 
   getUser(): void {
     this.authenticationResponse = this.tokenStorageService.getSessionUser();
-    this.customerService.getByUserId(this.authenticationResponse.id)
-      .pipe(take(1))
-      .subscribe(response => {
-        this.customer = response;
-        this.hasError = false;
-      }, error => {
-        console.log(error);
-        this.hasError = true;
-      });
+    if (this.authenticationResponse){
+      this.customerService.getByUserId(this.authenticationResponse.id)
+        .pipe(take(1))
+        .subscribe(response => {
+          this.customer = response;
+          this.hasError = false;
+        }, () => {
+          this.hasError = true;
+        });
+    }
   }
 }

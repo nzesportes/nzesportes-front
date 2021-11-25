@@ -1,7 +1,7 @@
 <div class="container-fluid p-0">
   <h1 class="page-title mb-3 mb-lg-4">Meus Pedidos</h1>
 
-  <div class="row p-0 m-0 mb-2 title-table-orders" *ngIf="!isMobile">
+  <div class="row p-0 m-0 mb-2 title-table-orders" *ngIf="!isMobile && !hasError">
     <div class="col-2">Pagamento</div>
     <div class="col-3">Pedido</div>
     <div class="col-2">Data</div>
@@ -10,7 +10,7 @@
     <div class="col-1"></div>
   </div>
 
-  <div class="accordion" id="myOrders" *ngIf="!isMobile">
+  <div class="accordion"  id="myOrders" *ngIf="!isMobile && !hasError">
     <div class="card mb-2 accordion-button" *ngFor="let purchase of purchases; let i = index"
          (click)="click(i, purchase.id)">
       <div class="card-header" id="headingOne">
@@ -120,7 +120,7 @@
   </div>
 
   <!-- VERSÃO MOBILE -->
-  <div class="accordion" id="myOrders" *ngIf="isMobile">
+  <div class="accordion" id="myOrders" *ngIf="isMobile && !hasError">
     <div class="card mb-2 accordion-button" *ngFor="let purchase of purchases; let i = index"
          (click)="click(i, purchase.id)">
       <div class="card-header" id="headingOne">
@@ -234,7 +234,7 @@
     </div>
   </div>
 
-  <nav class="mt-4" aria-label="Page navigation" *ngIf="content && purchases.length > 0">
+  <nav class="mt-4" aria-label="Page navigation" *ngIf="content && purchases.length > 0 && !hasError">
     <ul class="pagination justify-content-end">
       <li class="page-item" [ngClass]="{'disabled': this.paginationService.page === 0}">
         <a class="page-link" (click)="updateIndex(this.paginationService.page-1)">
@@ -253,4 +253,8 @@
       </li>
     </ul>
   </nav>
+
+  <div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
+    Não foi possível carregar algumas informações. Por favor, <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+  </div>
 </div>
