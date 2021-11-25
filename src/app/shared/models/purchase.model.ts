@@ -19,4 +19,5 @@ export interface Purchase {
   isLoaded: boolean;
   coupon: Coupon;
   code: number;
+  tag: boolean;
 }

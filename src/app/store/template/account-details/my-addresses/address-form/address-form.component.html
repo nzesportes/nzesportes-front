@@ -1,4 +1,4 @@
-<div class="container-fluid p-0">
+<div class="container-fluid p-0" *ngIf="!hasError">
   <h1 class="page-title mb-3 mb-lg-4"> {{ id ? 'Editar Endereço' : 'Adicionar Endereço' }}</h1>
   <form class="row" [formGroup]="newAddressForm" (ngSubmit)="save()">
     <div class="form-group col-12 col-sm-8 col-md-9">
@@ -49,7 +49,9 @@
     </div>
   </form>
 </div>
-
+<div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
+  Não foi possível carregar algumas informações. Por favor, <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+</div>
 <swal
   #error
   [title]="''"

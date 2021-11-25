@@ -46,6 +46,8 @@
       <tr>
         <th scope="col">Pagamento</th>
         <th scope="col">Pedido</th>
+        <th scope="col">Etiqueta</th>
+
         <th scope="col">Data</th>
         <th scope="col">Total</th>
         <th scope="col">Ações</th>
@@ -55,6 +57,10 @@
       <tr scope="row" class="row-table" *ngFor="let purchase of purchases" routerLink="{{purchase.id}}">
         <td style="width: 30%">{{ statusPt[purchase.status] | titlecase }}</td>
         <td style="width: 30%">{{ purchase.code }}</td>
+        <td style="width: 15%" [ngClass]="{
+                  'text-success': purchase.tag,
+                  'text-warning': !purchase.tag
+                }">{{ purchase.tag ? 'ETIQUETADO' : 'PENDENTE'}}</td>
         <td style="width: 15%">{{ purchase.paymentRequest.creationDate | date:'dd/MM/yyyy' }}</td>
         <td style="width: 15%">{{ purchase.totalCost | currency }}</td>
         <td style="width: 10%"><i class="fas fa-edit text-primary"></i></td>

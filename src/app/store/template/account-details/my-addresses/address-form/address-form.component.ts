@@ -33,6 +33,8 @@ export class AddressFormComponent implements OnInit {
   // @ts-ignore
   customer: Customer;
 
+  hasError = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private addressService: AddressService,
@@ -45,25 +47,31 @@ export class AddressFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.hasError = false;
     const params: Observable<Params> = this.activatedRoute.params;
     params.subscribe(urlParams => {
       this.id = urlParams.id;
       if (this.id) {
         this.addressService.getById(this.id)
+          .pipe(take(1))
           .subscribe(response => {
             this.address = response;
             this.newAddressForm.patchValue(response);
+          }, () => {
+            this.hasError = true;
           });
       }
     });
 
     this.createForm();
-    this.customerService.getByUserId(this.tokerService.getSessionUser().id)
-      .subscribe(response => {
-        this.customer = response;
-      }, error => {
-        console.log(error);
-      });
+    if (this.tokerService.getSessionUser()) {
+      this.customerService.getByUserId(this.tokerService.getSessionUser().id)
+        .subscribe(response => {
+          this.customer = response;
+        }, () => {
+          this.hasError = true;
+        });
+    }
   }
 
   createForm(): void {

@@ -20,6 +20,7 @@ export class AccountMenuComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.hasError = false;
     this.getCustomer();
   }
 
@@ -29,13 +30,19 @@ export class AccountMenuComponent implements OnInit {
   }
 
   getCustomer(): void {
-    this.customerService.getByUserId(this.tokenStorageService.getSessionUser().id)
-      .subscribe(response => {
-        this.customer = response;
-        this.hasError = false;
-      }, error => {
-        this.hasError = true;
-      });
+    if (this.tokenStorageService.getSessionUser() && this.tokenStorageService.getSessionUser().id){
+      this.customerService.getByUserId(this.tokenStorageService.getSessionUser().id)
+        .subscribe(response => {
+          this.customer = response;
+          this.hasError = false;
+        }, error => {
+          this.hasError = true;
+        });
+    }else {
+      console.log('error menu account');
+      this.hasError = true;
+    }
+
   }
 
 }
