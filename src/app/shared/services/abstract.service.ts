@@ -17,7 +17,6 @@ export abstract class AbstractService {
       action: '',
       status: 0
     } as ErrorWarning;
-    console.log(error);
     errorModel.title = 'Ops, ocorreu um erro';
     errorModel.action = 'tentar novamente';
     errorModel.message = this.MENSAGEM_GENERICA;

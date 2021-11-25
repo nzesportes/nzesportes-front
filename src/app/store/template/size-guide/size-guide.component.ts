@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import {Component, Input, OnInit} from '@angular/core';
+import { Router} from '@angular/router';
 import {ProductSizeService} from '../../../shared/services/product-size.service';
-import {ProductSize, TableSize} from '../../../shared/models/product-size.model';
+import { TableSize} from '../../../shared/models/product-size.model';
 import {take} from 'rxjs/operators';
 
 @Component({
@@ -15,14 +15,16 @@ export class SizeGuideComponent implements OnInit {
   testar: string[] = ['um', 'dois', 'tres', 'quatro', 'cinco'];
   tables: TableSize[] = [];
   hasError = false;
+  @Input() idProduct = '';
 
   constructor(
     private router: Router,
-    private productSizeService: ProductSizeService
+    private productSizeService: ProductSizeService,
   ) {
   }
 
   ngOnInit(): void {
+    this.hasError = false;
     this.productSizeService.getAll(0, 0)
       .pipe(take(1))
       .subscribe(r => {
@@ -66,8 +68,5 @@ export class SizeGuideComponent implements OnInit {
       }, () => {
         this.hasError = true;
       });
-    this.rota = this.router.url;
-    this.rota = this.rota.slice(0, this.rota.indexOf('#', 0));
-    console.log(this.rota);
   }
 }
