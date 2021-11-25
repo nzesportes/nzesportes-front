@@ -307,7 +307,6 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       this.betterSendService.calculateShipping(shipping)
         .pipe(take(1))
         .subscribe(r => {
-          console.log(r);
           this.hasError = false;
           this.shippingResult = r.filter(ship => !ship.error).map(map => {
             map.price = map.price + 2;
@@ -321,7 +320,6 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
           this.errorShipResult = false;
         }, () => {
           this.errorShipResult = true;
-          this.hasError = true;
         });
     } else {
       this.verifyValidation(this.formShipping);
