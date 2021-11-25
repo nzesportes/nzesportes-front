@@ -17,33 +17,32 @@ export abstract class AbstractService {
       action: '',
       status: 0
     } as ErrorWarning;
-    if (error.error.message) {
-      errorModel.title = error.error.error;
-      errorModel.title = 'Ops, ocorreu um erro';
-      errorModel.action = 'tentar novamente';
-
-      const message = arrayErros.find(e => e.includes(error.error.message));
-
-      errorModel.message = message ? message : this.MENSAGEM_GENERICA;
-      if (message){
-        const map = mapErrorResponse.get(message as TypeError);
-        if (map) {
-          errorModel.message = map ? map.toString() : this.MENSAGEM_GENERICA;
-        }
-      }
-      errorModel.status = error.error.status;
-    } else {
-      if (error.error){
-        errorModel.title = 'Ops, ocorreu um erro';
-        errorModel.message = this.MENSAGEM_GENERICA;
-        const message = arrayErros.find(e => e.toLowerCase().includes(error.error.toLowerCase()));
+    errorModel.title = 'Ops, ocorreu um erro';
+    errorModel.action = 'tentar novamente';
+    errorModel.message = this.MENSAGEM_GENERICA;
+    try {
+      if (error.error.message) {
+        const message = arrayErros.find(e => e.includes(error.error.message));
         if (message){
           const map = mapErrorResponse.get(message as TypeError);
-          if (map){
-            errorModel.message = map ? map.toString() : this.MENSAGEM_GENERICA;
+          if (map) {
+            errorModel.message = map;
+          }
+        }
+        errorModel.status = error.error.status;
+      } else {
+        if (error.error){
+          const message = arrayErros.find(e => e.includes(error.error));
+          if (message){
+            const map = mapErrorResponse.get(message as TypeError);
+            if (map){
+              errorModel.message = map;
+            }
           }
         }
       }
+    }catch {
+      console.log('Ops, ocorreu um erro');
     }
     errorWarningSubject.error(errorModel);
     return errorWarningSubject;

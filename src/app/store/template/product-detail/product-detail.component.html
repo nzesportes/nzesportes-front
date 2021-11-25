@@ -121,10 +121,11 @@
         <h1>{{ product?.model }}</h1>
         <p class="categories">
           <a (click)="goToProductListing(product?.brand?.name?.toLowerCase())">{{ product?.brand?.name | titlecase }}</a>,
-          <a (click)="goToProductListing('', '')">Categoria</a>,
-          <a (click)="goToProductListing('', '', undefined)">Gênero</a></p>
-        <h2>{{ productDetails?.price | currency }}
-          <del *ngIf="false">R$ 150,00</del>
+          <a (click)="goToProductListing('', '', undefined)">Categoria</a>,
+        <h2 *ngIf="productDetails?.sale">{{ productDetails.price * (100 - productDetails.sale.percentage) / 100 | currency }}
+          <del>{{ productDetails?.price | currency }}</del>
+        </h2>
+        <h2 *ngIf="!productDetails?.sale">{{ productDetails?.price | currency }}
         </h2>
         <h3 class="title-details">Descrição</h3>
         <p class="description-details">
@@ -331,3 +332,4 @@
 </swal>
 
 
+<app-size-guide *ngIf="productDetails" [idProduct]="productDetails.id"></app-size-guide>

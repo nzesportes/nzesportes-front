@@ -16,4 +16,5 @@ export interface ProductDetailsTO {
   subCategories: SubCategory[];
   product: ProductTO;
   purchaseStockId: string;
+  creationDate: Date;
 }

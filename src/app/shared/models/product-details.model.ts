@@ -20,6 +20,7 @@ export interface ProductDetails {
   subCategories: SubCategory[];
   subCategoriesToAdd: string[];
   subCategoriesToRemove: string[];
+  creationDate?: Date;
 }
 
 export interface ProductDetailUpdateTO {

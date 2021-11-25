@@ -5,15 +5,15 @@
   <div>
     <ul class="coming-up-filter pl-0 text-left text-md-right">
       <li class="filter-homepage" [ngClass]="selectedFilter === 'todos' ? 'current' : ''">
-        <a (click)="getAllDetails(8, 0)">
+        <a (click)="getAllDetails(8, 0, '', undefined, '', '', '', '', orderNew)">
           <input class="form-check-input radiosInput" type="radio" name="filter" id="filterTodos"
-                  (click)="filterSelected('todos')" value="adidas">
+                 (click)="filterSelected('todos')" value="adidas">
           <label class="form-check-label" for="filterTodos">Todos </label>
           <sup> {{ productDetailsTO?.length }}</sup>
         </a>
       </li>
       <li class="filter-homepage" [ngClass]="selectedFilter === 'nike' ? 'current' : ''">
-        <a (click)="getAllDetails(8, 0, '', undefined, '', '', '', 'nike')">
+        <a (click)="getAllDetails(8, 0, '', undefined, '', '', '', 'nike', orderNew)">
           <input class="form-check-input radiosInput" type="radio" name="filter" id="filterNike"
                  (click)="filterSelected('nike')" value="adidas">
           <label class="form-check-label" for="filterNike">Nike </label>
@@ -21,7 +21,7 @@
         </a>
       </li>
       <li class="filter-homepage" [ngClass]="selectedFilter === 'adidas' ? 'current' : ''">
-        <a (click)="getAllDetails(8, 0, '', undefined, '', '', '', 'adidas')">
+        <a (click)="getAllDetails(8, 0, '', undefined, '', '', '', 'adidas', orderNew)">
           <input class="form-check-input radiosInput" type="radio" name="filter" id="filterAdidas"
                  (click)="filterSelected('adidas')" value="adidas">
           <label class="form-check-label" for="filterAdidas">Adidas </label>
@@ -48,7 +48,8 @@
   </div>
 
   <div class="alert alert-danger mt-5" role="alert" *ngIf="hasError">
-    Ops! Não foi possível exibir os nossos lançamentos. Por favor, <span class="alert-link" (click)="ngOnInit()">tente novamente</span> mais tarde.
+    Ops! Não foi possível exibir os nossos lançamentos. Por favor, <span class="alert-link" (click)="ngOnInit()">tente novamente</span>
+    mais tarde.
   </div>
   <div class="alert alert-warning mt-5" role="alert" *ngIf="productDetailsTO.length === 0 && !hasError">
     Não foram encontrados produtos.
@@ -62,19 +63,24 @@
              (click)="goToProductDetails(productDetails.id, productDetails.product.id)">
           <div class="product-content">
             <div class="product-image">
-              <div class="badge-product" *ngIf="true"><span>Novo</span></div>
-              <div class="badge-product badge-sale" [class.second-sale]="false && false" *ngIf="false"><span>35%</span>
+              <div class="badge-product" *ngIf="verifyDate(productDetails?.creationDate)"><span>Novo</span></div>
+              <div class="badge-product badge-sale" [class.second-sale]="productDetails.sale && verifyDate(productDetails?.creationDate)"
+                   *ngIf="productDetails.sale"><span>{{ productDetails.sale.percentage }}%</span>
               </div>
               <!--<a class="product-favorite"><i class="far fa-heart"></i></a>-->
               <img src="{{productDetails.images.split(';')[0]}}" class="w-100">
               <a class="image-overlay"></a>
             </div>
             <div class="product-detail pt-2">
-              <a (click)="goToProductDetails(productDetails.id, productDetails.product.id)" class="product-description">{{ productDetails?.product?.model }}</a>
+              <a (click)="goToProductDetails(productDetails.id, productDetails.product.id)"
+                 class="product-description">{{ productDetails?.product?.model }}</a>
               <p class="product-categories mb-0">
-                <a (click)="goToProductListing(productDetails?.product?.brand?.name?.toLowerCase())">{{ productDetails?.product?.brand?.name | titlecase }}</a>,
+                <a
+                  (click)="goToProductListing(productDetails?.product?.brand?.name?.toLowerCase())">{{ productDetails?.product?.brand?.name | titlecase }}</a>,
                 <a>{{ productDetails?.color | titlecase }}</a></p>
-              <span><del *ngIf="false">R$ 150,00</del> {{ productDetails?.price | currency }}</span>
+              <span *ngIf="productDetails?.sale && productDetails?.price"><del>{{ productDetails.price | currency }}</del>
+                {{ productDetails.price * (100 - productDetails.sale.percentage) / 100 | currency }}</span>
+              <span *ngIf="!productDetails?.sale">{{ productDetails?.price | currency }}</span>
             </div>
           </div>
         </div>

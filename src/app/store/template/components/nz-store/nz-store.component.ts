@@ -20,6 +20,7 @@ export class NzStoreComponent implements OnInit {
   productDetailsTO: ProductDetailsTO[] = [];
   content: ProductDetailsTOPage | undefined;
   hasError!: boolean;
+  thirtyDaysAgo = new Date(Date.now() - (1000 * 60 * 60 * 24 * 30));
 
   customOptions: OwlOptions = {
     loop: true,
@@ -94,5 +95,9 @@ export class NzStoreComponent implements OnInit {
   goToProductListing(brand?: string, category?: string, gender?: Gender): void {
     this.filterService.setSearch('', brand, category, gender);
     this.router.navigateByUrl('/search');
+  }
+
+  verifyDate(date: Date | undefined): boolean {
+    return date && new Date(date) > this.thirtyDaysAgo ? true : false;
   }
 }

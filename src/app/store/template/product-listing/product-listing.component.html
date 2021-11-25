@@ -20,8 +20,8 @@
            routerLink="/produtos/{{ productDetails.id }}">
         <div class="product-content">
           <div class="product-image">
-            <div class="badge-product" *ngIf="false"><span>Novo</span></div>
-            <div class="badge-product badge-sale" [class.second-sale]="false && false" *ngIf="false"><span>35%</span>
+            <div class="badge-product" *ngIf="verifyDate(productDetails?.creationDate)"><span>Novo</span></div>
+            <div class="badge-product badge-sale" [class.second-sale]="productDetails.sale && verifyDate(productDetails?.creationDate)" *ngIf="productDetails.sale"><span>{{ productDetails.sale.percentage }}%</span>
             </div>
             <!--<a class="product-favorite"><i class="far fa-heart"></i></a>-->
             <img src="{{productDetails.images.split(';')[0]}}" class="w-100">
@@ -31,9 +31,10 @@
             <a href="#" class="product-description">{{ productDetails?.product?.model }}</a>
             <p class="product-categories mb-0">
               <a href="#">{{ productDetails?.product?.brand?.name | titlecase }}</a>,
-              <a href="#">{{ productDetails?.color | titlecase }}</a>,
-              <a href="#">Gênero</a></p>
-            <span><del *ngIf="false">R$ 150,00</del> R$ {{ productDetails?.price }}</span>
+              <a href="#">{{ productDetails?.color | titlecase }}</a>
+              <span *ngIf="productDetails?.sale && productDetails?.price"><del>{{ productDetails.price | currency }}</del>
+                {{ productDetails.price * (100 - productDetails.sale.percentage) / 100 | currency }}</span>
+              <span *ngIf="!productDetails?.sale">{{ productDetails?.price | currency }}</span>
           </div>
         </div>
       </div>
