@@ -16,7 +16,7 @@ export const environment = {
   ME_STATE: '',
   ME_URL: '',
   URL_FRONT: 'http://localhost:4200/',
-  ME_CEP_NZ: ''
+  ME_CEP_NZ: '01007040'
 };
 
 /*

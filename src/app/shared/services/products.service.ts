@@ -92,10 +92,10 @@ export class ProductsService {
     return this.http.get<ProductDetailsTO[]>(`${this.api}details/purchase/${purchaseId}`);
   }
 
-  getDetailById(uuid: string): Observable<ProductDetails> {
+  getDetailById(uuid: string): Observable<any> {
     const params = new HttpParams()
       .set('async', 'true');
-    return this.http.get<ProductDetails>(`${this.api}details/${uuid}`, {params});
+    return this.http.get<any>(`${this.api}details/${uuid}`, {params});
   }
 
   updateCategories(idCategory: string, idProduct: string): Observable<Product> {
