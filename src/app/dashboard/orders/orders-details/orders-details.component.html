@@ -96,7 +96,7 @@
                 }">
                   <b>{{ purchase.tag ? 'PRODUTO ETIQUETADO' : 'PENDENTE ETIQUETA'}} </b>
                 </div>
-                <div class="col-3 mb-2">
+                <div class="col-12 col-md-3 mb-2">
                   <button type="button" class="btn w-100"
                           [ngClass]="{
                   'btn-warning': purchase.tag,
@@ -136,8 +136,21 @@
                   {{ item?.item?.size | uppercase }}
                 </div>
                 <div class="col-2 mt-2">{{ item.quantity }}</div>
-                <div class="col-2 mt-2">{{ item.cost | currency }}</div>
-                <div class="col-2 mt-2">{{ item.quantity * item.cost | currency }}</div>
+                <div class="col-2 mt-2" *ngIf="!item.discount">{{ item.cost | currency }}</div>
+                <div class="col-2 mt-2" *ngIf="item.discount">
+                  <div>
+                    <del class="mb-1 promotion">{{ item.cost | currency }}</del>
+                  </div>
+                  <div>
+                    {{ item.cost * ((100 - item.discount) / 100) | currency }}
+                  </div>
+                </div>
+                <div class="col-2 mt-2" *ngIf="!item.discount">{{ item.quantity * item.cost | currency }}</div>
+                <div class="col-2 mt-2" *ngIf="item.discount">
+                  <div>
+                    {{ item.quantity * item.cost * ((100 - item.discount) / 100) | currency }}
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -153,9 +166,19 @@
                 <div class="col-6"><b>Quantidade</b></div>
                 <div class="col-6 mb-1">{{ item.quantity }}</div>
                 <div class="col-6"><b>Preço</b></div>
-                <div class="col-6 mb-1">{{ item.cost | currency }}</div>
+                <div class="col-6 mb-1" *ngIf="!item.discount">{{ item.cost | currency }}</div>
+                <div class="col-6 mb-1" *ngIf="item.discount">
+                  <div>
+                    <del class="mb-1 promotion">{{ item.cost | currency }}</del>
+                  </div>
+                  <div>{{ item.cost * ((100 - item.discount) / 100) | currency }}</div>
+                </div>
                 <div class="col-6"><b>Total</b></div>
-                <div class="col-6 mb-3">{{ item.quantity * item.cost | currency }}</div>
+                <div class="col-6 mb-1"
+                     *ngIf="!item.discount">{{ item.quantity * item.cost | currency }}</div>
+                <div class="col-6 mb-1"
+                     *ngIf="item.discount">{{ item.quantity * item.cost * ((100 - item.discount) / 100) | currency }}</div>
+                <div class="col-6 mb-2"></div>
               </div>
             </div>
           </div>

@@ -10,7 +10,7 @@
     <div class="col-1"></div>
   </div>
 
-  <div class="accordion"  id="myOrders" *ngIf="!isMobile && !hasError">
+  <div class="accordion" id="myOrders" *ngIf="!isMobile && !hasError">
     <div class="card mb-2 accordion-button" *ngFor="let purchase of purchases; let i = index"
          (click)="click(i, purchase.id)">
       <div class="card-header" id="headingOne">
@@ -42,7 +42,8 @@
             </div>
             <div class="row p-0 m-0 mb-2 orders-products-details" *ngFor="let item of purchase.items; let j = index;">
               <div class="col-7 p-0">
-                <div class="row m-0 p-0 go-to-product-details" routerLink="../../produtos/{{ item?.productDetails?.id }}">
+                <div class="row m-0 p-0 go-to-product-details"
+                     routerLink="../../produtos/{{ item?.productDetails?.id }}">
                   <div class="img-details"
                        *ngIf="item.productDetails && item.productDetails.images && item.productDetails.images.split(';').length > 0">
                     <img class="w-100"
@@ -60,15 +61,18 @@
               <div class="col-1 p-0 m-auto">{{ item.quantity }}</div>
               <div class="col-2 p-0 m-auto">
                 <div class="m-0 p-0">
-                  <div *ngIf="false">
-                    <del class="mb-1 promotion">{{ '20.00' | currency }}</del>
+                  <div *ngIf="item.discount">
+                    <del class="mb-1 promotion">{{ item.cost | currency }}</del>
                   </div>
                   <div>
-                    {{ item.cost | currency }}
+                    {{ item.cost * ((100 - item.discount) / 100) | currency }}
                   </div>
                 </div>
               </div>
-              <div class="col-2 p-0 m-auto"><b>{{ item.quantity * item.cost | currency }}</b></div>
+              <div class="col-2 p-0 m-auto" *ngIf="!item.discount"><b>{{ item.quantity * item.cost | currency }}</b>
+              </div>
+              <div class="col-2 p-0 m-auto" *ngIf="item.discount">
+                <b>{{ item.quantity * item.cost * ((100 - item.discount) / 100) | currency }}</b></div>
             </div>
           </div>
           <div class="mt-4 m-0 p-0 row">
@@ -182,9 +186,19 @@
               <div class="col-6 p-0 title-mobile">Quantidade</div>
               <div class="col-6 p-0 mb-1">{{ item.quantity }}</div>
               <div class="col-6 p-0 title-mobile">Preço</div>
-              <div class="col-6 p-0 mb-1">{{ item.cost | currency }}</div>
+              <div class="col-6 p-0 mb-1" *ngIf="!item.discount">{{ item.cost | currency }}</div>
+              <div class="col-6 p-0 mb-1" *ngIf="item.discount">
+                <div>
+                  <del class="mb-1 promotion">{{ item.cost | currency }}</del>
+                </div>
+                <div>{{ item.cost * ((100 - item.discount) / 100) | currency }}</div>
+              </div>
               <div class="col-6 p-0 title-mobile">Subtotal</div>
-              <div class="col-6 p-0 mb-2">{{ item.quantity * item.cost | currency }}</div>
+              <div class="col-6 p-0 mb-1"
+                   *ngIf="!item.discount">{{ item.quantity * item.cost | currency }}</div>
+              <div class="col-6 p-0 mb-1"
+                   *ngIf="item.discount">{{ item.quantity * item.cost * ((100 - item.discount) / 100) | currency }}</div>
+              <div class="col-6 p-0 mb-2"></div>
             </div>
           </div>
           <div class="mt-4 m-0 p-0 row">
@@ -255,6 +269,7 @@
   </nav>
 
   <div class="alert alert-danger mr-3 ml-3" role="alert" *ngIf="hasError">
-    Não foi possível carregar algumas informações. Por favor, <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
+    Não foi possível carregar algumas informações. Por favor,
+    <div class="alert-link" (click)="ngOnInit()">tente novamente.</div>
   </div>
 </div>

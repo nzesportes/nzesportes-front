@@ -22,8 +22,16 @@
                 {{item.model}} {{ item.productDetails.color }} {{item.stock.size}}
               </a>
             </div>
-            <div class="col-6 col-xl-2 pt-3 pb-3"><span
-              class="title-items">Preço </span>{{ item.productDetails.price | currency }}</div>
+            <div class="col-6 col-xl-2 pt-3 pb-3" *ngIf="!item.productDetails.sale"><span
+              class="title-items">Preço </span><br>
+              <span>{{ item.productDetails.price | currency }}</span>
+            </div>
+            <div class="col-6 col-xl-2 pt-3 pb-3" *ngIf="item.productDetails.sale"><span
+              class="title-items">Preço </span><br>
+              <del class="m-0">{{ item.productDetails.price | currency  }}</del>
+              <br>
+              <span>{{ item.productDetails.price * ((100 - item.productDetails.sale.percentage) / 100) | currency }}</span>
+            </div>
             <div class="col-6 col-xl-2 pt-3 pb-3">
               <div class="input-group quantity ml-auto ml-xl-0">
                 <div class="input-group-prepend">
@@ -65,8 +73,9 @@
             </div>
             <div class="coupon-valid row" *ngIf="!hasCouponError && isValidCoupon">
               <small class="ml-3 mt-1 col-12">{{ promocode.value }}<i class="fas fa-times ml-1 close-coupon"
-                                                               (click)="removeCoupon(promocode)"></i></small>
-              <small class="ml-3 col-12" *ngIf="!hasCouponError && isValidCoupon">Desconto: {{ discount | currency }}</small>
+                                                                      (click)="removeCoupon(promocode)"></i></small>
+              <small class="ml-3 col-12"
+                     *ngIf="!hasCouponError && isValidCoupon">Desconto: {{ discount | currency }}</small>
             </div>
           </div>
           <div class="items-actions-cart text-xl-left text-center">
