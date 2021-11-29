@@ -60,7 +60,7 @@
                   <span class="input-group-text">R$</span>
                 </div>
                 <input type="text" id="discount" class="form-control"
-                       formControlName="discount"
+                       formControlName="discount" mask="separator.2"  thousandSeparator=","
                        [ngClass]="cssError(formBrand.get('discount'))">
                 <div id="field-discount" class="invalid-feedback">
                   Por favor, insira a desconto.
