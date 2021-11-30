@@ -97,6 +97,7 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   }
 
   updateIndex(index: number): void {
+    console.log(this.filterService.filter);
     this.getAllDetails(
       10,
       index,
@@ -113,5 +114,10 @@ export class ProductListingComponent implements OnInit, OnDestroy {
 
   verifyDate(date: Date | undefined): boolean {
     return date && new Date(date) > this.thirtyDaysAgo ? true : false;
+  }
+
+  goToProductListing(brand?: string, category?: string, gender?: Gender): void {
+    this.filterService.setSearch('', brand, category, gender, '');
+    this.router.navigateByUrl('/search');
   }
 }
