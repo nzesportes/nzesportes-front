@@ -43,6 +43,8 @@ import { RatingComponent } from './template/rating/rating.component';
 import { SizeGuideComponent } from './template/size-guide/size-guide.component';
 import {AuthOrderReviewGuard} from '../shared/guards/auth-order-review.guard';
 import { DevelopedByComponent } from './template/components/developed-by/developed-by.component';
+import { PrivacyPolicyComponent } from './template/components/privacy-policy/privacy-policy.component';
+import { ExchangePolicyComponent } from './template/components/exchange-policy/exchange-policy.component';
 
 @NgModule({
   declarations: [
@@ -73,6 +75,8 @@ import { DevelopedByComponent } from './template/components/developed-by/develop
     RatingComponent,
     SizeGuideComponent,
     DevelopedByComponent,
+    PrivacyPolicyComponent,
+    ExchangePolicyComponent,
   ],
   imports: [
     CommonModule,

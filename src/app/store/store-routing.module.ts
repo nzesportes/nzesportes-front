@@ -12,6 +12,8 @@ import {OrderReviewComponent} from './template/order-review/order-review.compone
 import {FirstAccessComponent} from './template/first-access/first-access.component';
 import {AuthOrderReviewGuard} from '../shared/guards/auth-order-review.guard';
 import {DevelopedByComponent} from './template/components/developed-by/developed-by.component';
+import {PrivacyPolicyComponent} from './template/components/privacy-policy/privacy-policy.component';
+import {ExchangePolicyComponent} from './template/components/exchange-policy/exchange-policy.component';
 
 const routes: Routes = [
   {
@@ -56,6 +58,14 @@ const routes: Routes = [
       {
         path: 'desenvolvido-por',
         component: DevelopedByComponent
+      },
+      {
+        path: 'politica-privacidade',
+        component: PrivacyPolicyComponent
+      },
+      {
+        path: 'politica-troca',
+        component: ExchangePolicyComponent
       },
       {
         path: 'minha-conta',
