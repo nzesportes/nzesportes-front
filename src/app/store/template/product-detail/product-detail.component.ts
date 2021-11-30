@@ -135,6 +135,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
               this.hasError = false;
               this.productDetails = response;
               this.createForm();
+              this.formStock.get('stocksize')?.setValue(this.productDetails.stock[0]);
               this.changeMax(0);
               this.setImages();
               const productJson = sessionStorage.getItem('product');
