@@ -19,7 +19,8 @@ import {NgxMaskModule} from 'ngx-mask';
         ReactiveFormsModule,
         FormsModule,
         ReactiveFormsModule,
-        SweetAlert2Module
+        SweetAlert2Module,
+        NgxMaskModule.forChild()
     ]
 })
 export class ProductsModule { }
