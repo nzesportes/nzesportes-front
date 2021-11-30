@@ -74,7 +74,6 @@ export class PromotionsDetailsComponent implements OnInit {
   private createForm(): void {
     this.formBrand = this.formBuilder.group({
       id: new FormControl(this.sale?.id ? this.sale.id : null),
-      quantity: new FormControl(this.sale?.quantity ? this.sale.quantity : '', Validators.required),
       endDate: new FormControl(this.sale?.endDate ? this.sale.endDate : '', Validators.required),
       percentage: new FormControl(this.sale?.percentage ? this.sale.percentage : '', Validators.required),
       startDate: new FormControl(this.sale?.startDate ? this.sale.startDate : '', Validators.required),
