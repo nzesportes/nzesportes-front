@@ -74,9 +74,8 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.promocodeSessionStorage = sessionStorage.getItem('coupon');
+    this.promocodeSessionStorage = this.couponService.getCouponSession();
     if (this.promocodeSessionStorage) {
-      this.promocodeSessionStorage = JSON.parse(this.promocodeSessionStorage);
       this.coupon = this.promocodeSessionStorage.code;
       this.voucher = this.promocodeSessionStorage.discount;
       this.checkSessionStorageCoupon(this.promocodeSessionStorage.code);
@@ -255,7 +254,7 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
     this.couponService.validate(coupon)
       .subscribe(response => {
         if (response.status) {
-          sessionStorage.setItem('coupon', JSON.stringify(response.coupon));
+          this.couponService.setCouponSession(response.coupon);
           this.isValidCoupon = true;
           return;
         } else {
