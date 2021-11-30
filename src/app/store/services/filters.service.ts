@@ -35,13 +35,13 @@ export class FiltersService {
     return this._filter;
   }
 
-  setSearch(search?: string, brand?: string, category?: string, gender?: Gender, subCategory?: string): void {
+  setSearch(search?: string, brand?: string, category?: string, gender?: Gender, subCategory?: string, color?: string): void {
     this.productsService.setDetailsFiltersState(
       search ? search : '',
       gender ? gender : undefined,
       category ? category : '',
       '',
-      '',
+      color ? color : '',
       brand ? brand : '',
       '',
       subCategory ? subCategory : ''
@@ -52,7 +52,7 @@ export class FiltersService {
       gender: gender ? gender : undefined,
       category: category ? category : '',
       size: '',
-      color: '',
+      color: color ? color : '',
       brand: brand ? brand : '',
       classBy: '',
       SubCategory: ''
