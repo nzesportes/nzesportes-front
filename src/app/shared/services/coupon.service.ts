@@ -5,6 +5,12 @@ import {Coupon} from '../models/coupon.model';
 import {Observable} from 'rxjs';
 import {CouponPage} from '../models/pagination-model/coupon-page.model';
 import {CouponTO} from '../models/coupon-to.model';
+import {AuthenticationResponse} from '../models/authentication-response.model';
+import * as CryptoJS from 'crypto-js';
+
+
+const USER_HASH_KEY = environment.USER_HASH_KEY;
+const COUPON_KEY = 'coupon';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +44,19 @@ export class CouponService {
 
   validate(code: string): Observable<CouponTO> {
     return this.http.get<CouponTO>(`${this.api}validate/${code}`);
+  }
+
+  // crypt cart
+  setCouponSession(coupon: Coupon): void {
+    window.sessionStorage.removeItem(COUPON_KEY);
+    const userHash = CryptoJS.AES.encrypt(JSON.stringify(coupon), USER_HASH_KEY).toString();
+    window.sessionStorage.setItem(COUPON_KEY, userHash);
+  }
+  getCouponSession(): Coupon | null {
+    const coupon = window.sessionStorage.getItem(COUPON_KEY);
+    if (coupon) {
+      return JSON.parse(CryptoJS.AES.decrypt(coupon, USER_HASH_KEY).toString(CryptoJS.enc.Utf8));
+    }
+    return null;
   }
 }

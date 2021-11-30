@@ -226,6 +226,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
   removeFilter(filter: string): void {
     this.formFilters.get(filter)?.setValue('');
     this.sendDetailsFilters();
+    this.removeFilterService(filter);
     this.verifyFilters = this._verifyFilters();
   }
 
@@ -233,6 +234,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
     this._resetValuesForm();
     this._setValuesInit();
     this.sendDetailsFilters();
+    this.removeAllFilterService();
     this.verifyFilters = this._verifyFilters();
   }
 
@@ -307,6 +309,31 @@ export class FiltersComponent implements OnInit, OnDestroy {
       this.formFilters?.get('subCategory')?.setValue(
         filter.subCategory ? filter.subCategory : this.formFilters?.get('subCategory')?.value
       );
+    }
+  }
+
+  removeAllFilterService(): void {
+    this.filterService.filter.gender = undefined;
+    this.filterService.filter.category = '';
+    this.filterService.filter.size = '';
+    this.filterService.filter.color = '';
+    this.filterService.filter.brand = '';
+    this.filterService.filter.subCategory = '';
+  }
+
+  removeFilterService(filter: string): void {
+    if (filter === 'gender') {
+      this.filterService.filter.gender = '';
+    } else if (filter === 'category') {
+      this.filterService.filter.category = '';
+    } else if (filter === 'size') {
+      this.filterService.filter.size = '';
+    } else if (filter === 'color') {
+      this.filterService.filter.color = '';
+    } else if (filter === 'brand') {
+      this.filterService.filter.brand = '';
+    } else if (filter === 'subCategory') {
+      this.filterService.filter.subCategory = '';
     }
   }
 

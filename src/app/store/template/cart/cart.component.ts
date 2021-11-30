@@ -56,9 +56,8 @@ export class CartComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.promocodeSessionStorage = sessionStorage.getItem('coupon');
+    this.promocodeSessionStorage = this.couponService.getCouponSession();
     if (this.promocodeSessionStorage) {
-      this.promocodeSessionStorage = JSON.parse(this.promocodeSessionStorage);
       this.discount = this.promocodeSessionStorage.discount;
       this.checkSessionStorageCoupon(this.promocodeSessionStorage.code);
     }
@@ -104,14 +103,14 @@ export class CartComponent implements OnInit, OnDestroy {
           if (response.status) {
             this.isValidCoupon = true;
             this.discount = response.coupon.discount;
-            sessionStorage.setItem('coupon', JSON.stringify(response.coupon));
+            this.couponService.setCouponSession(response.coupon);
             return;
           }
           this.discount = 0;
           this.hasCouponError = true;
           this.isExpiredCoupon = true;
         }, error => {
-          if (error.message.error.status === 404) {
+          if (error.status === 404) {
             this.discount = 0;
             this.hasCouponError = true;
             this.isNotFoundError = true;
@@ -132,7 +131,7 @@ export class CartComponent implements OnInit, OnDestroy {
           this.coupon = coupon;
           this.discount = response.coupon.discount;
           this.isValidCoupon = true;
-          sessionStorage.setItem('coupon', JSON.stringify(response.coupon));
+          this.couponService.setCouponSession(response.coupon);
           return;
         }
       }, error => {

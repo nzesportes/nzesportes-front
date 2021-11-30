@@ -57,7 +57,7 @@ export class OrdersDetailsComponent implements OnInit {
 
   getTotalPurchase(): void {
     this.purchase?.items.forEach(item => {
-      this.totalPurchase += (item.cost * item.quantity);
+      this.totalPurchase += item.discount ? (item.cost * item.quantity) * ((100 - item.discount) / 100) : (item.cost * item.quantity);
     });
   }
 

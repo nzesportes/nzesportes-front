@@ -44,23 +44,24 @@ export class CartService {
     // verificar tamanho do carrinho
     if (this.items.length === 0) {
       this.pushItemCart(itemCart);
-    }else{
+    } else {
       // verifica se tem o productDetail
       const hasProductDetail =
         this.items.find(cart => cart.productDetails.id === itemCart.productDetails.id && itemCart.stock.id === cart.stock.id) as ItemCart;
       if (hasProductDetail) {
         // verifica se já tem aquele item de stock no carrinho
-        const index  = this.items.indexOf(hasProductDetail);
-        const sumQuantity =  itemCart.quantity + this.items[index].quantity;
+        const index = this.items.indexOf(hasProductDetail);
+        const sumQuantity = itemCart.quantity + this.items[index].quantity;
         this.items[index].quantity = sumQuantity > itemCart.stock.quantity ? itemCart.stock.quantity : sumQuantity;
         this.items[index].total = this.items[index].quantity * itemCart.productDetails.price;
-      }else {
+      } else {
         this.pushItemCart(itemCart);
       }
     }
     this.setItemEncryptKey();
     this.updateLoadProducts();
   }
+
   addQuantityCart(idCart: string, quantity: number): void {
     this.items = this.getProductsCart();
     const hasProductDetail =
@@ -68,11 +69,16 @@ export class CartService {
     if (hasProductDetail) {
       const index = this.items.indexOf(hasProductDetail);
       this.items[index].quantity = this.items[index].quantity + quantity;
-      this.items[index].total = this.items[index].quantity * this.items[index].productDetails.price;
+      this.items[index].total =
+        this.items[index].productDetails.sale ?
+          this.items[index].quantity * this.items[index].productDetails.price *
+          ((100 - this.items[index].productDetails.sale.percentage) / 100) :
+          this.items[index].quantity * this.items[index].productDetails.price;
       this.setItemEncryptKey();
       this.updateLoadProducts();
     }
   }
+
   updateLoadProducts(): void {
     this.store.dispatch(
       fromCartActions.requestLoadProducts()
@@ -84,6 +90,7 @@ export class CartService {
     this.items.push(itemCart);
     this.setItemEncryptKey();
   }
+
   setItemEncryptKey(): void {
     const cartHash = CryptoJS.AES.encrypt(JSON.stringify(this.items), USER_HASH_KEY).toString();
     localStorage.setItem(CART_KEY, cartHash);
@@ -94,7 +101,7 @@ export class CartService {
   }
 
   removeItemCart(id: string): void {
-    this.items = this.items.filter( i => i.id !== id);
+    this.items = this.items.filter(i => i.id !== id);
     this.setItemEncryptKey();
     this.updateLoadProducts();
   }

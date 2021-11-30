@@ -23,6 +23,7 @@ import {RatingPage} from '../../../shared/models/pagination-model/rating-page.mo
 import {PaginationService} from '../../../shared/services/pagination.service';
 import {Order} from '../../../shared/enums/order.enum';
 import {environment} from '../../../../environments/environment';
+import {ProductDetailsTO} from '../../../shared/models/product-details-to.model';
 
 export interface ImageSlide {
   id: number;
@@ -42,7 +43,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   private id = '';
 
   // @ts-ignore
-  productDetails: ProductDetails;
+  productDetails: ProductDetailsTO;
   // @ts-ignore
   product: Product;
 
@@ -134,6 +135,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
               this.hasError = false;
               this.productDetails = response;
               this.createForm();
+              this.formStock.get('stocksize')?.setValue(this.productDetails.stock[0]);
               this.changeMax(0);
               this.setImages();
               const productJson = sessionStorage.getItem('product');
@@ -230,7 +232,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     this.startValue = 1;
   }
 
-  addToCart(productDetail: ProductDetails, stockIndex: number): void {
+  addToCart(productDetail: ProductDetailsTO, stockIndex: number): void {
     if (this.formStock.valid) {
       const stockCart = this.productDetails.stock[stockIndex];
       const cartItem = this.cartService.getProductsCart().find(item => item.id === stockCart.id);
@@ -267,7 +269,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  sendToCart(productDetail: ProductDetails, stockCart: Stock): void {
+  sendToCart(productDetail: ProductDetailsTO, stockCart: Stock): void {
     const itemCart = {
       id: stockCart.id,
       productDetails: productDetail,
@@ -275,7 +277,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       model: this.product.model,
       quantity: this.startValue,
       stock: stockCart,
-      total: productDetail.price * this.startValue,
+      total: productDetail.sale ?
+        (productDetail.price * this.startValue) * ((100 - productDetail.sale.percentage) / 100) :
+        productDetail.price * this.startValue,
       size: this.product.size
     };
     this.cartService.addToCart(itemCart);

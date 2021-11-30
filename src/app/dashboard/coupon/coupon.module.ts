@@ -6,6 +6,7 @@ import {CouponListComponent} from './coupon-list/coupon-list.component';
 import {CouponDetailsComponent} from './coupon-details/coupon-details.component';
 import {SweetAlert2Module} from '@sweetalert2/ngx-sweetalert2';
 import {ReactiveFormsModule} from '@angular/forms';
+import {NgxMaskModule} from 'ngx-mask';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import {ReactiveFormsModule} from '@angular/forms';
     CommonModule,
     CouponRoutingModule,
     SweetAlert2Module,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxMaskModule.forChild()
   ]
 })
 export class CouponModule {

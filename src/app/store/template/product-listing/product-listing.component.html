@@ -21,17 +21,20 @@
         <div class="product-content">
           <div class="product-image">
             <div class="badge-product" *ngIf="verifyDate(productDetails?.creationDate)"><span>Novo</span></div>
-            <div class="badge-product badge-sale" [class.second-sale]="productDetails.sale && verifyDate(productDetails?.creationDate)" *ngIf="productDetails.sale"><span>{{ productDetails.sale.percentage }}%</span>
+            <div class="badge-product badge-sale"
+                 [class.second-sale]="productDetails.sale && verifyDate(productDetails?.creationDate)"
+                 *ngIf="productDetails.sale"><span>{{ productDetails.sale.percentage }}%</span>
             </div>
             <!--<a class="product-favorite"><i class="far fa-heart"></i></a>-->
             <img src="{{productDetails.images.split(';')[0]}}" class="w-100">
             <a class="image-overlay"></a>
           </div>
           <div class="product-detail pt-2">
-            <a href="#" class="product-description">{{ productDetails?.product?.model }}</a>
+            <a class="product-description">{{ productDetails?.product?.model }}</a>
             <p class="product-categories mb-0">
-              <a href="#">{{ productDetails?.product?.brand?.name | titlecase }}</a>,
-              <a href="#">{{ productDetails?.color | titlecase }}</a>
+              <a
+                (click)="goToProductListing(productDetails?.product?.brand?.name?.toLowerCase())">{{ productDetails?.product?.brand?.name | titlecase }}</a>,
+              <a>{{ productDetails?.color | titlecase }}</a>
               <span *ngIf="productDetails?.sale && productDetails?.price"><del>{{ productDetails.price | currency }}</del>
                 {{ productDetails.price * (100 - productDetails.sale.percentage) / 100 | currency }}</span>
               <span *ngIf="!productDetails?.sale">{{ productDetails?.price | currency }}</span>

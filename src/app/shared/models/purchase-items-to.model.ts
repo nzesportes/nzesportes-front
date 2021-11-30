@@ -6,5 +6,6 @@ export interface PurchaseItemsTO {
   item: StockTO;
   quantity: number;
   cost: number;
+  discount: number;
   productDetails: ProductDetailsTO;
 }

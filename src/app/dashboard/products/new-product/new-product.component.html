@@ -227,7 +227,7 @@
                   <span class="input-group-text">R$</span>
                 </div>
                 <input type="text" id="price" class="form-control"
-                       formControlName="price"
+                       formControlName="price"  mask="separator.2"  thousandSeparator=","
                        [ngClass]="cssError(validateFieldsFormProductDetail.price)">
                 <div id="field-price" class="invalid-feedback">
                   Por favor, insira o preço.

@@ -121,7 +121,7 @@
         <h1>{{ product?.model }}</h1>
         <p class="categories">
           <a (click)="goToProductListing(product?.brand?.name?.toLowerCase())">{{ product?.brand?.name | titlecase }}</a>,
-          <a (click)="goToProductListing('', '', undefined)">Categoria</a>,
+          <a>{{ productDetails?.color | titlecase }}</a>
         <h2 *ngIf="productDetails?.sale">{{ productDetails.price * (100 - productDetails.sale.percentage) / 100 | currency }}
           <del>{{ productDetails?.price | currency }}</del>
         </h2>

@@ -27,6 +27,7 @@ export class MyOrdersComponent implements OnInit {
   isMobile = false;
   statusPt = PaymentStatusPt;
   hasError = false;
+
   constructor(
     public paginationService: PaginationService,
     private purchaseService: PurchaseService,
@@ -46,6 +47,7 @@ export class MyOrdersComponent implements OnInit {
     this.isMobile = this.verifyWindowWidth();
     this.clearSesssionItens();
   }
+
   clearSesssionItens(): void {
     this.route.queryParams.pipe(
       take(1)
@@ -81,8 +83,8 @@ export class MyOrdersComponent implements OnInit {
         }, () => {
           this.hasError = true;
         });
-    }else{
-        this.hasError = true;
+    } else {
+      this.hasError = true;
     }
   }
 
@@ -95,7 +97,7 @@ export class MyOrdersComponent implements OnInit {
         this.paginationService.getPageRange(this.content.totalElements);
         this.getTotalPurchaseAndItems();
       }, () => {
-         this.hasError = true;
+        this.hasError = true;
       });
   }
 
@@ -128,7 +130,7 @@ export class MyOrdersComponent implements OnInit {
       purchaseTotal = 0;
       itemsTotal = 0;
       purchase.items.forEach(item => {
-        purchaseTotal += (item.cost * item.quantity);
+        purchaseTotal += item.discount ? (item.cost * item.quantity) * ((100 - item.discount) / 100) : (item.cost * item.quantity);
         itemsTotal += item.quantity;
       });
       this.totalPurchase.push(purchaseTotal);
