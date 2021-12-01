@@ -235,7 +235,8 @@
                 <div class="col-8 p-0 m-0"><b>Valor da Compra</b></div>
                 <div class="col-4 mb-2 p-0 m-0 text-right">{{ totalPurchase[i] | currency }}</div>
                 <div class="col-8 p-0 m-0"><b>Descontos</b></div>
-                <div class="col-4 mb-2 p-0 m-0 text-right">- {{ '0' | currency }}</div>
+                <div class="col-4 mb-2 p-0 m-0 text-right">
+                  - {{ purchase?.coupon?.discount ? (purchase.coupon.discount | currency) : ('0' | currency) }}</div>
                 <div class="col-8 p-0 m-0"><b>Frete</b></div>
                 <div class="col-4 mb-2 p-0 m-0 text-right">{{ purchase.shipment | currency }}</div>
                 <div class="col-8 p-0 m-0"><b>Total</b></div>
