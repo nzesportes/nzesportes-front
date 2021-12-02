@@ -117,6 +117,9 @@
                 <div class="col-12 col-lg-4 mb-2 p-0 m-0 text-right">{{ purchase.totalCost | currency }}</div>
               </div>
             </div>
+            <div class="col-12 p-0 m-0" *ngIf="purchase.status.toLowerCase() === 'pending'">
+              <a href="https://www.google.com.br/" target="_blank" class="btn btn-orange-crayola">Ir para o pagamento</a>
+            </div>
           </div>
         </div>
       </div>
@@ -242,6 +245,9 @@
                 <div class="col-8 p-0 m-0"><b>Total</b></div>
                 <div class="col-4 mb-2 p-0 m-0 text-right">{{ purchase.totalCost | currency }}</div>
               </div>
+            </div>
+            <div class="col-12 p-0 m-0" *ngIf="purchase.status.toLowerCase() === 'pending'">
+              <a href="https://www.google.com.br/" target="_blank" class="btn btn-orange-crayola">Ir para o pagamento</a>
             </div>
           </div>
         </div>
