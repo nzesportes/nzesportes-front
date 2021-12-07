@@ -48,14 +48,18 @@ input {
 }
 
 .forgot-password {
+  margin-top: 10px;
+}
+
+.forgot-password, .create-account {
+  line-height: 30px;
   text-transform: none;
   font-size: 14px;
 }
 
-.create-account{
-  text-transform: none;
-  font-size: 14px;
-  color: #979797;
+.forgot-password a, .create-account a {
+  cursor: pointer;
+  color: #007bff;
 }
 
 @media (min-width: 576px) {

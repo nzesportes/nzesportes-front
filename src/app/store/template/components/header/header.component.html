@@ -10,7 +10,7 @@
         <a class="btn-sign-up" routerLink="/painel" *ngIf="isLogged && isAdmin">Painel <i class="fas fa-columns ml-1"></i>
         </a>
         <a routerLink="/criar-conta" *ngIf="!isLogged">Novo Usuário</a>
-        <a class="btn-welcome" *ngIf="isLogged">Olá, {{ customer?.name }} <i class="fas fa-angle-down ml-1"></i>
+        <a class="btn-welcome" *ngIf="isLogged && customer?.name">Olá, {{ customer?.name }} <i class="fas fa-angle-down ml-1"></i>
           <div class="account-menu">
             <app-account-menu></app-account-menu>
           </div>
