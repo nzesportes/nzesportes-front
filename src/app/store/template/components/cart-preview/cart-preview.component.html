@@ -8,7 +8,7 @@
         <img class="image-cart-preview" src="{{ item.productDetails.images.split(';')[0] }}">
       </div>
       <div class="col-8 p-0 pl-1">
-        <a class="title-cart-preview" href="#">{{ item.model }} {{ item.productDetails.color | titlecase }} {{item.stock.size}}</a>
+        <a class="title-cart-preview" routerLink="/produtos/{{ item.productDetails.id }}">{{ item.model }} {{ item.productDetails.color | titlecase }} {{item.stock.size}}</a>
         <p class="m-0">
           <span>Quantidade: {{ item.quantity }}</span><br>
           <span>Total: {{ item.total | currency }}</span>
