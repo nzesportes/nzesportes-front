@@ -118,7 +118,10 @@
               </div>
             </div>
             <div class="col-12 p-0 m-0" *ngIf="purchase.status.toLowerCase() === 'pending'">
-              <a href="https://www.google.com.br/" target="_blank" class="btn btn-orange-crayola">Ir para o pagamento</a>
+              <a href="{{ purchase.paymentRequest.webhookStatus }}" target="_blank" class="btn btn-orange-crayola">Ir para o pagamento</a>
+            </div>
+            <div>
+              <span>Obs: se você já realizou o pagamento, aguarde a aprovação.</span>
             </div>
           </div>
         </div>
@@ -247,7 +250,10 @@
               </div>
             </div>
             <div class="col-12 p-0 m-0" *ngIf="purchase.status.toLowerCase() === 'pending'">
-              <a href="https://www.google.com.br/" target="_blank" class="btn btn-orange-crayola">Ir para o pagamento</a>
+              <a href="{{ purchase.paymentRequest.webhookStatus }}" target="_blank" class="btn btn-orange-crayola">Ir para o pagamento</a>
+            </div>
+            <div class="pt-2">
+              <span>Obs: se você já realizou o pagamento, aguarde a aprovação.</span>
             </div>
           </div>
         </div>
