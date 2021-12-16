@@ -19,6 +19,8 @@ import {ErrorWarning} from '../../../shared/models/error-warning.model';
 import {Router} from '@angular/router';
 import {CouponService} from '../../../shared/services/coupon.service';
 import {environment} from '../../../../environments/environment';
+import {ProductsService} from '../../../shared/services/products.service';
+import {CartService} from '../../services/cart.service';
 
 @Component({
   selector: 'app-order-review',
@@ -69,7 +71,9 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
     private betterSendService: BetterSendService,
     private router: Router,
     private couponService: CouponService,
-    private store: Store<any>
+    private store: Store<any>,
+    private productService: ProductsService,
+    private cartService: CartService
   ) {
   }
 
@@ -154,21 +158,64 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
       this.paymentTO.shipmentId = this.formGoToPayment?.get('shipmentId')?.value;
       this.paymentTO.shipment = this.shipment;
       this.paymentTO.coupon = this.coupon;
-      this.purchaseService.createPaymentRequest(this.paymentTO)
-        .subscribe(response => {
-          this.paymentUrl = response.paymentUrl;
-          this.dialogSuccess.title = 'Você está sendo redirecionado para a tela de pagamento!';
-          this.dialogSuccess.fire();
-          setTimeout(() => {
-            this.dialogSuccess.close();
-            this.redirect();
-          }, 5000);
-        }, (error: ErrorWarning) => {
-          this.setErrorDialog(error);
-          this.dialogError.fire().then(r => {
-            if (r.isConfirmed) {
-              this.goToPayment();
+
+      this.products$
+        .pipe(take(1))
+        .subscribe(cart => {
+          const request = cart.map(c => this.productService.getStockById(c.id));
+          zip(
+            ...request
+          ).pipe(take(1))
+          .subscribe(stocks => {
+            const hasStock = stocks.find(s => {
+              if (s.quantity < 1){
+                return true;
+              }
+              const product = cart.find(c => c.id === s.id);
+              if (product && product.quantity > s.quantity){
+                return  true;
+              }
+              return  false;
+            });
+            if (!hasStock){
+              this.continuePayment();
+            } else {
+              const procuctCart = cart.find(c => c.id === hasStock.id);
+              let error: ErrorWarning ;
+              if (procuctCart) {
+                error  = {
+                  message: 'Quantidade do produto ' + procuctCart.model + ' ' + procuctCart.productDetails.color + ' ' +  hasStock.size + ' não está mais disponível na loja, iremos remover este produto do carrinho!',
+                  title: 'Quantidade do produto indisponível',
+                  action: 'OK'
+                };
+                this.setErrorDialog(error);
+                this.dialogError.fire().then(r => {
+                  this.cartService.removeItemCart(hasStock.id);
+                  if (r.isConfirmed) {
+                    return;
+                  }
+                });
+              }else {
+                error  = {
+                  message: 'Ocorreu um erro ao processar a compra',
+                  title: 'Ops, ocorreu um erro',
+                  action: 'tentar novamente'
+                };
+                this.setErrorDialog(error);
+                this.dialogError.fire().then(r => {
+                  if (r.isConfirmed) {
+                    this.goToPayment();
+                  }
+                });
+              }
             }
+          }, error => {
+            this.setErrorDialog(error);
+            this.dialogError.fire().then(r => {
+              if (r.isConfirmed) {
+                this.goToPayment();
+              }
+            });
           });
         });
     } else {
@@ -185,6 +232,25 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
         }
       });
     }
+  }
+  continuePayment(): void {
+    this.purchaseService.createPaymentRequest(this.paymentTO)
+      .subscribe(response => {
+        this.paymentUrl = response.paymentUrl;
+        this.dialogSuccess.title = 'Você está sendo redirecionado para a tela de pagamento!';
+        this.dialogSuccess.fire();
+        setTimeout(() => {
+          this.dialogSuccess.close();
+          this.redirect();
+        }, 5000);
+      }, (error: ErrorWarning) => {
+        this.setErrorDialog(error);
+        this.dialogError.fire().then(r => {
+          if (r.isConfirmed) {
+            this.goToPayment();
+          }
+        });
+      });
   }
 
 
@@ -204,7 +270,7 @@ export class OrderReviewComponent implements OnInit, OnDestroy {
         .subscribe(r => {
           this.hasError = false;
           this.shippingResult = r.filter(ship => !ship.error).map(map => {
-            map.price = map.price + 2;
+            map.price = Number(map.price) + 2;
             return map;
           });
           if (this.shippingResult.length === 0) {

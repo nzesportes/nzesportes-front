@@ -313,7 +313,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         .subscribe(r => {
           this.hasError = false;
           this.shippingResult = r.filter(ship => !ship.error).map(map => {
-            map.price = map.price + 2;
+            map.price = Number(map.price) + 2;
             return map;
           });
           if (this.shippingResult.length === 0) {

@@ -155,4 +155,10 @@ export class ProductsService {
   get detailsFiltersState$(): Observable<DetailsFiltersRequest> {
     return this._detailsFiltersState;
   }
+
+  getStockById(uuid: string): Observable<Stock> {
+    const params = new HttpParams()
+      .set('async', 'true');
+    return this.http.get<any>(`${this.api}details/stock/${uuid}`, {params});
+  }
 }
