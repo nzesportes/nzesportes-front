@@ -38,8 +38,6 @@
     <table class="table table-hover">
       <thead>
       <tr>
-        <th scope="col">Qtde </th>
-        <th scope="col">Qtde Restante</th>
         <th scope="col">Percentual</th>
         <th scope="col">Termina em</th>
         <th scope="col">Ações</th>
@@ -47,8 +45,6 @@
       </thead>
       <tbody>
       <tr scope="row" class="row-table" *ngFor="let promotion of promotions" routerLink="detalhes/{{promotion.id}}">
-        <td style="width: 10%" class="text-info">{{ promotion.quantity }}</td>
-        <td style="width: 10%" class="text-warning">{{ promotion.quantityLeft }}</td>
         <td style="width: 15%">{{ promotion.percentage }}%</td>
         <td style="width: 15%">{{ promotion.endDate | date: 'dd/MM/yyyy' }}</td>
         <td style="width: 10%"><i class="fas fa-edit text-primary"></i></td>

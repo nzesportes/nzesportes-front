@@ -44,7 +44,7 @@ export interface Company {
 export interface ShippingResult {
   id: number;
   name: string;
-  price: string;
+  price: number;
   custom_price: string;
   discount: string;
   currency: string;

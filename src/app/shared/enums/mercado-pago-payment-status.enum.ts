@@ -11,13 +11,13 @@ export enum MercadoPagoPaymentStatus {
 }
 
 export enum PaymentStatusPt {
-   'pending'= 'pendente',
+  'pending' = 'pendente',
   'approved' = 'aprovado',
   'authorized' = 'não autorizado',
   'in_process' = 'processando',
   'in_mediation' = 'processando',
   'rejected' = 'rejeitado',
-   'cancelled' = 'cancelado',
+  'cancelled' = 'cancelado',
   'refunded' = 'pagamento foi devolvido',
   'charged_back' = 'processando'
 }

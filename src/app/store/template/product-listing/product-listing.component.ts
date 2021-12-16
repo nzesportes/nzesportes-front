@@ -97,7 +97,6 @@ export class ProductListingComponent implements OnInit, OnDestroy {
   }
 
   updateIndex(index: number): void {
-    console.log(this.filterService.filter);
     this.getAllDetails(
       10,
       index,

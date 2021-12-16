@@ -42,7 +42,7 @@ export abstract class AbstractService {
         }
       }
     }catch {
-      console.log('Ops, ocorreu um erro');
+      console.log('Ops, ocorreu um erro na tratativa de mensagens');
     }
     errorWarningSubject.error(errorModel);
     return errorWarningSubject;

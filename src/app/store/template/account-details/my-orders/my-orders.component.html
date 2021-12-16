@@ -117,6 +117,12 @@
                 <div class="col-12 col-lg-4 mb-2 p-0 m-0 text-right">{{ purchase.totalCost | currency }}</div>
               </div>
             </div>
+            <div class="col-12 p-0 m-0" *ngIf="purchase.status.toLowerCase() === 'pending'">
+              <a href="{{ purchase.paymentRequest.webhookStatus }}" target="_blank" class="btn btn-orange-crayola">Ir para o pagamento</a>
+            </div>
+            <div>
+              <span>Obs: se você já realizou o pagamento, aguarde a aprovação.</span>
+            </div>
           </div>
         </div>
       </div>
@@ -235,12 +241,19 @@
                 <div class="col-8 p-0 m-0"><b>Valor da Compra</b></div>
                 <div class="col-4 mb-2 p-0 m-0 text-right">{{ totalPurchase[i] | currency }}</div>
                 <div class="col-8 p-0 m-0"><b>Descontos</b></div>
-                <div class="col-4 mb-2 p-0 m-0 text-right">- {{ '0' | currency }}</div>
+                <div class="col-4 mb-2 p-0 m-0 text-right">
+                  - {{ purchase?.coupon?.discount ? (purchase.coupon.discount | currency) : ('0' | currency) }}</div>
                 <div class="col-8 p-0 m-0"><b>Frete</b></div>
                 <div class="col-4 mb-2 p-0 m-0 text-right">{{ purchase.shipment | currency }}</div>
                 <div class="col-8 p-0 m-0"><b>Total</b></div>
                 <div class="col-4 mb-2 p-0 m-0 text-right">{{ purchase.totalCost | currency }}</div>
               </div>
+            </div>
+            <div class="col-12 p-0 m-0" *ngIf="purchase.status.toLowerCase() === 'pending'">
+              <a href="{{ purchase.paymentRequest.webhookStatus }}" target="_blank" class="btn btn-orange-crayola">Ir para o pagamento</a>
+            </div>
+            <div class="pt-2">
+              <span>Obs: se você já realizou o pagamento, aguarde a aprovação.</span>
             </div>
           </div>
         </div>
