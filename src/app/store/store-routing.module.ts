@@ -69,8 +69,8 @@ const routes: Routes = [
       },
       {
         path: 'minha-conta',
-        // canActivate: [AuthGuard],
-        loadChildren: () => import('./template/account-details/account-details.module').then(m => m.AccountDetailsModule)
+        loadChildren: () => import('./template/account-details/account-details.module').then(m => m.AccountDetailsModule),
+        canActivate: [AuthGuard]
       },
       {
         path: 'avaliar',
