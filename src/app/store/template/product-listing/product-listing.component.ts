@@ -38,7 +38,7 @@ export class ProductListingComponent implements OnInit, OnDestroy {
     this.subscription = this.productsService.detailsFiltersState$.subscribe(filter => {
       this.paginationService.initPagination();
       this.getAllDetails(10, this.paginationService.page, filter.name, filter.gender as Gender, filter.category, filter.size,
-        filter.color, filter.brand, filter.classBy as Order);
+        filter.color, filter.brand, filter.classBy as Order, filter.subCategory);
       this.hasError = false;
     }, error => {
       console.log(error);
@@ -46,7 +46,7 @@ export class ProductListingComponent implements OnInit, OnDestroy {
     });
     this.paginationService.initPagination();
     this.getAllDetails(10, this.paginationService.page, this.filterService.filter.name, undefined,
-      this.filterService.filter.category, '', '', this.filterService.filter.brand, Order.ASC);
+      this.filterService.filter.category, '', '', this.filterService.filter.brand, Order.ASC, this.filterService.filter.subCategory);
 
     this.isMobile = this.verifyWindowWidth();
   }
@@ -106,7 +106,8 @@ export class ProductListingComponent implements OnInit, OnDestroy {
       this.filterService.filter.size,
       this.filterService.filter.color,
       this.filterService.filter.brand,
-      Order.ASC
+      Order.ASC,
+      this.filterService.filter.subCategory,
     );
     this.paginationService.page = index;
   }
