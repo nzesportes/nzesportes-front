@@ -11,13 +11,6 @@
   <div class="container-fluid">
     <div class="row">
       <div class="form-group col-lg-3 col-sm-12 mb-3 mb-lg-0">
-        <label for="categorie">Categoria</label>
-        <select class="form-control" id="categorie" formControlName="category" (change)="onChangeFilter()">
-          <option></option>
-          <option value="{{c.name}}" *ngFor="let c of categories">{{c.name | titlecase}}</option>
-        </select>
-      </div>
-      <div class="form-group col-lg-3 col-sm-12 mb-3 mb-lg-0">
         <label for="filter">Status</label>
         <select class="form-control" id="filter" formControlName="status" (change)="onChangeFilter()">
           <option ></option>
@@ -25,7 +18,7 @@
           <option value="false">Inativo</option>
         </select>
       </div>
-      <div class="form-group col-lg-6 col-sm-12 mb-3 mb-lg-0">
+      <div class="form-group col-lg-9 col-sm-12 mb-3 mb-lg-0">
         <label for="name">Pesquisa</label>
         <div class="input-group mb-3">
           <input type="text" class="form-control" id="name" formControlName="name" placeholder="ex: chicago bulls"
