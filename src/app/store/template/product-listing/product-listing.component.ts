@@ -43,11 +43,10 @@ export class ProductListingComponent implements OnInit, OnDestroy {
     }, error => {
       console.log(error);
       this.hasError = true;
+      this.paginationService.initPagination();
+      this.getAllDetails(10, this.paginationService.page, this.filterService.filter.name, undefined,
+        this.filterService.filter.category, '', '', this.filterService.filter.brand, Order.ASC, this.filterService.filter.subCategory);
     });
-    this.paginationService.initPagination();
-    this.getAllDetails(10, this.paginationService.page, this.filterService.filter.name, undefined,
-      this.filterService.filter.category, '', '', this.filterService.filter.brand, Order.ASC, this.filterService.filter.subCategory);
-
     this.isMobile = this.verifyWindowWidth();
   }
 
