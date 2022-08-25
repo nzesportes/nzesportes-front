@@ -55,7 +55,7 @@ export class FiltersService {
       color: color ? color : '',
       brand: brand ? brand : '',
       classBy: '',
-      SubCategory: ''
+      subCategory: subCategory ? subCategory : ''
     });
   }
 }
